@@ -35,7 +35,7 @@ Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_note-s
 
 ## Local deploy
 
-Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/???`
+Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Build
 

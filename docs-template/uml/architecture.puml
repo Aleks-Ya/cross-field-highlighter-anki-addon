@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam linetype ortho
+
+class FieldInfo {
+    field_type
+    field_name
+}
+class FieldContent {
+    field_info: FieldInfo
+    content: str
+}
+class Source {
+    note_id: NoteId
+    field_info: FieldInfo
+}
+class Destination {
+    fields: FieldInfo[]
+}
+interface HighlightFormat
+class BoldHighlightFormat
+class ItalicHighlightFormat
+class UnderscoreHighlightFormat
+class HighlighterParams {
+    sources: Source
+    destinations: Destination
+    highlight_format: HighlightFormat
+}
+class BulkHighlighterParams {
+    params: list[HighlighterParams]
+}
+class HighlighterOutcome {
+    fields: dict[Destination, FieldContent]
+}
+interface ParameterSource {
+    get_params(): HighlighterParams
+}
+class AdhocDialog
+class PresetDialog
+class ConfigurationDialog
+interface Highlighter {
+    highlight(HighlighterParams): HighlighterOutcome
+    erase(HighlighterParams): HighlighterOutcome
+}
+class SubstringHighlighter
+class TextAnalyzerHighlighter
+class BrowserHooks
+class HighlightMenuItem
+class CleanMenuItem
+class ProgressHighlighterOutcome
+class BulkHighlighter {
+    highlight(BulkHighlighterParams): ProgressHighlighterOutcome
+    erase(BulkHighlighterParams): ProgressHighlighterOutcome
+}
+
+HighlightFormat <|.. BoldHighlightFormat
+HighlightFormat <|.. ItalicHighlightFormat
+HighlightFormat <|.. UnderscoreHighlightFormat
+
+Highlighter <|.. SubstringHighlighter
+TextAnalyzerHighlighter <|.. SubstringHighlighter
+
+ParameterSource <|.. AdhocDialog
+ParameterSource <|.. PresetDialog
+
+Destination *-- FieldInfo
+Source *-- FieldInfo
+
+
+@enduml
