@@ -1,0 +1,9 @@
+.idea
+*.log
+*.egg-info
+__pycache__
+.tox
+dist
+meta.json
+*.kra~
+*.png~
