@@ -3,12 +3,15 @@ from logging import Logger
 from typing import Callable, Sequence
 
 from anki.cards import CardId
-from anki.notes import NoteId
+from anki.models import NotetypeId
+from anki.notes import NoteId, Note
 from aqt import gui_hooks, qconnect, QAction, QMenu
 from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
+from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_dialog import AdhocDialog
+from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 
 log: Logger = logging.getLogger(__name__)
 
@@ -41,12 +44,18 @@ class BrowserHooks:
         parent_menu.addAction(erase_action)
 
     def __on_highlight_click(self, browser: Browser):
-        note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
-        self.__adhoc_dialog.show_dialog(note_ids)
+        dialog_params: DialogParams = self.__prepare_dialog_params(browser)
+        self.__adhoc_dialog.show_dialog(dialog_params)
 
     def __on_erase_click(self, browser: Browser):
+        dialog_params: DialogParams = self.__prepare_dialog_params(browser)
+        self.__adhoc_dialog.show_dialog(dialog_params)
+
+    def __prepare_dialog_params(self, browser: Browser) -> DialogParams:
         note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
-        self.__adhoc_dialog.show_dialog(note_ids)
+        notes: list[Note] = [browser.col.get_note(note_id) for note_id in note_ids]
+        note_types: dict[NotetypeId, list[FieldName]] = {note.mid: note.fields for note in notes}
+        return DialogParams(note_types)
 
     def __prepare_highlighter_params(self, note_ids: Sequence[NoteId]) -> BulkHighlighterParams:
         pass
