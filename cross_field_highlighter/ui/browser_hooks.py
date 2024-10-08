@@ -3,13 +3,13 @@ from logging import Logger
 from typing import Callable, Sequence
 
 from anki.cards import CardId
-from anki.models import NotetypeId
+from anki.collection import Collection
+from anki.models import NotetypeId, NoteType
 from anki.notes import NoteId, Note
 from aqt import gui_hooks, qconnect, QAction, QMenu
 from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
-from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_dialog import AdhocDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 
@@ -52,9 +52,15 @@ class BrowserHooks:
         self.__adhoc_dialog.show_dialog(dialog_params)
 
     def __prepare_dialog_params(self, browser: Browser) -> DialogParams:
+        col: Collection = browser.col
         note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
-        notes: list[Note] = [browser.col.get_note(note_id) for note_id in note_ids]
-        note_types: dict[NotetypeId, list[FieldName]] = {note.mid: note.fields for note in notes}
+        notes: list[Note] = [col.get_note(note_id) for note_id in note_ids]
+        note_types: dict[NotetypeId, NoteType] = {}
+        for note in notes:
+            note_type_id: NotetypeId = note.mid
+            if note_type_id not in note_types:
+                note_type: NoteType = col.models.get(note_type_id)
+                note_types[note_type_id] = note_type
         return DialogParams(note_types)
 
     def __prepare_highlighter_params(self, note_ids: Sequence[NoteId]) -> BulkHighlighterParams:

@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QGroupBox
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QGroupBox, QLabel
 
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 
@@ -30,9 +31,11 @@ class AdhocDialog(QDialog):
         self.resize(300, 200)
 
     def __create_destination_widget(self):
+        self.note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
+        self.field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         group_layout: QVBoxLayout = QVBoxLayout()
-        label: QLabel = QLabel("destination")
-        group_layout.addWidget(label)
+        group_layout.addLayout(self.note_type_combo_box)
+        group_layout.addLayout(self.field_combo_box)
         group_box: QGroupBox = QGroupBox("Destination")
         group_box.setLayout(group_layout)
         return group_box
@@ -54,6 +57,8 @@ class AdhocDialog(QDialog):
         return group_box
 
     def show_dialog(self, params: DialogParams) -> None:
+        note_type_names: list[str] = [note_type.get("name") for note_type in params.note_types.values()]
+        self.note_type_combo_box.set_items(note_type_names)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
