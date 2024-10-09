@@ -4,7 +4,7 @@ from logging import Logger
 from PyQt6.QtWidgets import QPushButton
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox
 
-from cross_field_highlighter.ui.dialog.adhoc.field_selector_layout import FieldSelectorLayout
+from cross_field_highlighter.highlighter.types import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
@@ -48,18 +48,28 @@ class AdhocDialog(QDialog):
 
     def show_dialog(self, params: DialogParams) -> None:
         log.debug(f"Show dialog: {params}")
-        self.source_field_selector_layout.set_note_types(params.note_types)
-        self.destination_field_selector_layout.set_note_types(params.note_types)
+        self.__note_types: list[NoteTypeDetails] = params.note_types
+        note_type_names: list[str] = [note_type.name for note_type in params.note_types]
+        self.__note_type_combo_box.set_items(note_type_names)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
 
+    def __on_combobox_changed(self, index: int):
+        log.debug(f"On combobox changed: {index}")
+        field_names: list[str] = self.__note_types[index].fields
+        self.__source_field_combo_box.set_items(field_names)
+        self.__destination_field_combo_box.set_items(field_names)
+
     def __create_source_widget(self):
-        self.source_field_selector_layout: FieldSelectorLayout = FieldSelectorLayout()
+        self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
+        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
+        self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Stop words:", text="a an to", clear_button_enabled=True)
         group_layout: QVBoxLayout = QVBoxLayout()
-        group_layout.addLayout(self.source_field_selector_layout)
+        group_layout.addLayout(self.__note_type_combo_box)
+        group_layout.addLayout(self.__source_field_combo_box)
         group_layout.addLayout(self.stop_words_layout)
         group_box: QGroupBox = QGroupBox("Source")
         group_box.setLayout(group_layout)
@@ -75,9 +85,9 @@ class AdhocDialog(QDialog):
         return group_box
 
     def __create_destination_widget(self):
-        self.destination_field_selector_layout: FieldSelectorLayout = FieldSelectorLayout()
+        self.__destination_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         group_layout: QVBoxLayout = QVBoxLayout()
-        group_layout.addLayout(self.destination_field_selector_layout)
+        group_layout.addLayout(self.__destination_field_combo_box)
         group_box: QGroupBox = QGroupBox("Destination")
         group_box.setLayout(group_layout)
         return group_box
