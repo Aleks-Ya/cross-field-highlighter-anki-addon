@@ -1,4 +1,4 @@
-from typing import Optional, Callable, Any
+from typing import Optional, Callable
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
 
@@ -17,9 +17,9 @@ class TitledComboBoxLayout(QHBoxLayout):
     def set_current_text(self, current_text: str) -> None:
         self.__combo_box.setCurrentText(current_text)
 
-    def add_current_text_changed_callback(self, callback: Callable[[Any], None]) -> None:
+    def add_current_index_changed_callback(self, callback: Callable[[int], None]) -> None:
         # noinspection PyUnresolvedReferences
-        self.__combo_box.currentTextChanged.connect(callback)
+        self.__combo_box.currentIndexChanged.connect(callback)
 
     def set_items(self, items: list[str]) -> None:
         self.__combo_box.clear()

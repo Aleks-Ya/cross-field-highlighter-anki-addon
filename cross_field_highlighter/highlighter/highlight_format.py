@@ -13,5 +13,5 @@ class ItalicHighlightFormat(HighlightFormat):
     pass
 
 
-class UnderscoreHighlightFormat(HighlightFormat):
+class UnderlineHighlightFormat(HighlightFormat):
     pass
