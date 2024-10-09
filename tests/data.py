@@ -20,11 +20,9 @@ class Data:
         self.deck_id: DeckId = self.col.decks.get_current_id()
 
     def create_note_with_fields(self,
-                                word_field_content: str = "Word content",
-                                text_field_content: str = "Text content",
+                                word_field_content: FieldContent = "Word content",
+                                text_field_content: FieldContent = "Text content",
                                 new_note: bool = False) -> Note:
-        word_field_content: FieldContent = FieldContent(word_field_content)
-        text_field_content: FieldContent = FieldContent(text_field_content)
         note: Note = self.col.new_note(self.note_type)
         note[DefaultFields.word_field_name] = word_field_content
         note[DefaultFields.text_field_name] = text_field_content
@@ -34,6 +32,6 @@ class Data:
         return note
 
     def create_note(self, new_note: bool = False) -> Note:
-        return self.create_note_with_fields('Front field content',
-                                            'Back field content',
+        return self.create_note_with_fields(FieldContent('Front field content'),
+                                            FieldContent('Back field content'),
                                             new_note)

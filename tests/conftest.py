@@ -6,6 +6,7 @@ from anki.collection import Collection
 from aqt import ProfileManager
 
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from tests.data import Data
 
@@ -48,6 +49,11 @@ def start_with_text_highlighter() -> StartWithTextHighlighter:
 def start_with_note_highlighter(col: Collection,
                                 start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteHighlighter:
     return StartWithNoteHighlighter(col, start_with_text_highlighter)
+
+
+@pytest.fixture
+def notes_highlighter(start_with_note_highlighter: StartWithNoteHighlighter) -> NotesHighlighter:
+    return NotesHighlighter(start_with_note_highlighter)
 
 
 @pytest.fixture
