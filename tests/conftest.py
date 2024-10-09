@@ -46,9 +46,8 @@ def start_with_text_highlighter() -> StartWithTextHighlighter:
 
 
 @pytest.fixture
-def start_with_note_highlighter(col: Collection,
-                                start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteHighlighter:
-    return StartWithNoteHighlighter(col, start_with_text_highlighter)
+def start_with_note_highlighter(start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteHighlighter:
+    return StartWithNoteHighlighter(start_with_text_highlighter)
 
 
 @pytest.fixture

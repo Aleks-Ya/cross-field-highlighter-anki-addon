@@ -1,31 +1,28 @@
 from anki.collection import Collection
-from anki.notes import Note, NoteId
+from anki.notes import Note
 
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.types import FieldContent
 from tests.data import Data, DefaultFields
 
 
 def __tests(start_with_note_highlighter: StartWithNoteHighlighter, td: Data, col: Collection,
             collocation: str, original: str, highlighted: str):
-    note: Note = td.create_note_with_fields(collocation, original)
-    note_id: NoteId = note.id
+    note: Note = td.create_note_with_fields(FieldContent(collocation), FieldContent(original))
     stop_words: set[str] = {"to", "a", "an"}
 
     # Highlight 1st time
-    start_with_note_highlighter.highlight(
-        note_id, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words)
-    note_act: Note = col.get_note(note_id)
+    note_act: Note = start_with_note_highlighter.highlight(note, DefaultFields.word_field_name,
+                                                           DefaultFields.text_field_name, stop_words)
     assert note_act[DefaultFields.text_field_name] == highlighted
 
     # Highlight again
-    start_with_note_highlighter.highlight(
-        note_id, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words)
-    note_act: Note = col.get_note(note_id)
+    note_act: Note = start_with_note_highlighter.highlight(note, DefaultFields.word_field_name,
+                                                           DefaultFields.text_field_name, stop_words)
     assert note_act[DefaultFields.text_field_name] == highlighted
 
     # Erase
-    start_with_note_highlighter.erase(note_id, DefaultFields.text_field_name)
-    note_act: Note = col.get_note(note_id)
+    note_act: Note = start_with_note_highlighter.erase(note, DefaultFields.text_field_name)
     assert note_act[DefaultFields.text_field_name] == original
 
 
