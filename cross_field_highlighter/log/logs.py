@@ -5,7 +5,7 @@ from pathlib import Path
 class Logs:
     def __init__(self, log_dir: Path):
         log_dir.mkdir(exist_ok=True, parents=True)
-        self.__log_file: Path = log_dir.joinpath("note_size.log")
+        self.__log_file: Path = log_dir.joinpath("cross_field_highlighter.log")
         self.__root_logger: Logger = self.__configure_logging()
 
     def root_logger(self) -> Logger:

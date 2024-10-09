@@ -6,7 +6,7 @@ from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBo
 
 from cross_field_highlighter.ui.dialog.adhoc.field_selector_layout import FieldSelectorLayout
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
 
@@ -56,8 +56,11 @@ class AdhocDialog(QDialog):
 
     def __create_source_widget(self):
         self.source_field_selector_layout: FieldSelectorLayout = FieldSelectorLayout()
+        self.stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
+            "Stop words:", text="a an to", clear_button_enabled=True)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.source_field_selector_layout)
+        group_layout.addLayout(self.stop_words_layout)
         group_box: QGroupBox = QGroupBox("Source")
         group_box.setLayout(group_layout)
         return group_box
