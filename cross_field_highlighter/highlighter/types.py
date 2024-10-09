@@ -3,6 +3,7 @@ from typing import NewType
 from anki.models import NotetypeId
 
 FieldName = NewType("FieldName", str)
+FieldContent = NewType("FieldContent", str)
 
 
 class NoteTypeDetails:

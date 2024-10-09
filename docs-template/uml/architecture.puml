@@ -58,7 +58,7 @@ HighlightFormat <|.. ItalicHighlightFormat
 HighlightFormat <|.. UnderscoreHighlightFormat
 
 Highlighter <|.. SubstringHighlighter
-TextAnalyzerHighlighter <|.. SubstringHighlighter
+Highlighter <|.. TextAnalyzerHighlighter
 
 ParameterSource <|.. AdhocDialog
 ParameterSource <|.. PresetDialog
