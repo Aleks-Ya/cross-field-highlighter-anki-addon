@@ -1,9 +1,13 @@
 import tempfile
 from pathlib import Path
 
+import aqt
 import pytest
 from anki.collection import Collection
-from aqt import ProfileManager
+from aqt import ProfileManager, AnkiQt
+from aqt.progress import ProgressManager
+from aqt.taskman import TaskManager
+from mock.mock import MagicMock
 
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
@@ -76,3 +80,22 @@ def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicForm
 @pytest.fixture
 def td(col: Collection) -> Data:
     return Data(col)
+
+
+@pytest.fixture
+def mw() -> AnkiQt:
+    mw: MagicMock = MagicMock()
+    aqt.mw = mw
+    return mw
+
+
+@pytest.fixture
+def task_manager(mw: AnkiQt) -> TaskManager:
+    task_manager: TaskManager = TaskManager(mw)
+    aqt.mw.taskman = TaskManager(mw)
+    return task_manager
+
+
+@pytest.fixture
+def progress_manager(mw: AnkiQt) -> ProgressManager:
+    return ProgressManager(mw)

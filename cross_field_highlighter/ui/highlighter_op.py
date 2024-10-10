@@ -8,7 +8,7 @@ from aqt import QWidget
 from aqt.operations import QueryOp
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
-from aqt.utils import showInfo, show_critical
+from aqt.utils import show_critical, show_info
 
 from ..highlighter.formatter.highlight_format import HighlightFormat
 from ..highlighter.notes.notes_highlighter import NotesHighlighter
@@ -30,6 +30,7 @@ class HighlighterOp(QueryOp):
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
+        self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
         self.__source_field: FieldName = source_field
         self.__destination_field: FieldName = destination_field
@@ -67,8 +68,9 @@ class HighlighterOp(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
-        showInfo(title=self.__progress_dialog_title, text=f"Notes were highlighted)")
+        show_info(title=self.__progress_dialog_title, text=f"Notes were highlighted)", parent=self.__parent)
 
     def __on_failure(self, e: Exception) -> None:
         log.error("Error during highlighting", exc_info=e)
-        show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)")
+        show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)",
+                      parent=self.__parent)
