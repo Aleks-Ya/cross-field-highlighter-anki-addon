@@ -4,6 +4,8 @@ from anki.models import NotetypeId
 
 FieldName = NewType("FieldName", str)
 FieldContent = NewType("FieldContent", str)
+Word = NewType("Word", str)
+Text = NewType("Text", str)
 
 
 class NoteTypeDetails:

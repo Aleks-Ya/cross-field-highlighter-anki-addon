@@ -4,6 +4,7 @@ from typing import Callable
 
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QWidget, QPushButton
 
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
@@ -47,7 +48,8 @@ class AdhocDialog(QDialog):
         self.setLayout(layout)
         self.resize(300, 200)
 
-    def show_dialog(self, params: DialogParams, callback: Callable[[QWidget, FieldName, FieldName, set[str]], None]) -> None:
+    def show_dialog(self, params: DialogParams,
+                    callback: Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__callback = callback
         self.__note_types: list[NoteTypeDetails] = params.note_types
@@ -79,7 +81,7 @@ class AdhocDialog(QDialog):
 
     def __create_format_widget(self):
         self.__format_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Format")
-        self.__format_combo_box.set_items(["Bold", "Italic", "Underline"])
+        self.__format_combo_box.set_items([HighlightFormat.BOLD.name, HighlightFormat.ITALIC.name])
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__format_combo_box)
         group_box: QGroupBox = QGroupBox("Format")
@@ -99,7 +101,8 @@ class AdhocDialog(QDialog):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
         stop_words: set[str] = set(self.__stop_words_layout.get_text().split(" "))
-        self.__callback(self.parent(), source_filed, destination_filed, stop_words)
+        highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
+        self.__callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
 
     def __reject(self) -> None:
         log.info("Cancelled")

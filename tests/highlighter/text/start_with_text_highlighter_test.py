@@ -1,11 +1,13 @@
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
+from cross_field_highlighter.highlighter.types import Text
 
 
 def __tests(highlighter: StartWithTextHighlighter, collocation: str, original: str, highlighted: str):
     stop_words: set[str] = {"to", "a", "an"}
-    assert highlighted == highlighter.highlight(collocation, original, stop_words)
-    assert highlighted == highlighter.highlight(collocation, highlighted, stop_words)
-    assert original == highlighter.erase(highlighted)
+    assert highlighted == highlighter.highlight(collocation, original, stop_words, HighlightFormat.BOLD)
+    assert highlighted == highlighter.highlight(collocation, highlighted, stop_words, HighlightFormat.BOLD)
+    assert original == highlighter.erase(Text(highlighted))
 
 
 def test_normal(start_with_text_highlighter: StartWithTextHighlighter):

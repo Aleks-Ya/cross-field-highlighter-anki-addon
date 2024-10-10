@@ -1,5 +1,5 @@
 from .destination import Destination
-from .highlight_format import HighlightFormat
+from .formatter.highlight_format import HighlightFormat
 from .source import Source
 
 

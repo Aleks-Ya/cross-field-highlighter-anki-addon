@@ -5,6 +5,9 @@ import pytest
 from anki.collection import Collection
 from aqt import ProfileManager
 
+from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
+from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
+from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
@@ -41,8 +44,8 @@ def col(profile_manager: ProfileManager) -> Collection:
 
 
 @pytest.fixture
-def start_with_text_highlighter() -> StartWithTextHighlighter:
-    return StartWithTextHighlighter()
+def start_with_text_highlighter(formatter_facade: FormatterFacade) -> StartWithTextHighlighter:
+    return StartWithTextHighlighter(formatter_facade)
 
 
 @pytest.fixture
@@ -53,6 +56,21 @@ def start_with_note_highlighter(start_with_text_highlighter: StartWithTextHighli
 @pytest.fixture
 def notes_highlighter(start_with_note_highlighter: StartWithNoteHighlighter) -> NotesHighlighter:
     return NotesHighlighter(start_with_note_highlighter)
+
+
+@pytest.fixture
+def bold_formatter() -> BoldFormatter:
+    return BoldFormatter()
+
+
+@pytest.fixture
+def italic_formatter() -> ItalicFormatter:
+    return ItalicFormatter()
+
+
+@pytest.fixture
+def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter) -> FormatterFacade:
+    return FormatterFacade(bold_formatter, italic_formatter)
 
 
 @pytest.fixture

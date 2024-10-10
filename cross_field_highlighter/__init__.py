@@ -5,6 +5,9 @@ from aqt import mw, gui_hooks
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 
+from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
+from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
+from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
 from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -21,7 +24,10 @@ def __initialize(col: Collection):
     log_dir: Path = mw.addonManager.logs_folder(module_name)
     logs: Logs = Logs(log_dir)
     logs.set_level("DEBUG")
-    text_highlighter: TextHighlighter = StartWithTextHighlighter()
+    bold_formatter: BoldFormatter = BoldFormatter()
+    italic_formatter: ItalicFormatter = ItalicFormatter()
+    formatter_facade: FormatterFacade = FormatterFacade(bold_formatter, italic_formatter)
+    text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
     task_manager: TaskManager = mw.taskman

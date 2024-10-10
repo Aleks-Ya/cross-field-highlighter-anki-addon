@@ -1,6 +1,7 @@
 from anki.collection import Collection
 from anki.notes import Note, NoteId
 
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.types import FieldContent
 from tests.data import Data, DefaultFields
@@ -58,13 +59,15 @@ def test_highlight_erase(notes_highlighter: NotesHighlighter, td: Data, col: Col
 
     # Highlight 1st time
     updated_notes: list[Note] = notes_highlighter.highlight(notes, DefaultFields.word_field_name,
-                                                            DefaultFields.text_field_name, stop_words)
+                                                            DefaultFields.text_field_name, stop_words,
+                                                            HighlightFormat.BOLD)
     col.update_notes(updated_notes)
     __assert_highlighted_notes(col, notes_list)
 
     # Highlight again
     updated_notes: list[Note] = notes_highlighter.highlight(notes, DefaultFields.word_field_name,
-                                                            DefaultFields.text_field_name, stop_words)
+                                                            DefaultFields.text_field_name, stop_words,
+                                                            HighlightFormat.BOLD)
     col.update_notes(updated_notes)
     __assert_highlighted_notes(col, notes_list)
 
