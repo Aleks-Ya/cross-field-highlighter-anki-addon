@@ -11,7 +11,7 @@ from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_dialog import AdhocDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.highlighter_op import HighlighterOp
@@ -60,7 +60,7 @@ class BrowserHooks:
         # self.__adhoc_dialog.show_dialog(dialog_params, None)
 
     def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
-                           stop_words: set[str],  highlight_format: HighlightFormat):
+                           stop_words: set[Word],  highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self.__browser.selectedNotes())
         op: HighlighterOp = self.__highlighter_op_factory.create_op(parent, note_ids, source_filed, destination_filed,
                                                                     stop_words, highlight_format)

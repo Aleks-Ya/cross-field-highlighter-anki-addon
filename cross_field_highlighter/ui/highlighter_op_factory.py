@@ -10,7 +10,7 @@ from aqt.taskman import TaskManager
 from .highlighter_op import HighlighterOp
 from ..highlighter.formatter.highlight_format import HighlightFormat
 from ..highlighter.notes.notes_highlighter import NotesHighlighter
-from ..highlighter.types import FieldName
+from ..highlighter.types import FieldName, Word
 
 log: Logger = logging.getLogger(__name__)
 
@@ -26,7 +26,9 @@ class HighlighterOpFactory:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def create_op(self, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
-                  destination_field: FieldName, stop_words: set[str],
+                  destination_field: FieldName, stop_words: set[Word],
                   highlight_format: HighlightFormat) -> HighlighterOp:
+        log.debug(f"Creating HighlighterOp: note_ids={len(note_ids)}, source_field={source_field}, "
+                  f"destination_field={destination_field}, stop_words={stop_words}, highlight_format={highlight_format}")
         return HighlighterOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                              parent, note_ids, source_field, destination_field, stop_words, highlight_format)

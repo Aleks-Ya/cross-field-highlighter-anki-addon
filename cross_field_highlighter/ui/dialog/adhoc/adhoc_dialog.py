@@ -5,7 +5,7 @@ from typing import Callable
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QWidget, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
@@ -100,7 +100,7 @@ class AdhocDialog(QDialog):
         log.info("Starting")
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
-        stop_words: set[str] = set(self.__stop_words_layout.get_text().split(" "))
+        stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
         highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
         self.__callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
 

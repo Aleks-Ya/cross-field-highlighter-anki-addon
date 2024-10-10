@@ -12,7 +12,7 @@ from aqt.utils import showInfo, show_critical
 
 from ..highlighter.formatter.highlight_format import HighlightFormat
 from ..highlighter.notes.notes_highlighter import NotesHighlighter
-from ..highlighter.types import FieldName
+from ..highlighter.types import FieldName, Word
 
 log: Logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class HighlighterOp(QueryOp):
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
-                 destination_field: FieldName, stop_words: set[str], highlight_format: HighlightFormat):
+                 destination_field: FieldName, stop_words: set[Word], highlight_format: HighlightFormat):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -33,7 +33,7 @@ class HighlighterOp(QueryOp):
         self.__note_ids: set[NoteId] = note_ids
         self.__source_field: FieldName = source_field
         self.__destination_field: FieldName = destination_field
-        self.__stop_words: set[str] = stop_words
+        self.__stop_words: set[Word] = stop_words
         self.__highlight_format: HighlightFormat = highlight_format
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -42,7 +42,7 @@ class HighlighterOp(QueryOp):
                                               self.__stop_words, self.__highlight_format)
 
     def __highlight_in_background(self, note_ids: set[NoteId], source_field: FieldName, destination_field: FieldName,
-                                  stop_words: set[str], highlight_format: HighlightFormat) -> int:
+                                  stop_words: set[Word], highlight_format: HighlightFormat) -> int:
         c: int = 30
         note_ids_list: list[NoteId] = list(note_ids)
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
@@ -56,6 +56,7 @@ class HighlighterOp(QueryOp):
             self.__update_progress("Highlighting", highlighted_counter, len(note_ids))
             if self.__progress_manager.want_cancel():
                 return highlighted_counter
+        return len(note_ids_list)
 
     def __update_progress(self, label: str, value: int, max_value: int) -> None:
         self.__task_manager.run_on_main(lambda: self.__update_progress_in_main(label, value, max_value))

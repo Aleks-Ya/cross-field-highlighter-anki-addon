@@ -3,7 +3,7 @@ from anki.notes import Note, NoteId
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent
+from cross_field_highlighter.highlighter.types import FieldContent, Word
 from tests.data import Data, DefaultFields
 
 
@@ -55,7 +55,7 @@ def test_highlight_erase(notes_highlighter: NotesHighlighter, td: Data, col: Col
          '<li><div>There is <b>ivy</b> trailing all over the wall.</div></li>')
     ])
     notes: list[Note] = [note_tuple[0] for note_tuple in notes_list]
-    stop_words: set[str] = {"to", "a", "an"}
+    stop_words: set[Word] = {Word("to"), Word("a"), Word("an")}
 
     # Highlight 1st time
     updated_notes: list[Note] = notes_highlighter.highlight(notes, DefaultFields.word_field_name,

@@ -3,14 +3,14 @@ from anki.notes import Note
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent
+from cross_field_highlighter.highlighter.types import FieldContent, Word
 from tests.data import Data, DefaultFields
 
 
 def __tests(start_with_note_highlighter: StartWithNoteHighlighter, td: Data,
             collocation: str, original: str, highlighted: str):
     note: Note = td.create_note_with_fields(FieldContent(collocation), FieldContent(original))
-    stop_words: set[str] = {"to", "a", "an"}
+    stop_words: set[Word] = {Word("to"), Word("a"), Word("an")}
 
     # Highlight 1st time
     note_act: Note = start_with_note_highlighter.highlight(
