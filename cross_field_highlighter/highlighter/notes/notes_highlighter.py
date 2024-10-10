@@ -10,9 +10,8 @@ class NotesHighlighter:
 
     def highlight(self, notes: list[Note], collocation_field: FieldName, destination_field: FieldName,
                   stop_words: set[str]) -> list[Note]:
-        for note in notes:
-            yield self.__note_highlighter.highlight(note, collocation_field, destination_field, stop_words)
+        return [self.__note_highlighter.highlight(note, collocation_field, destination_field, stop_words) for note in
+                notes]
 
     def erase(self, notes: list[Note], destination_field: FieldName) -> list[Note]:
-        for note in notes:
-            yield self.__note_highlighter.erase(note, destination_field)
+        return [self.__note_highlighter.erase(note, destination_field) for note in notes]

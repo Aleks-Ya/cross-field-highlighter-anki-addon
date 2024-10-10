@@ -6,20 +6,23 @@ from anki.cards import CardId
 from anki.collection import Collection
 from anki.models import NotetypeId, NoteType
 from anki.notes import NoteId, Note
-from aqt import gui_hooks, qconnect, QAction, QMenu
+from aqt import gui_hooks, qconnect, QAction, QMenu, QWidget
 from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
-from cross_field_highlighter.highlighter.types import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_dialog import AdhocDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.highlighter_op import HighlighterOp
+from cross_field_highlighter.ui.highlighter_op_factory import HighlighterOpFactory
 
 log: Logger = logging.getLogger(__name__)
 
 
 class BrowserHooks:
 
-    def __init__(self) -> None:
+    def __init__(self, highlighter_op_factory: HighlighterOpFactory) -> None:
+        self.__highlighter_op_factory: HighlighterOpFactory = highlighter_op_factory
         self.__adhoc_dialog: AdhocDialog = AdhocDialog()
         self.__hook_browser_will_show_context_menu: Callable[[Browser, QMenu], None] = self.__on_event
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -46,12 +49,21 @@ class BrowserHooks:
 
     def __on_highlight_click(self, browser: Browser):
         log.debug("On highlight click")
+        self.__browser: Browser = browser
         dialog_params: DialogParams = self.__prepare_dialog_params(browser)
-        self.__adhoc_dialog.show_dialog(dialog_params)
+        self.__adhoc_dialog.show_dialog(dialog_params, self.__run_highlight_op)
 
     def __on_erase_click(self, browser: Browser):
+        self.__browser: Browser = browser
         dialog_params: DialogParams = self.__prepare_dialog_params(browser)
-        self.__adhoc_dialog.show_dialog(dialog_params)
+        # self.__adhoc_dialog.show_dialog(dialog_params, None)
+
+    def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
+                           stop_words: set[str]):
+        note_ids: set[NoteId] = set(self.__browser.selectedNotes())
+        op: HighlighterOp = self.__highlighter_op_factory.create_op(parent, note_ids, source_filed, destination_filed,
+                                                                    stop_words)
+        op.run_in_background()
 
     def __prepare_dialog_params(self, browser: Browser) -> DialogParams:
         col: Collection = browser.col

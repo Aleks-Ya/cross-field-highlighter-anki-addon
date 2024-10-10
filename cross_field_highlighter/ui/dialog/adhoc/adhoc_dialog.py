@@ -1,10 +1,10 @@
 import logging
 from logging import Logger
+from typing import Callable
 
-from PyQt6.QtWidgets import QPushButton
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox
+from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QWidget, QPushButton
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
@@ -15,6 +15,7 @@ class AdhocDialog(QDialog):
 
     def __init__(self):
         super().__init__(parent=None)
+        self.__callback: Callable[[FieldName, FieldName, set[str]], None]
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
@@ -46,8 +47,9 @@ class AdhocDialog(QDialog):
         self.setLayout(layout)
         self.resize(300, 200)
 
-    def show_dialog(self, params: DialogParams) -> None:
+    def show_dialog(self, params: DialogParams, callback: Callable[[QWidget, FieldName, FieldName, set[str]], None]) -> None:
         log.debug(f"Show dialog: {params}")
+        self.__callback = callback
         self.__note_types: list[NoteTypeDetails] = params.note_types
         note_type_names: list[str] = [note_type.name for note_type in params.note_types]
         self.__note_type_combo_box.set_items(note_type_names)
@@ -65,12 +67,12 @@ class AdhocDialog(QDialog):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
-        self.stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
+        self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Stop words:", text="a an to", clear_button_enabled=True)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__source_field_combo_box)
-        group_layout.addLayout(self.stop_words_layout)
+        group_layout.addLayout(self.__stop_words_layout)
         group_box: QGroupBox = QGroupBox("Source")
         group_box.setLayout(group_layout)
         return group_box
@@ -94,6 +96,10 @@ class AdhocDialog(QDialog):
 
     def __accept(self) -> None:
         log.info("Starting")
+        source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
+        destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
+        stop_words: set[str] = set(self.__stop_words_layout.get_text().split(" "))
+        self.__callback(self.parent(), source_filed, destination_filed, stop_words)
 
     def __reject(self) -> None:
         log.info("Cancelled")
