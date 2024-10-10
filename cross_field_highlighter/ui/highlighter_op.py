@@ -50,9 +50,11 @@ class HighlighterOp(QueryOp):
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
             notes: list[Note] = [self.__col.get_note(note_id) for note_id in note_ids_slice]
+            log.debug(f"Original notes: {notes}")
             highlighted_notes: list[Note] = self.__notes_highlighter.highlight(notes, source_field, destination_field,
                                                                                stop_words, highlight_format)
             self.__col.update_notes(highlighted_notes)
+            log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_counter += len(highlighted_notes)
             self.__update_progress("Highlighting", highlighted_counter, len(note_ids))
             if self.__progress_manager.want_cancel():
