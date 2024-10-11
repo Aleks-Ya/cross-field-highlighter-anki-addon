@@ -23,7 +23,10 @@ class FormatterFacade:
         return self.__formatter_dict.get(highlight_format)
 
     def erase(self, text: Text) -> Text:
+        words: list[Word] = [Word(word) for word in text.split(" ")]
         clean_text: Text = text
-        for formatter in self.__formatters:
-            clean_text = formatter.erase(clean_text)
+        for word in words:
+            for formatter in self.__formatters:
+                clean_word: Word = formatter.erase(word)
+                clean_text = Text(clean_text.replace(word, clean_word))
         return clean_text

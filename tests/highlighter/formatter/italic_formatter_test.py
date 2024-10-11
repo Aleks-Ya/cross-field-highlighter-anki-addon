@@ -1,5 +1,5 @@
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
-from cross_field_highlighter.highlighter.types import Word, Text
+from cross_field_highlighter.highlighter.types import Word
 
 
 def test_highlight(italic_formatter: ItalicFormatter):
@@ -17,6 +17,6 @@ def test_highlight_twice(italic_formatter: ItalicFormatter):
 
 
 def test_erase(italic_formatter: ItalicFormatter):
-    highlighted_text: Text = Text("The <i>ocean</i> is calm.")
-    clean_text: Text = italic_formatter.erase(highlighted_text)
-    assert clean_text == "The ocean is calm."
+    highlighted_word: Word = Word("<i>ocean</i>")
+    clean_word: Word = italic_formatter.erase(highlighted_word)
+    assert clean_word == "ocean"

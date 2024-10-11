@@ -5,8 +5,8 @@ from cross_field_highlighter.highlighter.types import Text, Word
 
 def __tests(highlighter: StartWithTextHighlighter, collocation: str, original: str, highlighted: str):
     stop_words: set[Word] = {Word("to"), Word("a"), Word("an")}
-    assert highlighted == highlighter.highlight(collocation, original, stop_words, HighlightFormat.BOLD)
-    assert highlighted == highlighter.highlight(collocation, highlighted, stop_words, HighlightFormat.BOLD)
+    assert highlighter.highlight(Text(collocation), Text(original), stop_words, HighlightFormat.BOLD) == highlighted
+    assert highlighter.highlight(Text(collocation), Text(highlighted), stop_words, HighlightFormat.BOLD) == highlighted
     assert original == highlighter.erase(Text(highlighted))
 
 

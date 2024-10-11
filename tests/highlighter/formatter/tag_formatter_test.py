@@ -1,7 +1,7 @@
 import pytest
 
 from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
-from cross_field_highlighter.highlighter.types import Word, Text
+from cross_field_highlighter.highlighter.types import Word
 
 
 @pytest.fixture
@@ -24,6 +24,6 @@ def test_highlight_twice(tag_formatter: TagFormatter):
 
 
 def test_erase(tag_formatter: TagFormatter):
-    highlighted_text: Text = Text("The <b>ocean</b> is calm.")
-    clean_text: Text = tag_formatter.erase(highlighted_text)
-    assert clean_text == "The ocean is calm."
+    highlighted_word: Word = Word("<b>ocean</b>")
+    clean_word: Word = tag_formatter.erase(highlighted_word)
+    assert clean_word == "ocean"
