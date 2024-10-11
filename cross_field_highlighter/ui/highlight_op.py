@@ -17,7 +17,7 @@ from ..highlighter.types import FieldName, Word
 log: Logger = logging.getLogger(__name__)
 
 
-class HighlighterOp(QueryOp):
+class HighlightOp(QueryOp):
     __progress_dialog_title: str = '"Note Size" addon'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,

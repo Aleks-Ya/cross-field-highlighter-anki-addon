@@ -16,7 +16,7 @@ from cross_field_highlighter.ui.dialog.adhoc.adhoc_erase_dialog import AdhocEras
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import AdhocHighlightDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.erase_op import EraseOp
-from cross_field_highlighter.ui.highlighter_op import HighlighterOp
+from cross_field_highlighter.ui.highlight_op import HighlightOp
 from cross_field_highlighter.ui.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
@@ -66,9 +66,9 @@ class BrowserHooks:
     def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
                            stop_words: set[Word], highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: HighlighterOp = self.__op_factory.create_highlight_op(parent, note_ids, source_filed,
-                                                                              destination_filed,
-                                                                              stop_words, highlight_format)
+        op: HighlightOp = self.__op_factory.create_highlight_op(parent, note_ids, source_filed,
+                                                                destination_filed,
+                                                                stop_words, highlight_format)
         op.run_in_background()
 
     def __run_erase_op(self, parent: QWidget, destination_filed: FieldName):
