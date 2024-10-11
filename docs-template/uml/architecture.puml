@@ -35,7 +35,7 @@ class HighlighterOutcome {
 interface ParameterSource {
     get_params(): HighlighterParams
 }
-class AdhocDialog
+class AdhocHighlightDialog
 class PresetDialog
 class ConfigurationDialog
 interface Highlighter {
@@ -60,7 +60,7 @@ HighlightFormat <|.. UnderscoreHighlightFormat
 Highlighter <|.. SubstringHighlighter
 Highlighter <|.. TextAnalyzerHighlighter
 
-ParameterSource <|.. AdhocDialog
+ParameterSource <|.. AdhocHighlightDialog
 ParameterSource <|.. PresetDialog
 
 Destination *-- FieldInfo

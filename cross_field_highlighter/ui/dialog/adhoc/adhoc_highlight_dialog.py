@@ -12,7 +12,7 @@ from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineE
 log: Logger = logging.getLogger(__name__)
 
 
-class AdhocDialog(QDialog):
+class AdhocHighlightDialog(QDialog):
 
     def __init__(self):
         super().__init__(parent=None)
