@@ -6,7 +6,8 @@ from cross_field_highlighter.highlighter.types import Text, Word
 
 class TextHighlighter(ABC):
     @abstractmethod
-    def highlight(self, collocation: str, text: str, stop_words: set[Word], highlight_format: HighlightFormat) -> str:
+    def highlight(self, collocation: Text, text: Text, stop_words: set[Word],
+                  highlight_format: HighlightFormat) -> Text:
         pass
 
     @abstractmethod
