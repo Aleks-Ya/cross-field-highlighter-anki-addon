@@ -13,6 +13,8 @@ from cross_field_highlighter.highlighter.note.start_with_note_highlighter import
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
+from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.ui.browser_hooks import BrowserHooks
 from cross_field_highlighter.log.logs import Logs
 from cross_field_highlighter.ui.op_factory import OpFactory
@@ -27,13 +29,14 @@ def __initialize(col: Collection):
     bold_formatter: BoldFormatter = BoldFormatter()
     italic_formatter: ItalicFormatter = ItalicFormatter()
     formatter_facade: FormatterFacade = FormatterFacade(bold_formatter, italic_formatter)
-    text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade)
+    tokenizer: RegExTokenizer = RegExTokenizer()
+    text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager,
-                                                  progress_manager)
+                                      progress_manager)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory)
     browser_hooks.setup_hooks()
 

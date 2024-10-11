@@ -6,25 +6,27 @@ from re import RegexFlag
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
+from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
 
 log: Logger = logging.getLogger(__name__)
 
 
 class StartWithTextHighlighter(TextHighlighter):
-    def __init__(self, formatter_facade: FormatterFacade):
+    def __init__(self, formatter_facade: FormatterFacade, tokenizer: Tokenizer):
         self.__formatter_facade: FormatterFacade = formatter_facade
+        self.__tokenizer: Tokenizer = tokenizer
 
     def highlight(self, collocation: Text, text: Text, stop_words: set[Word],
                   highlight_format: HighlightFormat) -> Text:
-        collocation_words: set[Word] = {Word(word) for word in collocation.split(" ")}
+        collocation_words: set[Word] = set(self.__tokenizer.tokenize(collocation))
         highlighted_words: list[Word] = []
         for word in collocation_words:
             if word in stop_words:
                 log.debug(f"Skip stop word: {word}")
                 continue
             word_regexp: str = fr"{word[:len(word) - 1]}\w*" if len(word) > 2 else word
-            text_words: list[Word] = [Word(word) for word in text.split(" ")]
+            text_words: list[Word] = self.__tokenizer.tokenize(text)
             for text_word in text_words:
                 if re.match(word_regexp, text_word, RegexFlag.IGNORECASE | RegexFlag.UNICODE):
                     highlighted_word: Word = self.__formatter_facade.format(text_word, highlight_format)

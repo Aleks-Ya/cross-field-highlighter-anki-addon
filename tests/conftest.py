@@ -15,6 +15,7 @@ from cross_field_highlighter.highlighter.formatter.italic_formatter import Itali
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
+from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from tests.data import Data
 
 
@@ -48,8 +49,9 @@ def col(profile_manager: ProfileManager) -> Collection:
 
 
 @pytest.fixture
-def start_with_text_highlighter(formatter_facade: FormatterFacade) -> StartWithTextHighlighter:
-    return StartWithTextHighlighter(formatter_facade)
+def start_with_text_highlighter(formatter_facade: FormatterFacade,
+                                regex_tokenizer: RegExTokenizer) -> StartWithTextHighlighter:
+    return StartWithTextHighlighter(formatter_facade, regex_tokenizer)
 
 
 @pytest.fixture
@@ -75,6 +77,11 @@ def italic_formatter() -> ItalicFormatter:
 @pytest.fixture
 def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter) -> FormatterFacade:
     return FormatterFacade(bold_formatter, italic_formatter)
+
+
+@pytest.fixture
+def regex_tokenizer() -> RegExTokenizer:
+    return RegExTokenizer()
 
 
 @pytest.fixture
