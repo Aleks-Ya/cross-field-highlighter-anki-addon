@@ -12,9 +12,9 @@ class StartWithNoteHighlighter(NoteHighlighter):
 
     def highlight(self, note: Note, collocation_field: FieldName, destination_field: FieldName,
                   stop_words: set[Word], highlight_format: HighlightFormat) -> NoteHighlighterResult:
-        collocation: str = note[collocation_field]
-        original_text: str = note[destination_field]
-        highlighted_text: str = self.__text_highlighter.highlight(
+        collocation: Text = Text(note[collocation_field])
+        original_text: Text = Text(note[destination_field])
+        highlighted_text: Text = self.__text_highlighter.highlight(
             collocation, original_text, stop_words, highlight_format)
         note[destination_field] = highlighted_text
         result: NoteHighlighterResult = NoteHighlighterResult()

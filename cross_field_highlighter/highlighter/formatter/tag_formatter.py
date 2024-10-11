@@ -8,7 +8,7 @@ class TagFormatter(Formatter):
         self.__suffix: str = suffix
 
     def highlight(self, word: Word) -> Word:
-        already_highlighted: bool = word.startswith(self.__prefix) and word.endswith(self.__suffix)
+        already_highlighted: bool = self.__prefix in word and self.__suffix in word
         return Word(f"{self.__prefix}{word}{self.__suffix}") if not already_highlighted else word
 
     def erase(self, word: Word) -> Word:
