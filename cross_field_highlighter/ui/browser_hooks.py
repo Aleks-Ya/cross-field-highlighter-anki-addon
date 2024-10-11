@@ -12,6 +12,7 @@ from aqt.browser import Browser
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
+from cross_field_highlighter.ui.dialog.adhoc.adhoc_erase_dialog import AdhocEraseDialog
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import AdhocHighlightDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.erase_op import EraseOp
@@ -26,6 +27,7 @@ class BrowserHooks:
     def __init__(self, highlighter_op_factory: HighlighterOpFactory) -> None:
         self.__highlighter_op_factory: HighlighterOpFactory = highlighter_op_factory
         self.__adhoc_highlight_dialog: AdhocHighlightDialog = AdhocHighlightDialog()
+        self.__adhoc_erase_dialog: AdhocEraseDialog = AdhocEraseDialog()
         self.__hook_browser_will_show_context_menu: Callable[[Browser, QMenu], None] = self.__on_event
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -59,7 +61,7 @@ class BrowserHooks:
         log.debug("On highlight click")
         self.__browser: Browser = browser
         dialog_params: DialogParams = self.__prepare_dialog_params(browser)
-        self.__adhoc_highlight_dialog.show_dialog(dialog_params, self.__run_highlight_op)
+        self.__adhoc_erase_dialog.show_dialog(dialog_params, self.__run_erase_op)
 
     def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
                            stop_words: set[Word], highlight_format: HighlightFormat):

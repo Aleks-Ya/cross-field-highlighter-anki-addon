@@ -2,6 +2,7 @@ import logging
 from logging import Logger, FileHandler, Formatter
 from pathlib import Path
 
+
 class Logs:
     def __init__(self, log_dir: Path):
         log_dir.mkdir(exist_ok=True, parents=True)
