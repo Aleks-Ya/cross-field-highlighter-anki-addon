@@ -16,7 +16,7 @@ from ..highlighter.types import FieldName, Word
 log: Logger = logging.getLogger(__name__)
 
 
-class HighlighterOpFactory:
+class OpFactory:
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager):

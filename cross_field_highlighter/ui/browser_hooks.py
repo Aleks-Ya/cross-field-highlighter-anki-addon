@@ -17,15 +17,15 @@ from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import Adhoc
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.erase_op import EraseOp
 from cross_field_highlighter.ui.highlighter_op import HighlighterOp
-from cross_field_highlighter.ui.highlighter_op_factory import HighlighterOpFactory
+from cross_field_highlighter.ui.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 
 
 class BrowserHooks:
 
-    def __init__(self, highlighter_op_factory: HighlighterOpFactory) -> None:
-        self.__highlighter_op_factory: HighlighterOpFactory = highlighter_op_factory
+    def __init__(self, op_factory: OpFactory) -> None:
+        self.__op_factory: OpFactory = op_factory
         self.__adhoc_highlight_dialog: AdhocHighlightDialog = AdhocHighlightDialog()
         self.__adhoc_erase_dialog: AdhocEraseDialog = AdhocEraseDialog()
         self.__hook_browser_will_show_context_menu: Callable[[Browser, QMenu], None] = self.__on_event
@@ -66,14 +66,14 @@ class BrowserHooks:
     def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
                            stop_words: set[Word], highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: HighlighterOp = self.__highlighter_op_factory.create_highlight_op(parent, note_ids, source_filed,
+        op: HighlighterOp = self.__op_factory.create_highlight_op(parent, note_ids, source_filed,
                                                                               destination_filed,
                                                                               stop_words, highlight_format)
         op.run_in_background()
 
     def __run_erase_op(self, parent: QWidget, destination_filed: FieldName):
         note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: EraseOp = self.__highlighter_op_factory.create_erase_op(parent, note_ids, destination_filed)
+        op: EraseOp = self.__op_factory.create_erase_op(parent, note_ids, destination_filed)
         op.run_in_background()
 
     def __prepare_dialog_params(self, browser: Browser) -> DialogParams:

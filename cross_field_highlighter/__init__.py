@@ -15,7 +15,7 @@ from cross_field_highlighter.highlighter.text.start_with_text_highlighter import
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
 from cross_field_highlighter.ui.browser_hooks import BrowserHooks
 from cross_field_highlighter.log.logs import Logs
-from cross_field_highlighter.ui.highlighter_op_factory import HighlighterOpFactory
+from cross_field_highlighter.ui.op_factory import OpFactory
 
 
 def __initialize(col: Collection):
@@ -32,9 +32,9 @@ def __initialize(col: Collection):
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
-    highlighter_op_factory: HighlighterOpFactory = HighlighterOpFactory(col, notes_highlighter, task_manager,
-                                                                        progress_manager)
-    browser_hooks: BrowserHooks = BrowserHooks(highlighter_op_factory)
+    op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager,
+                                                  progress_manager)
+    browser_hooks: BrowserHooks = BrowserHooks(op_factory)
     browser_hooks.setup_hooks()
 
 
