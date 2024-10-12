@@ -28,13 +28,12 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
 
     def __on_click(self, browser: Browser):
         log.debug("On highlight click")
-        self.__browser: Browser = browser
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
         self.__adhoc_dialog.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
                  stop_words: set[Word], highlight_format: HighlightFormat):
-        note_ids: set[NoteId] = set(self.__browser.selectedNotes())
+        note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: HighlightOp = self.__op_factory.create_highlight_op(
-            parent, note_ids, source_filed, destination_filed, stop_words, highlight_format)
+            parent, note_ids, source_filed, destination_filed, stop_words, highlight_format, self._reload_current_note)
         op.run_in_background()

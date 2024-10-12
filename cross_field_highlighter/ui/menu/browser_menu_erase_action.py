@@ -27,11 +27,10 @@ class BrowserMenuEraseAction(BrowserMenuAction):
 
     def __on_click(self, browser: Browser):
         log.debug("On highlight click")
-        self.__browser: Browser = browser
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
         self.__adhoc_dialog.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, parent: QWidget, destination_filed: FieldName):
-        note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: EraseOp = self.__op_factory.create_erase_op(parent, note_ids, destination_filed)
+        note_ids: set[NoteId] = set(self._browser.selectedNotes())
+        op: EraseOp = self.__op_factory.create_erase_op(parent, note_ids, destination_filed, self._reload_current_note)
         op.run_in_background()

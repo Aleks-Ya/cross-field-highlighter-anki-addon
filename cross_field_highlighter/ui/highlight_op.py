@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional
+from typing import Optional, Callable
 
 from anki.collection import Collection
 from anki.notes import NoteId, Note
@@ -22,7 +22,8 @@ class HighlightOp(QueryOp):
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
-                 destination_field: FieldName, stop_words: set[Word], highlight_format: HighlightFormat):
+                 destination_field: FieldName, stop_words: set[Word], highlight_format: HighlightFormat,
+                 callback: Callable[[], None]):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -36,6 +37,7 @@ class HighlightOp(QueryOp):
         self.__destination_field: FieldName = destination_field
         self.__stop_words: set[Word] = stop_words
         self.__highlight_format: HighlightFormat = highlight_format
+        self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __background_op(self, _: Collection) -> int:
@@ -66,8 +68,10 @@ class HighlightOp(QueryOp):
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
         show_info(title=self.__progress_dialog_title, text=f"{count} notes were highlighted", parent=self.__parent)
+        self.__callback()
 
     def __on_failure(self, e: Exception) -> None:
         log.error("Error during highlighting", exc_info=e)
         show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)",
                       parent=self.__parent)
+        self.__callback()

@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Callable
 
 from anki.collection import Collection
 from anki.notes import NoteId
@@ -28,13 +29,14 @@ class OpFactory:
 
     def create_highlight_op(self, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
                             destination_field: FieldName, stop_words: set[Word],
-                            highlight_format: HighlightFormat) -> HighlightOp:
+                            highlight_format: HighlightFormat, callback: Callable[[], None]) -> HighlightOp:
         log.debug(f"Creating HighlightOp: note_ids={len(note_ids)}, source_field={source_field}, "
                   f"destination_field={destination_field}, stop_words={stop_words}, highlight_format={highlight_format}")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           parent, note_ids, source_field, destination_field, stop_words, highlight_format)
+                           parent, note_ids, source_field, destination_field, stop_words, highlight_format, callback)
 
-    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], destination_field: FieldName) -> EraseOp:
+    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], destination_field: FieldName,
+                        callback: Callable[[], None]) -> EraseOp:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, destination_field={destination_field}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       parent, note_ids, destination_field)
+                       parent, note_ids, destination_field, callback)

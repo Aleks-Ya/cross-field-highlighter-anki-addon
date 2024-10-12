@@ -67,7 +67,8 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     highlight_format: HighlightFormat = HighlightFormat.BOLD
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager,
                                             MagicMock(), note_ids, DefaultFields.word_field_name,
-                                            DefaultFields.text_field_name, stop_words, highlight_format)
+                                            DefaultFields.text_field_name, stop_words, highlight_format,
+                                            lambda: None)
 
     highlight_op.run_in_background()
     time.sleep(1)

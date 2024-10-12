@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Sequence
+from typing import Sequence, Optional
 
 from anki.cards import CardId
 from anki.collection import Collection
@@ -19,6 +19,7 @@ class BrowserMenuAction(QAction):
 
     def __init__(self, title: str, browser: Browser) -> None:
         super().__init__(title, browser)
+        self._browser: Optional[Browser] = browser
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def _prepare_dialog_params(self, browser: Browser) -> DialogParams:
@@ -38,8 +39,14 @@ class BrowserMenuAction(QAction):
         log.debug(f"Created DialogParams: {params}")
         return params
 
+    def _reload_current_note(self):
+        log.debug("Reload current note in Editor")
+        note_id: NoteId = self._browser.editor.note.id
+        note: Note = self._browser.col.get_note(note_id)
+        self._browser.editor.set_note(note)
+
     def __get_selected_note_ids(self, browser: Browser) -> Sequence[NoteId]:
-        notes_mode: bool = self.is_notes_mode(browser)
+        notes_mode: bool = self.__is_notes_mode(browser)
         if notes_mode:
             selected_note_ids: Sequence[NoteId] = browser.selectedNotes()
         else:
@@ -49,7 +56,7 @@ class BrowserMenuAction(QAction):
         return selected_note_ids
 
     @staticmethod
-    def is_notes_mode(browser: Browser) -> bool:
+    def __is_notes_mode(browser: Browser) -> bool:
         # Method "aqt.browser.table.table.Table.is_notes_mode" doesn't show correct state after toggling the switch
         # noinspection PyProtectedMember
         return browser._switch.isChecked()

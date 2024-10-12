@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional
+from typing import Optional, Callable
 
 from anki.collection import Collection
 from anki.notes import NoteId, Note
@@ -21,7 +21,7 @@ class EraseOp(QueryOp):
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId],
-                 destination_field: FieldName):
+                 destination_field: FieldName, callback: Callable[[], None]):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -32,6 +32,7 @@ class EraseOp(QueryOp):
         self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
         self.__destination_field: FieldName = destination_field
+        self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __background_op(self, _: Collection) -> int:
@@ -61,8 +62,10 @@ class EraseOp(QueryOp):
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
         show_info(title=self.__progress_dialog_title, text=f"{count} notes were erased", parent=self.__parent)
+        self.__callback()
 
     def __on_failure(self, e: Exception) -> None:
         log.error("Error during highlighting", exc_info=e)
         show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)",
                       parent=self.__parent)
+        self.__callback()
