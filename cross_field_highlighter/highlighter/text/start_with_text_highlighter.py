@@ -22,7 +22,7 @@ class StartWithTextHighlighter(TextHighlighter):
         collocation_words: set[Word] = set(self.__tokenizer.tokenize(collocation))
         highlighted_words: list[Word] = []
         for word in collocation_words:
-            if word in stop_words:
+            if word.strip() == '' or word in stop_words:
                 log.debug(f"Skip stop word: {word}")
                 continue
             word_regexp: str = fr"{word[:len(word) - 1]}\w*" if len(word) > 2 else word
@@ -33,7 +33,7 @@ class StartWithTextHighlighter(TextHighlighter):
                     highlighted_words.append(highlighted_word)
                 else:
                     highlighted_words.append(text_word)
-        return Text(" ".join(highlighted_words))
+        return Text("".join(highlighted_words))
 
     def erase(self, text: Text) -> Text:
         return self.__formatter_facade.erase(text)

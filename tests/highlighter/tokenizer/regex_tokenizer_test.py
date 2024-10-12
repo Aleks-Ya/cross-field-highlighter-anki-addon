@@ -12,12 +12,13 @@ def tokenize(regex_tokenizer: RegExTokenizer) -> Callable[[str], list[Word]]:
 
 
 def test_tokenize_by_space(tokenize: Callable[[str], list[Word]]):
-    assert tokenize('Hello, beautiful world!') == ['Hello,', 'beautiful', 'world!']
+    assert tokenize('Hello, beautiful world!') == ['Hello', ',', '', ' ', 'beautiful', ' ', 'world', '!', '']
 
 
 def test_tokenize_by_line_break(tokenize: Callable[[str], list[Word]]):
-    assert tokenize('Hello, beautiful\nworld!') == ['Hello,', 'beautiful', 'world!']
+    assert tokenize('Hello, beautiful\nworld!') == ['Hello', ',', '', ' ', 'beautiful', '\n', 'world', '!', '']
 
 
 def test_tokenize_tag(tokenize: Callable[[str], list[Word]]):
-    assert tokenize('Hello, <b>beautiful</b>\nworld!') == ['Hello,', '<b>beautiful</b>', 'world!']
+    assert tokenize('Hello, <b>beautiful</b>\nworld!') == ['Hello', ',', '', ' ', '<b>beautiful</b>', '\n', 'world',
+                                                           '!', '']
