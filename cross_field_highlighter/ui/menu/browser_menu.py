@@ -6,7 +6,7 @@ from aqt.browser import Browser
 
 from cross_field_highlighter.ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
 from cross_field_highlighter.ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
-from cross_field_highlighter.ui.op_factory import OpFactory
+from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

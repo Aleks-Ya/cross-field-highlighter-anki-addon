@@ -10,20 +10,18 @@ from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
-from ..highlighter.formatter.highlight_format import HighlightFormat
-from ..highlighter.notes.notes_highlighter import NotesHighlighter
-from ..highlighter.types import FieldName, Word
+from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.types import FieldName
 
 log: Logger = logging.getLogger(__name__)
 
 
-class HighlightOp(QueryOp):
+class EraseOp(QueryOp):
     __progress_dialog_title: str = '"Note Size" addon'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
-                 destination_field: FieldName, stop_words: set[Word], highlight_format: HighlightFormat,
-                 callback: Callable[[], None]):
+                 progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId],
+                 destination_field: FieldName, callback: Callable[[], None]):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -33,10 +31,7 @@ class HighlightOp(QueryOp):
         self.__progress_manager: ProgressManager = progress_manager
         self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
-        self.__source_field: FieldName = source_field
         self.__destination_field: FieldName = destination_field
-        self.__stop_words: set[Word] = stop_words
-        self.__highlight_format: HighlightFormat = highlight_format
         self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -48,8 +43,7 @@ class HighlightOp(QueryOp):
         for note_ids_slice in note_ids_slices:
             notes: list[Note] = [self.__col.get_note(note_id) for note_id in note_ids_slice]
             log.debug(f"Original notes: {notes}")
-            highlighted_notes: list[Note] = self.__notes_highlighter.highlight(
-                notes, self.__source_field, self.__destination_field, self.__stop_words, self.__highlight_format)
+            highlighted_notes: list[Note] = self.__notes_highlighter.erase(notes, self.__destination_field)
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_counter += len(highlighted_notes)
@@ -67,7 +61,7 @@ class HighlightOp(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
-        show_info(title=self.__progress_dialog_title, text=f"{count} notes were highlighted", parent=self.__parent)
+        show_info(title=self.__progress_dialog_title, text=f"{count} notes were erased", parent=self.__parent)
         self.__callback()
 
     def __on_failure(self, e: Exception) -> None:

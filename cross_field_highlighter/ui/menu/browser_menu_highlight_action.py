@@ -10,8 +10,8 @@ from cross_field_highlighter.highlighter.types import FieldName, Word
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import AdhocHighlightDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.highlight_op import HighlightOp
-from cross_field_highlighter.ui.op_factory import OpFactory
+from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
+from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

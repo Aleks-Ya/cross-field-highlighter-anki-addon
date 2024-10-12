@@ -6,7 +6,7 @@ from aqt import gui_hooks, QMenu
 from aqt.browser import Browser
 
 from cross_field_highlighter.ui.menu.browser_menu import BrowserMenu
-from cross_field_highlighter.ui.op_factory import OpFactory
+from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

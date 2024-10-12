@@ -10,9 +10,9 @@ from aqt.taskman import TaskManager
 
 from .erase_op import EraseOp
 from .highlight_op import HighlightOp
-from ..highlighter.formatter.highlight_format import HighlightFormat
-from ..highlighter.notes.notes_highlighter import NotesHighlighter
-from ..highlighter.types import FieldName, Word
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.types import FieldName, Word
 
 log: Logger = logging.getLogger(__name__)
 

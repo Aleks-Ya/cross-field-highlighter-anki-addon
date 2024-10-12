@@ -17,7 +17,7 @@ from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExT
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.ui.browser_hooks import BrowserHooks
 from cross_field_highlighter.log.logs import Logs
-from cross_field_highlighter.ui.op_factory import OpFactory
+from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
 
 def __initialize(col: Collection):
