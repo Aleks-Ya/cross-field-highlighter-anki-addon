@@ -1,9 +1,13 @@
+from pathlib import Path
+from typing import Any
+
 from anki.collection import Collection
 from anki.decks import DeckId
 from anki.models import NoteType
 from anki.notes import Note, NoteId
 from aqt import gui_hooks
 
+from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.highlighter.types import FieldContent, FieldName, Text, Word
 
 
@@ -22,10 +26,11 @@ class Case:
 
 class Data:
 
-    def __init__(self, col: Collection):
+    def __init__(self, col: Collection, module_dir: Path):
         self.col: Collection = col
         self.note_type: NoteType = self.col.models.by_name('Basic')
         self.deck_id: DeckId = self.col.decks.get_current_id()
+        self.config_json: Path = module_dir.joinpath("config.json")
 
     def create_note_with_fields(self,
                                 word_field_content: FieldContent = "Word content",
@@ -113,3 +118,9 @@ class Data:
             note: Note = self.create_note_with_fields(FieldContent(phrase_content), FieldContent(original_content))
             res.append((note, original_content, highlighted_content))
         return res
+
+    def read_config(self) -> Config:
+        return Config.from_path(self.config_json)
+
+    def read_config_updated(self, overwrites: dict[str, Any]) -> Config:
+        return Config.from_path_updated(self.config_json, overwrites)

@@ -1,14 +1,20 @@
+import shutil
 import tempfile
 from pathlib import Path
+from typing import Callable, Any
 
 import aqt
 import pytest
 from anki.collection import Collection
 from aqt import ProfileManager, AnkiQt
+from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from mock.mock import MagicMock
 
+from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.config.settings import Settings
+from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
@@ -86,8 +92,32 @@ def regex_tokenizer() -> RegExTokenizer:
 
 
 @pytest.fixture
-def td(col: Collection) -> Data:
-    return Data(col)
+def module_name() -> str:
+    return "cross_field_highlighter"
+
+
+@pytest.fixture
+def addons_dir(base_dir: Path) -> Path:
+    return base_dir / "addons21"
+
+
+@pytest.fixture
+def project_dir() -> Path:
+    return Path(__file__).parent.parent
+
+
+@pytest.fixture
+def module_dir(addons_dir: Path, module_name: str, project_dir: Path) -> Path:
+    addon_project_dir: Path = project_dir.joinpath("cross_field_highlighter")
+    module_dir: Path = addons_dir.joinpath(module_name)
+    ignore_patterns: Callable[[Any, list[str]], set[str]] = shutil.ignore_patterns("__pycache__")
+    shutil.copytree(addon_project_dir, module_dir, ignore=ignore_patterns)
+    return module_dir
+
+
+@pytest.fixture
+def td(col: Collection, module_dir: Path) -> Data:
+    return Data(col, module_dir)
 
 
 @pytest.fixture
@@ -107,3 +137,30 @@ def task_manager(mw: AnkiQt) -> TaskManager:
 @pytest.fixture
 def progress_manager(mw: AnkiQt) -> ProgressManager:
     return ProgressManager(mw)
+
+
+@pytest.fixture
+def config_loader(addon_manager: AddonManager, settings: Settings) -> ConfigLoader:
+    return ConfigLoader(addon_manager, settings)
+
+
+@pytest.fixture
+def settings(module_dir: Path, module_name: str, logs_dir: Path) -> Settings:
+    return Settings(module_dir, module_name, logs_dir)
+
+
+@pytest.fixture
+def addon_manager(addons_dir: Path) -> AddonManager:
+    mw: MagicMock = MagicMock()
+    mw.pm.addonFolder.return_value = addons_dir
+    return AddonManager(mw)
+
+
+@pytest.fixture
+def logs_dir(base_dir: Path, module_name: str) -> Path:
+    return base_dir / "logs" / "addons" / module_name
+
+
+@pytest.fixture
+def url_manager() -> UrlManager:
+    return UrlManager()
