@@ -16,7 +16,7 @@ class AdhocHighlightDialog(QDialog):
 
     def __init__(self):
         super().__init__(parent=None)
-        self.__callback: Callable[[FieldName, FieldName, set[str]], None]
+        self.__callback: Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
@@ -102,6 +102,7 @@ class AdhocHighlightDialog(QDialog):
         destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
         highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
+        self.close()
         self.__callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
 
     def __reject(self) -> None:

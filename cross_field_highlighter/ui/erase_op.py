@@ -60,7 +60,7 @@ class EraseOp(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
-        show_info(title=self.__progress_dialog_title, text=f"Notes were highlighted)", parent=self.__parent)
+        show_info(title=self.__progress_dialog_title, text=f"{count} notes were erased", parent=self.__parent)
 
     def __on_failure(self, e: Exception) -> None:
         log.error("Error during highlighting", exc_info=e)

@@ -73,6 +73,7 @@ class AdhocEraseDialog(QDialog):
     def __accept(self) -> None:
         log.info("Starting")
         field: FieldName = FieldName(self.__field_combo_box.get_current_text())
+        self.close()
         self.__callback(self.parent(), field)
 
     def __reject(self) -> None:

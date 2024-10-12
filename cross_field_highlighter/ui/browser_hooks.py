@@ -10,7 +10,6 @@ from aqt import gui_hooks, qconnect, QAction, QMenu, QWidget
 from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.highlighter_params import BulkHighlighterParams
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_erase_dialog import AdhocEraseDialog
 from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import AdhocHighlightDialog
@@ -66,9 +65,8 @@ class BrowserHooks:
     def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
                            stop_words: set[Word], highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: HighlightOp = self.__op_factory.create_highlight_op(parent, note_ids, source_filed,
-                                                                destination_filed,
-                                                                stop_words, highlight_format)
+        op: HighlightOp = self.__op_factory.create_highlight_op(
+            parent, note_ids, source_filed, destination_filed, stop_words, highlight_format)
         op.run_in_background()
 
     def __run_erase_op(self, parent: QWidget, destination_filed: FieldName):
@@ -92,11 +90,6 @@ class BrowserHooks:
         params: DialogParams = DialogParams(note_types)
         log.debug(f"Created DialogParams: {params}")
         return params
-
-    def __prepare_highlighter_params(self, note_ids: Sequence[NoteId]) -> BulkHighlighterParams:
-        pass
-        # for note_id in note_ids:
-        # return BulkHighlighterParams()
 
     def __get_selected_note_ids(self, browser: Browser) -> Sequence[NoteId]:
         notes_mode: bool = self.is_notes_mode(browser)
