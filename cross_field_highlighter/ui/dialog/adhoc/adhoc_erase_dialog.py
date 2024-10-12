@@ -18,9 +18,9 @@ class AdhocEraseDialog(QDialog):
         self.__callback: Callable[[QWidget, FieldName], None]
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
-        self.setWindowTitle('Highlight')
+        self.setWindowTitle('Erase')
 
-        source_group_box: QGroupBox = self.__create_source_widget()
+        field_group_box: QGroupBox = self.__field_widget()
 
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                                         QDialogButtonBox.StandardButton.Cancel |
@@ -37,7 +37,7 @@ class AdhocEraseDialog(QDialog):
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
-        layout.addWidget(source_group_box, 0, 0)
+        layout.addWidget(field_group_box, 0, 0)
         layout.addWidget(button_box, 3, 0)
 
         self.setLayout(layout)
@@ -58,7 +58,7 @@ class AdhocEraseDialog(QDialog):
         field_names: list[str] = self.__note_types[index].fields
         self.__field_combo_box.set_items(field_names)
 
-    def __create_source_widget(self):
+    def __field_widget(self):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
         self.__field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
