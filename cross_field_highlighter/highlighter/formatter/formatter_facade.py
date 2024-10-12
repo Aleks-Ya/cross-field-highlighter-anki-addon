@@ -25,10 +25,7 @@ class FormatterFacade:
         return self.__formatter_dict.get(highlight_format)
 
     def erase(self, text: Text) -> Text:
-        words: list[Word] = self.__tokenizer.tokenize(text)
         clean_text: Text = text
-        for word in words:
-            for formatter in self.__formatters:
-                clean_word: Word = formatter.erase(word)
-                clean_text = Text(clean_text.replace(word, clean_word))
+        for formatter in self.__formatters:
+            clean_text: Text = formatter.erase(clean_text)
         return clean_text

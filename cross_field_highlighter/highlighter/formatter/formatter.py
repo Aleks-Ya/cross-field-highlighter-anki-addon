@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from cross_field_highlighter.highlighter.types import Word
+from cross_field_highlighter.highlighter.types import Word, Text
 
 
 class Formatter(ABC):
@@ -10,5 +10,5 @@ class Formatter(ABC):
         pass
 
     @abstractmethod
-    def erase(self, word: Word) -> Word:
+    def erase(self, text: Text) -> Text:
         pass

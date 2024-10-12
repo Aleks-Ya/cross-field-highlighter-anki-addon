@@ -1,5 +1,7 @@
+import re
+
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
-from cross_field_highlighter.highlighter.types import Word
+from cross_field_highlighter.highlighter.types import Word, Text
 
 
 class TagFormatter(Formatter):
@@ -11,9 +13,6 @@ class TagFormatter(Formatter):
         already_highlighted: bool = self.__prefix in word and self.__suffix in word
         return Word(f"{self.__prefix}{word}{self.__suffix}") if not already_highlighted else word
 
-    def erase(self, word: Word) -> Word:
-        if self.__prefix in word and self.__suffix in word:
-            clean_word = Word(word.replace(self.__prefix, "").replace(self.__suffix, ""))
-        else:
-            clean_word: Word = word
-        return clean_word
+    def erase(self, text: Text) -> Text:
+        clean_text: str = re.sub(fr'{self.__prefix}(\w*){self.__suffix}', r'\1', text, flags=re.IGNORECASE)
+        return Text(clean_text)

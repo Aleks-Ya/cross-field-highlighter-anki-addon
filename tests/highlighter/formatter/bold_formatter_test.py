@@ -1,5 +1,5 @@
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
-from cross_field_highlighter.highlighter.types import Word
+from cross_field_highlighter.highlighter.types import Word, Text
 
 
 def test_highlight(bold_formatter: BoldFormatter):
@@ -17,6 +17,6 @@ def test_highlight_twice(bold_formatter: BoldFormatter):
 
 
 def test_erase(bold_formatter: BoldFormatter):
-    highlighted_word: Word = Word("<b>ocean</b>")
-    clean_word: Word = bold_formatter.erase(highlighted_word)
-    assert clean_word == "ocean"
+    highlighted_text: Text = Text("I see an <b>ocean</b>.")
+    clean_word: Text = bold_formatter.erase(highlighted_text)
+    assert clean_word == "I see an ocean."
