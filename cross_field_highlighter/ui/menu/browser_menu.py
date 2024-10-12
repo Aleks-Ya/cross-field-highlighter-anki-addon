@@ -4,8 +4,8 @@ from logging import Logger
 from aqt import QMenu
 from aqt.browser import Browser
 
-from cross_field_highlighter.ui.browser_menu_erase_action import BrowserMenuEraseAction
-from cross_field_highlighter.ui.browser_menu_highlight_action import BrowserMenuHighlightAction
+from cross_field_highlighter.ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
+from cross_field_highlighter.ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
 from cross_field_highlighter.ui.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
