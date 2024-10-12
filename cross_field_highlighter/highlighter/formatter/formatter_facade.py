@@ -2,13 +2,15 @@ from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFor
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
+from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
 
 
 class FormatterFacade:
-    def __init__(self, bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter):
+    def __init__(self, bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter, tokenizer: Tokenizer):
         self.__bold_formatter: BoldFormatter = bold_formatter
         self.__italic_formatter: ItalicFormatter = italic_formatter
+        self.__tokenizer: Tokenizer = tokenizer
         self.__formatters: list[Formatter] = [self.__bold_formatter, self.__italic_formatter]
         self.__formatter_dict: dict[HighlightFormat, Formatter] = {
             HighlightFormat.BOLD: self.__bold_formatter,
@@ -23,7 +25,7 @@ class FormatterFacade:
         return self.__formatter_dict.get(highlight_format)
 
     def erase(self, text: Text) -> Text:
-        words: list[Word] = [Word(word) for word in text.split(" ")]
+        words: list[Word] = self.__tokenizer.tokenize(text)
         clean_text: Text = text
         for word in words:
             for formatter in self.__formatters:

@@ -75,8 +75,9 @@ def italic_formatter() -> ItalicFormatter:
 
 
 @pytest.fixture
-def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter) -> FormatterFacade:
-    return FormatterFacade(bold_formatter, italic_formatter)
+def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter,
+                     regex_tokenizer: RegExTokenizer) -> FormatterFacade:
+    return FormatterFacade(bold_formatter, italic_formatter, regex_tokenizer)
 
 
 @pytest.fixture
