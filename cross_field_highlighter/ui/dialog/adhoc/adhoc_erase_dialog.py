@@ -43,8 +43,7 @@ class AdhocEraseDialog(QDialog):
         self.setLayout(layout)
         self.resize(300, 200)
 
-    def show_dialog(self, params: DialogParams,
-                    callback: Callable[[QWidget, FieldName], None]) -> None:
+    def show_dialog(self, params: DialogParams, callback: Callable[[QWidget, FieldName], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__callback = callback
         self.__note_types: list[NoteTypeDetails] = params.note_types
