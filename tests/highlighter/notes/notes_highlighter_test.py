@@ -48,7 +48,7 @@ def test_highlight_erase(notes_highlighter: NotesHighlighter, td: Data, col: Col
         ('a driver', 'Driver was overtaking a slower vehicle.', '<b>Driver</b> was overtaking a slower vehicle.'),
         ('an automobile', 'Automobile was overtaking a slower vehicle.',
          '<b>Automobile</b> was overtaking a slower vehicle.'),
-        ('take forever', 'Downloading a movie takes forever.', 'Downloading a movie <b>takes forever</b>.'),
+        ('take forever', 'Downloading a movie takes forever.', 'Downloading a movie <b>takes</b> <b>forever</b>.'),
         ('lid', '<li>I opened the lid of the jar to get some jam.</li>',
          '<li>I opened the <b>lid</b> of the jar to get some jam.</li>'),
         ('ivy', '<li><div>There is ivy trailing all over the wall.</div></li>',

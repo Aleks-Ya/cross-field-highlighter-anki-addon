@@ -73,7 +73,7 @@ def test_prefix_an(start_with_text_highlighter: StartWithTextHighlighter):
 def test_collocation(start_with_text_highlighter: StartWithTextHighlighter):
     __tests(start_with_text_highlighter, 'take forever',
             'Downloading a movie takes forever.',
-            'Downloading a movie <b>takes forever</b>.')
+            'Downloading a movie <b>takes</b> <b>forever</b>.')
 
 
 def test_tag_li(start_with_text_highlighter: StartWithTextHighlighter):

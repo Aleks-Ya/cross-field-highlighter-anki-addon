@@ -106,7 +106,7 @@ def test_collocation(start_with_note_highlighter: StartWithNoteHighlighter, td: 
     __tests(start_with_note_highlighter, td,
             'take forever',
             'Downloading a movie takes forever.',
-            'Downloading a movie <b>takes forever</b>.')
+            'Downloading a movie <b>takes</b> <b>forever</b>.')
 
 
 def test_tag_li(start_with_note_highlighter: StartWithNoteHighlighter, td: Data, col: Collection):

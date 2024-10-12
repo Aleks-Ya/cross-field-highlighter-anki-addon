@@ -55,7 +55,7 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
         ('a driver', 'Driver was overtaking a slower vehicle.', '<b>Driver</b> was overtaking a slower vehicle.'),
         ('an automobile', 'Automobile was overtaking a slower vehicle.',
          '<b>Automobile</b> was overtaking a slower vehicle.'),
-        ('take forever', 'Downloading a movie takes forever.', 'Downloading a movie <b>takes forever</b>.'),
+        ('take forever', 'Downloading a movie takes forever.', 'Downloading a movie <b>takes</b> <b>forever</b>.'),
         ('lid', '<li>I opened the lid of the jar to get some jam.</li>',
          '<li>I opened the <b>lid</b> of the jar to get some jam.</li>'),
         ('ivy', '<li><div>There is ivy trailing all over the wall.</div></li>',
@@ -66,8 +66,8 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     stop_words: set[Word] = {Word("to"), Word("a"), Word("an")}
     highlight_format: HighlightFormat = HighlightFormat.BOLD
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager,
-                                              MagicMock(), note_ids, DefaultFields.word_field_name,
-                                              DefaultFields.text_field_name, stop_words, highlight_format)
+                                            MagicMock(), note_ids, DefaultFields.word_field_name,
+                                            DefaultFields.text_field_name, stop_words, highlight_format)
 
     highlight_op.run_in_background()
     time.sleep(1)

@@ -13,4 +13,5 @@ class RegExTokenizer(Tokenizer):
         words: list[Word] = [Word(word) for word in re.split(r'(\s)', text)]
         words_list: list[list[Word]] = [re.split(self.__punctuation_pattern, word) for word in words]
         words2: list[Word] = [item for sublist in words_list for item in sublist]
-        return words2
+        non_empty_words: list[Word] = [word for word in words2 if word != '']
+        return non_empty_words

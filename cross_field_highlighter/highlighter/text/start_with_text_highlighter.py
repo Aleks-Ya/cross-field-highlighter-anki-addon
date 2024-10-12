@@ -20,19 +20,19 @@ class StartWithTextHighlighter(TextHighlighter):
     def highlight(self, collocation: Text, text: Text, stop_words: set[Word],
                   highlight_format: HighlightFormat) -> Text:
         collocation_words: set[Word] = set(self.__tokenizer.tokenize(collocation))
+        collocation_words.discard(Word(" "))
+        for stop_word in stop_words:
+            collocation_words.discard(stop_word)
         highlighted_words: list[Word] = []
-        for word in collocation_words:
-            if word.strip() == '' or word in stop_words:
-                log.debug(f"Skip stop word: {word}")
-                continue
-            word_regexp: str = fr"{word[:len(word) - 1]}\w*" if len(word) > 2 else word
-            text_words: list[Word] = self.__tokenizer.tokenize(text)
-            for text_word in text_words:
+        text_words: list[Word] = self.__tokenizer.tokenize(text)
+        for text_word in text_words:
+            highlighted_word: Word = text_word
+            for word in collocation_words:
+                word_regexp: str = fr"{word[:len(word) - 1]}\w*" if len(word) > 2 else word
                 if re.match(word_regexp, text_word, RegexFlag.IGNORECASE | RegexFlag.UNICODE):
                     highlighted_word: Word = self.__formatter_facade.format(text_word, highlight_format)
-                    highlighted_words.append(highlighted_word)
-                else:
-                    highlighted_words.append(text_word)
+                    break
+            highlighted_words.append(highlighted_word)
         return Text("".join(highlighted_words))
 
     def erase(self, text: Text) -> Text:
