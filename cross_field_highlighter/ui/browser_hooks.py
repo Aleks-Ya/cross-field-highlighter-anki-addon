@@ -1,21 +1,11 @@
 import logging
 from logging import Logger
-from typing import Callable, Sequence
+from typing import Callable
 
-from anki.cards import CardId
-from anki.collection import Collection
-from anki.models import NotetypeId, NoteType
-from anki.notes import NoteId, Note
-from aqt import gui_hooks, qconnect, QAction, QMenu, QWidget
+from aqt import gui_hooks, QMenu
 from aqt.browser import Browser
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
-from cross_field_highlighter.ui.dialog.adhoc.adhoc_erase_dialog import AdhocEraseDialog
-from cross_field_highlighter.ui.dialog.adhoc.adhoc_highlight_dialog import AdhocHighlightDialog
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.erase_op import EraseOp
-from cross_field_highlighter.ui.highlight_op import HighlightOp
+from cross_field_highlighter.ui.browser_menu import BrowserMenu
 from cross_field_highlighter.ui.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
@@ -25,8 +15,6 @@ class BrowserHooks:
 
     def __init__(self, op_factory: OpFactory) -> None:
         self.__op_factory: OpFactory = op_factory
-        self.__adhoc_highlight_dialog: AdhocHighlightDialog = AdhocHighlightDialog()
-        self.__adhoc_erase_dialog: AdhocEraseDialog = AdhocEraseDialog()
         self.__hook_browser_will_show_context_menu: Callable[[Browser, QMenu], None] = self.__on_event
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -39,70 +27,5 @@ class BrowserHooks:
         log.info(f"{self.__class__.__name__} are removed")
 
     def __on_event(self, browser: Browser, menu: QMenu) -> None:
-        parent_menu: QMenu = QMenu("Cross-Field Highlighter", browser)
-        menu.addMenu(parent_menu)
-
-        highlight_action: QAction = QAction("Highlight...", browser)
-        qconnect(highlight_action.triggered, lambda: self.__on_highlight_click(browser))
-        parent_menu.addAction(highlight_action)
-
-        erase_action: QAction = QAction("Erase...", browser)
-        qconnect(erase_action.triggered, lambda: self.__on_erase_click(browser))
-        parent_menu.addAction(erase_action)
-
-    def __on_highlight_click(self, browser: Browser):
-        log.debug("On highlight click")
-        self.__browser: Browser = browser
-        dialog_params: DialogParams = self.__prepare_dialog_params(browser)
-        self.__adhoc_highlight_dialog.show_dialog(dialog_params, self.__run_highlight_op)
-
-    def __on_erase_click(self, browser: Browser):
-        log.debug("On highlight click")
-        self.__browser: Browser = browser
-        dialog_params: DialogParams = self.__prepare_dialog_params(browser)
-        self.__adhoc_erase_dialog.show_dialog(dialog_params, self.__run_erase_op)
-
-    def __run_highlight_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
-                           stop_words: set[Word], highlight_format: HighlightFormat):
-        note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: HighlightOp = self.__op_factory.create_highlight_op(
-            parent, note_ids, source_filed, destination_filed, stop_words, highlight_format)
-        op.run_in_background()
-
-    def __run_erase_op(self, parent: QWidget, destination_filed: FieldName):
-        note_ids: set[NoteId] = set(self.__browser.selectedNotes())
-        op: EraseOp = self.__op_factory.create_erase_op(parent, note_ids, destination_filed)
-        op.run_in_background()
-
-    def __prepare_dialog_params(self, browser: Browser) -> DialogParams:
-        col: Collection = browser.col
-        note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
-        notes: list[Note] = [col.get_note(note_id) for note_id in note_ids]
-        note_type_ids: set[NotetypeId] = {note.mid for note in notes}
-        note_types: list[NoteTypeDetails] = []
-        for note_type_id in note_type_ids:
-            note_type: NoteType = col.models.get(note_type_id)
-            note_type_details: NoteTypeDetails = NoteTypeDetails()
-            note_type_details.note_type_id = note_type_id
-            note_type_details.name = note_type["name"]
-            note_type_details.fields = col.models.field_names(note_type)
-            note_types.append(note_type_details)
-        params: DialogParams = DialogParams(note_types)
-        log.debug(f"Created DialogParams: {params}")
-        return params
-
-    def __get_selected_note_ids(self, browser: Browser) -> Sequence[NoteId]:
-        notes_mode: bool = self.is_notes_mode(browser)
-        if notes_mode:
-            selected_note_ids: Sequence[NoteId] = browser.selectedNotes()
-        else:
-            card_ids: Sequence[CardId] = browser.selectedCards()
-            selected_note_ids: Sequence[NoteId] = [browser.col.get_card(card_id).nid for card_id in card_ids]
-        log.debug(f"Selected note ids count: {len(selected_note_ids)}")
-        return selected_note_ids
-
-    @staticmethod
-    def is_notes_mode(browser: Browser) -> bool:
-        # Method "aqt.browser.table.table.Table.is_notes_mode" doesn't show correct state after toggling the switch
-        # noinspection PyProtectedMember
-        return browser._switch.isChecked()
+        browser_menu: BrowserMenu = BrowserMenu(browser, self.__op_factory)
+        menu.addMenu(browser_menu)

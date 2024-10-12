@@ -1,7 +1,6 @@
 from typing import Optional, Callable
 
-from PyQt6.QtWidgets import QLineEdit
-from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
+from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox, QLineEdit
 
 
 class TitledComboBoxLayout(QHBoxLayout):
