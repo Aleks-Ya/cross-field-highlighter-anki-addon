@@ -1,0 +1,55 @@
+import logging
+from logging import Logger
+from typing import Sequence
+
+from anki.cards import CardId
+from anki.collection import Collection
+from anki.models import NotetypeId, NoteType
+from anki.notes import NoteId, Note
+from aqt import QAction
+from aqt.browser import Browser
+
+from cross_field_highlighter.highlighter.types import NoteTypeDetails
+from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+
+log: Logger = logging.getLogger(__name__)
+
+
+class BrowserMenuAction(QAction):
+
+    def __init__(self, title: str, browser: Browser) -> None:
+        super().__init__(title, browser)
+        log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def _prepare_dialog_params(self, browser: Browser) -> DialogParams:
+        col: Collection = browser.col
+        note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
+        notes: list[Note] = [col.get_note(note_id) for note_id in note_ids]
+        note_type_ids: set[NotetypeId] = {note.mid for note in notes}
+        note_types: list[NoteTypeDetails] = []
+        for note_type_id in note_type_ids:
+            note_type: NoteType = col.models.get(note_type_id)
+            note_type_details: NoteTypeDetails = NoteTypeDetails()
+            note_type_details.note_type_id = note_type_id
+            note_type_details.name = note_type["name"]
+            note_type_details.fields = col.models.field_names(note_type)
+            note_types.append(note_type_details)
+        params: DialogParams = DialogParams(note_types)
+        log.debug(f"Created DialogParams: {params}")
+        return params
+
+    def __get_selected_note_ids(self, browser: Browser) -> Sequence[NoteId]:
+        notes_mode: bool = self.is_notes_mode(browser)
+        if notes_mode:
+            selected_note_ids: Sequence[NoteId] = browser.selectedNotes()
+        else:
+            card_ids: Sequence[CardId] = browser.selectedCards()
+            selected_note_ids: Sequence[NoteId] = [browser.col.get_card(card_id).nid for card_id in card_ids]
+        log.debug(f"Selected note ids count: {len(selected_note_ids)}")
+        return selected_note_ids
+
+    @staticmethod
+    def is_notes_mode(browser: Browser) -> bool:
+        # Method "aqt.browser.table.table.Table.is_notes_mode" doesn't show correct state after toggling the switch
+        # noinspection PyProtectedMember
+        return browser._switch.isChecked()
