@@ -1,88 +1,15 @@
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
-from cross_field_highlighter.highlighter.types import Text, Word
+from cross_field_highlighter.highlighter.types import Word
+from tests.data import Data
 
 
-def __tests(highlighter: StartWithTextHighlighter, collocation: str, original: str, highlighted: str):
-    stop_words: set[Word] = {Word("to"), Word("a"), Word("an")}
-    assert highlighter.highlight(Text(collocation), Text(original), stop_words, HighlightFormat.BOLD) == highlighted
-    assert highlighter.highlight(Text(collocation), Text(highlighted), stop_words, HighlightFormat.BOLD) == highlighted
-    assert original == highlighter.erase(Text(highlighted))
-
-
-def test_normal(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'beautiful',
-            'Hello, beautiful world!',
-            'Hello, <b>beautiful</b> world!')
-
-
-def test_highlight_several_words(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'beautiful',
-            'Hello, beautiful world and beautiful day!',
-            'Hello, <b>beautiful</b> world and <b>beautiful</b> day!')
-
-
-def test_sub_word(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'hip',
-            'Her children is at her hip.',
-            'Her children is at her <b>hip</b>.')
-
-
-def test_case_insensitive(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'beautiful',
-            'Hello, Beautiful world!',
-            'Hello, <b>Beautiful</b> world!')
-
-
-def test_ing_base(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'abstain',
-            'Abstaining from chocolate',
-            '<b>Abstaining</b> from chocolate')
-
-
-def test_ing_banging(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'overtake',
-            'A driver was overtaking a slower vehicle.',
-            'A driver was <b>overtaking</b> a slower vehicle.')
-
-
-def test_ing_changing_short(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'lie',
-            'A cat was lying on the floor.',
-            'A cat was lying on the floor.')
-
-
-def test_prefix_to(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'to overtake',
-            'Driver was overtaking a slower vehicle.',
-            'Driver was <b>overtaking</b> a slower vehicle.')
-
-
-def test_prefix_a(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'a driver',
-            'Driver was overtaking a slower vehicle.',
-            '<b>Driver</b> was overtaking a slower vehicle.')
-
-
-def test_prefix_an(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'an automobile',
-            'Automobile was overtaking a slower vehicle.',
-            '<b>Automobile</b> was overtaking a slower vehicle.')
-
-
-def test_collocation(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'take forever',
-            'Downloading a movie takes forever.',
-            'Downloading a movie <b>takes</b> <b>forever</b>.')
-
-
-def test_tag_li(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'lid',
-            '<li>I opened the lid of the jar to get some jam.</li>',
-            '<li>I opened the <b>lid</b> of the jar to get some jam.</li>')
-
-
-def test_tag_div(start_with_text_highlighter: StartWithTextHighlighter):
-    __tests(start_with_text_highlighter, 'ivy',
-            '<li><div>There is ivy trailing all over the wall.</div></li>',
-            '<li><div>There is <b>ivy</b> trailing all over the wall.</div></li>')
+def test_cases(start_with_text_highlighter: StartWithTextHighlighter, td: Data):
+    for case in td.cases():
+        print(f"Case: {case.name}")
+        stop_words: set[Word] = td.stop_words()
+        assert start_with_text_highlighter.highlight(case.phrase, case.original_text, stop_words,
+                                                     HighlightFormat.BOLD) == case.highlighted_text
+        assert start_with_text_highlighter.highlight(case.phrase, case.highlighted_text, stop_words,
+                                                     HighlightFormat.BOLD) == case.highlighted_text
+        assert case.original_text == start_with_text_highlighter.erase(case.highlighted_text)
