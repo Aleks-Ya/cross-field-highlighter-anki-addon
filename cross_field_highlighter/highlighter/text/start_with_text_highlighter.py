@@ -24,7 +24,8 @@ class StartWithTextHighlighter(TextHighlighter):
         for stop_word in stop_words:
             collocation_words.discard(stop_word)
         highlighted_words: list[Word] = []
-        text_words: list[Word] = self.__tokenizer.tokenize(text)
+        clean_text: Text = self.erase(text)
+        text_words: list[Word] = self.__tokenizer.tokenize(clean_text)
         for text_word in text_words:
             highlighted_word: Word = text_word
             for word in collocation_words:
