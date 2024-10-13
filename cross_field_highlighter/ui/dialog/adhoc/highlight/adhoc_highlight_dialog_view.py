@@ -29,6 +29,8 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                                         QDialogButtonBox.StandardButton.Cancel |
                                                         QDialogButtonBox.StandardButton.RestoreDefaults)
+        ok_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
+        ok_button.setText("Start")
         destination_group_box: QGroupBox = self.__create_destination_widget()
         # noinspection PyUnresolvedReferences
         button_box.accepted.connect(self.__accept)
@@ -36,8 +38,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         button_box.rejected.connect(self.__reject)
         restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
         # noinspection PyUnresolvedReferences
-        restore_defaults_button.setToolTip(
-            'Reset settings in this dialog to defaults. You will need to click the "OK" button to apply it.')
+        restore_defaults_button.setToolTip('Reset settings in this dialog to defaults')
         # noinspection PyUnresolvedReferences
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
