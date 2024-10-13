@@ -1,7 +1,7 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton
+from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import FieldName, Word, NoteTypeDetails, FieldNames
@@ -42,10 +42,10 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
-        layout.addWidget(source_group_box, 0, 0)
-        layout.addWidget(formate_group_box, 1, 0)
-        layout.addWidget(destination_group_box, 2, 0)
-        layout.addWidget(button_box, 3, 0)
+        layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(formate_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(button_box, 3, 0, Qt.AlignmentFlag.AlignRight)
 
         self.setLayout(layout)
         self.resize(300, 200)
