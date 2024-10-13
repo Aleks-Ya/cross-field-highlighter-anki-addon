@@ -11,6 +11,7 @@ from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
+from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
 from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -38,8 +39,10 @@ def __initialize(col: Collection):
     logs.set_level("DEBUG")
     bold_formatter: BoldFormatter = BoldFormatter()
     italic_formatter: ItalicFormatter = ItalicFormatter()
+    underline_formatter: UnderlineFormatter = UnderlineFormatter()
     tokenizer: RegExTokenizer = RegExTokenizer()
-    formatter_facade: FormatterFacade = FormatterFacade(bold_formatter, italic_formatter, tokenizer)
+    formatter_facade: FormatterFacade = FormatterFacade(
+        bold_formatter, italic_formatter, underline_formatter, tokenizer)
     text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
@@ -51,7 +54,7 @@ def __initialize(col: Collection):
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-        adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, config, config_loader)
+        adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, formatter_facade, config, config_loader)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(

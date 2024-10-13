@@ -56,6 +56,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
             note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
             self.__note_type_combo_box.set_items(note_type_names)
 
+            format_names: list[str] = [highlight_format.name for highlight_format in self.__model.formats]
+            self.__format_combo_box.set_items(format_names)
+
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
             if self.__model.selected_source_field:
@@ -91,7 +94,6 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
     def __create_format_widget(self):
         self.__format_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Format")
-        self.__format_combo_box.set_items([HighlightFormat.BOLD.name, HighlightFormat.ITALIC.name])
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__format_combo_box)
         group_box: QGroupBox = QGroupBox("Format")

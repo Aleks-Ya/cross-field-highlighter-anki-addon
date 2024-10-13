@@ -18,6 +18,7 @@ from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
+from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
@@ -76,14 +77,19 @@ def bold_formatter() -> BoldFormatter:
 
 
 @pytest.fixture
+def underline_formatter() -> UnderlineFormatter:
+    return UnderlineFormatter()
+
+
+@pytest.fixture
 def italic_formatter() -> ItalicFormatter:
     return ItalicFormatter()
 
 
 @pytest.fixture
 def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter,
-                     regex_tokenizer: RegExTokenizer) -> FormatterFacade:
-    return FormatterFacade(bold_formatter, italic_formatter, regex_tokenizer)
+                     underline_formatter: UnderlineFormatter, regex_tokenizer: RegExTokenizer) -> FormatterFacade:
+    return FormatterFacade(bold_formatter, italic_formatter, underline_formatter, regex_tokenizer)
 
 
 @pytest.fixture

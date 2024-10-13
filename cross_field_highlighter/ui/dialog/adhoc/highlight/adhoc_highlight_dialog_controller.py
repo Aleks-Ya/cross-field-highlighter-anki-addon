@@ -6,6 +6,7 @@ from aqt.qt import QWidget
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
@@ -18,10 +19,11 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
 
-    def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView, config: Config,
-                 config_loader: ConfigLoader):
+    def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView,
+                 formatter_facade: FormatterFacade, config: Config, config_loader: ConfigLoader):
         self.__model: AdhocHighlightDialogModel = model
         self.__view: AdhocHighlightDialogView = view
+        self.__formatter_facade: FormatterFacade = formatter_facade
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -32,6 +34,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         log.debug(f"Show dialog: {params}")
         self.__model.show = True
         self.__model.note_types = params.note_types
+        self.__model.formats = self.__formatter_facade.get_all_formats()
         self.__model.run_op_callback = run_op_callback
 
         last_note_type: str = self.__config.get_dialog_adhoc_highlight_last_note_type()

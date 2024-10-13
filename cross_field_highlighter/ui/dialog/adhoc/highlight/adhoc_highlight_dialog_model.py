@@ -21,6 +21,7 @@ class AdhocHighlightDialogModel:
     def __init__(self):
         self.show: bool = False
         self.note_types: list[NoteTypeDetails] = []
+        self.formats: list[HighlightFormat] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: Optional[FieldName] = None
         self.selected_format: Optional[HighlightFormat] = None
