@@ -4,6 +4,7 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.types import FieldName, NoteTypeDetails
+from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
@@ -52,28 +53,29 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
             if self.__model.selected_field:
-                self.__field_combo_box.set_current_text(self.__model.selected_field)
+                pass
+                # self.__destination_fields_vbox.set_current_text(self.__model.selected_field)
             # noinspection PyUnresolvedReferences
             self.show()
             self.adjustSize()
 
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
-        field_names: list[str] = self.__model.note_types[index].fields
-        self.__field_combo_box.set_items(field_names)
+        field_names: list[FieldName] = self.__model.note_types[index].fields
+        self.__destination_fields_vbox.set_items(field_names)
 
     def __field_widget(self) -> QVBoxLayout:
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
-        self.__field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
+        self.__destination_fields_vbox: FieldsLayout = FieldsLayout()
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
-        group_layout.addLayout(self.__field_combo_box)
+        group_layout.addLayout(self.__destination_fields_vbox)
         return group_layout
 
     def __accept(self) -> None:
         log.info("Starting")
-        field: FieldName = FieldName(self.__field_combo_box.get_current_text())
+        field: FieldName = FieldName(self.__destination_fields_vbox.get_selected_field_names()[0])
         note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                        self.__model.note_types}
         note_type: NoteTypeDetails = note_type_names[self.__note_type_combo_box.get_current_text()]
