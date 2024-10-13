@@ -21,23 +21,26 @@ def test_setters(td: Data):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Name": None
-            },
-            "Erase": {"Last Field Name": None}}}}
+                "Last Destination Field Name": None},
+            "Erase": {
+                "Last Note Type": None,
+                "Last Field Name": None}}}}
     config.set_dialog_adhoc_highlight_last_note_type("Basic")
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
     config.set_dialog_adhoc_highlight_last_destination_field_name(FieldName("Examples"))
-    config.set_dialog_adhoc_erase_last_field_name(FieldName("Examples"))
+    config.set_dialog_adhoc_erase_last_note_type("Cloze")
+    config.set_dialog_adhoc_erase_last_field_name(FieldName("Sentences"))
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"
-            },
-            "Erase": {"Last Field Name": "Examples"}}}}
+                "Last Destination Field Name": "Examples"},
+            "Erase": {
+                "Last Note Type": "Cloze",
+                "Last Field Name": "Sentences"}}}}
 
 
 def test_fire_config_changed(td: Data):

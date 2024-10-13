@@ -20,6 +20,7 @@ class Config:
     __key_4_dialog_adhoc_last_source_field_name: str = 'Last Source Field Name'
     __key_4_dialog_adhoc_last_format: str = 'Last Format'
     __key_4_dialog_adhoc_last_destination_field_name: str = 'Last Destination Field Name'
+    __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_name: str = 'Last Field Name'
 
     def __init__(self, config: dict[str, Any]):
@@ -88,6 +89,14 @@ class Config:
     def set_dialog_adhoc_highlight_last_destination_field_name(self, last_destination_field_name: FieldName) -> None:
         self.__set(last_destination_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_name)
+
+    def get_dialog_adhoc_erase_last_note_type(self) -> str:
+        return self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][
+            self.__key_4_dialog_erase_last_note_type]
+
+    def set_dialog_adhoc_erase_last_note_type(self, last_note_type: str) -> None:
+        self.__set(last_note_type, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
+                   self.__key_4_dialog_erase_last_note_type)
 
     def get_dialog_adhoc_erase_last_field_name(self) -> FieldName:
         field: str = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][
