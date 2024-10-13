@@ -11,6 +11,7 @@ from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
+from cross_field_highlighter.highlighter.formatter.mark_formatter import MarkFormatter
 from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
 from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
@@ -40,9 +41,10 @@ def __initialize(col: Collection):
     bold_formatter: BoldFormatter = BoldFormatter()
     italic_formatter: ItalicFormatter = ItalicFormatter()
     underline_formatter: UnderlineFormatter = UnderlineFormatter()
+    mark_formatter: MarkFormatter = MarkFormatter()
     tokenizer: RegExTokenizer = RegExTokenizer()
     formatter_facade: FormatterFacade = FormatterFacade(
-        bold_formatter, italic_formatter, underline_formatter, tokenizer)
+        bold_formatter, italic_formatter, underline_formatter, mark_formatter, tokenizer)
     text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)

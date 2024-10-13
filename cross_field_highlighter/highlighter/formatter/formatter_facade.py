@@ -2,6 +2,7 @@ from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFor
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
+from cross_field_highlighter.highlighter.formatter.mark_formatter import MarkFormatter
 from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
@@ -9,17 +10,15 @@ from cross_field_highlighter.highlighter.types import Text, Word
 
 class FormatterFacade:
     def __init__(self, bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter,
-                 underline_formatter: UnderlineFormatter, tokenizer: Tokenizer):
-        self.__bold_formatter: BoldFormatter = bold_formatter
-        self.__italic_formatter: ItalicFormatter = italic_formatter
-        self.__underline_formatter: UnderlineFormatter = underline_formatter
+                 underline_formatter: UnderlineFormatter, mark_formatter: MarkFormatter, tokenizer: Tokenizer):
         self.__tokenizer: Tokenizer = tokenizer
-        self.__formatters: list[Formatter] = [self.__bold_formatter, self.__italic_formatter,
-                                              self.__underline_formatter]
+        self.__formatters: list[Formatter] = [bold_formatter, italic_formatter,
+                                              underline_formatter, mark_formatter]
         self.__formatter_dict: dict[HighlightFormat, Formatter] = {
-            HighlightFormat.BOLD: self.__bold_formatter,
-            HighlightFormat.ITALIC: self.__italic_formatter,
-            HighlightFormat.UNDERLINE: self.__underline_formatter
+            HighlightFormat.BOLD: bold_formatter,
+            HighlightFormat.ITALIC: italic_formatter,
+            HighlightFormat.UNDERLINE: underline_formatter,
+            HighlightFormat.MARK: mark_formatter
         }
 
     def format(self, word: Word, highlight_format: HighlightFormat) -> Word:
