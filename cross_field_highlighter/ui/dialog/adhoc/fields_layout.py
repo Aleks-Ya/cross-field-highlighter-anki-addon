@@ -23,6 +23,10 @@ class FieldsLayout(QVBoxLayout):
         for field_name, check_box in self.__field_name_checkboxes.items():
             check_box.setChecked(field_name in field_names)
 
+    def set_disabled_fields(self, field_names: FieldNames):
+        for field_name, check_box in self.__field_name_checkboxes.items():
+            check_box.setDisabled(field_name in field_names)
+
     def get_selected_field_names(self) -> FieldNames:
         return FieldNames(
             [field_name for field_name, check_box in self.__field_name_checkboxes.items() if check_box.isChecked()])

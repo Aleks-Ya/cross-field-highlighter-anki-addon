@@ -53,7 +53,7 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
             if self.__model.selected_fields:
-                self.__destination_fields_vbox.select_fields(self.__model.selected_fields)
+                self.__fields_vbox.select_fields(self.__model.selected_fields)
             # noinspection PyUnresolvedReferences
             self.show()
             self.adjustSize()
@@ -61,20 +61,20 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
         field_names: FieldNames = FieldNames(self.__model.note_types[index].fields)
-        self.__destination_fields_vbox.set_items(field_names)
+        self.__fields_vbox.set_items(field_names)
 
     def __field_widget(self) -> QVBoxLayout:
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
-        self.__destination_fields_vbox: FieldsLayout = FieldsLayout()
+        self.__fields_vbox: FieldsLayout = FieldsLayout()
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
-        group_layout.addLayout(self.__destination_fields_vbox)
+        group_layout.addLayout(self.__fields_vbox)
         return group_layout
 
     def __accept(self) -> None:
         log.info("Starting")
-        fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
+        fields: FieldNames = self.__fields_vbox.get_selected_field_names()
         log.debug(f"Selected fields: {fields}")
         note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                        self.__model.note_types}
