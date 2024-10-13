@@ -1,7 +1,7 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton
+from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.types import FieldName, NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
@@ -21,7 +21,7 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
 
-        field_group_box: QGroupBox = self.__field_widget()
+        group_layout: QVBoxLayout = self.__field_widget()
 
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                                         QDialogButtonBox.StandardButton.Cancel |
@@ -38,7 +38,7 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
-        layout.addWidget(field_group_box, 0, 0)
+        layout.addLayout(group_layout, 0, 0)
         layout.addWidget(button_box, 3, 0)
 
         self.setLayout(layout)
@@ -62,16 +62,14 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         field_names: list[str] = self.__model.note_types[index].fields
         self.__field_combo_box.set_items(field_names)
 
-    def __field_widget(self):
+    def __field_widget(self) -> QVBoxLayout:
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
         self.__field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__field_combo_box)
-        group_box: QGroupBox = QGroupBox("Source")
-        group_box.setLayout(group_layout)
-        return group_box
+        return group_layout
 
     def __accept(self) -> None:
         log.info("Starting")
