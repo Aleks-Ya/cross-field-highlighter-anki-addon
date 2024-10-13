@@ -1,22 +1,23 @@
 import logging
 from logging import Logger
-from typing import Callable
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QWidget, QPushButton
+from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, Word
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.highlighter.types import FieldName, Word
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
+    AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
 
 
-class AdhocHighlightDialog(QDialog):
+class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
-    def __init__(self):
+    def __init__(self, model: AdhocHighlightDialogModel):
         super().__init__(parent=None)
-        self.__callback: Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]
+        self.__model: AdhocHighlightDialogModel = model
+        self.__model.add_listener(self)
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
@@ -48,20 +49,20 @@ class AdhocHighlightDialog(QDialog):
         self.setLayout(layout)
         self.resize(300, 200)
 
-    def show_dialog(self, params: DialogParams,
-                    callback: Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]) -> None:
-        log.debug(f"Show dialog: {params}")
-        self.__callback = callback
-        self.__note_types: list[NoteTypeDetails] = params.note_types
-        note_type_names: list[str] = [note_type.name for note_type in params.note_types]
+    def model_changed(self):
+        log.debug(f"Model changed")
+        note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
         self.__note_type_combo_box.set_items(note_type_names)
         # noinspection PyUnresolvedReferences
-        self.show()
-        self.adjustSize()
+        if self.__model.show:
+            self.show()
+            self.adjustSize()
+        else:
+            self.hide()
 
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
-        field_names: list[str] = self.__note_types[index].fields
+        field_names: list[str] = self.__model.note_types[index].fields
         self.__source_field_combo_box.set_items(field_names)
         self.__destination_field_combo_box.set_items(field_names)
 
@@ -102,12 +103,12 @@ class AdhocHighlightDialog(QDialog):
         destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
         highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
-        self.close()
-        self.__callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
+        self.hide()
+        self.__model.run_op_callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
 
     def __reject(self) -> None:
         log.info("Cancelled")
-        self.reject()
+        self.hide()
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")

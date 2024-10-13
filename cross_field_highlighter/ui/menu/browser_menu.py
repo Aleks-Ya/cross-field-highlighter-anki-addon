@@ -4,6 +4,8 @@ from logging import Logger
 from aqt import QMenu
 from aqt.browser import Browser
 
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
+    AdhocHighlightDialogController
 from cross_field_highlighter.ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
 from cross_field_highlighter.ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
@@ -13,9 +15,11 @@ log: Logger = logging.getLogger(__name__)
 
 class BrowserMenu(QMenu):
 
-    def __init__(self, browser: Browser, op_factory: OpFactory) -> None:
+    def __init__(self, browser: Browser, op_factory: OpFactory,
+                 adhoc_highlight_dialog_controller: AdhocHighlightDialogController) -> None:
         super().__init__("Cross-Field Highlighter", browser)
-        highlight_action: BrowserMenuHighlightAction = BrowserMenuHighlightAction(browser, op_factory)
+        highlight_action: BrowserMenuHighlightAction = BrowserMenuHighlightAction(
+            browser, op_factory, adhoc_highlight_dialog_controller)
         self.addAction(highlight_action)
 
         erase_action: BrowserMenuEraseAction = BrowserMenuEraseAction(browser, op_factory)
