@@ -7,7 +7,7 @@ from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
-from cross_field_highlighter.ui.dialog.adhoc.adhoc_erase_dialog import AdhocEraseDialog
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog import AdhocEraseDialog
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op import EraseOp
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
