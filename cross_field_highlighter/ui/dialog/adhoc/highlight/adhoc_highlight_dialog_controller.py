@@ -20,6 +20,7 @@ class AdhocHighlightDialogController:
         self.__model: AdhocHighlightDialogModel = model
         self.__view: AdhocHighlightDialogView = view
         self.__config: Config = config
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[
         [QWidget, FieldName, FieldName, set[str], HighlightFormat], None]) -> None:
@@ -48,3 +49,6 @@ class AdhocHighlightDialogController:
                 self.__model.selected_destination_field = last_destination_field
 
         self.__model.fire_model_changed()
+
+    def __repr__(self):
+        return self.__class__.__name__

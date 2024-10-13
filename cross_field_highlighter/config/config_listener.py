@@ -1,11 +1,11 @@
 import logging
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from logging import Logger
 
 log: Logger = logging.getLogger(__name__)
 
 
-class ConfigListener(ABC):
+class ConfigListener:
     @abstractmethod
     def on_config_changed(self):
         pass

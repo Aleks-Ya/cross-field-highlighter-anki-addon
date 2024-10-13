@@ -1,6 +1,6 @@
 import logging
-from abc import abstractmethod
 from logging import Logger
+from abc import abstractmethod
 from typing import Callable, Optional
 
 from aqt.qt import QWidget
@@ -12,7 +12,7 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogModelListener:
     @abstractmethod
-    def model_changed(self):
+    def model_changed(self, source: object):
         pass
 
 
@@ -24,10 +24,12 @@ class AdhocEraseDialogModel:
         self.selected_field: Optional[FieldName] = None
         self.run_op_callback: Optional[Callable[[QWidget, FieldName], None]] = None
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def add_listener(self, listener: AdhocEraseDialogModelListener):
         self.__listeners.add(listener)
 
-    def fire_model_changed(self):
+    def fire_model_changed(self, source: object):
+        log.debug(f"Fire model changed: {source}")
         for listener in self.__listeners:
-            listener.model_changed()
+            listener.model_changed(source)

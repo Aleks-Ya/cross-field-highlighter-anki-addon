@@ -48,6 +48,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
         self.setLayout(layout)
         self.resize(300, 200)
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def model_changed(self):
         log.debug(f"Model changed")
@@ -112,3 +113,6 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
+
+    def __repr__(self):
+        return self.__class__.__name__

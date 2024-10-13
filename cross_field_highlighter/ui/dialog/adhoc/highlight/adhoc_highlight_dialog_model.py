@@ -1,3 +1,5 @@
+import logging
+from logging import Logger
 from abc import abstractmethod
 from typing import Optional, Callable
 
@@ -5,6 +7,8 @@ from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
+
+log: Logger = logging.getLogger(__name__)
 
 
 class AdhocHighlightDialogModelListener:
@@ -24,6 +28,7 @@ class AdhocHighlightDialogModel:
         self.run_op_callback: Optional[
             Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]] = None
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def add_listener(self, listener: AdhocHighlightDialogModelListener):
         self.__listeners.add(listener)
