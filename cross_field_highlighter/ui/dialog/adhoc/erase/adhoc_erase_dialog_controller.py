@@ -42,7 +42,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
             self.__model.selected_note_type = note_type_names[last_note_type]
 
         if self.__model.selected_note_type:
-            last_field: FieldName = self.__config.get_dialog_adhoc_erase_last_field_name()
+            last_field: FieldName = self.__config.get_dialog_adhoc_erase_last_field_names()
             log.debug(f"Last field: {last_field}")
             if last_field in self.__model.selected_note_type.fields:
                 log.debug(f"Set selected field: {last_field}")
@@ -54,7 +54,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         if source != self:
             log.debug("Update config from model")
             self.__config.set_dialog_adhoc_erase_last_note_type(self.__model.selected_note_type.name)
-            self.__config.set_dialog_adhoc_erase_last_field_name(self.__model.selected_field)
+            self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.selected_field)
             self.__config_loader.write_config(self.__config)
 
     def __repr__(self):
