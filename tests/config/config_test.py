@@ -1,5 +1,7 @@
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.types import FieldName
 from tests.data import Data
 
 
@@ -22,11 +24,11 @@ def test_setters(td: Data):
                 "Last Destination Field Name": None
             },
             "Erase": {"Last Field Name": None}}}}
-    config.set_dialog_adhoc_last_note_type("Basic")
-    config.set_dialog_adhoc_last_source_field_name("English")
-    config.set_dialog_adhoc_last_format('BOLD')
-    config.set_dialog_adhoc_last_destination_field_name("Examples")
-    config.set_dialog_erase_last_field_name("Examples")
+    config.set_dialog_adhoc_highlight_last_note_type("Basic")
+    config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
+    config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
+    config.set_dialog_adhoc_highlight_last_destination_field_name(FieldName("Examples"))
+    config.set_dialog_adhoc_erase_last_field_name(FieldName("Examples"))
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {

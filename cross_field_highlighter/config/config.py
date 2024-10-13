@@ -53,47 +53,48 @@ class Config:
                     base[k] = v
         return base
 
-    def get_dialog_adhoc_last_note_type(self) -> str:
+    def get_dialog_adhoc_highlight_last_note_type(self) -> str:
         return self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
             self.__key_4_dialog_adhoc_last_note_type]
 
-    def set_dialog_adhoc_last_note_type(self, last_note_type: str) -> None:
+    def set_dialog_adhoc_highlight_last_note_type(self, last_note_type: str) -> None:
         self.__set(last_note_type, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                    self.__key_4_dialog_adhoc_last_note_type)
 
-    def get_dialog_adhoc_last_source_field_name(self) -> Optional[FieldName]:
+    def get_dialog_adhoc_highlight_last_source_field_name(self) -> Optional[FieldName]:
         field: str = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
             self.__key_4_dialog_adhoc_last_source_field_name]
         return FieldName(field) if field else None
 
-    def set_dialog_adhoc_last_source_field_name(self, last_source_field_name: FieldName) -> None:
+    def set_dialog_adhoc_highlight_last_source_field_name(self, last_source_field_name: FieldName) -> None:
         self.__set(last_source_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_source_field_name)
 
-    def get_dialog_adhoc_last_format(self) -> Optional[HighlightFormat]:
+    def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormat]:
         highlight_format: str = \
             self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
                 self.__key_4_dialog_adhoc_last_format]
         return HighlightFormat(highlight_format) if highlight_format else None
 
-    def set_dialog_adhoc_last_format(self, last_format: HighlightFormat) -> None:
-        self.__set(last_format, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+    def set_dialog_adhoc_highlight_last_format(self, last_format: HighlightFormat) -> None:
+        self.__set(last_format.name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                    self.__key_4_dialog_adhoc_last_format)
 
-    def get_dialog_adhoc_last_destination_field_name(self) -> Optional[FieldName]:
+    def get_dialog_adhoc_highlight_last_destination_field_name(self) -> Optional[FieldName]:
         field: str = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
             self.__key_4_dialog_adhoc_last_destination_field_name]
         return FieldName(field) if field else None
 
-    def set_dialog_adhoc_last_destination_field_name(self, last_destination_field_name: FieldName) -> None:
+    def set_dialog_adhoc_highlight_last_destination_field_name(self, last_destination_field_name: FieldName) -> None:
         self.__set(last_destination_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_name)
 
-    def get_dialog_erase_last_field_name(self) -> str:
-        return self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][
+    def get_dialog_adhoc_erase_last_field_name(self) -> FieldName:
+        field: str = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][
             self.__key_4_dialog_erase_last_field_name]
+        return FieldName(field) if field else None
 
-    def set_dialog_erase_last_field_name(self, last_field_name: str) -> None:
+    def set_dialog_adhoc_erase_last_field_name(self, last_field_name: FieldName) -> None:
         self.__set(last_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                    self.__key_4_dialog_erase_last_field_name)
 

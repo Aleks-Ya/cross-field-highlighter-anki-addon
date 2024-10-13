@@ -1,21 +1,22 @@
 import logging
 from logging import Logger
-from typing import Callable
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QWidget, QPushButton
+from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.highlighter.types import FieldName
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
+    AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 
 
-class AdhocEraseDialog(QDialog):
+class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
 
-    def __init__(self):
+    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel):
         super().__init__(parent=None)
-        self.__callback: Callable[[QWidget, FieldName], None]
+        self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
+        self.__model.add_listener(self)
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
@@ -43,11 +44,9 @@ class AdhocEraseDialog(QDialog):
         self.setLayout(layout)
         self.resize(300, 200)
 
-    def show_dialog(self, params: DialogParams, callback: Callable[[QWidget, FieldName], None]) -> None:
-        log.debug(f"Show dialog: {params}")
-        self.__callback = callback
-        self.__note_types: list[NoteTypeDetails] = params.note_types
-        note_type_names: list[str] = [note_type.name for note_type in params.note_types]
+    def model_changed(self) -> None:
+        log.debug("Show dialog")
+        note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
         self.__note_type_combo_box.set_items(note_type_names)
         # noinspection PyUnresolvedReferences
         self.show()
@@ -55,7 +54,7 @@ class AdhocEraseDialog(QDialog):
 
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
-        field_names: list[str] = self.__note_types[index].fields
+        field_names: list[str] = self.__model.note_types[index].fields
         self.__field_combo_box.set_items(field_names)
 
     def __field_widget(self):
@@ -72,8 +71,8 @@ class AdhocEraseDialog(QDialog):
     def __accept(self) -> None:
         log.info("Starting")
         field: FieldName = FieldName(self.__field_combo_box.get_current_text())
-        self.close()
-        self.__callback(self.parent(), field)
+        self.hide()
+        self.__model.run_op_callback(self.parent(), field)
 
     def __reject(self) -> None:
         log.info("Cancelled")

@@ -7,6 +7,8 @@ from aqt.addons import AddonManager
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.types import FieldName
 
 
 def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
@@ -135,11 +137,11 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Destination Field Name": None
             },
             "Erase": {"Last Field Name": None}}}}
-    config.set_dialog_adhoc_last_note_type("Basic")
-    config.set_dialog_adhoc_last_source_field_name("English")
-    config.set_dialog_adhoc_last_format('BOLD')
-    config.set_dialog_adhoc_last_destination_field_name("Examples")
-    config.set_dialog_erase_last_field_name("Examples")
+    config.set_dialog_adhoc_highlight_last_note_type("Basic")
+    config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
+    config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
+    config.set_dialog_adhoc_highlight_last_destination_field_name(FieldName("Examples"))
+    config.set_dialog_adhoc_erase_last_field_name(FieldName("Examples"))
     config_loader.write_config(config)
     act_config: Config = config_loader.load_config()
     assert act_config.get_as_dict() == {

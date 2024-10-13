@@ -20,6 +20,9 @@ from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExT
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.ui.browser_hooks import BrowserHooks
 from cross_field_highlighter.log.logs import Logs
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
@@ -42,8 +45,6 @@ def __initialize(col: Collection):
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
-    op_factory: OpFactory = OpFactory(
-        col, notes_highlighter, task_manager, progress_manager)
     settings: Settings = Settings(module_dir, module_name, mw.addonManager.logs_folder(module_name))
     config_loader: ConfigLoader = ConfigLoader(mw.addonManager, settings)
     config: Config = config_loader.load_config()
@@ -51,7 +52,13 @@ def __initialize(col: Collection):
     adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, config)
-    browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller)
+    adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+    adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
+        adhoc_erase_dialog_model, adhoc_erase_dialog_view, config)
+    op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager)
+    browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
+                                               adhoc_erase_dialog_controller)
     browser_hooks.setup_hooks()
 
 

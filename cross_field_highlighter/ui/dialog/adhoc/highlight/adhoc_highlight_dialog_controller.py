@@ -29,21 +29,21 @@ class AdhocHighlightDialogController:
         self.__model.note_types = params.note_types
         self.__model.run_op_callback = run_op_callback
 
-        last_note_type: str = self.__config.get_dialog_adhoc_last_note_type()
+        last_note_type: str = self.__config.get_dialog_adhoc_highlight_last_note_type()
         note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in params.note_types}
         if last_note_type in note_type_names:
             self.__model.selected_note_type = note_type_names[last_note_type]
 
         if self.__model.selected_note_type:
-            last_source_field: FieldName = self.__config.get_dialog_adhoc_last_source_field_name()
+            last_source_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_source_field_name()
             if last_source_field in self.__model.selected_note_type.fields:
                 self.__model.selected_source_field = last_source_field
 
-            last_format: HighlightFormat = self.__config.get_dialog_adhoc_last_format()
+            last_format: HighlightFormat = self.__config.get_dialog_adhoc_highlight_last_format()
             if last_format:
                 self.__model.selected_format = last_format
 
-            last_destination_field: FieldName = self.__config.get_dialog_adhoc_last_destination_field_name()
+            last_destination_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_destination_field_name()
             if last_destination_field in self.__model.selected_note_type.fields:
                 self.__model.selected_destination_field = last_destination_field
 
