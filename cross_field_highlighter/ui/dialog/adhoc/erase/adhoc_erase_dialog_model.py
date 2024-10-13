@@ -5,7 +5,7 @@ from typing import Callable, Optional
 
 from aqt.qt import QWidget
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldNames
 
 log: Logger = logging.getLogger(__name__)
 

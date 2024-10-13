@@ -5,7 +5,7 @@ from anki.notes import NoteId
 from aqt import qconnect, QWidget
 from aqt.browser import Browser
 
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams

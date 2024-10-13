@@ -19,6 +19,10 @@ class FieldsLayout(QVBoxLayout):
             self.addWidget(check_box)
             self.__field_name_checkboxes[field_name] = check_box
 
+    def select_fields(self, field_names: FieldNames) -> None:
+        for field_name, check_box in self.__field_name_checkboxes.items():
+            check_box.setChecked(field_name in field_names)
+
     def get_selected_field_names(self) -> FieldNames:
         return FieldNames(
             [field_name for field_name, check_box in self.__field_name_checkboxes.items() if check_box.isChecked()])
