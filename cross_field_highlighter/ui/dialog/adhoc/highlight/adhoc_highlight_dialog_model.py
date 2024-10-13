@@ -13,7 +13,7 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogModelListener:
     @abstractmethod
-    def model_changed(self):
+    def model_changed(self, source: object):
         pass
 
 
@@ -33,6 +33,6 @@ class AdhocHighlightDialogModel:
     def add_listener(self, listener: AdhocHighlightDialogModelListener):
         self.__listeners.add(listener)
 
-    def fire_model_changed(self):
+    def fire_model_changed(self, source: object):
         for listener in self.__listeners:
-            listener.model_changed()
+            listener.model_changed(source)
