@@ -12,7 +12,7 @@ Text = NewType("Text", str)
 class NoteTypeDetails:
     note_type_id: NotetypeId
     name: str
-    fields: list[FieldName]
+    fields: FieldNames
 
     def __str__(self):
         fields_str: str = ", ".join(self.fields)

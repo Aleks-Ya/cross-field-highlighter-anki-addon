@@ -12,7 +12,7 @@ from .erase_op import EraseOp
 from .highlight_op import HighlightOp
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldName, Word
+from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames
 
 log: Logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class OpFactory:
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                            parent, note_ids, source_field, destination_field, stop_words, highlight_format, callback)
 
-    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], fields: list[FieldName],
+    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], fields: FieldNames,
                         callback: Callable[[], None]) -> EraseOp:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, fields={fields}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,

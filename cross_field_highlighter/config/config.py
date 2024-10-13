@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 from .config_listener import ConfigListener
 from ..highlighter.formatter.highlight_format import HighlightFormat
-from ..highlighter.types import FieldName
+from ..highlighter.types import FieldName, FieldNames
 
 log: Logger = logging.getLogger(__name__)
 
@@ -98,13 +98,12 @@ class Config:
         self.__set(last_note_type, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                    self.__key_4_dialog_erase_last_note_type)
 
-    def get_dialog_adhoc_erase_last_field_names(self) -> list[FieldName]:
+    def get_dialog_adhoc_erase_last_field_names(self) -> FieldNames:
         fields: list[str] = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][
             self.__key_4_dialog_erase_last_field_names]
-        field_names: list[FieldName] = [FieldName(field) for field in fields]
-        return field_names
+        return FieldNames([FieldName(field) for field in fields])
 
-    def set_dialog_adhoc_erase_last_field_names(self, last_field_names: list[FieldName]) -> None:
+    def set_dialog_adhoc_erase_last_field_names(self, last_field_names: FieldNames) -> None:
         self.__set(last_field_names, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                    self.__key_4_dialog_erase_last_field_names)
 

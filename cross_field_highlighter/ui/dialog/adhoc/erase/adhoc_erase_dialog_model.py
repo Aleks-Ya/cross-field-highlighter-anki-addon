@@ -21,7 +21,7 @@ class AdhocEraseDialogModel:
         self.show: bool = False
         self.note_types: list[NoteTypeDetails] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
-        self.selected_fields: list[FieldName] = []
+        self.selected_fields: FieldNames = FieldNames([])
         self.run_op_callback: Optional[Callable[[QWidget, FieldNames], None]] = None
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
