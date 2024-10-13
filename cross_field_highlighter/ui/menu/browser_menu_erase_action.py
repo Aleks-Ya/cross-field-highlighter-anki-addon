@@ -31,7 +31,7 @@ class BrowserMenuEraseAction(BrowserMenuAction):
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
         self.__adhoc_erase_dialog_controller.show_dialog(dialog_params, self.__run_op)
 
-    def __run_op(self, parent: QWidget, destination_filed: FieldName):
+    def __run_op(self, parent: QWidget, destination_filed: list[FieldName]):
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: EraseOp = self.__op_factory.create_erase_op(parent, note_ids, destination_filed, self._reload_current_note)
         op.run_in_background()

@@ -35,8 +35,8 @@ class OpFactory:
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                            parent, note_ids, source_field, destination_field, stop_words, highlight_format, callback)
 
-    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], destination_field: FieldName,
+    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], fields: list[FieldName],
                         callback: Callable[[], None]) -> EraseOp:
-        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, destination_field={destination_field}")
+        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, fields={fields}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       parent, note_ids, destination_field, callback)
+                       parent, note_ids, fields, callback)

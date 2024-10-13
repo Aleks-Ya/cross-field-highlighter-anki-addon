@@ -11,7 +11,7 @@ from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldName
+from cross_field_highlighter.highlighter.types import FieldNames
 
 log: Logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ class EraseOp(QueryOp):
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId],
-                 destination_field: FieldName, callback: Callable[[], None]):
+                 fields: FieldNames, callback: Callable[[], None]):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -31,7 +31,7 @@ class EraseOp(QueryOp):
         self.__progress_manager: ProgressManager = progress_manager
         self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
-        self.__destination_field: FieldName = destination_field
+        self.__destination_fields: FieldNames = fields
         self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -43,7 +43,10 @@ class EraseOp(QueryOp):
         for note_ids_slice in note_ids_slices:
             notes: list[Note] = [self.__col.get_note(note_id) for note_id in note_ids_slice]
             log.debug(f"Original notes: {notes}")
-            highlighted_notes: list[Note] = self.__notes_highlighter.erase(notes, self.__destination_field)
+            highlighted_notes: list[Note] = []
+            for field in self.__destination_fields:
+                processed_notes: list[Note] = self.__notes_highlighter.erase(notes, field)
+                highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_counter += len(highlighted_notes)
