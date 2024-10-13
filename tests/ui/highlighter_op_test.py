@@ -8,7 +8,7 @@ from mock.mock import MagicMock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent, Word
+from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from tests.data import Data, DefaultFields
 
@@ -38,7 +38,7 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     highlight_format: HighlightFormat = HighlightFormat.BOLD
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager,
                                             MagicMock(), note_ids, DefaultFields.word_field_name,
-                                            DefaultFields.text_field_name, stop_words, highlight_format,
+                                            FieldNames([DefaultFields.text_field_name]), stop_words, highlight_format,
                                             lambda: None)
 
     highlight_op.run_in_background()

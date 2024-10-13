@@ -19,7 +19,7 @@ class Config:
     __key_4_dialog_adhoc_last_note_type: str = 'Last Note Type'
     __key_4_dialog_adhoc_last_source_field_name: str = 'Last Source Field Name'
     __key_4_dialog_adhoc_last_format: str = 'Last Format'
-    __key_4_dialog_adhoc_last_destination_field_name: str = 'Last Destination Field Name'
+    __key_4_dialog_adhoc_last_destination_field_names: str = 'Last Destination Field Names'
     __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
 
@@ -81,14 +81,15 @@ class Config:
         self.__set(last_format.name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                    self.__key_4_dialog_adhoc_last_format)
 
-    def get_dialog_adhoc_highlight_last_destination_field_name(self) -> Optional[FieldName]:
-        field: str = self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
-            self.__key_4_dialog_adhoc_last_destination_field_name]
-        return FieldName(field) if field else None
+    def get_dialog_adhoc_highlight_last_destination_field_names(self) -> FieldNames:
+        fields: list[str] = \
+        self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
+            self.__key_4_dialog_adhoc_last_destination_field_names]
+        return FieldNames([FieldName(field) for field in fields])
 
-    def set_dialog_adhoc_highlight_last_destination_field_name(self, last_destination_field_name: FieldName) -> None:
-        self.__set(last_destination_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_name)
+    def set_dialog_adhoc_highlight_last_destination_field_names(self, fields: FieldNames) -> None:
+        self.__set(fields, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_names)
 
     def get_dialog_adhoc_erase_last_note_type(self) -> str:
         return self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_erase][

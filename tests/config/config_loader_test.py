@@ -8,7 +8,7 @@ from aqt.addons import AddonManager
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 
 
 def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
@@ -25,7 +25,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Name": None},
+                "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": []}}}}
@@ -38,7 +38,7 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -56,7 +56,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": "ITALIC",
-                "Last Destination Field Name": None},
+                "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": []}}}}
@@ -69,7 +69,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}},
@@ -82,7 +82,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -96,7 +96,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}, module_dir)
@@ -107,7 +107,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -118,7 +118,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -129,7 +129,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -143,16 +143,16 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Name": None},
+                "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": []}}}}
     config.set_dialog_adhoc_highlight_last_note_type("Basic")
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
-    config.set_dialog_adhoc_highlight_last_destination_field_name(FieldName("Examples"))
+    config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_erase_last_note_type("Cloze")
-    config.set_dialog_adhoc_erase_last_field_names([FieldName("Sentences")])
+    config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
     config_loader.write_config(config)
     act_config: Config = config_loader.load_config()
     assert act_config.get_as_dict() == {
@@ -161,7 +161,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}

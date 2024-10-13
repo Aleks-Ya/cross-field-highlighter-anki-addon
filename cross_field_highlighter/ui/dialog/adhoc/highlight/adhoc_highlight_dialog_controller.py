@@ -8,7 +8,7 @@ from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
@@ -29,7 +29,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[
-        [QWidget, FieldName, FieldName, set[str], HighlightFormat], None]) -> None:
+        [QWidget, FieldName, FieldNames, set[str], HighlightFormat], None]) -> None:
 
         log.debug(f"Show dialog: {params}")
         self.__model.show = True
@@ -51,9 +51,9 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             if last_format:
                 self.__model.selected_format = last_format
 
-            last_destination_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_destination_field_name()
-            if last_destination_field in self.__model.selected_note_type.fields:
-                self.__model.selected_destination_field = last_destination_field
+            last_destination_fields: FieldNames = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
+            if last_destination_fields in self.__model.selected_note_type.fields:
+                self.__model.selected_destination_fields = last_destination_fields
 
         self.__model.fire_model_changed(self)
 
@@ -63,8 +63,8 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             self.__config.set_dialog_adhoc_highlight_last_note_type(self.__model.selected_note_type.name)
             self.__config.set_dialog_adhoc_highlight_last_source_field_name(self.__model.selected_source_field)
             self.__config.set_dialog_adhoc_highlight_last_format(self.__model.selected_format)
-            self.__config.set_dialog_adhoc_highlight_last_destination_field_name(
-                self.__model.selected_destination_field)
+            self.__config.set_dialog_adhoc_highlight_last_destination_field_names(
+                self.__model.selected_destination_fields)
             self.__config_loader.write_config(self.__config)
 
     def __repr__(self):

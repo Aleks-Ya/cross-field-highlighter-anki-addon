@@ -4,7 +4,8 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName, Word, NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldName, Word, NoteTypeDetails, FieldNames
+from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
@@ -65,8 +66,8 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
                 self.__source_field_combo_box.set_current_text(self.__model.selected_source_field)
             if self.__model.selected_format:
                 self.__format_combo_box.set_current_text(self.__model.selected_format.name)
-            if self.__model.selected_destination_field:
-                self.__destination_field_combo_box.set_current_text(self.__model.selected_destination_field)
+            if self.__model.selected_destination_fields:
+                self.__destination_fields_vbox.select_fields(self.__model.selected_destination_fields)
 
             # noinspection PyUnresolvedReferences
             self.show()
@@ -74,9 +75,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
-        field_names: list[str] = self.__model.note_types[index].fields
+        field_names: FieldNames = self.__model.note_types[index].fields
         self.__source_field_combo_box.set_items(field_names)
-        self.__destination_field_combo_box.set_items(field_names)
+        self.__destination_fields_vbox.set_items(field_names)
 
     def __create_source_widget(self):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
@@ -101,9 +102,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         return group_box
 
     def __create_destination_widget(self):
-        self.__destination_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
+        self.__destination_fields_vbox: FieldsLayout = FieldsLayout()
         group_layout: QVBoxLayout = QVBoxLayout()
-        group_layout.addLayout(self.__destination_field_combo_box)
+        group_layout.addLayout(self.__destination_fields_vbox)
         group_box: QGroupBox = QGroupBox("Destination")
         group_box.setLayout(group_layout)
         return group_box
@@ -111,7 +112,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
     def __accept(self) -> None:
         log.info("Starting")
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
-        destination_filed: FieldName = FieldName(self.__destination_field_combo_box.get_current_text())
+        destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
         highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
 
@@ -121,11 +122,11 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__model.selected_note_type = note_type
         self.__model.selected_source_field = source_filed
         self.__model.selected_format = highlight_format
-        self.__model.selected_destination_field = destination_filed
+        self.__model.selected_destination_fields = destination_fields
         self.__model.fire_model_changed(self)
 
         self.hide()
-        self.__model.run_op_callback(self.parent(), source_filed, destination_filed, stop_words, highlight_format)
+        self.__model.run_op_callback(self.parent(), source_filed, destination_fields, stop_words, highlight_format)
 
     def __reject(self) -> None:
         log.info("Cancelled")

@@ -6,7 +6,7 @@ from aqt import qconnect, QWidget
 from aqt.browser import Browser
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName, Word
+from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
@@ -33,9 +33,9 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
         self.__adhoc_highlight_dialog_controller.show_dialog(dialog_params, self.__run_op)
 
-    def __run_op(self, parent: QWidget, source_filed: FieldName, destination_filed: FieldName,
+    def __run_op(self, parent: QWidget, source_filed: FieldName, destination_fileds: FieldNames,
                  stop_words: set[Word], highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: HighlightOp = self.__op_factory.create_highlight_op(
-            parent, note_ids, source_filed, destination_filed, stop_words, highlight_format, self._reload_current_note)
+            parent, note_ids, source_filed, destination_fileds, stop_words, highlight_format, self._reload_current_note)
         op.run_in_background()

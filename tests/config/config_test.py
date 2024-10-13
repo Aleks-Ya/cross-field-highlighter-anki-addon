@@ -1,7 +1,7 @@
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 from tests.data import Data
 
 
@@ -21,23 +21,23 @@ def test_setters(td: Data):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Name": None},
+                "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": []}}}}
     config.set_dialog_adhoc_highlight_last_note_type("Basic")
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
-    config.set_dialog_adhoc_highlight_last_destination_field_name(FieldName("Examples"))
+    config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_erase_last_note_type("Cloze")
-    config.set_dialog_adhoc_erase_last_field_names([FieldName("Sentences")])
+    config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
-                "Last Destination Field Name": "Examples"},
+                "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}

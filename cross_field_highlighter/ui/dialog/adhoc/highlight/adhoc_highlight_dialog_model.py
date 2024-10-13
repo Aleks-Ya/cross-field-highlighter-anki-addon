@@ -6,7 +6,7 @@ from typing import Optional, Callable
 from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
+from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
 
 log: Logger = logging.getLogger(__name__)
 
@@ -25,9 +25,9 @@ class AdhocHighlightDialogModel:
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: Optional[FieldName] = None
         self.selected_format: Optional[HighlightFormat] = None
-        self.selected_destination_field: Optional[FieldName] = None
+        self.selected_destination_fields: FieldNames = FieldNames([])
         self.run_op_callback: Optional[
-            Callable[[QWidget, FieldName, FieldName, set[str], HighlightFormat], None]] = None
+            Callable[[QWidget, FieldName, FieldNames, set[str], HighlightFormat], None]] = None
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
