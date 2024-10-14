@@ -11,7 +11,7 @@ from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlightResult
 from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames, Notes
 
 log: Logger = logging.getLogger(__name__)
@@ -50,8 +50,9 @@ class HighlightOp(QueryOp):
             log.debug(f"Original notes: {notes}")
             highlighted_notes: Notes = Notes([])
             for destination_field in self.__destination_fields:
-                processed_notes: Notes = self.__notes_highlighter.highlight(
+                notes_highlight_result: NotesHighlightResult = self.__notes_highlighter.highlight(
                     notes, self.__source_field, destination_field, self.__stop_words, self.__highlight_format)
+                processed_notes: Notes = notes_highlight_result.notes
                 highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
