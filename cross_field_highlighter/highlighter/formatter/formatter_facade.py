@@ -1,17 +1,17 @@
-from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
-from cross_field_highlighter.highlighter.formatter.mark_formatter import MarkFormatter
-from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
+from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
 
 
 class FormatterFacade:
-    def __init__(self, bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter,
-                 underline_formatter: UnderlineFormatter, mark_formatter: MarkFormatter, tokenizer: Tokenizer):
+    def __init__(self, tokenizer: Tokenizer):
         self.__tokenizer: Tokenizer = tokenizer
+        bold_formatter: TagFormatter = TagFormatter(f'<b class="{TagFormatter.css_class}">', "</b>")
+        italic_formatter: TagFormatter = TagFormatter(f'<i class="{TagFormatter.css_class}">', "</i>")
+        underline_formatter: TagFormatter = TagFormatter(f'<u class="{TagFormatter.css_class}">', "</u>")
+        mark_formatter: TagFormatter = TagFormatter(f'<mark class="{TagFormatter.css_class}">', "</mark>")
         self.__formatters: list[Formatter] = [bold_formatter, italic_formatter,
                                               underline_formatter, mark_formatter]
         self.__formatter_dict: dict[HighlightFormat, Formatter] = {

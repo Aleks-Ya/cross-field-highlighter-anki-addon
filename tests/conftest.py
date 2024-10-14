@@ -15,11 +15,7 @@ from mock.mock import MagicMock
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
-from cross_field_highlighter.highlighter.formatter.bold_formatter import BoldFormatter
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.italic_formatter import ItalicFormatter
-from cross_field_highlighter.highlighter.formatter.mark_formatter import MarkFormatter
-from cross_field_highlighter.highlighter.formatter.underline_formatter import UnderlineFormatter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
@@ -73,30 +69,8 @@ def notes_highlighter(start_with_note_highlighter: StartWithNoteHighlighter) -> 
 
 
 @pytest.fixture
-def bold_formatter() -> BoldFormatter:
-    return BoldFormatter()
-
-
-@pytest.fixture
-def underline_formatter() -> UnderlineFormatter:
-    return UnderlineFormatter()
-
-
-@pytest.fixture
-def italic_formatter() -> ItalicFormatter:
-    return ItalicFormatter()
-
-
-@pytest.fixture
-def mark_formatter() -> MarkFormatter:
-    return MarkFormatter()
-
-
-@pytest.fixture
-def formatter_facade(bold_formatter: BoldFormatter, italic_formatter: ItalicFormatter,
-                     underline_formatter: UnderlineFormatter, mark_formatter: MarkFormatter,
-                     regex_tokenizer: RegExTokenizer) -> FormatterFacade:
-    return FormatterFacade(bold_formatter, italic_formatter, underline_formatter, mark_formatter, regex_tokenizer)
+def formatter_facade(regex_tokenizer: RegExTokenizer) -> FormatterFacade:
+    return FormatterFacade(regex_tokenizer)
 
 
 @pytest.fixture

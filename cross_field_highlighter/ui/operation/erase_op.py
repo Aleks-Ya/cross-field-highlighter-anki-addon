@@ -12,6 +12,7 @@ from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.types import FieldNames
+from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
 
 log: Logger = logging.getLogger(__name__)
 
@@ -33,11 +34,16 @@ class EraseOp(QueryOp):
         self.__note_ids: set[NoteId] = note_ids
         self.__destination_fields: FieldNames = fields
         self.__callback: Callable[[], None] = callback
+        self.__statistics: EraseOpStatistics = EraseOpStatistics()
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def get_statistics(self) -> EraseOpStatistics:
+        return self.__statistics
 
     def __background_op(self, _: Collection) -> int:
         c: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
+        self.__statistics.set_notes_selected(len(note_ids_list))
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:

@@ -83,8 +83,8 @@ class Config:
 
     def get_dialog_adhoc_highlight_last_destination_field_names(self) -> FieldNames:
         fields: list[str] = \
-        self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
-            self.__key_4_dialog_adhoc_last_destination_field_names]
+            self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
+                self.__key_4_dialog_adhoc_last_destination_field_names]
         return FieldNames([FieldName(field) for field in fields])
 
     def set_dialog_adhoc_highlight_last_destination_field_names(self, fields: FieldNames) -> None:
