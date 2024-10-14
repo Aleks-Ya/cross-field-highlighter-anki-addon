@@ -1,5 +1,6 @@
 import time
 
+from aqt import QWidget
 from anki.collection import Collection
 from anki.notes import Note, NoteId
 from aqt.progress import ProgressManager
@@ -8,7 +9,7 @@ from mock.mock import MagicMock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames, Notes
+from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames, Notes, FieldName
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from tests.data import Data, DefaultFields
 
@@ -36,10 +37,12 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()
     highlight_format: HighlightFormat = HighlightFormat.BOLD
-    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager,
-                                            MagicMock(), note_ids, DefaultFields.word_field_name,
-                                            FieldNames([DefaultFields.text_field_name]), stop_words, highlight_format,
-                                            lambda: None)
+    source_field: FieldName = DefaultFields.word_field_name
+    fields: FieldNames = FieldNames([DefaultFields.text_field_name])
+    parent: QWidget = MagicMock()
+
+    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, parent, note_ids,
+                                            source_field, fields, stop_words, highlight_format, lambda: None)
 
     highlight_op.run_in_background()
     time.sleep(1)
