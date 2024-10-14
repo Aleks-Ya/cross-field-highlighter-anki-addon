@@ -10,7 +10,7 @@ from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
-from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldNames, Notes
 from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
 
@@ -51,7 +51,8 @@ class EraseOp(QueryOp):
             log.debug(f"Original notes: {notes}")
             highlighted_notes: Notes = Notes([])
             for field in self.__destination_fields:
-                processed_notes: Notes = self.__notes_highlighter.erase(notes, field)
+                result: NotesHighlighterResult = self.__notes_highlighter.erase(notes, field)
+                processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
