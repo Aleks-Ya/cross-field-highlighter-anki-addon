@@ -2,7 +2,7 @@ import logging
 from logging import Logger
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter, NoteHighlighterResult
+from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter, NoteHighlightResult
 from cross_field_highlighter.highlighter.types import FieldName, Word, Notes
 
 log: Logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ class NotesHighlighter:
 
     def highlight(self, notes: Notes, source_field: FieldName, destination_field: FieldName,
                   stop_words: set[Word], highlight_format: HighlightFormat) -> NotesHighlightResult:
-        note_highlight_results: list[NoteHighlighterResult] = [
+        note_highlight_results: list[NoteHighlightResult] = [
             self.__note_highlighter.highlight(note, source_field, destination_field, stop_words, highlight_format)
             for note in notes]
         modified_notes: int = len([result for result in note_highlight_results if result.was_modified()])
@@ -35,4 +35,4 @@ class NotesHighlighter:
         return NotesHighlightResult(highlighted_notes, total_notes, modified_notes)
 
     def erase(self, notes: Notes, destination_field: FieldName) -> Notes:
-        return Notes([self.__note_highlighter.erase(note, destination_field) for note in notes])
+        return Notes([self.__note_highlighter.erase(note, destination_field).note for note in notes])
