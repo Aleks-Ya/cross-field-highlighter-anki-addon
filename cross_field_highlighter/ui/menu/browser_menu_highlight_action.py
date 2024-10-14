@@ -33,9 +33,9 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
         self.__adhoc_highlight_dialog_controller.show_dialog(dialog_params, self.__run_op)
 
-    def __run_op(self, parent: QWidget, source_filed: FieldName, destination_fileds: FieldNames,
+    def __run_op(self, parent: QWidget, source_filed: FieldName, destination_fields: FieldNames,
                  stop_words: set[Word], highlight_format: HighlightFormat):
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: HighlightOp = self.__op_factory.create_highlight_op(
-            parent, note_ids, source_filed, destination_fileds, stop_words, highlight_format, self._reload_current_note)
+            parent, note_ids, source_filed, destination_fields, stop_words, highlight_format, self._reload_current_note)
         op.run_in_background()
