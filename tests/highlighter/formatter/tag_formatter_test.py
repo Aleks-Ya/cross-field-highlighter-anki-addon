@@ -6,7 +6,7 @@ from cross_field_highlighter.highlighter.types import Word, Text
 
 @pytest.fixture
 def tag_formatter() -> TagFormatter:
-    return TagFormatter(f'<b class="{TagFormatter.css_class}">', "</b>")
+    return TagFormatter("b")
 
 
 def test_highlight(tag_formatter: TagFormatter):

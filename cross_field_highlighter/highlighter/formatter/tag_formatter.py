@@ -5,11 +5,11 @@ from cross_field_highlighter.highlighter.types import Word, Text
 
 
 class TagFormatter(Formatter):
-    css_class: str = "cross-field-highlighter"
+    __css_class: str = "cross-field-highlighter"
 
-    def __init__(self, prefix: str, suffix: str):
-        self.__prefix: str = prefix
-        self.__suffix: str = suffix
+    def __init__(self, tag: str):
+        self.__prefix: str = f'<{tag} class="{TagFormatter.__css_class}">'
+        self.__suffix: str = f'</{tag}>'
 
     def highlight(self, word: Word) -> Word:
         already_highlighted: bool = self.__prefix in word and self.__suffix in word

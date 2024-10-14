@@ -8,12 +8,11 @@ from cross_field_highlighter.highlighter.types import Text, Word
 class FormatterFacade:
     def __init__(self, tokenizer: Tokenizer):
         self.__tokenizer: Tokenizer = tokenizer
-        bold_formatter: TagFormatter = TagFormatter(f'<b class="{TagFormatter.css_class}">', "</b>")
-        italic_formatter: TagFormatter = TagFormatter(f'<i class="{TagFormatter.css_class}">', "</i>")
-        underline_formatter: TagFormatter = TagFormatter(f'<u class="{TagFormatter.css_class}">', "</u>")
-        mark_formatter: TagFormatter = TagFormatter(f'<mark class="{TagFormatter.css_class}">', "</mark>")
-        self.__formatters: list[Formatter] = [bold_formatter, italic_formatter,
-                                              underline_formatter, mark_formatter]
+        bold_formatter: TagFormatter = TagFormatter("b")
+        italic_formatter: TagFormatter = TagFormatter("i")
+        underline_formatter: TagFormatter = TagFormatter("u")
+        mark_formatter: TagFormatter = TagFormatter("mark")
+        self.__formatters: list[Formatter] = [bold_formatter, italic_formatter, underline_formatter, mark_formatter]
         self.__formatter_dict: dict[HighlightFormat, Formatter] = {
             HighlightFormat.BOLD: bold_formatter,
             HighlightFormat.ITALIC: italic_formatter,
