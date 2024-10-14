@@ -54,6 +54,8 @@ class EraseOp(QueryOp):
                 result: NotesHighlighterResult = self.__notes_highlighter.erase(notes, field)
                 processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
+                self.__statistics.increment_notes_processed(len(processed_notes))
+                self.__statistics.increment_notes_modified(result.modified_notes)
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_counter += len(highlighted_notes)
