@@ -3,7 +3,7 @@ from logging import Logger
 from typing import Optional, Callable
 
 from anki.collection import Collection
-from anki.notes import NoteId, Note
+from anki.notes import NoteId
 from aqt import QWidget
 from aqt.operations import QueryOp
 from aqt.progress import ProgressManager
@@ -11,7 +11,7 @@ from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldNames
+from cross_field_highlighter.highlighter.types import FieldNames, Notes
 from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
 
 log: Logger = logging.getLogger(__name__)
@@ -47,11 +47,11 @@ class EraseOp(QueryOp):
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
-            notes: list[Note] = [self.__col.get_note(note_id) for note_id in note_ids_slice]
+            notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"Original notes: {notes}")
-            highlighted_notes: list[Note] = []
+            highlighted_notes: Notes = Notes([])
             for field in self.__destination_fields:
-                processed_notes: list[Note] = self.__notes_highlighter.erase(notes, field)
+                processed_notes: Notes = self.__notes_highlighter.erase(notes, field)
                 highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")

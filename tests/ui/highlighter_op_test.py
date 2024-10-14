@@ -8,7 +8,7 @@ from mock.mock import MagicMock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames
+from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames, Notes
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from tests.data import Data, DefaultFields
 
@@ -32,7 +32,7 @@ def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent,
 def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                          progress_manager: ProgressManager, td: Data):
     notes_list: list[(Note, FieldContent, FieldContent)] = td.create_case_notes()
-    notes: list[Note] = [note_tuple[0] for note_tuple in notes_list]
+    notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()
     highlight_format: HighlightFormat = HighlightFormat.BOLD

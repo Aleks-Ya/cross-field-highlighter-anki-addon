@@ -3,7 +3,7 @@ from logging import Logger
 from typing import Optional, Callable
 
 from anki.collection import Collection
-from anki.notes import NoteId, Note
+from anki.notes import NoteId
 from aqt import QWidget
 from aqt.operations import QueryOp
 from aqt.progress import ProgressManager
@@ -12,7 +12,7 @@ from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames
+from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames, Notes
 
 log: Logger = logging.getLogger(__name__)
 
@@ -46,11 +46,11 @@ class HighlightOp(QueryOp):
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
-            notes: list[Note] = [self.__col.get_note(note_id) for note_id in note_ids_slice]
+            notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"Original notes: {notes}")
-            highlighted_notes: list[Note] = []
+            highlighted_notes: Notes = Notes([])
             for destination_field in self.__destination_fields:
-                processed_notes: list[Note] = self.__notes_highlighter.highlight(
+                processed_notes: Notes = self.__notes_highlighter.highlight(
                     notes, self.__source_field, destination_field, self.__stop_words, self.__highlight_format)
                 highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
