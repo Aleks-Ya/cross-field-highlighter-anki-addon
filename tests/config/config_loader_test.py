@@ -7,7 +7,7 @@ from aqt.addons import AddonManager
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 
 
@@ -149,7 +149,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Field Names": []}}}}
     config.set_dialog_adhoc_highlight_last_note_type("Basic")
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
-    config.set_dialog_adhoc_highlight_last_format(HighlightFormat.BOLD)
+    config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_erase_last_note_type("Cloze")
     config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))

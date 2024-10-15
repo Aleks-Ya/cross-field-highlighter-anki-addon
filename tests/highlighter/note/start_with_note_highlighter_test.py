@@ -7,7 +7,7 @@ from cross_field_highlighter.highlighter.types import FieldContent, Word
 from tests.data import Data, DefaultFields
 
 
-def test_cases(start_with_note_highlighter: StartWithNoteHighlighter, td: Data):
+def test_cases(start_with_note_highlighter: StartWithNoteHighlighter, td: Data, bold_format: HighlightFormat):
     for case in td.cases():
         print(f"Case: {case.name}")
 
@@ -16,13 +16,13 @@ def test_cases(start_with_note_highlighter: StartWithNoteHighlighter, td: Data):
 
         # Highlight 1st time
         result: NoteHighlightResult = start_with_note_highlighter.highlight(
-            note, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words, HighlightFormat.BOLD)
+            note, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words, bold_format)
         note_act: Note = result.note
         assert note_act[DefaultFields.text_field_name] == case.highlighted_text
 
         # Highlight again
         result: NoteHighlightResult = start_with_note_highlighter.highlight(
-            note, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words, HighlightFormat.BOLD)
+            note, DefaultFields.word_field_name, DefaultFields.text_field_name, stop_words, bold_format)
         note_act: Note = result.note
         assert note_act[DefaultFields.text_field_name] == case.highlighted_text
 

@@ -1,5 +1,5 @@
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
@@ -13,11 +13,17 @@ class FormatterFacade:
         underline_formatter: TagFormatter = TagFormatter("u")
         mark_formatter: TagFormatter = TagFormatter("mark")
         self.__formatters: list[Formatter] = [bold_formatter, italic_formatter, underline_formatter, mark_formatter]
+        self.__format_dict: dict[HighlightFormatCode, HighlightFormat] = {
+            HighlightFormatCode.BOLD: HighlightFormat("Bold", HighlightFormatCode.BOLD),
+            HighlightFormatCode.ITALIC: HighlightFormat("Italic", HighlightFormatCode.ITALIC),
+            HighlightFormatCode.UNDERLINE: HighlightFormat("Underline", HighlightFormatCode.UNDERLINE),
+            HighlightFormatCode.MARK: HighlightFormat("Yellow background", HighlightFormatCode.MARK)
+        }
         self.__formatter_dict: dict[HighlightFormat, Formatter] = {
-            HighlightFormat.BOLD: bold_formatter,
-            HighlightFormat.ITALIC: italic_formatter,
-            HighlightFormat.UNDERLINE: underline_formatter,
-            HighlightFormat.MARK: mark_formatter
+            self.__format_dict[HighlightFormatCode.BOLD]: bold_formatter,
+            self.__format_dict[HighlightFormatCode.ITALIC]: italic_formatter,
+            self.__format_dict[HighlightFormatCode.UNDERLINE]: underline_formatter,
+            self.__format_dict[HighlightFormatCode.MARK]: mark_formatter
         }
 
     def format(self, word: Word, highlight_format: HighlightFormat) -> Word:
@@ -35,3 +41,6 @@ class FormatterFacade:
 
     def get_all_formats(self) -> list[HighlightFormat]:
         return list(self.__formatter_dict.keys())
+
+    def get_format_by_code(self, highlight_format_code: HighlightFormatCode) -> HighlightFormat:
+        return self.__format_dict[highlight_format_code]

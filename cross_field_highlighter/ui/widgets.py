@@ -1,4 +1,4 @@
-from typing import Optional, Callable
+from typing import Optional, Callable, Any
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox, QLineEdit
 
@@ -25,8 +25,14 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.clear()
         self.__combo_box.addItems(items)
 
+    def add_item(self, item: str, data: Any) -> None:
+        self.__combo_box.addItem(item, data)
+
     def get_current_text(self) -> str:
         return self.__combo_box.currentText()
+
+    def get_current_data(self) -> Any:
+        return self.__combo_box.currentData()
 
 
 class TitledLineEditLayout(QHBoxLayout):

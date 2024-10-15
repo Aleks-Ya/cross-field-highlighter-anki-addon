@@ -31,18 +31,17 @@ def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent,
 
 
 def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                         progress_manager: ProgressManager, td: Data):
+                         progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat):
     notes_list: list[(Note, FieldContent, FieldContent)] = td.create_case_notes()
     notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()
-    highlight_format: HighlightFormat = HighlightFormat.BOLD
     source_field: FieldName = DefaultFields.word_field_name
     fields: FieldNames = FieldNames([DefaultFields.text_field_name])
     parent: QWidget = MagicMock()
 
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, parent, note_ids,
-                                            source_field, fields, stop_words, highlight_format, lambda: None)
+                                            source_field, fields, stop_words, bold_format, lambda: None)
 
     highlight_op.run_in_background()
     time.sleep(1)

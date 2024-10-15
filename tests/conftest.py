@@ -16,6 +16,7 @@ from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
@@ -151,3 +152,8 @@ def logs_dir(base_dir: Path, module_name: str) -> Path:
 @pytest.fixture
 def url_manager() -> UrlManager:
     return UrlManager()
+
+
+@pytest.fixture
+def bold_format(formatter_facade: FormatterFacade) -> HighlightFormat:
+    return formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)

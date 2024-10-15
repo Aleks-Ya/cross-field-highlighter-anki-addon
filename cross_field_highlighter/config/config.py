@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from .config_listener import ConfigListener
-from ..highlighter.formatter.highlight_format import HighlightFormat
+from ..highlighter.formatter.highlight_format import HighlightFormatCode
 from ..highlighter.types import FieldName, FieldNames
 
 log: Logger = logging.getLogger(__name__)
@@ -71,15 +71,15 @@ class Config:
         self.__set(last_source_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_source_field_name)
 
-    def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormat]:
-        highlight_format: str = \
+    def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormatCode]:
+        highlight_format_code: str = \
             self.__config[self.__key_1_dialog][self.__key_2_dialog_adhoc][self.__key_3_dialog_highlight][
                 self.__key_4_dialog_adhoc_last_format]
-        return HighlightFormat(highlight_format) if highlight_format else None
+        return HighlightFormatCode(highlight_format_code) if highlight_format_code else None
 
-    def set_dialog_adhoc_highlight_last_format(self, last_format: HighlightFormat) -> None:
-        self.__set(last_format.name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-                   self.__key_4_dialog_adhoc_last_format)
+    def set_dialog_adhoc_highlight_last_format(self, last_format_code: HighlightFormatCode) -> None:
+        self.__set(last_format_code.name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_format)
 
     def get_dialog_adhoc_highlight_last_destination_field_names(self) -> FieldNames:
         fields: list[str] = \

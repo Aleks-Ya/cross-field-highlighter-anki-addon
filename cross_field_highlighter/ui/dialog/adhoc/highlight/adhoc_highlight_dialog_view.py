@@ -58,8 +58,8 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
             note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
             self.__note_type_combo_box.set_items(note_type_names)
 
-            format_names: list[str] = [highlight_format.name for highlight_format in self.__model.formats]
-            self.__format_combo_box.set_items(format_names)
+            for highlight_format in self.__model.formats:
+                self.__format_combo_box.add_item(highlight_format.name, highlight_format)
 
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
@@ -115,7 +115,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
-        highlight_format: HighlightFormat = HighlightFormat(self.__format_combo_box.get_current_text())
+        highlight_format: HighlightFormat = self.__format_combo_box.get_current_data()
 
         note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                        self.__model.note_types}
