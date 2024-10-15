@@ -4,14 +4,13 @@ from typing import Callable
 
 from anki.collection import Collection
 from anki.notes import NoteId
-from aqt import QWidget
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 
 from .erase_op import EraseOp
+from .erase_op_params import EraseOpParams
 from .highlight_op import HighlightOp
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldNames
 from .highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
@@ -33,8 +32,8 @@ class OpFactory:
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                            note_ids, highlight_op_params, callback)
 
-    def create_erase_op(self, parent: QWidget, note_ids: set[NoteId], fields: FieldNames,
+    def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
                         callback: Callable[[], None]) -> EraseOp:
-        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, fields={fields}")
+        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, params={erase_op_params}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       parent, note_ids, fields, callback)
+                       note_ids, erase_op_params, callback)

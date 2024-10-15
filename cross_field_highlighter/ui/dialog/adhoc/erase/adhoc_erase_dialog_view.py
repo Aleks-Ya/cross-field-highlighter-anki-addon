@@ -7,6 +7,7 @@ from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
+from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
@@ -84,7 +85,8 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         self.__model.selected_fields = fields
         self.__model.fire_model_changed(self)
         self.hide()
-        self.__model.run_op_callback(self.parent(), fields)
+        erase_op_params: EraseOpParams = EraseOpParams(self.parent(), fields)
+        self.__model.run_op_callback(erase_op_params)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __reject(self) -> None:

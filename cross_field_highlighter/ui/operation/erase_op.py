@@ -12,6 +12,7 @@ from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldNames, Notes
+from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
 
 log: Logger = logging.getLogger(__name__)
@@ -21,18 +22,18 @@ class EraseOp(QueryOp):
     __progress_dialog_title: str = '"Note Size" addon'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId],
-                 fields: FieldNames, callback: Callable[[], None]):
-        super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
+                 progress_manager: ProgressManager, note_ids: set[NoteId],
+                 erase_op_params: EraseOpParams, callback: Callable[[], None]):
+        super().__init__(parent=erase_op_params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
         self.__col: Collection = col
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
-        self.__parent: QWidget = parent
+        self.__parent: QWidget = erase_op_params.parent
         self.__note_ids: set[NoteId] = note_ids
-        self.__destination_fields: FieldNames = fields
+        self.__destination_fields: FieldNames = erase_op_params.fields
         self.__callback: Callable[[], None] = callback
         self.__statistics: EraseOpStatistics = EraseOpStatistics()
         log.debug(f"{self.__class__.__name__} was instantiated")

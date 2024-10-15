@@ -11,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model impo
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
 log: Logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         self.__callback: Callable[[QWidget, FieldName], None]
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def show_dialog(self, params: DialogParams, run_on_callback: Callable[[QWidget, FieldNames], None]) -> None:
+    def show_dialog(self, params: DialogParams, run_on_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__model.show = True
         self.__model.note_types = params.note_types
