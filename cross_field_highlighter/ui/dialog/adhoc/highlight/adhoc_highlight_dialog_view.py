@@ -85,7 +85,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
-            "Stop words:", text="a an to", clear_button_enabled=True)
+            "Exclude words:", text="a an to", clear_button_enabled=True)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__source_field_combo_box)
