@@ -28,7 +28,10 @@ class ConfigLoader:
         return config
 
     def get_defaults(self) -> Optional[dict[str, Any]]:
-        return self.__addon_manager.addonConfigDefaults(self.__module_name)
+        defaults: Optional[dict[str, Any]] = self.__addon_manager.addonConfigDefaults(self.__module_name)
+        log.debug(f"Getting defaults for module {self.__module_name}: {defaults}")
+        return defaults
 
     def write_config(self, config: Config) -> None:
+        log.debug(f"Writing config for module {self.__module_name}: {config}")
         self.__addon_manager.writeConfig(self.__module_name, config.get_as_dict())
