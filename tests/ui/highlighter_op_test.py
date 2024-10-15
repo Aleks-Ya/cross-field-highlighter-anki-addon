@@ -19,7 +19,7 @@ def __assert_highlighted_notes(col: Collection, contents: list[(Note, FieldConte
         exp_note: Note = content_tuple[0]
         act_note: Note = col.get_note(exp_note.id)
         highlighted_content: FieldContent = content_tuple[2]
-        assert act_note[DefaultFields.text_field_name] == highlighted_content
+        assert act_note[DefaultFields.basic_back_field] == highlighted_content
 
 
 def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent, FieldContent)]) -> None:
@@ -27,7 +27,7 @@ def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent,
         exp_note: Note = content_tuple[0]
         act_note: Note = col.get_note(exp_note.id)
         original_content: FieldContent = content_tuple[1]
-        assert act_note[DefaultFields.text_field_name] == original_content
+        assert act_note[DefaultFields.basic_back_field] == original_content
 
 
 def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -36,8 +36,8 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()
-    source_field: FieldName = DefaultFields.word_field_name
-    fields: FieldNames = FieldNames([DefaultFields.text_field_name])
+    source_field: FieldName = DefaultFields.basic_front_field
+    fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
     parent: QWidget = MagicMock()
 
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, parent, note_ids,

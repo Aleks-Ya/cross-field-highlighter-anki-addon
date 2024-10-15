@@ -25,6 +25,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
 
@@ -53,8 +54,9 @@ def __initialize(col: Collection):
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, config, config_loader)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager)
+    dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
-                                               adhoc_erase_dialog_controller)
+                                               adhoc_erase_dialog_controller, dialog_params_factory)
     browser_hooks.setup_hooks()
 
 

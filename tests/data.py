@@ -12,8 +12,10 @@ from cross_field_highlighter.highlighter.types import FieldContent, FieldName, T
 
 
 class DefaultFields:
-    word_field_name: FieldName = FieldName('Front')
-    text_field_name: FieldName = FieldName('Back')
+    basic_front_field: FieldName = FieldName('Front')
+    basic_back_field: FieldName = FieldName('Back')
+    cloze_text_field: FieldName = FieldName('Text')
+    cloze_extra_field: FieldName = FieldName('Back Extra')
 
 
 class Case:
@@ -26,28 +28,49 @@ class Case:
 
 class Data:
 
-    def __init__(self, col: Collection, module_dir: Path):
+    def __init__(self, col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType):
         self.col: Collection = col
-        self.note_type: NoteType = self.col.models.by_name('Basic')
+        self.basic_note_type: NoteType = basic_note_type
+        self.cloze_note_type: NoteType = cloze_note_type
         self.deck_id: DeckId = self.col.decks.get_current_id()
         self.config_json: Path = module_dir.joinpath("config.json")
 
-    def create_note_with_fields(self,
-                                word_field_content: FieldContent = "Word content",
-                                text_field_content: FieldContent = "Text content",
-                                new_note: bool = False) -> Note:
-        note: Note = self.col.new_note(self.note_type)
-        note[DefaultFields.word_field_name] = word_field_content
-        note[DefaultFields.text_field_name] = text_field_content
+    def create_basic_note_1(self,
+                            front_field_content: FieldContent = "Word content",
+                            back_field_content: FieldContent = "Text content",
+                            new_note: bool = False) -> Note:
+        note: Note = self.col.new_note(self.basic_note_type)
+        note[DefaultFields.basic_front_field] = front_field_content
+        note[DefaultFields.basic_back_field] = back_field_content
+        if not new_note:
+            self.col.add_note(note, self.deck_id)
+        gui_hooks.add_cards_did_add_note(note)
+        return note
+
+    def create_basic_note_2(self,
+                            front_field_content: FieldContent = "Front content 2",
+                            back_field_content: FieldContent = "Back content 2",
+                            new_note: bool = False) -> Note:
+        return self.create_basic_note_1(front_field_content=front_field_content,
+                                        back_field_content=back_field_content,
+                                        new_note=new_note)
+
+    def create_cloze_note(self,
+                          text_field_content: FieldContent = "Text content",
+                          extra_field_content: FieldContent = "Extra content",
+                          new_note: bool = False) -> Note:
+        note: Note = self.col.new_note(self.cloze_note_type)
+        note[DefaultFields.cloze_text_field] = text_field_content
+        note[DefaultFields.cloze_extra_field] = extra_field_content
         if not new_note:
             self.col.add_note(note, self.deck_id)
         gui_hooks.add_cards_did_add_note(note)
         return note
 
     def create_note(self, new_note: bool = False) -> Note:
-        return self.create_note_with_fields(FieldContent('Front field content'),
-                                            FieldContent('Back field content'),
-                                            new_note)
+        return self.create_basic_note_1(FieldContent('Front field content'),
+                                        FieldContent('Back field content'),
+                                        new_note)
 
     @staticmethod
     def stop_words() -> set[Word]:
@@ -115,7 +138,8 @@ class Data:
             phrase_content: FieldContent = FieldContent(case.phrase)
             original_content: FieldContent = FieldContent(case.original_text)
             highlighted_content: FieldContent = FieldContent(case.highlighted_text)
-            note: Note = self.create_note_with_fields(FieldContent(phrase_content), FieldContent(original_content))
+            note: Note = self.create_basic_note_1(FieldContent(phrase_content),
+                                                  FieldContent(original_content))
             res.append((note, original_content, highlighted_content))
         return res
 

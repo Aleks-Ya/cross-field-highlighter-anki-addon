@@ -11,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
@@ -20,8 +21,9 @@ log: Logger = logging.getLogger(__name__)
 class BrowserMenuHighlightAction(BrowserMenuAction):
 
     def __init__(self, browser: Browser, op_factory: OpFactory,
-                 adhoc_highlight_dialog_controller: AdhocHighlightDialogController) -> None:
-        super().__init__("Highlight...", browser)
+                 adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                 dialog_params_factory: DialogParamsFactory) -> None:
+        super().__init__("Highlight...", browser, dialog_params_factory)
         qconnect(self.triggered, lambda: self.__on_click(browser))
 
         self.__op_factory: OpFactory = op_factory

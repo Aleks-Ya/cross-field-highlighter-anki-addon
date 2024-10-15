@@ -9,6 +9,7 @@ from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.erase_op import EraseOp
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
@@ -18,8 +19,9 @@ log: Logger = logging.getLogger(__name__)
 class BrowserMenuEraseAction(BrowserMenuAction):
 
     def __init__(self, browser: Browser, op_factory: OpFactory,
-                 adhoc_erase_dialog_controller: AdhocEraseDialogController) -> None:
-        super().__init__("Erase...", browser)
+                 adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                 dialog_params_factory: DialogParamsFactory) -> None:
+        super().__init__("Erase...", browser, dialog_params_factory)
         qconnect(self.triggered, lambda: self.__on_click(browser))
 
         self.__op_factory: OpFactory = op_factory

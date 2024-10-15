@@ -6,6 +6,7 @@ from typing import Callable, Any
 import aqt
 import pytest
 from anki.collection import Collection
+from anki.models import NoteType
 from aqt import ProfileManager, AnkiQt
 from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
@@ -21,6 +22,7 @@ from cross_field_highlighter.highlighter.note.start_with_note_highlighter import
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from tests.data import Data
 
 
@@ -104,8 +106,8 @@ def module_dir(addons_dir: Path, module_name: str, project_dir: Path) -> Path:
 
 
 @pytest.fixture
-def td(col: Collection, module_dir: Path) -> Data:
-    return Data(col, module_dir)
+def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType) -> Data:
+    return Data(col, module_dir, basic_note_type, cloze_note_type)
 
 
 @pytest.fixture
@@ -157,3 +159,18 @@ def url_manager() -> UrlManager:
 @pytest.fixture
 def bold_format(formatter_facade: FormatterFacade) -> HighlightFormat:
     return formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
+
+
+@pytest.fixture
+def dialog_params_factory(col: Collection) -> DialogParamsFactory:
+    return DialogParamsFactory(col)
+
+
+@pytest.fixture
+def basic_note_type(col: Collection) -> NoteType:
+    return col.models.by_name('Basic')
+
+
+@pytest.fixture
+def cloze_note_type(col: Collection) -> NoteType:
+    return col.models.by_name('Cloze')
