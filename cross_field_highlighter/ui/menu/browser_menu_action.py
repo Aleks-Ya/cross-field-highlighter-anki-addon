@@ -34,9 +34,10 @@ class BrowserMenuAction(QAction):
 
     def _reload_current_note(self):
         log.debug("Reload current note in Editor")
-        note_id: NoteId = self._browser.editor.note.id
-        note: Note = self._browser.col.get_note(note_id)
-        self._browser.editor.set_note(note)
+        if self._browser.editor and self._browser.editor.note:
+            note_id: NoteId = self._browser.editor.note.id
+            note: Note = self._browser.col.get_note(note_id)
+            self._browser.editor.set_note(note)
 
     @staticmethod
     def __is_notes_mode(browser: Browser) -> bool:

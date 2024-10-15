@@ -3,6 +3,7 @@ from logging import Logger
 from typing import Optional, Callable
 
 from anki.collection import Collection
+from anki.models import NotetypeId
 from anki.notes import NoteId
 from aqt import QWidget
 from aqt.operations import QueryOp
@@ -23,17 +24,18 @@ class EraseOp(QueryOp):
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
-                 erase_op_params: EraseOpParams, callback: Callable[[], None]):
-        super().__init__(parent=erase_op_params.parent, op=self.__background_op, success=self.__on_success)
+                 params: EraseOpParams, callback: Callable[[], None]):
+        super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
         self.__col: Collection = col
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
-        self.__parent: QWidget = erase_op_params.parent
+        self.__parent: QWidget = params.parent
+        self.__note_type_id: NotetypeId = params.note_type_id
         self.__note_ids: set[NoteId] = note_ids
-        self.__destination_fields: FieldNames = erase_op_params.fields
+        self.__destination_fields: FieldNames = params.fields
         self.__callback: Callable[[], None] = callback
         self.__statistics: EraseOpStatistics = EraseOpStatistics()
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -49,10 +51,12 @@ class EraseOp(QueryOp):
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
-            log.debug(f"Original notes: {notes}")
+            log.debug(f"All notes: {len(notes)}")
+            notes_with_note_type: Notes = Notes([note for note in notes if note.mid == self.__note_type_id])
+            log.debug(f"Notes with note type {self.__note_type_id}: {len(notes_with_note_type)}")
             highlighted_notes: Notes = Notes([])
             for field in self.__destination_fields:
-                result: NotesHighlighterResult = self.__notes_highlighter.erase(notes, field)
+                result: NotesHighlighterResult = self.__notes_highlighter.erase(notes_with_note_type, field)
                 processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
                 self.__statistics.increment_notes_processed(len(processed_notes))

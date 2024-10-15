@@ -3,6 +3,7 @@ from logging import Logger
 from typing import Optional, Callable
 
 from anki.collection import Collection
+from anki.models import NotetypeId
 from anki.notes import NoteId
 from aqt import QWidget
 from aqt.operations import QueryOp
@@ -30,6 +31,7 @@ class HighlightOp(QueryOp):
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
+        self.__note_type_id: NotetypeId = params.note_type_id
         self.__note_ids: set[NoteId] = params.note_ids
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
@@ -40,26 +42,30 @@ class HighlightOp(QueryOp):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __background_op(self, _: Collection) -> int:
-        c: int = 30
+        slice_size: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
-        note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
-        highlighted_counter: int = 0
+        note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + slice_size] for i in
+                                               range(0, len(note_ids_list), slice_size)]
+        highlighted_notes_counter: int = 0
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
-            log.debug(f"Original notes: {notes}")
+            log.debug(f"All notes: {len(notes)}")
+            notes_with_note_type: Notes = Notes([note for note in notes if note.mid == self.__note_type_id])
+            log.debug(f"Notes with note type {self.__note_type_id}: {len(notes_with_note_type)}")
             highlighted_notes: Notes = Notes([])
             for destination_field in self.__destination_fields:
                 result: NotesHighlighterResult = self.__notes_highlighter.highlight(
-                    notes, self.__source_field, destination_field, self.__stop_words, self.__highlight_format)
+                    notes_with_note_type, self.__source_field, destination_field, self.__stop_words,
+                    self.__highlight_format)
                 processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
-            highlighted_counter += len(highlighted_notes)
-            self.__update_progress("Highlighting", highlighted_counter, len(self.__note_ids))
+            highlighted_notes_counter += len(highlighted_notes)
+            self.__update_progress("Highlighting", highlighted_notes_counter, len(self.__note_ids))
             if self.__progress_manager.want_cancel():
-                return highlighted_counter
-        return len(note_ids_list)
+                return highlighted_notes_counter
+        return highlighted_notes_counter
 
     def __update_progress(self, label: str, value: int, max_value: int) -> None:
         self.__task_manager.run_on_main(lambda: self.__update_progress_in_main(label, value, max_value))

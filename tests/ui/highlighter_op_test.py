@@ -1,5 +1,6 @@
 import time
 
+from anki.models import NoteType
 from aqt import QWidget
 from anki.collection import Collection
 from anki.notes import Note, NoteId
@@ -32,7 +33,8 @@ def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent,
 
 
 def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                         progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat):
+                         progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat,
+                         basic_note_type: NoteType):
     notes_list: list[(Note, FieldContent, FieldContent)] = td.create_case_notes()
     notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
     note_ids: set[NoteId] = {note.id for note in notes}
@@ -41,8 +43,8 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
     parent: QWidget = MagicMock()
 
-    highlight_op_params: HighlightOpParams = HighlightOpParams(note_ids, parent, source_field, fields, stop_words,
-                                                               bold_format)
+    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type['id'], note_ids, parent, source_field,
+                                                               fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, highlight_op_params,
                                             lambda: None)
     highlight_op.run_in_background()
