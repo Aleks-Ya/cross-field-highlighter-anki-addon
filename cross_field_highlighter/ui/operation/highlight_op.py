@@ -13,6 +13,7 @@ from aqt.utils import show_critical, show_info
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames, Notes
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
 
@@ -21,22 +22,21 @@ class HighlightOp(QueryOp):
     __progress_dialog_title: str = '"Note Size" addon'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, parent: QWidget, note_ids: set[NoteId], source_field: FieldName,
-                 destination_fields: FieldNames, stop_words: set[Word], highlight_format: HighlightFormat,
+                 progress_manager: ProgressManager, note_ids: set[NoteId], params: HighlightOpParams,
                  callback: Callable[[], None]):
-        super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
+        super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
         self.__col: Collection = col
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
-        self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
-        self.__source_field: FieldName = source_field
-        self.__destination_fields: FieldNames = destination_fields
-        self.__stop_words: set[Word] = stop_words
-        self.__highlight_format: HighlightFormat = highlight_format
+        self.__parent: QWidget = params.parent
+        self.__source_field: FieldName = params.source_field
+        self.__destination_fields: FieldNames = params.destination_fields
+        self.__stop_words: set[Word] = params.stop_words
+        self.__highlight_format: HighlightFormat = params.highlight_format
         self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")
 

@@ -1,0 +1,14 @@
+from aqt import QWidget
+
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.types import Word, FieldName, FieldNames
+
+
+class HighlightOpParams:
+    def __init__(self, parent: QWidget, source_filed: FieldName, destination_fields: FieldNames,
+                 stop_words: set[Word], highlight_format: HighlightFormat):
+        self.parent: QWidget = parent
+        self.source_field: FieldName = source_filed
+        self.destination_fields: FieldNames = destination_fields
+        self.stop_words: set[Word] = stop_words
+        self.highlight_format: HighlightFormat = highlight_format

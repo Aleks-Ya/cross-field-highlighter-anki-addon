@@ -8,6 +8,7 @@ from cross_field_highlighter.highlighter.types import FieldName, Word, NoteTypeD
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
@@ -127,7 +128,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__model.fire_model_changed(self)
 
         self.hide()
-        self.__model.run_op_callback(self.parent(), source_filed, destination_fields, stop_words, highlight_format)
+        highlight_op_params: HighlightOpParams = HighlightOpParams(self.parent(), source_filed, destination_fields,
+                                                                   stop_words, highlight_format)
+        self.__model.run_op_callback(highlight_op_params)
 
     def __reject(self) -> None:
         log.info("Cancelled")

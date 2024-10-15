@@ -11,6 +11,7 @@ from cross_field_highlighter.highlighter.formatter.highlight_format import Highl
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames, Notes, FieldName
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.data import Data, DefaultFields
 
 
@@ -40,8 +41,9 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
     parent: QWidget = MagicMock()
 
-    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, parent, note_ids,
-                                            source_field, fields, stop_words, bold_format, lambda: None)
+    highlight_op_params: HighlightOpParams = HighlightOpParams(parent, source_field, fields, stop_words, bold_format)
+    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
+                                            highlight_op_params, lambda: None)
 
     highlight_op.run_in_background()
     time.sleep(1)

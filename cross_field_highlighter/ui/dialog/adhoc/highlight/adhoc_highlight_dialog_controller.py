@@ -2,8 +2,6 @@ import logging
 from logging import Logger
 from typing import Callable
 
-from aqt.qt import QWidget
-
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
@@ -13,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
 
@@ -28,9 +27,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         self.__config_loader: ConfigLoader = config_loader
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def show_dialog(self, params: DialogParams, run_op_callback: Callable[
-        [QWidget, FieldName, FieldNames, set[str], HighlightFormat], None]) -> None:
-
+    def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__model.show = True
         self.__model.note_types = params.note_types
