@@ -28,7 +28,7 @@ class DialogParamsFactory:
                 note_type_id, note_type["name"], self.__col.models.field_names(note_type))
             note_types.append(note_type_details)
         sorted_notes_type: list[NoteTypeDetails] = sorted(note_types, key=lambda n_type: n_type.name)
-        params: DialogParams = DialogParams(sorted_notes_type)
+        params: DialogParams = DialogParams(sorted_notes_type, note_ids)
         log.debug(f"Created DialogParams: {params}")
         return params
 

@@ -26,11 +26,10 @@ class OpFactory:
         self.__progress_manager: ProgressManager = progress_manager
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def create_highlight_op(self, note_ids: set[NoteId], highlight_op_params: HighlightOpParams,
-                            callback: Callable[[], None]) -> HighlightOp:
-        log.debug(f"Creating HighlightOp: note_ids={len(note_ids)}, params={highlight_op_params}")
+    def create_highlight_op(self, highlight_op_params: HighlightOpParams, callback: Callable[[], None]) -> HighlightOp:
+        log.debug(f"Creating HighlightOp: params={highlight_op_params}")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           note_ids, highlight_op_params, callback)
+                           highlight_op_params, callback)
 
     def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
                         callback: Callable[[], None]) -> EraseOp:

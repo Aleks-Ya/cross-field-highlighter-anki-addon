@@ -1,9 +1,14 @@
+from typing import Sequence
+
+from anki.notes import NoteId
+
 from cross_field_highlighter.highlighter.types import NoteTypeDetails
 
 
 class DialogParams:
-    def __init__(self, note_types: list[NoteTypeDetails]):
+    def __init__(self, note_types: list[NoteTypeDetails], note_ids: Sequence[NoteId]):
         self.note_types: list[NoteTypeDetails] = note_types
+        self.note_ids: Sequence[NoteId] = note_ids
 
     def __str__(self):
         note_types_str: str = ', '.join(str(note_type) for note_type in self.note_types)

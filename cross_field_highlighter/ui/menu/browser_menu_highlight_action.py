@@ -1,7 +1,6 @@
 import logging
 from logging import Logger
 
-from anki.notes import NoteId
 from aqt import qconnect
 from aqt.browser import Browser
 
@@ -35,6 +34,5 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
         self.__adhoc_highlight_dialog_controller.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, result: HighlightOpParams):
-        note_ids: set[NoteId] = set(self._browser.selectedNotes())
-        op: HighlightOp = self.__op_factory.create_highlight_op(note_ids, result, self._reload_current_note)
+        op: HighlightOp = self.__op_factory.create_highlight_op(result, self._reload_current_note)
         op.run_in_background()

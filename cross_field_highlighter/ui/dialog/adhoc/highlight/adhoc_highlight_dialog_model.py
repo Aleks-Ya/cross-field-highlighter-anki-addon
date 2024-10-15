@@ -3,6 +3,8 @@ from logging import Logger
 from abc import abstractmethod
 from typing import Optional, Callable
 
+from anki.notes import NoteId
+
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
@@ -20,6 +22,7 @@ class AdhocHighlightDialogModel:
     def __init__(self):
         self.show: bool = False
         self.note_types: list[NoteTypeDetails] = []
+        self.note_ids: set[NoteId] = set()
         self.formats: list[HighlightFormat] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: Optional[FieldName] = None

@@ -31,6 +31,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         log.debug(f"Show dialog: {params}")
         self.__model.show = True
         self.__model.note_types = params.note_types
+        self.__model.note_ids = params.note_ids
         self.__model.formats = self.__formatter_facade.get_all_formats()
         self.__model.run_op_callback = run_op_callback
 

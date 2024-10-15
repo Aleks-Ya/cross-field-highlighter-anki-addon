@@ -41,10 +41,10 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
     fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
     parent: QWidget = MagicMock()
 
-    highlight_op_params: HighlightOpParams = HighlightOpParams(parent, source_field, fields, stop_words, bold_format)
-    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            highlight_op_params, lambda: None)
-
+    highlight_op_params: HighlightOpParams = HighlightOpParams(note_ids, parent, source_field, fields, stop_words,
+                                                               bold_format)
+    highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, highlight_op_params,
+                                            lambda: None)
     highlight_op.run_in_background()
     time.sleep(1)
     __assert_highlighted_notes(col, notes_list)

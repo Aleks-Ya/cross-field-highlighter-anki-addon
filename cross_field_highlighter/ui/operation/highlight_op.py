@@ -22,8 +22,7 @@ class HighlightOp(QueryOp):
     __progress_dialog_title: str = '"Note Size" addon'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, note_ids: set[NoteId], params: HighlightOpParams,
-                 callback: Callable[[], None]):
+                 progress_manager: ProgressManager, params: HighlightOpParams, callback: Callable[[], None]):
         super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -31,7 +30,7 @@ class HighlightOp(QueryOp):
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
-        self.__note_ids: set[NoteId] = note_ids
+        self.__note_ids: set[NoteId] = params.note_ids
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
         self.__destination_fields: FieldNames = params.destination_fields

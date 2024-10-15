@@ -128,8 +128,8 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__model.fire_model_changed(self)
 
         self.hide()
-        highlight_op_params: HighlightOpParams = HighlightOpParams(self.parent(), source_filed, destination_fields,
-                                                                   stop_words, highlight_format)
+        highlight_op_params: HighlightOpParams = HighlightOpParams(self.__model.note_ids, self.parent(), source_filed,
+                                                                   destination_fields, stop_words, highlight_format)
         self.__model.run_op_callback(highlight_op_params)
 
     def __reject(self) -> None:

@@ -21,5 +21,5 @@ def test_create_from_notes(dialog_params_factory: DialogParamsFactory, col: Coll
     exp_cloze_note_type_details: NoteTypeDetails = NoteTypeDetails(
         cloze_note_type["id"], cloze_note_type["name"],
         FieldNames([FieldName(DefaultFields.cloze_text_field), FieldName(DefaultFields.cloze_extra_field)]))
-    exp_dialog_params: DialogParams = DialogParams([exp_basic_note_type_details, exp_cloze_note_type_details])
+    exp_dialog_params: DialogParams = DialogParams([exp_basic_note_type_details, exp_cloze_note_type_details], note_ids)
     assert act_dialog_params == exp_dialog_params
