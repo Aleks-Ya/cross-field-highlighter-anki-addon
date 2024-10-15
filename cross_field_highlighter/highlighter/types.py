@@ -12,9 +12,10 @@ Notes = NewType("Notes", list[Note])
 
 
 class NoteTypeDetails:
-    note_type_id: NotetypeId
-    name: str
-    fields: FieldNames
+    def __init__(self, note_type_id: NotetypeId, name: str, fields: FieldNames):
+        self.note_type_id: NotetypeId = note_type_id
+        self.name: str = name
+        self.fields: FieldNames = fields
 
     def __str__(self):
         fields_str: str = ", ".join(self.fields)

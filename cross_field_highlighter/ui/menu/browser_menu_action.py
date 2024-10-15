@@ -9,7 +9,7 @@ from anki.notes import NoteId, Note
 from aqt import QAction
 from aqt.browser import Browser
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, Notes
+from cross_field_highlighter.highlighter.types import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 
 log: Logger = logging.getLogger(__name__)
@@ -25,16 +25,11 @@ class BrowserMenuAction(QAction):
     def _prepare_dialog_params(self, browser: Browser) -> DialogParams:
         col: Collection = browser.col
         note_ids: Sequence[NoteId] = self.__get_selected_note_ids(browser)
-        notes: Notes = Notes([col.get_note(note_id) for note_id in note_ids])
-        note_type_ids: set[NotetypeId] = {note.mid for note in notes}
+        note_type_ids: set[NotetypeId] = {col.get_note(note_id).mid for note_id in note_ids}
         note_types: list[NoteTypeDetails] = []
         for note_type_id in note_type_ids:
             note_type: NoteType = col.models.get(note_type_id)
-            note_type_details: NoteTypeDetails = NoteTypeDetails()
-            note_type_details.note_type_id = note_type_id
-            note_type_details.name = note_type["name"]
-            note_type_details.fields = col.models.field_names(note_type)
-            note_types.append(note_type_details)
+            note_types.append(NoteTypeDetails(note_type_id, note_type["name"], col.models.field_names(note_type)))
         params: DialogParams = DialogParams(note_types)
         log.debug(f"Created DialogParams: {params}")
         return params
