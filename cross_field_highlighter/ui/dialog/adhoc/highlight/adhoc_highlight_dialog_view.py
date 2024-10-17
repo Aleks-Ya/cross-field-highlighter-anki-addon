@@ -75,16 +75,22 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
             self.show()
             self.adjustSize()
 
-    def __on_combobox_changed(self, index: int):
-        log.debug(f"On combobox changed: {index}")
+    def __on_note_type_changed(self, index: int):
+        log.debug(f"On note type selected: {index}")
         field_names: FieldNames = self.__model.note_types[index].fields
         self.__source_field_combo_box.set_items(field_names)
         self.__destination_fields_vbox.set_items(field_names)
+        self.__on_source_field_changed(self.__source_field_combo_box.get_current_text())
+
+    def __on_source_field_changed(self, item: str):
+        log.debug(f"On source field selected: {item}")
+        self.__destination_fields_vbox.set_disabled_fields(FieldNames([FieldName(item)]))
 
     def __create_source_widget(self):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
+        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
+        self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Exclude words:", text="a an to", clear_button_enabled=True)
         group_layout: QVBoxLayout = QVBoxLayout()

@@ -1,6 +1,11 @@
+import logging
+from logging import Logger
+
 from aqt import QVBoxLayout, QCheckBox, QLabel
 
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames
+
+log: Logger = logging.getLogger(__name__)
 
 
 class FieldsLayout(QVBoxLayout):
@@ -24,8 +29,12 @@ class FieldsLayout(QVBoxLayout):
             check_box.setChecked(field_name in field_names)
 
     def set_disabled_fields(self, field_names: FieldNames):
+        log.debug(f"Disable fields: {field_names}")
         for field_name, check_box in self.__field_name_checkboxes.items():
-            check_box.setDisabled(field_name in field_names)
+            disabled: bool = field_name in field_names
+            check_box.setDisabled(disabled)
+            if disabled:
+                check_box.setChecked(False)
 
     def get_selected_field_names(self) -> FieldNames:
         return FieldNames(

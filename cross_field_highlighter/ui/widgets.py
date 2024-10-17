@@ -21,6 +21,10 @@ class TitledComboBoxLayout(QHBoxLayout):
         # noinspection PyUnresolvedReferences
         self.__combo_box.currentIndexChanged.connect(callback)
 
+    def add_current_text_changed_callback(self, callback: Callable[[str], None]) -> None:
+        # noinspection PyUnresolvedReferences
+        self.__combo_box.currentTextChanged.connect(callback)
+
     def set_items(self, items: list[str]) -> None:
         self.__combo_box.clear()
         self.__combo_box.addItems(items)
