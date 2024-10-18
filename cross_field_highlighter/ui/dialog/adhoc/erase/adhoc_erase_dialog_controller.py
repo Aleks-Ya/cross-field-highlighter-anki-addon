@@ -31,7 +31,6 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
 
     def show_dialog(self, params: DialogParams, run_on_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
-        self.__model.show = True
         self.__model.note_types = params.note_types
         self.__model.run_op_callback = run_on_callback
 

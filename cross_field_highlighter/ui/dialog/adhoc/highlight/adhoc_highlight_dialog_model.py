@@ -21,7 +21,6 @@ class AdhocHighlightDialogModelListener:
 
 class AdhocHighlightDialogModel:
     def __init__(self):
-        self.show: bool = False
         self.note_types: list[NoteTypeDetails] = []
         self.note_ids: set[NoteId] = set()
         self.formats: list[HighlightFormat] = []

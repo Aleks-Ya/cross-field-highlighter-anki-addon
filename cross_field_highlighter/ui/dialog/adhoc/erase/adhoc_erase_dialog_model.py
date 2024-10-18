@@ -18,7 +18,6 @@ class AdhocEraseDialogModelListener:
 
 class AdhocEraseDialogModel:
     def __init__(self):
-        self.show: bool = False
         self.note_types: list[NoteTypeDetails] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_fields: FieldNames = FieldNames([])
