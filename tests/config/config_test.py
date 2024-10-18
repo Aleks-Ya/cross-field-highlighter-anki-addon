@@ -10,6 +10,7 @@ class CountConfigListener(ConfigListener):
         self.counter: int = 0
 
     def on_config_changed(self):
+        super().on_config_changed()
         self.counter += 1
 
 
@@ -25,12 +26,28 @@ def test_setters(td: Data):
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": []}}}}
+
+    assert config.get_dialog_adhoc_highlight_last_note_type() is None
+    assert config.get_dialog_adhoc_highlight_last_source_field_name() is None
+    assert config.get_dialog_adhoc_highlight_last_format() is None
+    assert config.get_dialog_adhoc_highlight_last_destination_field_names() == []
+    assert config.get_dialog_adhoc_erase_last_note_type() is None
+    assert config.get_dialog_adhoc_erase_last_field_names() == []
+
     config.set_dialog_adhoc_highlight_last_note_type("Basic")
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_erase_last_note_type("Cloze")
     config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
+
+    assert config.get_dialog_adhoc_highlight_last_note_type() == "Basic"
+    assert config.get_dialog_adhoc_highlight_last_source_field_name() == "English"
+    assert config.get_dialog_adhoc_highlight_last_format() == HighlightFormatCode.BOLD
+    assert config.get_dialog_adhoc_highlight_last_destination_field_names() == ["Examples"]
+    assert config.get_dialog_adhoc_erase_last_note_type() == "Cloze"
+    assert config.get_dialog_adhoc_erase_last_field_names() == ["Sentences"]
+
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
