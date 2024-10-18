@@ -6,7 +6,7 @@ from anki.collection import Collection
 from anki.notes import NoteId
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
-from mock.mock import MagicMock
+from mock.mock import Mock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -17,8 +17,7 @@ from tests.data import Data, DefaultFields, CaseNote
 
 
 def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                   progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat,
-                   basic_note_type: NoteType):
+                   td: Data, bold_format: HighlightFormat, basic_note_type: NoteType):
     case_notes: list[CaseNote] = td.create_case_notes()
     td.assert_original_case_notes(case_notes)
     notes: Notes = Notes([case_note.note for case_note in case_notes])
@@ -26,7 +25,8 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     stop_words: set[Word] = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front_field
     fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
-    parent: QWidget = MagicMock()
+    parent: QWidget = QWidget()
+    progress_manager: ProgressManager = Mock()
 
     highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type['id'], note_ids, parent, source_field,
                                                                fields, stop_words, bold_format)
