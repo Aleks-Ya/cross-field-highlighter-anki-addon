@@ -26,6 +26,13 @@ class Case:
         self.highlighted_text: Text = Text(highlighted_text)
 
 
+class CaseNote:
+    def __init__(self, note: Note, original_content: FieldContent, highlighted_content: FieldContent):
+        self.note: Note = note
+        self.original_content: FieldContent = original_content
+        self.highlighted_content: FieldContent = highlighted_content
+
+
 class Data:
 
     def __init__(self, col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType):
@@ -132,7 +139,7 @@ class Data:
                  '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>')
         ]
 
-    def create_case_notes(self) -> list[(Note, FieldContent, FieldContent)]:
+    def create_case_notes(self) -> list[CaseNote]:
         res: list[(NoteId, FieldContent, FieldContent)] = []
         for case in self.cases():
             phrase_content: FieldContent = FieldContent(case.phrase)
@@ -140,7 +147,7 @@ class Data:
             highlighted_content: FieldContent = FieldContent(case.highlighted_text)
             note: Note = self.create_basic_note_1(FieldContent(phrase_content),
                                                   FieldContent(original_content))
-            res.append((note, original_content, highlighted_content))
+            res.append(CaseNote(note, original_content, highlighted_content))
         return res
 
     def read_config(self) -> Config:

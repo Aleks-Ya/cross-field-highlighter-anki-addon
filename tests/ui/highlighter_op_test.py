@@ -10,34 +10,30 @@ from mock.mock import MagicMock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import FieldContent, Word, FieldNames, Notes, FieldName
+from cross_field_highlighter.highlighter.types import Word, FieldNames, Notes, FieldName
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
-from tests.data import Data, DefaultFields
+from tests.data import Data, DefaultFields, CaseNote
 
 
-def __assert_highlighted_notes(col: Collection, contents: list[(Note, FieldContent, FieldContent)]) -> None:
-    for content_tuple in contents:
-        exp_note: Note = content_tuple[0]
-        act_note: Note = col.get_note(exp_note.id)
-        highlighted_content: FieldContent = content_tuple[2]
-        assert act_note[DefaultFields.basic_back_field] == highlighted_content
+def __assert_highlighted_notes(col: Collection, case_notes: list[CaseNote]) -> None:
+    for case_note in case_notes:
+        act_note: Note = col.get_note(case_note.note.id)
+        assert act_note[DefaultFields.basic_back_field] == case_note.highlighted_content
 
 
-def __assert_original_notes(col: Collection, contents: list[(Note, FieldContent, FieldContent)]) -> None:
-    for content_tuple in contents:
-        exp_note: Note = content_tuple[0]
-        act_note: Note = col.get_note(exp_note.id)
-        original_content: FieldContent = content_tuple[1]
-        assert act_note[DefaultFields.basic_back_field] == original_content
+def __assert_original_notes(col: Collection, case_notes: list[CaseNote]) -> None:
+    for case_note in case_notes:
+        act_note: Note = col.get_note(case_note.note.id)
+        assert act_note[DefaultFields.basic_back_field] == case_note.original_content
 
 
 def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                    progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat,
                    basic_note_type: NoteType):
-    notes_list: list[(Note, FieldContent, FieldContent)] = td.create_case_notes()
-    __assert_original_notes(col, notes_list)
-    notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
+    case_notes: list[CaseNote] = td.create_case_notes()
+    __assert_original_notes(col, case_notes)
+    notes: Notes = Notes([case_note.note for case_note in case_notes])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front_field
@@ -50,4 +46,4 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
                                             lambda: None)
     highlight_op.run_in_background()
     time.sleep(1)
-    __assert_highlighted_notes(col, notes_list)
+    __assert_highlighted_notes(col, case_notes)
