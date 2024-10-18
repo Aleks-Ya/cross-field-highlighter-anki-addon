@@ -4,7 +4,8 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName, Word, NoteTypeDetails, FieldNames
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel

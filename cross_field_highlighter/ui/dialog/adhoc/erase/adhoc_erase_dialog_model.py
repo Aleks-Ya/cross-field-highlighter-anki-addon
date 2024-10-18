@@ -3,7 +3,8 @@ from logging import Logger
 from abc import abstractmethod
 from typing import Callable, Optional
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldNames
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
 log: Logger = logging.getLogger(__name__)

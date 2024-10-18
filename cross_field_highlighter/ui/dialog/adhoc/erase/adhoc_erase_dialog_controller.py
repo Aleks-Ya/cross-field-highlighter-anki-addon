@@ -6,7 +6,8 @@ from aqt.qt import QWidget
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView

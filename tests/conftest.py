@@ -19,11 +19,13 @@ from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from cross_field_highlighter.highlighter.types import FieldNames, FieldName
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
-from tests.data import Data
+from tests.data import Data, DefaultFields
 
 
 @pytest.fixture
@@ -174,3 +176,16 @@ def basic_note_type(col: Collection) -> NoteType:
 @pytest.fixture
 def cloze_note_type(col: Collection) -> NoteType:
     return col.models.by_name('Cloze')
+
+
+@pytest.fixture
+def basic_note_type_details(basic_note_type: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(
+        basic_note_type["id"], basic_note_type["name"],
+        FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))
+
+@pytest.fixture
+def cloze_note_type_details(cloze_note_type: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(
+        cloze_note_type["id"], cloze_note_type["name"],
+        FieldNames([FieldName(DefaultFields.cloze_text_field), FieldName(DefaultFields.cloze_extra_field)]))

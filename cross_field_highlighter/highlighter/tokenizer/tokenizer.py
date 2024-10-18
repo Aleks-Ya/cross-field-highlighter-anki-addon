@@ -7,4 +7,4 @@ class Tokenizer(ABC):
 
     @abstractmethod
     def tokenize(self, text: Text) -> list[Word]:
-        pass
+        ...

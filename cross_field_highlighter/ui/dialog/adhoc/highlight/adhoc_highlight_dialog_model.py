@@ -6,7 +6,8 @@ from typing import Optional, Callable
 from anki.notes import NoteId
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldName, FieldNames
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)

@@ -2,7 +2,7 @@ from typing import Sequence
 
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 
 
 class DialogParams:

@@ -19,6 +19,7 @@ class StartWithTextHighlighter(TextHighlighter):
 
     def highlight(self, collocation: Text, text: Text, stop_words: set[Word],
                   highlight_format: HighlightFormat) -> Text:
+        super().highlight(collocation, text, stop_words, highlight_format)
         collocation_words: set[Word] = set(self.__tokenizer.tokenize(collocation))
         collocation_words.discard(Word(" "))
         for stop_word in stop_words:
@@ -37,4 +38,5 @@ class StartWithTextHighlighter(TextHighlighter):
         return Text("".join(highlighted_words))
 
     def erase(self, text: Text) -> Text:
+        super().erase(text)
         return self.__formatter_facade.erase(text)

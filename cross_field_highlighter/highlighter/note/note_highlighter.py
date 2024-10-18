@@ -34,8 +34,8 @@ class NoteHighlighter(ABC):
     @abstractmethod
     def highlight(self, note: Note, source_field: FieldName, destination_field: FieldName,
                   stop_words: set[Word], highlight_format: HighlightFormat) -> NoteHighlightResult:
-        pass
+        ...
 
     @abstractmethod
     def erase(self, note: Note, field: FieldName) -> NoteEraseResult:
-        pass
+        ...

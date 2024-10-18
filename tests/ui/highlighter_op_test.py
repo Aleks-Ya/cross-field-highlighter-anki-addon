@@ -36,6 +36,7 @@ def test_highlight_erase(col: Collection, notes_highlighter: NotesHighlighter, t
                          progress_manager: ProgressManager, td: Data, bold_format: HighlightFormat,
                          basic_note_type: NoteType):
     notes_list: list[(Note, FieldContent, FieldContent)] = td.create_case_notes()
+    __assert_original_notes(col, notes_list)
     notes: Notes = Notes([note_tuple[0] for note_tuple in notes_list])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: set[Word] = td.stop_words()

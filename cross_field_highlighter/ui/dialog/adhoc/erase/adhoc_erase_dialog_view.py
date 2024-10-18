@@ -3,7 +3,8 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
 
-from cross_field_highlighter.highlighter.types import NoteTypeDetails, FieldNames
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
