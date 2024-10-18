@@ -60,6 +60,13 @@ def test_setters(td: Data):
                 "Last Field Names": ["Sentences"]}}}}
 
 
+def test_set_absent_field():
+    config: Config = Config({})
+    assert config.get_dialog_adhoc_highlight_last_note_type() is None
+    config.set_dialog_adhoc_highlight_last_note_type("Basic")
+    assert config.get_dialog_adhoc_highlight_last_note_type() == "Basic"
+
+
 def test_fire_config_changed(td: Data):
     config: Config = td.read_config()
     listener: CountConfigListener = CountConfigListener()
