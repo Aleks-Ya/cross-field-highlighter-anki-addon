@@ -7,11 +7,13 @@ import aqt
 import pytest
 from anki.collection import Collection
 from anki.models import NoteType
-from aqt import ProfileManager, AnkiQt
+from aqt import ProfileManager, AnkiQt, QApplication
 from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
+from aqt.theme import ThemeManager
 from mock.mock import MagicMock
+from pytestqt.qtbot import QtBot
 
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
@@ -24,6 +26,8 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from tests.data import Data, DefaultFields
 
@@ -113,10 +117,12 @@ def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_
 
 
 @pytest.fixture
-def mw() -> AnkiQt:
-    mw: MagicMock = MagicMock()
-    aqt.mw = mw
-    return mw
+def mw(profile_manager: ProfileManager, qapp: QApplication) -> AnkiQt:
+    mw_mock: MagicMock = MagicMock()
+    mw_mock.pm = profile_manager
+    mw_mock.app = qapp
+    aqt.mw = mw_mock
+    return mw_mock
 
 
 @pytest.fixture
@@ -184,8 +190,29 @@ def basic_note_type_details(basic_note_type: NoteType) -> NoteTypeDetails:
         basic_note_type["id"], basic_note_type["name"],
         FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))
 
+
 @pytest.fixture
 def cloze_note_type_details(cloze_note_type: NoteType) -> NoteTypeDetails:
     return NoteTypeDetails(
         cloze_note_type["id"], cloze_note_type["name"],
         FieldNames([FieldName(DefaultFields.cloze_text_field), FieldName(DefaultFields.cloze_extra_field)]))
+
+
+@pytest.fixture
+def theme_manager() -> ThemeManager:
+    return ThemeManager()
+
+
+@pytest.fixture
+def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
+    return AdhocHighlightDialogModel()
+
+
+@pytest.fixture
+def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, qtbot: QtBot,
+                                theme_manager: ThemeManager, mw: AnkiQt) -> AdhocHighlightDialogView:
+    assert mw is not None  # initialize aqt.mw
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
+    theme_manager.apply_style()
+    qtbot.addWidget(view)
+    return view
