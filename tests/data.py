@@ -155,3 +155,13 @@ class Data:
 
     def read_config_updated(self, overwrites: dict[str, Any]) -> Config:
         return Config.from_path_updated(self.config_json, overwrites)
+
+    def assert_original_case_notes(self, case_notes: list[CaseNote]):
+        for case_note in case_notes:
+            act_note: Note = self.col.get_note(case_note.note.id)
+            assert act_note[DefaultFields.basic_back_field] == case_note.original_content
+
+    def assert_highlighted_case_notes(self, case_notes: list[CaseNote]):
+        for case_note in case_notes:
+            act_note: Note = self.col.get_note(case_note.note.id)
+            assert act_note[DefaultFields.basic_back_field] == case_note.highlighted_content
