@@ -6,7 +6,7 @@ from typing import Callable, Any
 import aqt
 import pytest
 from anki.collection import Collection
-from anki.models import NoteType
+from anki.models import NoteType, NotetypeId
 from aqt import ProfileManager, AnkiQt, QApplication
 from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
@@ -180,14 +180,24 @@ def basic_note_type(col: Collection) -> NoteType:
 
 
 @pytest.fixture
+def basic_note_type_id(basic_note_type: NoteType) -> NotetypeId:
+    return basic_note_type["id"]
+
+
+@pytest.fixture
+def basic_note_type_name(basic_note_type: NoteType) -> str:
+    return basic_note_type["name"]
+
+
+@pytest.fixture
 def cloze_note_type(col: Collection) -> NoteType:
     return col.models.by_name('Cloze')
 
 
 @pytest.fixture
-def basic_note_type_details(basic_note_type: NoteType) -> NoteTypeDetails:
+def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: str) -> NoteTypeDetails:
     return NoteTypeDetails(
-        basic_note_type["id"], basic_note_type["name"],
+        basic_note_type_id, basic_note_type_name,
         FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))
 
 
