@@ -15,6 +15,7 @@ from aqt.theme import ThemeManager
 from mock.mock import MagicMock
 from pytestqt.qtbot import QtBot
 
+from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
@@ -26,6 +27,9 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
@@ -226,3 +230,26 @@ def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDial
     theme_manager.apply_style()
     qtbot.addWidget(view)
     return view
+
+
+@pytest.fixture
+def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
+    return AdhocEraseDialogModel()
+
+
+@pytest.fixture
+def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, qtbot: QtBot) -> AdhocEraseDialogView:
+    view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    qtbot.addWidget(view)
+    return view
+
+
+@pytest.fixture
+def config(config_loader: ConfigLoader) -> Config:
+    return config_loader.load_config()
+
+
+@pytest.fixture
+def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel, config: Config,
+                                  config_loader: ConfigLoader) -> AdhocEraseDialogController:
+    return AdhocEraseDialogController(adhoc_erase_dialog_model, config, config_loader)

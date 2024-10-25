@@ -10,7 +10,6 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
@@ -19,11 +18,9 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogController(AdhocEraseDialogModelListener):
 
-    def __init__(self, model: AdhocEraseDialogModel, view: AdhocEraseDialogView, config: Config,
-                 config_loader: ConfigLoader):
+    def __init__(self, model: AdhocEraseDialogModel, config: Config, config_loader: ConfigLoader):
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
-        self.__view: AdhocEraseDialogView = view
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__callback: Callable[[QWidget, FieldName], None]

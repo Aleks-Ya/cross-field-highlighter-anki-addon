@@ -20,3 +20,4 @@ def test_eq(basic_note_type_details: NoteTypeDetails, cloze_note_type_details: N
     assert basic_note_type_details == NoteTypeDetails(
         basic_note_type_id, basic_note_type_name,
         FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))
+    assert basic_note_type_details != "abc"

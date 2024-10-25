@@ -17,4 +17,6 @@ class NoteTypeDetails:
         return self.__str__()
 
     def __eq__(self, other):
+        if not isinstance(other, NoteTypeDetails):
+            return False
         return self.note_type_id == other.note_type_id and self.name == other.name and self.fields == other.fields

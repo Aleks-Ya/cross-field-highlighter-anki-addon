@@ -50,9 +50,9 @@ def __initialize(col: Collection):
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, formatter_facade, config, config_loader)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    _: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
-        adhoc_erase_dialog_model, adhoc_erase_dialog_view, config, config_loader)
+        adhoc_erase_dialog_model, config, config_loader)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,

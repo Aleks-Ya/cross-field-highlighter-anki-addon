@@ -32,3 +32,11 @@ class AdhocEraseDialogModel:
         log.debug(f"Fire model changed: {source}")
         for listener in self.__listeners:
             listener.model_changed(source)
+
+    def as_dict(self) -> dict[str, any]:
+        return {
+            "note_types": self.note_types,
+            "selected_note_type": self.selected_note_type,
+            "selected_fields": self.selected_fields,
+            "run_op_callback_None": not self.run_op_callback
+        }
