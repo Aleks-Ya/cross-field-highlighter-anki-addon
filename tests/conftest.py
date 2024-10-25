@@ -23,6 +23,7 @@ from cross_field_highlighter.highlighter.formatter.formatter_facade import Forma
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
@@ -174,8 +175,8 @@ def bold_format(formatter_facade: FormatterFacade) -> HighlightFormat:
 
 
 @pytest.fixture
-def dialog_params_factory(col: Collection) -> DialogParamsFactory:
-    return DialogParamsFactory(col)
+def dialog_params_factory(col: Collection, note_type_details_factory: NoteTypeDetailsFactory) -> DialogParamsFactory:
+    return DialogParamsFactory(col, note_type_details_factory)
 
 
 @pytest.fixture
@@ -253,3 +254,8 @@ def config(config_loader: ConfigLoader) -> Config:
 def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel, config: Config,
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, config, config_loader)
+
+
+@pytest.fixture
+def note_type_details_factory(col: Collection) -> NoteTypeDetailsFactory:
+    return NoteTypeDetailsFactory(col)

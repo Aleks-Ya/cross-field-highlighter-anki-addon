@@ -11,6 +11,7 @@ from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter
 from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
@@ -54,7 +55,8 @@ def __initialize(col: Collection):
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, config, config_loader)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager)
-    dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col)
+    note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
+    dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
                                                adhoc_erase_dialog_controller, dialog_params_factory)
     browser_hooks.setup_hooks()
