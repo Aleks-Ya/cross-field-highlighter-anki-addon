@@ -1,12 +1,12 @@
 from anki.models import NotetypeId
 
-from cross_field_highlighter.highlighter.types import FieldNames
+from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 
 
 class NoteTypeDetails:
-    def __init__(self, note_type_id: NotetypeId, name: str, fields: FieldNames):
+    def __init__(self, note_type_id: NotetypeId, name: NoteTypeName, fields: FieldNames):
         self.note_type_id: NotetypeId = note_type_id
-        self.name: str = name
+        self.name: NoteTypeName = name
         self.fields: FieldNames = fields
 
     def __str__(self):

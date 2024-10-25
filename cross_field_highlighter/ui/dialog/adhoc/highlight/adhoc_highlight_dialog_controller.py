@@ -7,7 +7,7 @@ from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
@@ -35,10 +35,11 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         self.__model.formats = self.__formatter_facade.get_all_formats()
         self.__model.run_op_callback = run_op_callback
 
-        last_note_type: str = self.__config.get_dialog_adhoc_highlight_last_note_type()
-        note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in params.note_types}
-        if last_note_type in note_type_names:
-            self.__model.selected_note_type = note_type_names[last_note_type]
+        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                                params.note_types}
+        last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_highlight_last_note_type_name()
+        if last_note_type_name in note_type_names:
+            self.__model.selected_note_type = note_type_names[last_note_type_name]
 
         if self.__model.selected_note_type:
             last_source_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_source_field_name()
@@ -59,7 +60,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
     def model_changed(self, source: object):
         if source != self:
             log.debug("Update config from model")
-            self.__config.set_dialog_adhoc_highlight_last_note_type(self.__model.selected_note_type.name)
+            self.__config.set_dialog_adhoc_highlight_last_note_type_name(self.__model.selected_note_type.name)
             self.__config.set_dialog_adhoc_highlight_last_source_field_name(self.__model.selected_source_field)
             self.__config.set_dialog_adhoc_highlight_last_format(self.__model.selected_format.code)
             self.__config.set_dialog_adhoc_highlight_last_destination_field_names(

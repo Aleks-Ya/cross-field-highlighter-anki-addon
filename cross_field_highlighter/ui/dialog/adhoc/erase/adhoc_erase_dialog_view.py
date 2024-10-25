@@ -4,7 +4,7 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames
+from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
@@ -79,9 +79,9 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         log.info("Starting")
         fields: FieldNames = self.__fields_vbox.get_selected_field_names()
         log.debug(f"Selected fields: {fields}")
-        note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                       self.__model.note_types}
-        note_type: NoteTypeDetails = note_type_names[self.__note_type_combo_box.get_current_text()]
+        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                                self.__model.note_types}
+        note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
         self.__model.selected_note_type = note_type
         self.__model.selected_fields = fields
         self.__model.fire_model_changed(self)

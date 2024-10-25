@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 from .config_listener import ConfigListener
 from ..highlighter.formatter.highlight_format import HighlightFormatCode
-from ..highlighter.types import FieldName, FieldNames
+from ..highlighter.types import FieldName, FieldNames, NoteTypeName
 
 log: Logger = logging.getLogger(__name__)
 
@@ -54,12 +54,12 @@ class Config:
                     base[k] = v
         return base
 
-    def get_dialog_adhoc_highlight_last_note_type(self) -> str:
+    def get_dialog_adhoc_highlight_last_note_type_name(self) -> NoteTypeName:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                           self.__key_4_dialog_adhoc_last_note_type)
 
-    def set_dialog_adhoc_highlight_last_note_type(self, last_note_type: str) -> None:
-        self.__set(last_note_type, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+    def set_dialog_adhoc_highlight_last_note_type_name(self, last_note_type_name: NoteTypeName) -> None:
+        self.__set(last_note_type_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                    self.__key_4_dialog_adhoc_last_note_type)
 
     def get_dialog_adhoc_highlight_last_source_field_name(self) -> Optional[FieldName]:
@@ -89,12 +89,12 @@ class Config:
         self.__set(fields, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_names)
 
-    def get_dialog_adhoc_erase_last_note_type(self) -> str:
+    def get_dialog_adhoc_erase_last_note_type_name(self) -> NoteTypeName:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                           self.__key_4_dialog_erase_last_note_type)
 
-    def set_dialog_adhoc_erase_last_note_type(self, last_note_type: str) -> None:
-        self.__set(last_note_type, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
+    def set_dialog_adhoc_erase_last_note_type_name(self, last_note_type_name: NoteTypeName) -> None:
+        self.__set(last_note_type_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                    self.__key_4_dialog_erase_last_note_type)
 
     def get_dialog_adhoc_erase_last_field_names(self) -> FieldNames:

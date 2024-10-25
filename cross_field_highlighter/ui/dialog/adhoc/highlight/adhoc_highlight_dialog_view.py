@@ -5,7 +5,7 @@ from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBo
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames
+from cross_field_highlighter.highlighter.types import FieldName, Word, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
@@ -125,9 +125,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
         highlight_format: HighlightFormat = self.__format_combo_box.get_current_data()
 
-        note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in
+        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                        self.__model.note_types}
-        note_type: NoteTypeDetails = note_type_names[self.__note_type_combo_box.get_current_text()]
+        note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
         self.__model.selected_note_type = note_type
         self.__model.selected_source_field = source_filed
         self.__model.selected_format = highlight_format

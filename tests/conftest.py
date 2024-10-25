@@ -27,7 +27,7 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
-from cross_field_highlighter.highlighter.types import FieldNames, FieldName
+from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
@@ -190,7 +190,7 @@ def basic_note_type_id(basic_note_type: NoteType) -> NotetypeId:
 
 
 @pytest.fixture
-def basic_note_type_name(basic_note_type: NoteType) -> str:
+def basic_note_type_name(basic_note_type: NoteType) -> NoteTypeName:
     return basic_note_type["name"]
 
 
@@ -200,7 +200,7 @@ def cloze_note_type(col: Collection) -> NoteType:
 
 
 @pytest.fixture
-def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: str) -> NoteTypeDetails:
+def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: NoteTypeName) -> NoteTypeDetails:
     return NoteTypeDetails(
         basic_note_type_id, basic_note_type_name,
         FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))

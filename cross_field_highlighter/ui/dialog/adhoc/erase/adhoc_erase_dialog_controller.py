@@ -7,7 +7,7 @@ from aqt.qt import QWidget
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
@@ -31,13 +31,14 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         self.__model.note_types = params.note_types
         self.__model.run_op_callback = run_on_callback
 
-        last_note_type: str = self.__config.get_dialog_adhoc_erase_last_note_type()
-        log.debug(f"Last note type: {last_note_type}")
-        note_type_names: dict[str, NoteTypeDetails] = {note_type.name: note_type for note_type in params.note_types}
+        last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_erase_last_note_type_name()
+        log.debug(f"Last note type: {last_note_type_name}")
+        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                                params.note_types}
         log.debug(f"Note type names: {note_type_names}")
-        if last_note_type in note_type_names:
-            log.debug(f"Set selected note type: {note_type_names[last_note_type]}")
-            self.__model.selected_note_type = note_type_names[last_note_type]
+        if last_note_type_name in note_type_names:
+            log.debug(f"Set selected note type: {note_type_names[last_note_type_name]}")
+            self.__model.selected_note_type = note_type_names[last_note_type_name]
 
         if self.__model.selected_note_type:
             last_field_names: FieldNames = self.__config.get_dialog_adhoc_erase_last_field_names()
@@ -55,7 +56,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
     def model_changed(self, source: object):
         if source != self:
             log.debug("Update config from model")
-            self.__config.set_dialog_adhoc_erase_last_note_type(self.__model.selected_note_type.name)
+            self.__config.set_dialog_adhoc_erase_last_note_type_name(self.__model.selected_note_type.name)
             self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.selected_fields)
             self.__config_loader.write_config(self.__config)
 
