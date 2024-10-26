@@ -1,8 +1,8 @@
 import pytest
-from PyQt6.QtWidgets import QWidget
 from anki.models import NoteType, NotetypeId
 from anki.notes import NoteId
 from pytestqt.qtbot import QtBot
+from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import FieldNames, Word

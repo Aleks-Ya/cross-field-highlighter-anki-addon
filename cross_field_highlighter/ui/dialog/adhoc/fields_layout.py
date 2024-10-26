@@ -1,7 +1,7 @@
 import logging
 from logging import Logger
 
-from aqt import QVBoxLayout, QCheckBox, QLabel
+from aqt import QVBoxLayout, QCheckBox, QLabel, Qt
 
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames
 
@@ -11,6 +11,7 @@ log: Logger = logging.getLogger(__name__)
 class FieldsLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
+        self.setAlignment(Qt.AlignmentFlag.AlignTop)
         label: QLabel = QLabel("Fields:")
         self.addWidget(label)
         self.__field_name_checkboxes: dict[FieldName, QCheckBox] = {}

@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import QCheckBox, QDialogButtonBox, QPushButton
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
 from pytestqt.qtbot import QtBot
-from aqt import QComboBox, Qt
+from aqt import QComboBox, Qt, QCheckBox, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat
