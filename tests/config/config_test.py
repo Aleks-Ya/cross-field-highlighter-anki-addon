@@ -25,14 +25,14 @@ def test_setters(td: Data):
                 "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": []}}}}
+                "Last Field Names": None}}}}
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() is None
     assert config.get_dialog_adhoc_highlight_last_source_field_name() is None
     assert config.get_dialog_adhoc_highlight_last_format() is None
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() == []
     assert config.get_dialog_adhoc_erase_last_note_type_name() is None
-    assert config.get_dialog_adhoc_erase_last_field_names() == []
+    assert config.get_dialog_adhoc_erase_last_field_names() is None
 
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))

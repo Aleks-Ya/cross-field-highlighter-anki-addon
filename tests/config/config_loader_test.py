@@ -28,7 +28,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": []}}}}
+                "Last Field Names": None}}}}
 
 
 def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
@@ -59,7 +59,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": []}}}}
+                "Last Field Names": None}}}}
 
 
 def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader):
@@ -146,7 +146,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Destination Field Names": []},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": []}}}}
+                "Last Field Names": None}}}}
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
     config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)

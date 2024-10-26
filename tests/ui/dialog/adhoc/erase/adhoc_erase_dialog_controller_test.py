@@ -54,11 +54,15 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                        adhoc_erase_dialog_model: AdhocEraseDialogModel, config_loader: ConfigLoader,
                        basic_note_type_details: NoteTypeDetails):
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Erase': {'Last Field Names': [], 'Last Note Type': None},
-                             'Highlight': {'Last Destination Field Names': [],
-                                           'Last Format': None,
-                                           'Last Note Type': None,
-                                           'Last Source Field Name': None}}}}
+        'Dialog': {'Adhoc': {
+            'Highlight': {
+                'Last Destination Field Names': [],
+                'Last Format': None,
+                'Last Note Type': None,
+                'Last Source Field Name': None},
+            'Erase': {
+                'Last Field Names': None,
+                'Last Note Type': None}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
@@ -66,11 +70,15 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Erase': {'Last Field Names': [], 'Last Note Type': 'Basic'},
-                             'Highlight': {'Last Destination Field Names': [],
-                                           'Last Format': None,
-                                           'Last Note Type': None,
-                                           'Last Source Field Name': None}}}}
+        'Dialog': {'Adhoc': {
+            'Highlight': {
+                'Last Destination Field Names': [],
+                'Last Format': None,
+                'Last Note Type': None,
+                'Last Source Field Name': None},
+            'Erase': {
+                'Last Field Names': [],
+                'Last Note Type': 'Basic'}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
