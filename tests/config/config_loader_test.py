@@ -25,7 +25,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Names": []},
+                "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -56,7 +56,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": "ITALIC",
-                "Last Destination Field Names": []},
+                "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -143,7 +143,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
-                "Last Destination Field Names": []},
+                "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}

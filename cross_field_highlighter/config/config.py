@@ -80,10 +80,11 @@ class Config:
         self.__set(last_format_code.name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_format)
 
-    def get_dialog_adhoc_highlight_last_destination_field_names(self) -> FieldNames:
-        fields: list[str] = self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-                                       self.__key_4_dialog_adhoc_last_destination_field_names)
-        return FieldNames([FieldName(field) for field in fields])
+    def get_dialog_adhoc_highlight_last_destination_field_names(self) -> Optional[FieldNames]:
+        fields: Optional[list[str]] = self.__get(
+            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+            self.__key_4_dialog_adhoc_last_destination_field_names)
+        return FieldNames([FieldName(field) for field in fields]) if fields else None
 
     def set_dialog_adhoc_highlight_last_destination_field_names(self, fields: FieldNames) -> None:
         self.__set(fields, self.__key_1_dialog, self.__key_2_dialog_adhoc,
