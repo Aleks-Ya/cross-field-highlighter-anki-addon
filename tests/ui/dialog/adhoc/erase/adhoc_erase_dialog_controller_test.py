@@ -1,7 +1,9 @@
 from anki.notes import Note, NoteId
 
+from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
@@ -54,6 +56,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
 def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                        adhoc_erase_dialog_model: AdhocEraseDialogModel, config_loader: ConfigLoader,
                        basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails):
+    # Default config and model
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -68,6 +71,8 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
+
+    # Update config from model
     adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert config_loader.load_config().get_as_dict() == {
@@ -84,9 +89,71 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': basic_note_type_details}
-    adhoc_erase_dialog_model.selected_note_type = None
+
+    # Update again
+    adhoc_erase_dialog_model.selected_note_type = cloze_note_type_details
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
+                                                  'selected_note_type': cloze_note_type_details}
+
+
+def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                                           adhoc_erase_dialog_model: AdhocEraseDialogModel, config_loader: ConfigLoader,
+                                           basic_note_type_details: NoteTypeDetails,
+                                           cloze_note_type_details: NoteTypeDetails,
+                                           note_type_details_factory: NoteTypeDetailsFactory):
+    # Default config and model
+    assert config_loader.load_config().get_as_dict() == {
+        'Dialog': {'Adhoc': {
+            'Highlight': {
+                'Last Note Type': None,
+                'Last Source Field Name': None,
+                'Last Format': None,
+                'Last Destination Field Names': None},
+            'Erase': {
+                'Last Note Type': None,
+                'Last Field Names': None}}}}
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
+                                                  'run_op_callback_None': True,
+                                                  'selected_fields': [],
                                                   'selected_note_type': None}
+
+    # Update config from model
+    adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
+    adhoc_erase_dialog_model.fire_model_changed(None)
+    assert config_loader.load_config().get_as_dict() == {
+        'Dialog': {'Adhoc': {
+            'Highlight': {
+                'Last Note Type': None,
+                'Last Source Field Name': None,
+                'Last Format': None,
+                'Last Destination Field Names': None},
+            'Erase': {
+                'Last Note Type': 'Basic',
+                'Last Field Names': []}}}}
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
+                                                  'run_op_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details}
+
+    # Initialize controller using saved config
+    config: Config = config_loader.load_config()
+    model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+    _: AdhocEraseDialogController = AdhocEraseDialogController(
+        model, note_type_details_factory, config, config_loader)
+    assert config_loader.load_config().get_as_dict() == {
+        'Dialog': {'Adhoc': {
+            'Highlight': {
+                'Last Note Type': None,
+                'Last Source Field Name': None,
+                'Last Format': None,
+                'Last Destination Field Names': None},
+            'Erase': {
+                'Last Note Type': 'Basic',
+                'Last Field Names': []}}}}
+    assert model.as_dict() == {'note_types': [],
+                               'run_op_callback_None': True,
+                               'selected_fields': [],
+                               'selected_note_type': basic_note_type_details}
