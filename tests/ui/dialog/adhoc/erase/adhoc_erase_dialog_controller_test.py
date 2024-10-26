@@ -7,6 +7,7 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model impo
     AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
+from tests.conftest import cloze_note_type_details
 from tests.data import Data
 
 
@@ -52,7 +53,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
 
 def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                        adhoc_erase_dialog_model: AdhocEraseDialogModel, config_loader: ConfigLoader,
-                       basic_note_type_details: NoteTypeDetails):
+                       basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails):
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -83,3 +84,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': basic_note_type_details}
+    adhoc_erase_dialog_model.selected_note_type = None
+    adhoc_erase_dialog_model.fire_model_changed(None)
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
+                                                  'run_op_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}

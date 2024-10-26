@@ -1,12 +1,13 @@
 import logging
 from logging import Logger
-from typing import Callable
+from typing import Callable, Optional
 
 from aqt.qt import QWidget
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
@@ -18,12 +19,15 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogController(AdhocEraseDialogModelListener):
 
-    def __init__(self, model: AdhocEraseDialogModel, config: Config, config_loader: ConfigLoader):
+    def __init__(self, model: AdhocEraseDialogModel, note_type_details_factory: NoteTypeDetailsFactory,
+                 config: Config, config_loader: ConfigLoader):
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
+        self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__callback: Callable[[QWidget, FieldName], None]
+        self.__fill_model_from_config()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_dialog(self, params: DialogParams, run_on_callback: Callable[[EraseOpParams], None]) -> None:
@@ -56,9 +60,19 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
     def model_changed(self, source: object):
         if source != self:
             log.debug("Update config from model")
-            self.__config.set_dialog_adhoc_erase_last_note_type_name(self.__model.selected_note_type.name)
+            note_type_name: Optional[
+                NoteTypeName] = self.__model.selected_note_type.name if self.__model.selected_note_type else None
+            self.__config.set_dialog_adhoc_erase_last_note_type_name(note_type_name)
             self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.selected_fields)
             self.__config_loader.write_config(self.__config)
+
+    def __fill_model_from_config(self):
+        last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_erase_last_note_type_name()
+        if last_note_type_name:
+            self.__model.selected_note_type = self.__note_type_details_factory.by_note_type_name(last_note_type_name)
+        last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
+        if last_field_names:
+            self.__model.selected_fields = last_field_names
 
     def __repr__(self):
         return self.__class__.__name__

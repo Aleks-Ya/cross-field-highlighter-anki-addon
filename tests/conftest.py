@@ -251,9 +251,10 @@ def config(config_loader: ConfigLoader) -> Config:
 
 
 @pytest.fixture
-def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel, config: Config,
+def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel,
+                                  note_type_details_factory: NoteTypeDetailsFactory, config: Config,
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
-    return AdhocEraseDialogController(adhoc_erase_dialog_model, config, config_loader)
+    return AdhocEraseDialogController(adhoc_erase_dialog_model, note_type_details_factory, config, config_loader)
 
 
 @pytest.fixture
