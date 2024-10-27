@@ -120,6 +120,29 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    model_history=[None, adhoc_highlight_dialog_view, adhoc_highlight_dialog_view])
 
 
+def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                               adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                               formatter_facade: FormatterFacade):
+    assert adhoc_highlight_dialog_model.formats == []
+    __assert_format_group_box(adhoc_highlight_dialog_view, [])
+
+    exp_formats: list[HighlightFormat] = formatter_facade.get_all_formats()
+    exp_format_names: list[str] = [highlight_format.name for highlight_format in exp_formats]
+    adhoc_highlight_dialog_model.formats = exp_formats
+    assert adhoc_highlight_dialog_model.formats == exp_formats
+    __assert_format_group_box(adhoc_highlight_dialog_view, [])
+
+    # Fire model fills the format list in combo box
+    adhoc_highlight_dialog_model.fire_model_changed(None)
+    assert adhoc_highlight_dialog_model.formats == exp_formats
+    __assert_format_group_box(adhoc_highlight_dialog_view, exp_format_names)
+
+    # Fire model again duplicates format list in combo box
+    adhoc_highlight_dialog_model.fire_model_changed(None)
+    assert adhoc_highlight_dialog_model.formats == exp_formats
+    __assert_format_group_box(adhoc_highlight_dialog_view, exp_format_names)
+
+
 def __assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
                   current_field: str, source_fields: list[str], formats: list[str], check_box_texts: list[str],
                   selected_fields: list[str], disabled_field: str):

@@ -29,6 +29,11 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.clear()
         self.__combo_box.addItems(items)
 
+    def set_data_items(self, items: dict[str, Any]) -> None:
+        self.__combo_box.clear()
+        for item, data in items.items():
+            self.add_item(item, data)
+
     def add_item(self, item: str, data: Any) -> None:
         self.__combo_box.addItem(item, data)
 

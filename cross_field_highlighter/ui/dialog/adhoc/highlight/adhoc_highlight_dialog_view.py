@@ -60,8 +60,9 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
             note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
             self.__note_type_combo_box.set_items(note_type_names)
 
-            for highlight_format in self.__model.formats:
-                self.__format_combo_box.add_item(highlight_format.name, highlight_format)
+            highlight_formats: dict[str, HighlightFormat] = {highlight_format.name: highlight_format for
+                                                             highlight_format in self.__model.formats}
+            self.__format_combo_box.set_data_items(highlight_formats)
 
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
