@@ -9,6 +9,8 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
 from cross_field_highlighter.ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
+from cross_field_highlighter.ui.menu.browser_menu_search_highlighted_notes_action import \
+    BrowserMenuSearchHighlightedNotesAction
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
 
@@ -30,5 +32,8 @@ class BrowserMenu(QMenu):
         erase_action: BrowserMenuEraseAction = BrowserMenuEraseAction(
             browser, op_factory, adhoc_erase_dialog_controller, dialog_params_factory)
         self.addAction(erase_action)
+
+        search_action: BrowserMenuSearchHighlightedNotesAction = BrowserMenuSearchHighlightedNotesAction(browser)
+        self.addAction(search_action)
 
         log.debug(f"{self.__class__.__name__} was instantiated")
