@@ -31,6 +31,8 @@ from cross_field_highlighter.highlighter.types import FieldNames, FieldName, Not
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
+    AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
@@ -175,6 +177,21 @@ def bold_format(formatter_facade: FormatterFacade) -> HighlightFormat:
 
 
 @pytest.fixture
+def italic_format(formatter_facade: FormatterFacade) -> HighlightFormat:
+    return formatter_facade.get_format_by_code(HighlightFormatCode.ITALIC)
+
+
+@pytest.fixture
+def underline_format(formatter_facade: FormatterFacade) -> HighlightFormat:
+    return formatter_facade.get_format_by_code(HighlightFormatCode.UNDERLINE)
+
+
+@pytest.fixture
+def mark_format(formatter_facade: FormatterFacade) -> HighlightFormat:
+    return formatter_facade.get_format_by_code(HighlightFormatCode.MARK)
+
+
+@pytest.fixture
 def dialog_params_factory(col: Collection, note_type_details_factory: NoteTypeDetailsFactory) -> DialogParamsFactory:
     return DialogParamsFactory(col, note_type_details_factory)
 
@@ -255,6 +272,15 @@ def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogMode
                                   note_type_details_factory: NoteTypeDetailsFactory, config: Config,
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, note_type_details_factory, config, config_loader)
+
+
+@pytest.fixture
+def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                      note_type_details_factory: NoteTypeDetailsFactory,
+                                      formatter_facade: FormatterFacade, config: Config,
+                                      config_loader: ConfigLoader) -> AdhocHighlightDialogController:
+    return AdhocHighlightDialogController(adhoc_highlight_dialog_model, note_type_details_factory, formatter_facade,
+                                          config, config_loader)
 
 
 @pytest.fixture

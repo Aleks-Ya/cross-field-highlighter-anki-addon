@@ -38,3 +38,15 @@ class AdhocHighlightDialogModel:
     def fire_model_changed(self, source: object):
         for listener in self.__listeners:
             listener.model_changed(source)
+
+    def as_dict(self) -> dict[str, any]:
+        return {
+            "note_types": self.note_types,
+            "note_ids": self.note_ids,
+            "formats": self.formats,
+            "selected_note_type": self.selected_note_type,
+            "selected_source_field": self.selected_source_field,
+            "selected_format": self.selected_format,
+            "selected_destination_fields": self.selected_destination_fields,
+            "run_op_callback_None": not self.run_op_callback
+        }

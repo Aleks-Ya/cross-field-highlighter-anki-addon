@@ -4,13 +4,14 @@ from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from tests.conftest import cloze_note_type_details
-from tests.data import Data
+from tests.data import Data, DefaultFields
 
 
 class FakeCallback:
@@ -122,6 +123,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
 
     # Update config from model
     adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
+    adhoc_erase_dialog_model.selected_fields = FieldNames([DefaultFields.basic_back_field])
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
@@ -132,10 +134,10 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': 'Basic',
-                'Last Field Names': []}}}}
+                'Last Field Names': ['Back']}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'run_op_callback_None': True,
-                                                  'selected_fields': [],
+                                                  'selected_fields': ['Back'],
                                                   'selected_note_type': basic_note_type_details}
 
     # Initialize controller using saved config
@@ -152,8 +154,8 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': 'Basic',
-                'Last Field Names': []}}}}
+                'Last Field Names': ['Back']}}}}
     assert model.as_dict() == {'note_types': [],
                                'run_op_callback_None': True,
-                               'selected_fields': [],
+                               'selected_fields': ['Back'],
                                'selected_note_type': basic_note_type_details}
