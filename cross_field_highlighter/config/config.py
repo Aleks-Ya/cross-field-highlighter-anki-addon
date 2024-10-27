@@ -19,6 +19,7 @@ class Config:
     __key_4_dialog_adhoc_last_note_type: str = 'Last Note Type'
     __key_4_dialog_adhoc_last_source_field_name: str = 'Last Source Field Name'
     __key_4_dialog_adhoc_last_format: str = 'Last Format'
+    __key_4_dialog_adhoc_last_stop_words: str = 'Last Stop Words'
     __key_4_dialog_adhoc_last_destination_field_names: str = 'Last Destination Field Names'
     __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
@@ -80,6 +81,14 @@ class Config:
         name: Optional[str] = last_format_code.name if last_format_code else None
         self.__set(name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_format)
+
+    def get_dialog_adhoc_highlight_last_stop_words(self) -> Optional[str]:
+        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                          self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_stop_words)
+
+    def set_dialog_adhoc_highlight_last_stop_words(self, last_stop_words: Optional[str]) -> None:
+        self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_stop_words)
 
     def get_dialog_adhoc_highlight_last_destination_field_names(self) -> Optional[FieldNames]:
         fields: Optional[list[str]] = self.__get(

@@ -64,6 +64,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 'Last Note Type': None,
                 'Last Source Field Name': None,
                 'Last Format': None,
+                'Last Stop Words': None,
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': None,
@@ -82,6 +83,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 'Last Note Type': None,
                 'Last Source Field Name': None,
                 'Last Format': None,
+                'Last Stop Words': None,
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': 'Basic',
@@ -112,6 +114,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': None,
                 'Last Source Field Name': None,
                 'Last Format': None,
+                'Last Stop Words': None,
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': None,
@@ -131,6 +134,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': None,
                 'Last Source Field Name': None,
                 'Last Format': None,
+                'Last Stop Words': None,
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': 'Basic',
@@ -151,6 +155,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': None,
                 'Last Source Field Name': None,
                 'Last Format': None,
+                'Last Stop Words': None,
                 'Last Destination Field Names': None},
             'Erase': {
                 'Last Note Type': 'Basic',

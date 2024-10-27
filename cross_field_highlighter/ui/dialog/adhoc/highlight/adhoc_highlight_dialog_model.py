@@ -27,6 +27,7 @@ class AdhocHighlightDialogModel:
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: Optional[FieldName] = None
         self.selected_format: Optional[HighlightFormat] = None
+        self.selected_stop_words: Optional[str] = None
         self.selected_destination_fields: FieldNames = FieldNames([])
         self.run_op_callback: Optional[Callable[[HighlightOpParams], None]] = None
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
@@ -47,6 +48,7 @@ class AdhocHighlightDialogModel:
             "selected_note_type": self.selected_note_type,
             "selected_source_field": self.selected_source_field,
             "selected_format": self.selected_format,
+            "selected_stop_words": self.selected_stop_words,
             "selected_destination_fields": self.selected_destination_fields,
             "run_op_callback_None": not self.run_op_callback
         }

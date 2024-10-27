@@ -66,6 +66,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             self.__config.set_dialog_adhoc_highlight_last_source_field_name(self.__model.selected_source_field)
             self.__config.set_dialog_adhoc_highlight_last_format(
                 self.__model.selected_format.code if self.__model.selected_format else None)
+            self.__config.set_dialog_adhoc_highlight_last_stop_words(self.__model.selected_stop_words)
             self.__config.set_dialog_adhoc_highlight_last_destination_field_names(
                 self.__model.selected_destination_fields)
             self.__config_loader.write_config(self.__config)
@@ -81,6 +82,9 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         if highlight_format_code:
             last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_format_code)
             self.__model.selected_format = last_format
+        last_stop_words: Optional[FieldNames] = self.__config.get_dialog_adhoc_highlight_last_stop_words()
+        if last_stop_words:
+            self.__model.selected_stop_words = last_stop_words
         last_destination_field_names: Optional[
             FieldNames] = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
         if last_destination_field_names:

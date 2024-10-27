@@ -25,6 +25,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
+                "Last Stop Words": None,
                 "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
@@ -38,6 +39,7 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -56,6 +58,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": "ITALIC",
+                "Last Stop Words": None,
                 "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
@@ -69,6 +72,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -82,6 +86,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -96,6 +101,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -107,6 +113,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -118,6 +125,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -129,6 +137,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",
@@ -143,6 +152,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": None,
                 "Last Source Field Name": None,
                 "Last Format": None,
+                "Last Stop Words": None,
                 "Last Destination Field Names": None},
             "Erase": {
                 "Last Note Type": None,
@@ -161,6 +171,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": "Basic",
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
+                "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"]},
             "Erase": {
                 "Last Note Type": "Cloze",

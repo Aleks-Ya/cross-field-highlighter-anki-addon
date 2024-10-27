@@ -51,3 +51,6 @@ class TitledLineEditLayout(QHBoxLayout):
 
     def get_text(self) -> str:
         return self.__line_edit.text()
+
+    def set_text(self, text: str) -> None:
+        self.__line_edit.setText(text)
