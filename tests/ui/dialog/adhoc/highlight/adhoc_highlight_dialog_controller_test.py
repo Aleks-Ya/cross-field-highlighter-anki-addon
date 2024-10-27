@@ -18,18 +18,18 @@ from tests.data import Data, DefaultFields
 
 
 class FakeCallback:
-    params_history: list[HighlightOpParams] = []
+    history: list[HighlightOpParams] = []
 
     @staticmethod
     def call(params: HighlightOpParams):
-        FakeCallback.params_history.append(params)
+        FakeCallback.history.append(params)
 
 
 class FakeModelListener(AdhocHighlightDialogModelListener):
-    model_changed_history: list[object] = []
+    history: list[object] = []
 
     def model_changed(self, source: object):
-        FakeModelListener.model_changed_history.append(source)
+        FakeModelListener.history.append(source)
 
 
 def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -43,8 +43,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
     params: DialogParams = DialogParams(note_types, note_ids)
-    assert FakeCallback.params_history == []
-    assert FakeModelListener.model_changed_history == []
+    assert FakeCallback.history == []
+    assert FakeModelListener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {'formats': [],
                                                       'note_ids': set(),
                                                       'note_types': [],
@@ -55,8 +55,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                                                       'selected_source_field': None}
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeCallback.call)
-    assert FakeCallback.params_history == []
-    assert FakeModelListener.model_changed_history == [adhoc_highlight_dialog_controller]
+    assert FakeCallback.history == []
+    assert FakeModelListener.history == [adhoc_highlight_dialog_controller]
     assert adhoc_highlight_dialog_model.as_dict() == {
         'formats': [bold_format, italic_format, underline_format, mark_format],
         'note_ids': note_ids,

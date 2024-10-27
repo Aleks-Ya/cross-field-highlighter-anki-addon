@@ -51,7 +51,7 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
     def model_changed(self, source: object) -> None:
         if source != self:
             log.debug("Show dialog")
-            note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
+            note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
             self.__note_type_combo_box.set_items(note_type_names)
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
@@ -77,21 +77,34 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
 
     def __accept(self) -> None:
         log.info("Starting")
-        fields: FieldNames = self.__fields_vbox.get_selected_field_names()
-        log.debug(f"Selected fields: {fields}")
-        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                                self.__model.note_types}
-        note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
-        self.__model.selected_note_type = note_type
-        self.__model.selected_fields = fields
-        self.__model.fire_model_changed(self)
+        self.__update_model_from_ui()
         self.hide()
-        erase_op_params: EraseOpParams = EraseOpParams(note_type.note_type_id, self.parent(), fields)
+        fields: FieldNames = self.__get_selected_fields()
+        log.debug(f"Selected fields: {fields}")
+        note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
+        erase_op_params: EraseOpParams = EraseOpParams(note_type_details.note_type_id, self.parent(), fields)
         self.__model.run_op_callback(erase_op_params)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
+    def __update_model_from_ui(self):
+        fields: FieldNames = self.__get_selected_fields()
+        note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
+        self.__model.selected_note_type = note_type_details
+        self.__model.selected_fields = fields
+        self.__model.fire_model_changed(self)
+
+    def __get_selected_note_type_details(self):
+        note_types: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                           self.__model.note_types}
+        note_type_details: NoteTypeDetails = note_types[NoteTypeName(self.__note_type_combo_box.get_current_text())]
+        return note_type_details
+
+    def __get_selected_fields(self):
+        return self.__fields_vbox.get_selected_field_names()
+
     def __reject(self) -> None:
         log.info("Cancelled")
+        self.__update_model_from_ui()
         self.reject()
 
     def __restore_defaults(self) -> None:

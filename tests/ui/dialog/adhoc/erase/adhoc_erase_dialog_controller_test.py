@@ -15,18 +15,18 @@ from tests.data import Data, DefaultFields
 
 
 class FakeCallback:
-    params_history: list[EraseOpParams] = []
+    history: list[EraseOpParams] = []
 
     @staticmethod
     def call(params: EraseOpParams):
-        FakeCallback.params_history.append(params)
+        FakeCallback.history.append(params)
 
 
 class FakeModelListener(AdhocEraseDialogModelListener):
-    model_changed_history: list[object] = []
+    history: list[object] = []
 
     def model_changed(self, source: object):
-        FakeModelListener.model_changed_history.append(source)
+        FakeModelListener.history.append(source)
 
 
 def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
@@ -38,16 +38,16 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
     params: DialogParams = DialogParams(note_types, note_ids)
-    assert FakeCallback.params_history == []
-    assert FakeModelListener.model_changed_history == []
+    assert FakeCallback.history == []
+    assert FakeModelListener.history == []
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'run_op_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
     adhoc_erase_dialog_controller.show_dialog(params, FakeCallback.call)
-    assert FakeCallback.params_history == []
-    assert FakeModelListener.model_changed_history == [adhoc_erase_dialog_controller]
+    assert FakeCallback.history == []
+    assert FakeModelListener.history == [adhoc_erase_dialog_controller]
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [basic_note_type_details, cloze_note_type_details],
                                                   'run_op_callback_None': False,
                                                   'selected_fields': [],
