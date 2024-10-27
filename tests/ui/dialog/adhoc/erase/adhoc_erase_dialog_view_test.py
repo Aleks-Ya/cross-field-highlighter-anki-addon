@@ -23,10 +23,10 @@ class FakeCallback:
 
 
 class FakeModelListener(AdhocEraseDialogModelListener):
-    model_changed_history: list[object] = []
+    history: list[object] = []
 
     def model_changed(self, source: object):
-        FakeModelListener.model_changed_history.append(source)
+        FakeModelListener.history.append(source)
 
 
 def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
@@ -111,7 +111,7 @@ def __assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_callback:
                                                   'run_op_callback_None': no_callback,
                                                   'selected_fields': [],
                                                   'selected_note_type': selected_note_type}
-    assert FakeModelListener.model_changed_history == model_history
+    assert FakeModelListener.history == model_history
 
 
 def test_repr(adhoc_erase_dialog_view: AdhocEraseDialogView):

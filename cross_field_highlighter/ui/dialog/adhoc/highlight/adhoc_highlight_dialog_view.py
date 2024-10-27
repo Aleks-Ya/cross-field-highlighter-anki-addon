@@ -122,9 +122,28 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
     def __accept(self) -> None:
         log.info("Starting")
+        self.__update_model_from_ui()
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
         stop_words: set[Word] = {Word(word) for word in self.__stop_words_layout.get_text().split(" ")}
+        highlight_format: HighlightFormat = self.__format_combo_box.get_current_data()
+        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                                self.__model.note_types}
+        note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
+        self.hide()
+        highlight_op_params: HighlightOpParams = HighlightOpParams(
+            note_type.note_type_id, self.__model.note_ids, self.parent(), source_filed, destination_fields, stop_words,
+            highlight_format)
+        self.__model.run_op_callback(highlight_op_params)
+
+    def __reject(self) -> None:
+        log.info("Cancelled")
+        self.__update_model_from_ui()
+        self.hide()
+
+    def __update_model_from_ui(self):
+        source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
+        destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
         highlight_format: HighlightFormat = self.__format_combo_box.get_current_data()
 
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
@@ -136,16 +155,6 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__model.selected_stop_words = self.__stop_words_layout.get_text()
         self.__model.selected_destination_fields = destination_fields
         self.__model.fire_model_changed(self)
-
-        self.hide()
-        highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type.note_type_id, self.__model.note_ids, self.parent(), source_filed, destination_fields, stop_words,
-            highlight_format)
-        self.__model.run_op_callback(highlight_op_params)
-
-    def __reject(self) -> None:
-        log.info("Cancelled")
-        self.hide()
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
