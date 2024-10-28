@@ -10,7 +10,7 @@ from mock.mock import Mock
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.types import Word, FieldNames, Notes, FieldName
+from cross_field_highlighter.highlighter.types import FieldNames, Notes, FieldName, Words
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.data import Data, DefaultFields, CaseNote
@@ -22,7 +22,7 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     td.assert_original_case_notes(case_notes)
     notes: Notes = Notes([case_note.note for case_note in case_notes])
     note_ids: set[NoteId] = {note.id for note in notes}
-    stop_words: set[Word] = td.stop_words()
+    stop_words: Words = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front_field
     fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
     parent: QWidget = QWidget()

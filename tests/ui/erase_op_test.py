@@ -10,7 +10,7 @@ from aqt.taskman import TaskManager
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
-from cross_field_highlighter.highlighter.types import Word, FieldNames, Notes, FieldName
+from cross_field_highlighter.highlighter.types import FieldNames, Notes, FieldName, Words
 from cross_field_highlighter.ui.operation.erase_op import EraseOp
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from tests.data import Data, DefaultFields, CaseNote
@@ -26,7 +26,7 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
     parent: QWidget = QWidget()
 
     source_field: FieldName = DefaultFields.basic_front_field
-    stop_words: set[Word] = td.stop_words()
+    stop_words: Words = td.stop_words()
     notes_highlighter_result: NotesHighlighterResult = notes_highlighter.highlight(
         notes, source_field, fields[0], stop_words, bold_format)
     col.update_notes(notes_highlighter_result.notes)

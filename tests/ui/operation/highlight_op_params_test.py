@@ -5,7 +5,7 @@ from pytestqt.qtbot import QtBot
 from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldNames, Word
+from cross_field_highlighter.highlighter.types import FieldNames, Word, Words
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.data import DefaultFields, Data
 
@@ -25,7 +25,7 @@ def parent(qtbot: QtBot) -> QWidget:
 @pytest.fixture
 def params(basic_note_type: NoteType, note_ids: set[NoteId], bold_format: HighlightFormat,
            parent: QWidget) -> HighlightOpParams:
-    stop_words: set[Word] = {Word("a"), Word("an")}
+    stop_words: Words = Words([Word("a"), Word("an")])
     return HighlightOpParams(basic_note_type["id"], note_ids, parent, DefaultFields.basic_front_field,
                              FieldNames([DefaultFields.basic_back_field]), stop_words,
                              bold_format)
@@ -41,7 +41,7 @@ def test_str(params: HighlightOpParams, note_ids: set[NoteId], basic_note_type_i
 
 def test_eq(params: HighlightOpParams, basic_note_type: NoteType, parent: QWidget, note_ids: set[NoteId],
             bold_format: HighlightFormat):
-    stop_words: set[Word] = {Word("a"), Word("an")}
+    stop_words: Words = Words([Word("a"), Word("an")])
     params2: HighlightOpParams = HighlightOpParams(basic_note_type["id"], note_ids, parent,
                                                    DefaultFields.basic_front_field,
                                                    FieldNames([DefaultFields.basic_back_field]), stop_words,

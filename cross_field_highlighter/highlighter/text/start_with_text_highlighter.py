@@ -7,26 +7,30 @@ from cross_field_highlighter.highlighter.formatter.formatter_facade import Forma
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
-from cross_field_highlighter.highlighter.types import Text, Word
+from cross_field_highlighter.highlighter.types import Text, Word, Words
 
 log: Logger = logging.getLogger(__name__)
 
 
 class StartWithTextHighlighter(TextHighlighter):
+    __space: Word = Word(" ")
+
     def __init__(self, formatter_facade: FormatterFacade, tokenizer: Tokenizer):
         self.__formatter_facade: FormatterFacade = formatter_facade
         self.__tokenizer: Tokenizer = tokenizer
 
-    def highlight(self, collocation: Text, text: Text, stop_words: set[Word],
+    def highlight(self, collocation: Text, text: Text, stop_words: Words,
                   highlight_format: HighlightFormat) -> Text:
         super().highlight(collocation, text, stop_words, highlight_format)
-        collocation_words: set[Word] = set(self.__tokenizer.tokenize(collocation))
-        collocation_words.discard(Word(" "))
+        collocation_words: Words = Words(self.__tokenizer.tokenize_distinct(collocation))
+        if self.__space in collocation_words:
+            collocation_words.remove(self.__space)
         for stop_word in stop_words:
-            collocation_words.discard(stop_word)
-        highlighted_words: list[Word] = []
+            if stop_word in collocation_words:
+                collocation_words.remove(stop_word)
+        highlighted_words: Words = Words([])
         clean_text: Text = self.erase(text)
-        text_words: list[Word] = self.__tokenizer.tokenize(clean_text)
+        text_words: Words = self.__tokenizer.tokenize(clean_text)
         for text_word in text_words:
             highlighted_word: Word = text_word
             for word in collocation_words:

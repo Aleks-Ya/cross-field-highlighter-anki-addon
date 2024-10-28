@@ -4,7 +4,7 @@ from logging import Logger
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter, NoteHighlightResult, \
     NoteEraseResult
-from cross_field_highlighter.highlighter.types import FieldName, Word, Notes
+from cross_field_highlighter.highlighter.types import FieldName, Notes, Words
 
 log: Logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ class NotesHighlighter:
         self.__note_highlighter: NoteHighlighter = note_highlighter
 
     def highlight(self, notes: Notes, source_field: FieldName, destination_field: FieldName,
-                  stop_words: set[Word], highlight_format: HighlightFormat) -> NotesHighlighterResult:
+                  stop_words: Words, highlight_format: HighlightFormat) -> NotesHighlighterResult:
         results: list[NoteHighlightResult] = [
             self.__note_highlighter.highlight(note, source_field, destination_field, stop_words, highlight_format)
             for note in notes]
