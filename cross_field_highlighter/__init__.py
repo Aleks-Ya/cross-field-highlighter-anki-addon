@@ -37,7 +37,7 @@ def __initialize(col: Collection):
     logs: Logs = Logs(log_dir)
     logs.set_level("DEBUG")
     tokenizer: RegExTokenizer = RegExTokenizer()
-    formatter_facade: FormatterFacade = FormatterFacade(tokenizer)
+    formatter_facade: FormatterFacade = FormatterFacade()
     text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)

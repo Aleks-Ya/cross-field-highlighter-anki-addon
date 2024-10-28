@@ -1,13 +1,11 @@
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
-from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.highlighter.types import Text, Word
 
 
 class FormatterFacade:
-    def __init__(self, tokenizer: Tokenizer):
-        self.__tokenizer: Tokenizer = tokenizer
+    def __init__(self):
         bold_formatter: TagFormatter = TagFormatter("b")
         italic_formatter: TagFormatter = TagFormatter("i")
         underline_formatter: TagFormatter = TagFormatter("u")

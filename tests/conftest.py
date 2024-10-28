@@ -85,8 +85,8 @@ def notes_highlighter(start_with_note_highlighter: StartWithNoteHighlighter) -> 
 
 
 @pytest.fixture
-def formatter_facade(regex_tokenizer: RegExTokenizer) -> FormatterFacade:
-    return FormatterFacade(regex_tokenizer)
+def formatter_facade() -> FormatterFacade:
+    return FormatterFacade()
 
 
 @pytest.fixture
