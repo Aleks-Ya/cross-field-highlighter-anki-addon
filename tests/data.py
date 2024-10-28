@@ -3,7 +3,7 @@ from typing import Any
 
 from anki.collection import Collection
 from anki.decks import DeckId
-from anki.models import NoteType
+from anki.models import NoteType, FieldDict
 from anki.notes import Note, NoteId
 from aqt import gui_hooks
 
@@ -78,6 +78,14 @@ class Data:
         return self.create_basic_note_1(FieldContent('Front field content'),
                                         FieldContent('Back field content'),
                                         new_note)
+
+    def add_fields_to_note_type(self, note_type: NoteType, field_number: int, min_field_name_length: int) -> None:
+        for i in range(field_number):
+            new_field_name: str = f"Field {i + 1}"
+            if len(new_field_name) < min_field_name_length:
+                new_field_name += " " + "x" * (min_field_name_length - len(new_field_name) - 1)
+            new_field_dict: FieldDict = self.col.models.new_field(new_field_name)
+            self.col.models.add_field(note_type, new_field_dict)
 
     @staticmethod
     def stop_words() -> Text:
