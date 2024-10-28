@@ -44,7 +44,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         # noinspection PyUnresolvedReferences
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
-        layout: QGridLayout = QGridLayout(None)
+        layout: QGridLayout = QGridLayout(self)
         layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)
         layout.addWidget(formate_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
         layout.addWidget(destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
