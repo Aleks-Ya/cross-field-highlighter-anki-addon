@@ -236,6 +236,11 @@ def theme_manager() -> ThemeManager:
 
 
 @pytest.fixture
+def config(config_loader: ConfigLoader) -> Config:
+    return config_loader.load_config()
+
+
+@pytest.fixture
 def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
     return AdhocHighlightDialogModel()
 
@@ -251,20 +256,27 @@ def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDial
 
 
 @pytest.fixture
+def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                      note_type_details_factory: NoteTypeDetailsFactory,
+                                      formatter_facade: FormatterFacade, config: Config,
+                                      config_loader: ConfigLoader) -> AdhocHighlightDialogController:
+    return AdhocHighlightDialogController(
+        adhoc_highlight_dialog_model, note_type_details_factory, formatter_facade, config, config_loader)
+
+
+@pytest.fixture
 def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
     return AdhocEraseDialogModel()
 
 
 @pytest.fixture
-def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, qtbot: QtBot) -> AdhocEraseDialogView:
+def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, theme_manager: ThemeManager,
+                            qtbot: QtBot, mw: AnkiQt) -> AdhocEraseDialogView:
+    assert mw is not None  # initialize aqt.mw
     view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    theme_manager.apply_style()
     qtbot.addWidget(view)
     return view
-
-
-@pytest.fixture
-def config(config_loader: ConfigLoader) -> Config:
-    return config_loader.load_config()
 
 
 @pytest.fixture
@@ -272,15 +284,6 @@ def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogMode
                                   note_type_details_factory: NoteTypeDetailsFactory, config: Config,
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, note_type_details_factory, config, config_loader)
-
-
-@pytest.fixture
-def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                                      note_type_details_factory: NoteTypeDetailsFactory,
-                                      formatter_facade: FormatterFacade, config: Config,
-                                      config_loader: ConfigLoader) -> AdhocHighlightDialogController:
-    return AdhocHighlightDialogController(adhoc_highlight_dialog_model, note_type_details_factory, formatter_facade,
-                                          config, config_loader)
 
 
 @pytest.fixture
