@@ -25,6 +25,7 @@ from cross_field_highlighter.highlighter.note.start_with_note_highlighter import
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
@@ -69,9 +70,9 @@ def col(profile_manager: ProfileManager) -> Collection:
 
 
 @pytest.fixture
-def start_with_text_highlighter(formatter_facade: FormatterFacade,
-                                regex_tokenizer: RegExTokenizer) -> StartWithTextHighlighter:
-    return StartWithTextHighlighter(formatter_facade, regex_tokenizer)
+def start_with_text_highlighter(formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
+                                stop_words_tokenizer: StopWordsTokenizer) -> StartWithTextHighlighter:
+    return StartWithTextHighlighter(formatter_facade, regex_tokenizer, stop_words_tokenizer)
 
 
 @pytest.fixture
@@ -289,3 +290,8 @@ def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogMode
 @pytest.fixture
 def note_type_details_factory(col: Collection) -> NoteTypeDetailsFactory:
     return NoteTypeDetailsFactory(col)
+
+
+@pytest.fixture
+def stop_words_tokenizer() -> StopWordsTokenizer:
+    return StopWordsTokenizer()

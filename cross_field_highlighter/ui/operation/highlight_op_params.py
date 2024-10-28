@@ -5,25 +5,25 @@ from anki.notes import NoteId
 from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Words
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Text
 
 
 class HighlightOpParams:
     def __init__(self, note_type_id: NotetypeId, note_ids: set[NoteId], parent: Optional[QWidget],
-                 source_field: FieldName,
-                 destination_fields: FieldNames, stop_words: Words, highlight_format: HighlightFormat):
+                 source_field: FieldName, destination_fields: FieldNames, stop_words: Text,
+                 highlight_format: HighlightFormat):
         self.note_type_id: NotetypeId = note_type_id
         self.note_ids: set[NoteId] = note_ids
         self.parent: Optional[QWidget] = parent
         self.source_field: FieldName = source_field
         self.destination_fields: FieldNames = destination_fields
-        self.stop_words: Words = stop_words
+        self.stop_words: Text = stop_words
         self.highlight_format: HighlightFormat = highlight_format
 
     def __str__(self):
         fields: str = ", ".join([str(field) for field in self.destination_fields])
         return (f"HighlightOpParams(note_type_id={self.note_type_id}, note_ids={sorted(self.note_ids)}, "
-                f"source_field={self.source_field}, destination_fields={fields}, stop_words={sorted(self.stop_words)}, "
+                f"source_field={self.source_field}, destination_fields={fields}, stop_words='{self.stop_words}', "
                 f"highlight_format={self.highlight_format})")
 
     def __repr__(self):

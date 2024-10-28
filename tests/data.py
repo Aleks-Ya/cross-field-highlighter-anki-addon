@@ -8,7 +8,7 @@ from anki.notes import Note, NoteId
 from aqt import gui_hooks
 
 from cross_field_highlighter.config.config import Config
-from cross_field_highlighter.highlighter.types import FieldContent, FieldName, Text, Word, Words
+from cross_field_highlighter.highlighter.types import FieldContent, FieldName, Text
 
 
 class DefaultFields:
@@ -80,17 +80,17 @@ class Data:
                                         new_note)
 
     @staticmethod
-    def stop_words() -> Words:
-        return Words([Word("to"), Word("a"), Word("an")])
+    def stop_words() -> Text:
+        return Text("to a an")
 
     @staticmethod
     def cases() -> list[Case]:
         return [
-            Case("single word",
+            Case("single word one time",
                  'beautiful',
                  'Hello, beautiful world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world!'),
-            Case("several words",
+            Case("single word several times",
                  'beautiful',
                  'Hello, beautiful world and beautiful day!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world and <b class="cross-field-highlighter">beautiful</b> day!'),

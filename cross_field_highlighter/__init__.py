@@ -16,6 +16,7 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
 from cross_field_highlighter.ui.browser_hooks import BrowserHooks
 from cross_field_highlighter.log.logs import Logs
@@ -38,7 +39,8 @@ def __initialize(col: Collection):
     logs.set_level("DEBUG")
     tokenizer: RegExTokenizer = RegExTokenizer()
     formatter_facade: FormatterFacade = FormatterFacade()
-    text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer)
+    stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
+    text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer, stop_words_tokenizer)
     note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
     task_manager: TaskManager = mw.taskman

@@ -2,14 +2,14 @@ from anki.collection import Collection
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
-from cross_field_highlighter.highlighter.types import Notes, Words
+from cross_field_highlighter.highlighter.types import Notes, Text
 from tests.data import Data, DefaultFields, CaseNote
 
 
 def test_highlight_erase(notes_highlighter: NotesHighlighter, td: Data, col: Collection, bold_format: HighlightFormat):
     case_notes: list[CaseNote] = td.create_case_notes()
     notes: Notes = Notes([case_note.note for case_note in case_notes])
-    stop_words: Words = td.stop_words()
+    stop_words: Text = td.stop_words()
 
     # Highlight 1st time
     notes_highlight_result: NotesHighlighterResult = notes_highlighter.highlight(

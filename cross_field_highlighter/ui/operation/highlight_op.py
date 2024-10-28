@@ -13,7 +13,7 @@ from aqt.utils import show_critical, show_info
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Notes, Words
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Notes, Text
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ class HighlightOp(QueryOp):
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
         self.__destination_fields: FieldNames = params.destination_fields
-        self.__stop_words: Words = params.stop_words
+        self.__stop_words: Text = params.stop_words
         self.__highlight_format: HighlightFormat = params.highlight_format
         self.__callback: Callable[[], None] = callback
         log.debug(f"{self.__class__.__name__} was instantiated")

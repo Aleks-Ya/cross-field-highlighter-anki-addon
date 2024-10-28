@@ -7,7 +7,7 @@ from aqt import QComboBox, Qt, QCheckBox, QDialogButtonBox, QPushButton
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Word, Words
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Text
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
@@ -99,7 +99,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                         note_ids=set(), parent=None,
                                                         source_field=FieldName("Back Extra"),
                                                         destination_fields=FieldNames([]),
-                                                        stop_words=Words([Word("a"), Word("an"), Word("to")]),
+                                                        stop_words=Text("a an to"),
                                                         highlight_format=bold_format)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
