@@ -26,7 +26,8 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Source Field Name": None,
                 "Last Format": None,
                 "Last Stop Words": None,
-                "Last Destination Field Names": None},
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -40,7 +41,8 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -59,7 +61,8 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Source Field Name": None,
                 "Last Format": "ITALIC",
                 "Last Stop Words": None,
-                "Last Destination Field Names": None},
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -73,7 +76,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}},
@@ -87,7 +91,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -102,7 +107,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}, module_dir)
@@ -114,7 +120,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -126,7 +133,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -138,7 +146,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}
@@ -153,7 +162,8 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Source Field Name": None,
                 "Last Format": None,
                 "Last Stop Words": None,
-                "Last Destination Field Names": None},
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -172,7 +182,8 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}

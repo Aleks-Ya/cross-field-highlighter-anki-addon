@@ -109,6 +109,9 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
+        self.__model.selected_note_type = None
+        self.__model.selected_fields = FieldNames([])
+        self.__model.fire_model_changed(None)
 
     def __repr__(self):
         return self.__class__.__name__

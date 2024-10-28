@@ -23,7 +23,8 @@ def test_setters(td: Data):
                 "Last Source Field Name": None,
                 "Last Format": None,
                 "Last Stop Words": None,
-                "Last Destination Field Names": None},
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
@@ -33,6 +34,7 @@ def test_setters(td: Data):
     assert config.get_dialog_adhoc_highlight_last_format() is None
     assert config.get_dialog_adhoc_highlight_last_stop_words() is None
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() is None
+    assert config.get_dialog_adhoc_highlight_default_stop_words() == "a an to"
     assert config.get_dialog_adhoc_erase_last_note_type_name() is None
     assert config.get_dialog_adhoc_erase_last_field_names() is None
 
@@ -41,6 +43,7 @@ def test_setters(td: Data):
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_stop_words("a an the")
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
+    config.set_dialog_adhoc_highlight_default_stop_words("the")
     config.set_dialog_adhoc_erase_last_note_type_name(NoteTypeName("Cloze"))
     config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
 
@@ -49,6 +52,7 @@ def test_setters(td: Data):
     assert config.get_dialog_adhoc_highlight_last_format() == HighlightFormatCode.BOLD
     assert config.get_dialog_adhoc_highlight_last_stop_words() == "a an the"
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() == ["Examples"]
+    assert config.get_dialog_adhoc_highlight_default_stop_words() == "the"
     assert config.get_dialog_adhoc_erase_last_note_type_name() == "Cloze"
     assert config.get_dialog_adhoc_erase_last_field_names() == ["Sentences"]
 
@@ -59,7 +63,8 @@ def test_setters(td: Data):
                 "Last Source Field Name": "English",
                 "Last Format": "BOLD",
                 "Last Stop Words": "a an the",
-                "Last Destination Field Names": ["Examples"]},
+                "Last Destination Field Names": ["Examples"],
+                "Default Stop Words": "the"},
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}}}

@@ -46,6 +46,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert FakeCallback.history == []
     assert FakeModelListener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -60,6 +61,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert FakeCallback.history == []
     assert FakeModelListener.history == [adhoc_highlight_dialog_controller]
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [bold_format, italic_format, underline_format, mark_format],
         'note_ids': note_ids,
         'note_types': [basic_note_type_details, cloze_note_type_details],
@@ -82,11 +84,13 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Source Field Name': None,
                 'Last Format': None,
                 'Last Stop Words': None,
-                'Last Destination Field Names': None},
+                'Last Destination Field Names': None,
+                "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -107,11 +111,13 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Source Field Name': None,
                 'Last Format': None,
                 'Last Stop Words': None,
-                'Last Destination Field Names': []},
+                'Last Destination Field Names': [],
+                "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -126,6 +132,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     adhoc_highlight_dialog_model.selected_note_type = cloze_note_type_details
     adhoc_highlight_dialog_model.fire_model_changed(None)
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -152,11 +159,13 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Source Field Name': None,
                 'Last Format': None,
                 'Last Stop Words': None,
-                'Last Destination Field Names': None},
+                'Last Destination Field Names': None,
+                "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -181,20 +190,22 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Source Field Name': 'Front',
                 'Last Format': 'BOLD',
                 'Last Stop Words': 'to the',
-                'Last Destination Field Names': ['Back']},
+                'Last Destination Field Names': ['Back'],
+                "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
-    assert (adhoc_highlight_dialog_model.as_dict() ==
-            {'formats': [],
-             'note_ids': set(),
-             'note_types': [],
-             'run_op_callback_None': True,
-             'selected_destination_fields': ['Back'],
-             'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
-             'selected_stop_words': 'to the',
-             'selected_note_type': basic_note_type_details,
-             'selected_source_field': 'Front'})
+    assert (adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an to',
+        'formats': [],
+        'note_ids': set(),
+        'note_types': [],
+        'run_op_callback_None': True,
+        'selected_destination_fields': ['Back'],
+        'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
+        'selected_stop_words': 'to the',
+        'selected_note_type': basic_note_type_details,
+        'selected_source_field': 'Front'})
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -208,11 +219,13 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Source Field Name': 'Front',
                 'Last Format': 'BOLD',
                 'Last Stop Words': 'to the',
-                'Last Destination Field Names': ['Back']},
+                'Last Destination Field Names': ['Back'],
+                "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert model.as_dict() == {
+        'default_stop_words': 'a an to',
         'formats': [],
         'note_ids': set(),
         'note_types': [],

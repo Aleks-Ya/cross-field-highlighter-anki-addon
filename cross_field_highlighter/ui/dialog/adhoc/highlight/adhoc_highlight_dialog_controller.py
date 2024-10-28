@@ -62,7 +62,8 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
     def model_changed(self, source: object):
         if source != self:
             log.debug("Update config from model")
-            self.__config.set_dialog_adhoc_highlight_last_note_type_name(self.__model.selected_note_type.name)
+            self.__config.set_dialog_adhoc_highlight_last_note_type_name(
+                self.__model.selected_note_type.name if self.__model.selected_note_type else None)
             self.__config.set_dialog_adhoc_highlight_last_source_field_name(self.__model.selected_source_field)
             self.__config.set_dialog_adhoc_highlight_last_format(
                 self.__model.selected_format.code if self.__model.selected_format else None)
@@ -89,6 +90,9 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             FieldNames] = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
         if last_destination_field_names:
             self.__model.selected_destination_fields = last_destination_field_names
+        default_stop_words: Optional[FieldNames] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
+        if default_stop_words:
+            self.__model.default_stop_words = default_stop_words
 
     def __repr__(self):
         return self.__class__.__name__

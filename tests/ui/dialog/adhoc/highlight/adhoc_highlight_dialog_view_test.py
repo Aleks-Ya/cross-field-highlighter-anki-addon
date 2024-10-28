@@ -36,6 +36,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
               adhoc_highlight_dialog_model: AdhocHighlightDialogModel, basic_note_type_details: NoteTypeDetails,
               cloze_note_type_details: NoteTypeDetails, formatter_facade: FormatterFacade, qtbot: QtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    adhoc_highlight_dialog_model.default_stop_words = "a an"
     # Initial state
     __assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                   formats=[], check_box_texts=[], selected_fields=[], disabled_field="")
@@ -118,6 +119,16 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    selected_format=bold_format, selected_source_field=FieldName('Back Extra'),
                    selected_stop_words='a an to',
                    model_history=[None, adhoc_highlight_dialog_view, adhoc_highlight_dialog_view])
+    # Click Restore Defaults button
+    restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
+    qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
+    assert FakeCallback.history == [start_params]
+    __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   note_types=[basic_note_type_details, cloze_note_type_details],
+                   formats=formatter_facade.get_all_formats(), selected_note_type=None,
+                   selected_format=None, selected_source_field=None,
+                   selected_stop_words='a an',
+                   model_history=[None, adhoc_highlight_dialog_view, adhoc_highlight_dialog_view, None])
 
 
 def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
@@ -208,6 +219,7 @@ def __assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_c
                    selected_source_field: Optional[FieldName], selected_stop_words: Optional[str],
                    model_history: list[object]):
     assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': 'a an',
         'formats': formats,
         'note_ids': set(),
         'note_types': note_types,

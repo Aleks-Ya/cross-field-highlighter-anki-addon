@@ -21,6 +21,7 @@ class Config:
     __key_4_dialog_adhoc_last_format: str = 'Last Format'
     __key_4_dialog_adhoc_last_stop_words: str = 'Last Stop Words'
     __key_4_dialog_adhoc_last_destination_field_names: str = 'Last Destination Field Names'
+    __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
     __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
 
@@ -99,6 +100,14 @@ class Config:
     def set_dialog_adhoc_highlight_last_destination_field_names(self, fields: FieldNames) -> None:
         self.__set(fields, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_names)
+
+    def get_dialog_adhoc_highlight_default_stop_words(self) -> Optional[str]:
+        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                          self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
+
+    def set_dialog_adhoc_highlight_default_stop_words(self, last_stop_words: Optional[str]) -> None:
+        self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
 
     def get_dialog_adhoc_erase_last_note_type_name(self) -> NoteTypeName:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
