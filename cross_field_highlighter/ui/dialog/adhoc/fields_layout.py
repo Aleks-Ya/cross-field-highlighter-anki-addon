@@ -15,6 +15,7 @@ class FieldsLayout(QVBoxLayout):
         label: QLabel = QLabel("Fields:")
         self.addWidget(label)
         self.__field_name_checkboxes: dict[FieldName, QCheckBox] = {}
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_items(self, field_names: FieldNames) -> None:
         for check_box in self.__field_name_checkboxes.values():
@@ -40,3 +41,6 @@ class FieldsLayout(QVBoxLayout):
     def get_selected_field_names(self) -> FieldNames:
         return FieldNames(
             [field_name for field_name, check_box in self.__field_name_checkboxes.items() if check_box.isChecked()])
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")
