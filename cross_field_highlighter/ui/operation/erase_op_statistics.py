@@ -21,3 +21,6 @@ class EraseOpStatistics:
 
     def increment_notes_modified(self, note_count: int):
         self.__notes_modified += note_count
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

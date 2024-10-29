@@ -40,3 +40,6 @@ class BrowserHooks:
         browser_menu: BrowserMenu = BrowserMenu(browser, self.__op_factory, self.__adhoc_highlight_dialog_controller,
                                                 self.__adhoc_erase_dialog_controller, self.__dialog_params_factory)
         menu.addMenu(browser_menu)
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

@@ -29,3 +29,6 @@ class DialogParamsFactory:
     def create_from_card_ids(self, card_ids: Sequence[CardId]) -> DialogParams:
         selected_note_ids: Sequence[NoteId] = [self.__col.get_card(card_id).nid for card_id in card_ids]
         return self.create_from_note_ids(selected_note_ids)
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

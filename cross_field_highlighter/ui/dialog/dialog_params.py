@@ -1,14 +1,19 @@
+import logging
+from logging import Logger
 from typing import Sequence
 
 from anki.notes import NoteId
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 
+log: Logger = logging.getLogger(__name__)
+
 
 class DialogParams:
     def __init__(self, note_types: list[NoteTypeDetails], note_ids: Sequence[NoteId]):
         self.note_types: list[NoteTypeDetails] = note_types
         self.note_ids: Sequence[NoteId] = note_ids
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __str__(self):
         note_types_str: str = ', '.join(str(note_type) for note_type in self.note_types)
@@ -19,3 +24,6 @@ class DialogParams:
 
     def __eq__(self, other):
         return self.note_types == other.note_types
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

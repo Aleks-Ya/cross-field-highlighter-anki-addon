@@ -1,7 +1,12 @@
+import logging
+from logging import Logger
+
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
 from cross_field_highlighter.highlighter.types import Text, Word
+
+log: Logger = logging.getLogger(__name__)
 
 
 class FormatterFacade:
@@ -23,6 +28,7 @@ class FormatterFacade:
             self.__format_dict[HighlightFormatCode.UNDERLINE]: underline_formatter,
             self.__format_dict[HighlightFormatCode.MARK]: mark_formatter
         }
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def format(self, word: Word, highlight_format: HighlightFormat) -> Word:
         formatter: Formatter = self.get_formatter(highlight_format)
@@ -42,3 +48,6 @@ class FormatterFacade:
 
     def get_format_by_code(self, highlight_format_code: HighlightFormatCode) -> HighlightFormat:
         return self.__format_dict[highlight_format_code]
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

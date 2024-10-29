@@ -1,3 +1,5 @@
+import logging
+from logging import Logger
 from typing import Optional
 
 from anki.models import NotetypeId
@@ -6,6 +8,8 @@ from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Text
+
+log: Logger = logging.getLogger(__name__)
 
 
 class HighlightOpParams:
@@ -19,6 +23,7 @@ class HighlightOpParams:
         self.destination_fields: FieldNames = destination_fields
         self.stop_words: Text = stop_words
         self.highlight_format: HighlightFormat = highlight_format
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __str__(self):
         fields: str = ", ".join([str(field) for field in self.destination_fields])
@@ -43,3 +48,6 @@ class HighlightOpParams:
     def __hash__(self):
         return hash((self.note_type_id, tuple(self.note_ids), self.source_field,
                      tuple(self.destination_fields), tuple(self.stop_words), self.highlight_format))
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

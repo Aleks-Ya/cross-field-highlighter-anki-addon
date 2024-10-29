@@ -54,3 +54,6 @@ class AdhocHighlightDialogModel:
             "default_stop_words": self.default_stop_words,
             "run_op_callback_None": not self.run_op_callback
         }
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

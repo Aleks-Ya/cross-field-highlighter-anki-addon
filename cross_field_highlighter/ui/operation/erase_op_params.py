@@ -1,3 +1,5 @@
+import logging
+from logging import Logger
 from typing import Optional
 
 from anki.models import NotetypeId
@@ -5,12 +7,15 @@ from aqt import QWidget
 
 from cross_field_highlighter.highlighter.types import FieldNames
 
+log: Logger = logging.getLogger(__name__)
+
 
 class EraseOpParams:
     def __init__(self, note_type_id: NotetypeId, parent: Optional[QWidget], fields: FieldNames):
         self.note_type_id: NotetypeId = note_type_id
         self.parent: Optional[QWidget] = parent
         self.fields: FieldNames = fields
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __str__(self):
         fields: str = ", ".join([str(field) for field in self.fields])
@@ -28,3 +33,6 @@ class EraseOpParams:
 
     def __hash__(self):
         return hash((self.note_type_id, tuple(self.fields)))
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

@@ -44,3 +44,6 @@ class BrowserMenuAction(QAction):
         # Method "aqt.browser.table.table.Table.is_notes_mode" doesn't show correct state after toggling the switch
         # noinspection PyProtectedMember
         return browser._switch.isChecked()
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

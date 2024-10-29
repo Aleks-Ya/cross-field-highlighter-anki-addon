@@ -86,3 +86,6 @@ class EraseOp(QueryOp):
         show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)",
                       parent=self.__parent)
         self.__callback()
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

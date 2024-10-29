@@ -1,6 +1,10 @@
+import logging
+from logging import Logger
 from typing import Optional, Callable, Any
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox, QLineEdit
+
+log: Logger = logging.getLogger(__name__)
 
 
 class TitledComboBoxLayout(QHBoxLayout):
@@ -43,6 +47,9 @@ class TitledComboBoxLayout(QHBoxLayout):
     def get_current_data(self) -> Any:
         return self.__combo_box.currentData()
 
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")
+
 
 class TitledLineEditLayout(QHBoxLayout):
     def __init__(self, title: str, text: str = None, placeholder: str = None, clear_button_enabled: bool = False):
@@ -59,3 +66,6 @@ class TitledLineEditLayout(QHBoxLayout):
 
     def set_text(self, text: str) -> None:
         self.__line_edit.setText(text)
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

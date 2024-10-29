@@ -36,3 +36,6 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
     def __run_op(self, result: HighlightOpParams):
         op: HighlightOp = self.__op_factory.create_highlight_op(result, self._reload_current_note)
         op.run_in_background()
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

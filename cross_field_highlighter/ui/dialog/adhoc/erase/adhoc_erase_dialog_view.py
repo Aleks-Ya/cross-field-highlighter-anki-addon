@@ -47,6 +47,7 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
 
         self.setLayout(layout)
         self.resize(300, 200)
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def model_changed(self, source: object) -> None:
         if source != self:

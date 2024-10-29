@@ -36,3 +36,6 @@ class OpFactory:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, params={erase_op_params}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                        note_ids, erase_op_params, callback)
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

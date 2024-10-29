@@ -40,3 +40,6 @@ class AdhocEraseDialogModel:
             "selected_fields": self.selected_fields,
             "run_op_callback_None": not self.run_op_callback
         }
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")

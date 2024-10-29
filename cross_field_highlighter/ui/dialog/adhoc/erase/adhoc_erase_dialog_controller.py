@@ -2,13 +2,11 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
-from aqt.qt import QWidget
-
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
@@ -26,7 +24,6 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
-        self.__callback: Callable[[QWidget, FieldName], None]
         self.__fill_model_from_config()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -77,3 +74,6 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
 
     def __repr__(self):
         return self.__class__.__name__
+
+    def __del__(self):
+        log.debug(f"{self.__class__.__name__} was deleted")
