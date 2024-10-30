@@ -12,10 +12,10 @@ from cross_field_highlighter.highlighter.types import FieldContent, FieldName, T
 
 
 class DefaultFields:
-    basic_front_field: FieldName = FieldName('Front')
-    basic_back_field: FieldName = FieldName('Back')
-    cloze_text_field: FieldName = FieldName('Text')
-    cloze_extra_field: FieldName = FieldName('Back Extra')
+    basic_front: FieldName = FieldName('Front')
+    basic_back: FieldName = FieldName('Back')
+    cloze_text: FieldName = FieldName('Text')
+    cloze_extra: FieldName = FieldName('Back Extra')
 
 
 class Case:
@@ -47,8 +47,8 @@ class Data:
                             back_field_content: FieldContent = "Text content",
                             new_note: bool = False) -> Note:
         note: Note = self.col.new_note(self.basic_note_type)
-        note[DefaultFields.basic_front_field] = front_field_content
-        note[DefaultFields.basic_back_field] = back_field_content
+        note[DefaultFields.basic_front] = front_field_content
+        note[DefaultFields.basic_back] = back_field_content
         if not new_note:
             self.col.add_note(note, self.deck_id)
         gui_hooks.add_cards_did_add_note(note)
@@ -67,8 +67,8 @@ class Data:
                           extra_field_content: FieldContent = "Extra content",
                           new_note: bool = False) -> Note:
         note: Note = self.col.new_note(self.cloze_note_type)
-        note[DefaultFields.cloze_text_field] = text_field_content
-        note[DefaultFields.cloze_extra_field] = extra_field_content
+        note[DefaultFields.cloze_text] = text_field_content
+        note[DefaultFields.cloze_extra] = extra_field_content
         if not new_note:
             self.col.add_note(note, self.deck_id)
         gui_hooks.add_cards_did_add_note(note)
@@ -167,9 +167,9 @@ class Data:
     def assert_original_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:
             act_note: Note = self.col.get_note(case_note.note.id)
-            assert act_note[DefaultFields.basic_back_field] == case_note.original_content
+            assert act_note[DefaultFields.basic_back] == case_note.original_content
 
     def assert_highlighted_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:
             act_note: Note = self.col.get_note(case_note.note.id)
-            assert act_note[DefaultFields.basic_back_field] == case_note.highlighted_content
+            assert act_note[DefaultFields.basic_back] == case_note.highlighted_content

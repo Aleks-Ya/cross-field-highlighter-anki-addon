@@ -18,7 +18,7 @@ def parent(qtbot: QtBot) -> QWidget:
 
 @pytest.fixture
 def params(basic_note_type: NoteType, bold_format: HighlightFormat, parent: QWidget) -> EraseOpParams:
-    return EraseOpParams(basic_note_type["id"], parent, FieldNames([DefaultFields.basic_back_field]))
+    return EraseOpParams(basic_note_type["id"], parent, FieldNames([DefaultFields.basic_back]))
 
 
 def test_str(params: EraseOpParams, basic_note_type_id: NotetypeId):
@@ -28,5 +28,5 @@ def test_str(params: EraseOpParams, basic_note_type_id: NotetypeId):
 
 
 def test_eq(params: EraseOpParams, basic_note_type: NoteType, parent: QWidget):
-    params2: EraseOpParams = EraseOpParams(basic_note_type["id"], parent, FieldNames([DefaultFields.basic_back_field]))
+    params2: EraseOpParams = EraseOpParams(basic_note_type["id"], parent, FieldNames([DefaultFields.basic_back]))
     assert params == params2

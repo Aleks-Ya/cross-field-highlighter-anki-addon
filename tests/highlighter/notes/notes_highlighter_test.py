@@ -13,17 +13,17 @@ def test_highlight_erase(notes_highlighter: NotesHighlighter, td: Data, col: Col
 
     # Highlight 1st time
     notes_highlight_result: NotesHighlighterResult = notes_highlighter.highlight(
-        notes, DefaultFields.basic_front_field, DefaultFields.basic_back_field, stop_words, bold_format)
+        notes, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
     col.update_notes(notes_highlight_result.notes)
     td.assert_highlighted_case_notes(case_notes)
 
     # Highlight again
     notes_highlight_result: NotesHighlighterResult = notes_highlighter.highlight(
-        notes, DefaultFields.basic_front_field, DefaultFields.basic_back_field, stop_words, bold_format)
+        notes, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
     col.update_notes(notes_highlight_result.notes)
     td.assert_highlighted_case_notes(case_notes)
 
     # Erase
-    notes_erase_result: NotesHighlighterResult = notes_highlighter.erase(notes, DefaultFields.basic_back_field)
+    notes_erase_result: NotesHighlighterResult = notes_highlighter.erase(notes, DefaultFields.basic_back)
     col.update_notes(notes_erase_result.notes)
     td.assert_original_case_notes(case_notes)

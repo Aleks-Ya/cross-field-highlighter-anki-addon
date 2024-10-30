@@ -222,14 +222,14 @@ def cloze_note_type(col: Collection) -> NoteType:
 def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: NoteTypeName) -> NoteTypeDetails:
     return NoteTypeDetails(
         basic_note_type_id, basic_note_type_name,
-        FieldNames([FieldName(DefaultFields.basic_front_field), FieldName(DefaultFields.basic_back_field)]))
+        FieldNames([FieldName(DefaultFields.basic_front), FieldName(DefaultFields.basic_back)]))
 
 
 @pytest.fixture
 def cloze_note_type_details(cloze_note_type: NoteType) -> NoteTypeDetails:
     return NoteTypeDetails(
         cloze_note_type["id"], cloze_note_type["name"],
-        FieldNames([FieldName(DefaultFields.cloze_text_field), FieldName(DefaultFields.cloze_extra_field)]))
+        FieldNames([FieldName(DefaultFields.cloze_text), FieldName(DefaultFields.cloze_extra)]))
 
 
 @pytest.fixture

@@ -16,16 +16,16 @@ def test_cases(start_with_note_highlighter: StartWithNoteHighlighter, td: Data, 
 
         # Highlight 1st time
         result: NoteHighlightResult = start_with_note_highlighter.highlight(
-            note, DefaultFields.basic_front_field, DefaultFields.basic_back_field, stop_words, bold_format)
+            note, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
         note_act: Note = result.note
-        assert note_act[DefaultFields.basic_back_field] == case.highlighted_text
+        assert note_act[DefaultFields.basic_back] == case.highlighted_text
 
         # Highlight again
         result: NoteHighlightResult = start_with_note_highlighter.highlight(
-            note, DefaultFields.basic_front_field, DefaultFields.basic_back_field, stop_words, bold_format)
+            note, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
         note_act: Note = result.note
-        assert note_act[DefaultFields.basic_back_field] == case.highlighted_text
+        assert note_act[DefaultFields.basic_back] == case.highlighted_text
 
         # Erase
-        result: NoteEraseResult = start_with_note_highlighter.erase(note, DefaultFields.basic_back_field)
-        assert result.note[DefaultFields.basic_back_field] == case.original_text
+        result: NoteEraseResult = start_with_note_highlighter.erase(note, DefaultFields.basic_back)
+        assert result.note[DefaultFields.basic_back] == case.original_text

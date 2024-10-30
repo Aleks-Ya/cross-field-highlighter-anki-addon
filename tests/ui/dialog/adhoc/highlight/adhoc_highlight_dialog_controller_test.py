@@ -178,10 +178,10 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
 
     # Update config from model
     adhoc_highlight_dialog_model.selected_note_type = basic_note_type_details
-    adhoc_highlight_dialog_model.selected_source_field = DefaultFields.basic_front_field
+    adhoc_highlight_dialog_model.selected_source_field = DefaultFields.basic_front
     adhoc_highlight_dialog_model.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
     adhoc_highlight_dialog_model.selected_stop_words = "to the"
-    adhoc_highlight_dialog_model.selected_destination_fields = FieldNames([DefaultFields.basic_back_field])
+    adhoc_highlight_dialog_model.selected_destination_fields = FieldNames([DefaultFields.basic_back])
     adhoc_highlight_dialog_model.fire_model_changed(None)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {

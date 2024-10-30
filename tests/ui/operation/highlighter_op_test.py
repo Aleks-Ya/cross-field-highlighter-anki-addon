@@ -13,6 +13,7 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.types import FieldNames, Notes, FieldName, Text
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
+from cross_field_highlighter.ui.operation.op_statistics import OpStatistics
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields, CaseNote
 
@@ -25,8 +26,8 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     notes: Notes = Notes([case_note.note for case_note in case_notes])
     note_ids: set[NoteId] = {note.id for note in notes}
     stop_words: Text = td.stop_words()
-    source_field: FieldName = DefaultFields.basic_front_field
-    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
+    source_field: FieldName = DefaultFields.basic_front
+    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
 
@@ -37,6 +38,11 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     highlight_op.run_in_background()
     time.sleep(1)
     td.assert_highlighted_case_notes(case_notes)
+
+    statistics: OpStatistics = highlight_op.get_statistics()
+    assert statistics.as_dict() == {'notes_selected': len(notes),
+                                    'notes_processed': 13,
+                                    'notes_modified': 12}
 
 
 def test_highlight_different_note_types(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -49,8 +55,8 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
     note_ids: set[NoteId] = {note.id for note in notes}
 
     stop_words: Text = td.stop_words()
-    source_field: FieldName = DefaultFields.basic_front_field
-    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back_field])
+    source_field: FieldName = DefaultFields.basic_front
+    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
 
@@ -60,8 +66,12 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
                                             op_statistics_formatter, lambda: None)
     highlight_op.run_in_background()
     time.sleep(1)
-    assert col.get_note(note_1.id)[
-               DefaultFields.basic_back_field] == 'Text <b class="cross-field-highlighter">content</b>'
-    assert col.get_note(note_2.id)[
-               DefaultFields.basic_back_field] == 'Back <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
+    assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
+    assert col.get_note(note_2.id)[DefaultFields.basic_back] == \
+           'Back <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
     assert col.get_note(note_3.id).fields == note_3.fields
+
+    statistics: OpStatistics = highlight_op.get_statistics()
+    assert statistics.as_dict() == {'notes_selected': len(notes),
+                                    'notes_processed': 2,
+                                    'notes_modified': 2}

@@ -26,8 +26,8 @@ def parent(qtbot: QtBot) -> QWidget:
 def params(basic_note_type_id: NotetypeId, note_ids: set[NoteId], bold_format: HighlightFormat,
            parent: QWidget) -> HighlightOpParams:
     stop_words: Text = Text("a an")
-    return HighlightOpParams(basic_note_type_id, note_ids, parent, DefaultFields.basic_front_field,
-                             FieldNames([DefaultFields.basic_back_field]), stop_words,
+    return HighlightOpParams(basic_note_type_id, note_ids, parent, DefaultFields.basic_front,
+                             FieldNames([DefaultFields.basic_back]), stop_words,
                              bold_format)
 
 
@@ -43,7 +43,7 @@ def test_eq(params: HighlightOpParams, basic_note_type_id: NotetypeId, parent: Q
             bold_format: HighlightFormat):
     stop_words: Text = Text("a an")
     params2: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent,
-                                                   DefaultFields.basic_front_field,
-                                                   FieldNames([DefaultFields.basic_back_field]), stop_words,
+                                                   DefaultFields.basic_front,
+                                                   FieldNames([DefaultFields.basic_back]), stop_words,
                                                    bold_format)
     assert params == params2
