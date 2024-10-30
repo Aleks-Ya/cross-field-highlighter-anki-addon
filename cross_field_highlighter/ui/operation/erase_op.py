@@ -59,16 +59,13 @@ class EraseOp(QueryOp):
             notes_with_note_type: Notes = Notes([note for note in notes if note.mid == self.__note_type_id])
             self.__statistics.increment_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, len(notes_with_note_type))
             log.debug(f"Notes with note type {self.__note_type_id}: {len(notes_with_note_type)}")
-            highlighted_notes: Notes = Notes([])
-            for field in self.__destination_fields:
-                result: NotesHighlighterResult = self.__notes_highlighter.erase(notes_with_note_type, field)
-                processed_notes: Notes = result.notes
-                highlighted_notes += processed_notes
-                self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, len(processed_notes))
-                self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
-            self.__col.update_notes(highlighted_notes)
-            log.debug(f"Highlighted notes: {highlighted_notes}")
-            highlighted_counter += len(highlighted_notes)
+            result: NotesHighlighterResult = self.__notes_highlighter.erase(notes_with_note_type,
+                                                                            self.__destination_fields)
+            self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, result.total_notes)
+            self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
+            self.__col.update_notes(result.notes)
+            log.debug(f"Highlighted notes: {result.notes}")
+            highlighted_counter += len(result.notes)
             self.__update_progress("Highlighting", highlighted_counter, len(self.__note_ids))
             if self.__progress_manager.want_cancel():
                 return highlighted_counter

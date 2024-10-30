@@ -33,7 +33,7 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
     source_field: FieldName = DefaultFields.basic_front
     stop_words: Text = td.stop_words()
     notes_highlighter_result: NotesHighlighterResult = notes_highlighter.highlight(
-        notes, source_field, fields[0], stop_words, bold_format)
+        notes, source_field, fields, stop_words, bold_format)
     col.update_notes(notes_highlighter_result.notes)
     td.assert_highlighted_case_notes(case_notes)
 
