@@ -13,7 +13,7 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.types import FieldNames, Notes, FieldName, Text
 from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
-from cross_field_highlighter.ui.operation.op_statistics import OpStatistics
+from cross_field_highlighter.ui.operation.op_statistics import OpStatistics, OpStatisticsKey
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields, CaseNote
 
@@ -40,9 +40,9 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     td.assert_highlighted_case_notes(case_notes)
 
     statistics: OpStatistics = highlight_op.get_statistics()
-    assert statistics.as_dict() == {'notes_selected': len(notes),
-                                    'notes_processed': 13,
-                                    'notes_modified': 12}
+    assert statistics.as_dict() == {OpStatisticsKey.NOTES_SELECTED: len(notes),
+                                    OpStatisticsKey.NOTES_PROCESSED: 13,
+                                    OpStatisticsKey.NOTES_MODIFIED: 12}
 
 
 def test_highlight_different_note_types(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -72,6 +72,6 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
     assert col.get_note(note_3.id).fields == note_3.fields
 
     statistics: OpStatistics = highlight_op.get_statistics()
-    assert statistics.as_dict() == {'notes_selected': len(notes),
-                                    'notes_processed': 2,
-                                    'notes_modified': 2}
+    assert statistics.as_dict() == {OpStatisticsKey.NOTES_SELECTED: len(notes),
+                                    OpStatisticsKey.NOTES_PROCESSED: 2,
+                                    OpStatisticsKey.NOTES_MODIFIED: 2}

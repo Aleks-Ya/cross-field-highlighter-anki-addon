@@ -14,7 +14,7 @@ from aqt.utils import show_critical, show_info
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldNames, Notes
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
-from cross_field_highlighter.ui.operation.op_statistics import OpStatistics
+from cross_field_highlighter.ui.operation.op_statistics import OpStatistics, OpStatisticsKey
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 
 log: Logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ class EraseOp(QueryOp):
     def __background_op(self, _: Collection) -> int:
         c: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
-        self.__statistics.set_notes_selected(len(note_ids_list))
+        self.__statistics.set_value(OpStatisticsKey.NOTES_SELECTED, len(note_ids_list))
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
@@ -62,8 +62,8 @@ class EraseOp(QueryOp):
                 result: NotesHighlighterResult = self.__notes_highlighter.erase(notes_with_note_type, field)
                 processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
-                self.__statistics.increment_notes_processed(len(processed_notes))
-                self.__statistics.increment_notes_modified(result.modified_notes)
+                self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, len(processed_notes))
+                self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_counter += len(highlighted_notes)
