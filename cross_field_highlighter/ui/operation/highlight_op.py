@@ -14,16 +14,19 @@ from aqt.utils import show_critical, show_info
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Notes, Text
+from cross_field_highlighter.ui.operation.op_statistics import OpStatistics
+from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
 
 
 class HighlightOp(QueryOp):
-    __progress_dialog_title: str = '"Note Size" addon'
+    __progress_dialog_title: str = 'Highlight'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, params: HighlightOpParams, callback: Callable[[], None]):
+                 progress_manager: ProgressManager, params: HighlightOpParams,
+                 op_statistics_formatter: OpStatisticsFormatter, callback: Callable[[], None]):
         super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -33,17 +36,23 @@ class HighlightOp(QueryOp):
         self.__progress_manager: ProgressManager = progress_manager
         self.__note_type_id: NotetypeId = params.note_type_id
         self.__note_ids: set[NoteId] = params.note_ids
+        self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
         self.__destination_fields: FieldNames = params.destination_fields
         self.__stop_words: Text = params.stop_words
         self.__highlight_format: HighlightFormat = params.highlight_format
         self.__callback: Callable[[], None] = callback
+        self.__statistics: OpStatistics = OpStatistics()
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def get_statistics(self) -> OpStatistics:
+        return self.__statistics
 
     def __background_op(self, _: Collection) -> int:
         slice_size: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
+        self.__statistics.set_notes_selected(len(note_ids_list))
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + slice_size] for i in
                                                range(0, len(note_ids_list), slice_size)]
         highlighted_notes_counter: int = 0
@@ -59,6 +68,8 @@ class HighlightOp(QueryOp):
                     self.__highlight_format)
                 processed_notes: Notes = result.notes
                 highlighted_notes += processed_notes
+                self.__statistics.increment_notes_processed(len(processed_notes))
+                self.__statistics.increment_notes_modified(result.modified_notes)
             self.__col.update_notes(highlighted_notes)
             log.debug(f"Highlighted notes: {highlighted_notes}")
             highlighted_notes_counter += len(highlighted_notes)
@@ -76,7 +87,8 @@ class HighlightOp(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
-        show_info(title=self.__progress_dialog_title, text=f"{count} notes were highlighted", parent=self.__parent)
+        show_info(title=self.__progress_dialog_title,
+                  text=self.__op_statistics_formatter.format(self.get_statistics()), parent=self.__parent)
         self.__callback()
 
     def __on_failure(self, e: Exception) -> None:

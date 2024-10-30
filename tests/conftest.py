@@ -37,6 +37,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
+from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields
 
 
@@ -295,3 +296,8 @@ def note_type_details_factory(col: Collection) -> NoteTypeDetailsFactory:
 @pytest.fixture
 def stop_words_tokenizer() -> StopWordsTokenizer:
     return StopWordsTokenizer()
+
+
+@pytest.fixture
+def op_statistics_formatter() -> OpStatisticsFormatter:
+    return OpStatisticsFormatter()

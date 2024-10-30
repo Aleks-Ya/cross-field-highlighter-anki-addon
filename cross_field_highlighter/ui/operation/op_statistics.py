@@ -4,7 +4,7 @@ from logging import Logger
 log: Logger = logging.getLogger(__name__)
 
 
-class EraseOpStatistics:
+class OpStatistics:
     __notes_selected_key: str = 'notes_selected'
     __notes_processed_key: str = 'notes_processed'
     __notes_modified_key: str = 'notes_modified'

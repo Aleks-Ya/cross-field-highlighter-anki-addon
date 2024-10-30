@@ -14,16 +14,18 @@ from aqt.utils import show_critical, show_info
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from cross_field_highlighter.highlighter.types import FieldNames, Notes
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
-from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
+from cross_field_highlighter.ui.operation.op_statistics import OpStatistics
+from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 
 log: Logger = logging.getLogger(__name__)
 
 
 class EraseOp(QueryOp):
-    __progress_dialog_title: str = '"Note Size" addon'
+    __progress_dialog_title: str = 'Erase'
 
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
+                 op_statistics_formatter: OpStatisticsFormatter,
                  params: EraseOpParams, callback: Callable[[], None]):
         super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
@@ -35,12 +37,13 @@ class EraseOp(QueryOp):
         self.__parent: QWidget = params.parent
         self.__note_type_id: NotetypeId = params.note_type_id
         self.__note_ids: set[NoteId] = note_ids
+        self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         self.__destination_fields: FieldNames = params.fields
         self.__callback: Callable[[], None] = callback
-        self.__statistics: EraseOpStatistics = EraseOpStatistics()
+        self.__statistics: OpStatistics = OpStatistics()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def get_statistics(self) -> EraseOpStatistics:
+    def get_statistics(self) -> OpStatistics:
         return self.__statistics
 
     def __background_op(self, _: Collection) -> int:
@@ -78,7 +81,8 @@ class EraseOp(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Highlighting finished: {count}")
-        show_info(title=self.__progress_dialog_title, text=f"{count} notes were erased", parent=self.__parent)
+        show_info(title=self.__progress_dialog_title,
+                  text=self.__op_statistics_formatter.format(self.get_statistics()), parent=self.__parent)
         self.__callback()
 
     def __on_failure(self, e: Exception) -> None:
