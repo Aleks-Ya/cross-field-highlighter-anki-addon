@@ -6,18 +6,19 @@ from tests.data import DefaultFields
 
 
 def test_str(basic_note_type_details: NoteTypeDetails, basic_note_type_id: NotetypeId):
-    assert str(basic_note_type_details) == f"NoteTypeDetails({basic_note_type_id}, Basic, [Front, Back])"
+    assert str(basic_note_type_details) == f"NoteTypeDetails({basic_note_type_id}, Basic, [Front, Back, Extra])"
 
 
 def test_repr(basic_note_type_details: NoteTypeDetails, basic_note_type_id: NotetypeId):
     note_type_details: list[NoteTypeDetails] = [basic_note_type_details]
-    assert str(note_type_details) == f"[NoteTypeDetails({basic_note_type_id}, Basic, [Front, Back])]"
+    assert str(note_type_details) == f"[NoteTypeDetails({basic_note_type_id}, Basic, [Front, Back, Extra])]"
 
 
 def test_eq(basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails,
             basic_note_type: NoteType, basic_note_type_id: NotetypeId, basic_note_type_name: NoteTypeName):
     assert basic_note_type_details != cloze_note_type_details
-    assert basic_note_type_details == NoteTypeDetails(
-        basic_note_type_id, basic_note_type_name,
-        FieldNames([FieldName(DefaultFields.basic_front), FieldName(DefaultFields.basic_back)]))
+    assert basic_note_type_details == NoteTypeDetails(basic_note_type_id, basic_note_type_name,
+                                                      FieldNames([FieldName(DefaultFields.basic_front),
+                                                                  FieldName(DefaultFields.basic_back),
+                                                                  FieldName(DefaultFields.basic_extra)]))
     assert basic_note_type_details != "abc"

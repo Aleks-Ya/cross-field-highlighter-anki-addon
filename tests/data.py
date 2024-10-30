@@ -14,6 +14,7 @@ from cross_field_highlighter.highlighter.types import FieldContent, FieldName, T
 class DefaultFields:
     basic_front: FieldName = FieldName('Front')
     basic_back: FieldName = FieldName('Back')
+    basic_extra: FieldName = FieldName('Extra')
     cloze_text: FieldName = FieldName('Text')
     cloze_extra: FieldName = FieldName('Back Extra')
 
@@ -45,10 +46,12 @@ class Data:
     def create_basic_note_1(self,
                             front_field_content: FieldContent = "Word content",
                             back_field_content: FieldContent = "Text content",
+                            extra_field_content: FieldContent = "Extra content",
                             new_note: bool = False) -> Note:
         note: Note = self.col.new_note(self.basic_note_type)
         note[DefaultFields.basic_front] = front_field_content
         note[DefaultFields.basic_back] = back_field_content
+        note[DefaultFields.basic_extra] = extra_field_content
         if not new_note:
             self.col.add_note(note, self.deck_id)
         gui_hooks.add_cards_did_add_note(note)
@@ -57,9 +60,11 @@ class Data:
     def create_basic_note_2(self,
                             front_field_content: FieldContent = "Front content 2",
                             back_field_content: FieldContent = "Back content 2",
+                            extra_field_content: FieldContent = "Extra content 2",
                             new_note: bool = False) -> Note:
         return self.create_basic_note_1(front_field_content=front_field_content,
                                         back_field_content=back_field_content,
+                                        extra_field_content=extra_field_content,
                                         new_note=new_note)
 
     def create_cloze_note(self,

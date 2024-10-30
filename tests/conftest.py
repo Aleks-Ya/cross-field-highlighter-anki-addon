@@ -6,7 +6,7 @@ from typing import Callable, Any
 import aqt
 import pytest
 from anki.collection import Collection
-from anki.models import NoteType, NotetypeId
+from anki.models import NoteType, NotetypeId, FieldDict
 from aqt import ProfileManager, AnkiQt, QApplication
 from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
@@ -201,7 +201,11 @@ def dialog_params_factory(col: Collection, note_type_details_factory: NoteTypeDe
 
 @pytest.fixture
 def basic_note_type(col: Collection) -> NoteType:
-    return col.models.by_name('Basic')
+    note_type: NoteType = col.models.by_name('Basic')
+    field: FieldDict = col.models.new_field(DefaultFields.basic_extra)
+    col.models.add_field(note_type, field)
+    col.models.save(note_type)
+    return note_type
 
 
 @pytest.fixture
@@ -221,9 +225,10 @@ def cloze_note_type(col: Collection) -> NoteType:
 
 @pytest.fixture
 def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: NoteTypeName) -> NoteTypeDetails:
-    return NoteTypeDetails(
-        basic_note_type_id, basic_note_type_name,
-        FieldNames([FieldName(DefaultFields.basic_front), FieldName(DefaultFields.basic_back)]))
+    return NoteTypeDetails(basic_note_type_id, basic_note_type_name,
+                           FieldNames([FieldName(DefaultFields.basic_front),
+                                       FieldName(DefaultFields.basic_back),
+                                       FieldName(DefaultFields.basic_extra)]))
 
 
 @pytest.fixture

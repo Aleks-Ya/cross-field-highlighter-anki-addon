@@ -57,9 +57,9 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fire model changes
     adhoc_highlight_dialog_model.fire_model_changed(None)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
-                  current_field="Front", source_fields=['Front', 'Back'],
+                  current_field="Front", source_fields=['Front', 'Back', 'Extra'],
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
-                  check_box_texts=['Front', 'Back'], selected_fields=[], disabled_field="Front")
+                  check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[], disabled_field="Front")
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=formatter_facade.get_all_formats(), selected_note_type=None, selected_format=None,

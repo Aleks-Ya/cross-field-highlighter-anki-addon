@@ -32,6 +32,7 @@ class FakeModelListener(AdhocEraseDialogModelListener):
 def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
               adhoc_erase_dialog_model: AdhocEraseDialogModel, basic_note_type_details: NoteTypeDetails,
               cloze_note_type_details: NoteTypeDetails, qtbot: QtBot):
+    # noinspection PyUnresolvedReferences
     adhoc_erase_dialog_view.show()
     qtbot.wait_for_window_shown(adhoc_erase_dialog_view)
     adhoc_erase_dialog_model.add_listener(FakeModelListener())
@@ -48,7 +49,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
                    selected_note_type=None, selected_fields=[], model_history=[])
     # Fire model changes
     adhoc_erase_dialog_model.fire_model_changed(None)
-    __assert_view(adhoc_erase_dialog_view, check_box_texts=['Front', 'Back'], selected_fields=[])
+    __assert_view(adhoc_erase_dialog_view, check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[])
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    selected_note_type=None, selected_fields=[], model_history=[None])

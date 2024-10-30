@@ -1,13 +1,15 @@
 from anki.notes import Note
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.note.note_field_highlighter import NoteFieldHighlightResult, NoteFieldEraseResult
+from cross_field_highlighter.highlighter.note.note_field_highlighter import NoteFieldHighlightResult, \
+    NoteFieldEraseResult
 from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
 from cross_field_highlighter.highlighter.types import FieldContent, Text
 from tests.data import Data, DefaultFields
 
 
-def test_cases(start_with_note_field_highlighter: StartWithNoteFieldHighlighter, td: Data, bold_format: HighlightFormat):
+def test_cases(start_with_note_field_highlighter: StartWithNoteFieldHighlighter, td: Data,
+               bold_format: HighlightFormat):
     for case in td.cases():
         print(f"Case: {case.name}")
 
