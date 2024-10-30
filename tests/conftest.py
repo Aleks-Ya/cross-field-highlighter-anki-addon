@@ -21,7 +21,7 @@ from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
-from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -77,13 +77,14 @@ def start_with_text_highlighter(formatter_facade: FormatterFacade, regex_tokeniz
 
 
 @pytest.fixture
-def start_with_note_highlighter(start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteHighlighter:
-    return StartWithNoteHighlighter(start_with_text_highlighter)
+def start_with_note_field_highlighter(
+        start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteFieldHighlighter:
+    return StartWithNoteFieldHighlighter(start_with_text_highlighter)
 
 
 @pytest.fixture
-def notes_highlighter(start_with_note_highlighter: StartWithNoteHighlighter) -> NotesHighlighter:
-    return NotesHighlighter(start_with_note_highlighter)
+def notes_highlighter(start_with_note_field_highlighter: StartWithNoteFieldHighlighter) -> NotesHighlighter:
+    return NotesHighlighter(start_with_note_field_highlighter)
 
 
 @pytest.fixture

@@ -9,8 +9,8 @@ from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.note.note_highlighter import NoteHighlighter
-from cross_field_highlighter.highlighter.note.start_with_note_highlighter import StartWithNoteHighlighter
+from cross_field_highlighter.highlighter.note.note_field_highlighter import NoteFieldHighlighter
+from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
@@ -42,8 +42,8 @@ def __initialize(col: Collection):
     formatter_facade: FormatterFacade = FormatterFacade()
     stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
     text_highlighter: TextHighlighter = StartWithTextHighlighter(formatter_facade, tokenizer, stop_words_tokenizer)
-    note_highlighter: NoteHighlighter = StartWithNoteHighlighter(text_highlighter)
-    notes_highlighter: NotesHighlighter = NotesHighlighter(note_highlighter)
+    note_field_highlighter: NoteFieldHighlighter = StartWithNoteFieldHighlighter(text_highlighter)
+    notes_highlighter: NotesHighlighter = NotesHighlighter(note_field_highlighter)
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
     settings: Settings = Settings(module_dir, module_name, mw.addonManager.logs_folder(module_name))

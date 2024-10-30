@@ -6,7 +6,7 @@ from cross_field_highlighter.highlighter.formatter.highlight_format import Highl
 from cross_field_highlighter.highlighter.types import FieldName, Text
 
 
-class NoteHighlightResult:
+class NoteFieldHighlightResult:
     def __init__(self, note: Note, source_field: FieldName, destination_field: FieldName, original_text: Text,
                  highlighted_text: Text):
         self.note: Note = note
@@ -19,7 +19,7 @@ class NoteHighlightResult:
         return self.original_text != self.highlighted_text
 
 
-class NoteEraseResult:
+class NoteFieldEraseResult:
     def __init__(self, note: Note, field: FieldName, original_text: Text, highlighted_text: Text):
         self.note: Note = note
         self.field: FieldName = field
@@ -30,12 +30,12 @@ class NoteEraseResult:
         return self.original_text != self.erased_text
 
 
-class NoteHighlighter(ABC):
+class NoteFieldHighlighter(ABC):
     @abstractmethod
     def highlight(self, note: Note, source_field: FieldName, destination_field: FieldName,
-                  stop_words: Text, highlight_format: HighlightFormat) -> NoteHighlightResult:
+                  stop_words: Text, highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
         ...
 
     @abstractmethod
-    def erase(self, note: Note, field: FieldName) -> NoteEraseResult:
+    def erase(self, note: Note, field: FieldName) -> NoteFieldEraseResult:
         ...
