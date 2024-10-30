@@ -74,11 +74,6 @@ class Data:
         gui_hooks.add_cards_did_add_note(note)
         return note
 
-    def create_note(self, new_note: bool = False) -> Note:
-        return self.create_basic_note_1(FieldContent('Front field content'),
-                                        FieldContent('Back field content'),
-                                        new_note)
-
     def add_fields_to_note_type(self, note_type: NoteType, field_number: int, min_field_name_length: int) -> None:
         for i in range(field_number):
             new_field_name: str = f"Field {i + 1}"
