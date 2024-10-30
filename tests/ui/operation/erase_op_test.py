@@ -51,7 +51,9 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
                                     OpStatisticsKey.NOTES_SELECTED_ALL: len(case_notes),
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 13,
                                     OpStatisticsKey.NOTES_PROCESSED: 13,
-                                    OpStatisticsKey.NOTES_MODIFIED: 12}
+                                    OpStatisticsKey.NOTES_MODIFIED: 12,
+                                    OpStatisticsKey.FIELDS_PROCESSED: 13,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 12}
 
 
 def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -94,4 +96,6 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
                                     OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 2,
                                     OpStatisticsKey.NOTES_PROCESSED: 2,
-                                    OpStatisticsKey.NOTES_MODIFIED: 2}
+                                    OpStatisticsKey.NOTES_MODIFIED: 2,
+                                    OpStatisticsKey.FIELDS_PROCESSED: 2,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 2}

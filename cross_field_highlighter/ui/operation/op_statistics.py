@@ -11,6 +11,8 @@ class OpStatisticsKey(Enum):
     NOTES_SELECTED_TARGET_TYPE = "NOTES_SELECTED_TARGET_TYPE"
     NOTES_PROCESSED = "NOTES_PROCESSED"
     NOTES_MODIFIED = "NOTES_MODIFIED"
+    FIELDS_PROCESSED = "FIELDS_PROCESSED"
+    FIELDS_MODIFIED = "FIELDS_MODIFIED"
 
 
 class OpStatistics:
@@ -20,7 +22,9 @@ class OpStatistics:
             OpStatisticsKey.NOTES_SELECTED_ALL: 0,
             OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 0,
             OpStatisticsKey.NOTES_PROCESSED: 0,
-            OpStatisticsKey.NOTES_MODIFIED: 0
+            OpStatisticsKey.NOTES_MODIFIED: 0,
+            OpStatisticsKey.FIELDS_PROCESSED: 0,
+            OpStatisticsKey.FIELDS_MODIFIED: 0
         }
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -35,6 +39,12 @@ class OpStatistics:
 
     def as_dict(self) -> dict[OpStatisticsKey, int]:
         return self.__data
+
+    def __str__(self):
+        return f"{self.__class__.__name__}({self.as_dict()})"
+
+    def __repr__(self):
+        return self.__str__()
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

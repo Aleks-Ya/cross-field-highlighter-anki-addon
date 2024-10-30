@@ -44,7 +44,9 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
                                     OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 13,
                                     OpStatisticsKey.NOTES_PROCESSED: 13,
-                                    OpStatisticsKey.NOTES_MODIFIED: 12}
+                                    OpStatisticsKey.NOTES_MODIFIED: 12,
+                                    OpStatisticsKey.FIELDS_PROCESSED: 13,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 12}
 
 
 def test_highlight_different_note_types(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -78,4 +80,6 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
                                     OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 2,
                                     OpStatisticsKey.NOTES_PROCESSED: 2,
-                                    OpStatisticsKey.NOTES_MODIFIED: 2}
+                                    OpStatisticsKey.NOTES_MODIFIED: 2,
+                                    OpStatisticsKey.FIELDS_PROCESSED: 2,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 2}

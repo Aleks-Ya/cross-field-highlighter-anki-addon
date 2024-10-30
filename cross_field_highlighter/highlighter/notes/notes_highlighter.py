@@ -13,9 +13,11 @@ log: Logger = logging.getLogger(__name__)
 
 
 class NotesHighlighterResult:
-    def __init__(self, notes: Notes, total_notes: int, modified_notes: int, modified_fields: int) -> None:
+    def __init__(self, notes: Notes, total_notes: int, total_fields: int, modified_notes: int,
+                 modified_fields: int) -> None:
         self.notes = notes
         self.total_notes: int = total_notes
+        self.total_fields: int = total_fields
         self.modified_notes: int = modified_notes
         self.modified_fields: int = modified_fields
 
@@ -43,7 +45,8 @@ class NotesHighlighter:
             updated_notes.append(updated_note)
             if note_was_modified:
                 modified_notes += 1
-        return NotesHighlighterResult(updated_notes, len(notes), modified_notes, modified_fields)
+        total_fields: int = len(destination_fields) * len(notes)
+        return NotesHighlighterResult(updated_notes, len(notes), total_fields, modified_notes, modified_fields)
 
     def erase(self, notes: Notes, fields: FieldNames) -> NotesHighlighterResult:
         modified_notes: int = 0
@@ -61,7 +64,8 @@ class NotesHighlighter:
             updated_notes.append(updated_note)
             if note_was_modified:
                 modified_notes += 1
-        return NotesHighlighterResult(updated_notes, len(notes), modified_notes, modified_fields)
+        total_fields: int = len(fields) * len(notes)
+        return NotesHighlighterResult(updated_notes, len(notes), total_fields, modified_notes, modified_fields)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

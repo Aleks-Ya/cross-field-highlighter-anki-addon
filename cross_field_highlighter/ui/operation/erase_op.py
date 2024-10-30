@@ -63,6 +63,8 @@ class EraseOp(QueryOp):
                                                                             self.__destination_fields)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, result.total_notes)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
+            self.__statistics.increment_value(OpStatisticsKey.FIELDS_PROCESSED, result.total_fields)
+            self.__statistics.increment_value(OpStatisticsKey.FIELDS_MODIFIED, result.modified_fields)
             self.__col.update_notes(result.notes)
             log.debug(f"Highlighted notes: {result.notes}")
             highlighted_counter += len(result.notes)
