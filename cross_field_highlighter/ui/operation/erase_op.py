@@ -47,15 +47,17 @@ class EraseOp(QueryOp):
         return self.__statistics
 
     def __background_op(self, _: Collection) -> int:
+        self.__statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, self.__note_type_id)
         c: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
-        self.__statistics.set_value(OpStatisticsKey.NOTES_SELECTED, len(note_ids_list))
+        self.__statistics.set_value(OpStatisticsKey.NOTES_SELECTED_ALL, len(note_ids_list))
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
         highlighted_counter: int = 0
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"All notes: {len(notes)}")
             notes_with_note_type: Notes = Notes([note for note in notes if note.mid == self.__note_type_id])
+            self.__statistics.increment_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, len(notes_with_note_type))
             log.debug(f"Notes with note type {self.__note_type_id}: {len(notes_with_note_type)}")
             highlighted_notes: Notes = Notes([])
             for field in self.__destination_fields:

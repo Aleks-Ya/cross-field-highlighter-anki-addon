@@ -47,7 +47,9 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
     td.assert_original_case_notes(case_notes)
 
     statistics: OpStatistics = erase_op.get_statistics()
-    assert statistics.as_dict() == {OpStatisticsKey.NOTES_SELECTED: len(case_notes),
+    assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
+                                    OpStatisticsKey.NOTES_SELECTED_ALL: len(case_notes),
+                                    OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 13,
                                     OpStatisticsKey.NOTES_PROCESSED: 13,
                                     OpStatisticsKey.NOTES_MODIFIED: 12}
 
@@ -88,6 +90,8 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
     assert col.get_note(note_3.id).fields == note_3.fields
 
     statistics: OpStatistics = erase_op.get_statistics()
-    assert statistics.as_dict() == {OpStatisticsKey.NOTES_SELECTED: len(notes),
+    assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
+                                    OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
+                                    OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 2,
                                     OpStatisticsKey.NOTES_PROCESSED: 2,
                                     OpStatisticsKey.NOTES_MODIFIED: 2}

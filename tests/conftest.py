@@ -299,5 +299,5 @@ def stop_words_tokenizer() -> StopWordsTokenizer:
 
 
 @pytest.fixture
-def op_statistics_formatter() -> OpStatisticsFormatter:
-    return OpStatisticsFormatter()
+def op_statistics_formatter(col: Collection) -> OpStatisticsFormatter:
+    return OpStatisticsFormatter(col)

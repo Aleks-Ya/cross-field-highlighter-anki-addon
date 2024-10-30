@@ -58,7 +58,7 @@ def __initialize(col: Collection):
     _: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, note_type_details_factory, config, config_loader)
-    op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter()
+    op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,

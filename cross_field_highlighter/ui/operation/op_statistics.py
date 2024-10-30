@@ -6,7 +6,9 @@ log: Logger = logging.getLogger(__name__)
 
 
 class OpStatisticsKey(Enum):
-    NOTES_SELECTED = "NOTES_SELECTED"
+    TARGET_NOTE_TYPE_ID = "TARGET_NOTE_TYPE_ID"
+    NOTES_SELECTED_ALL = "NOTES_SELECTED_ALL"
+    NOTES_SELECTED_TARGET_TYPE = "NOTES_SELECTED_TARGET_TYPE"
     NOTES_PROCESSED = "NOTES_PROCESSED"
     NOTES_MODIFIED = "NOTES_MODIFIED"
 
@@ -14,7 +16,9 @@ class OpStatisticsKey(Enum):
 class OpStatistics:
     def __init__(self):
         self.__data: dict[OpStatisticsKey, int] = {
-            OpStatisticsKey.NOTES_SELECTED: 0,
+            OpStatisticsKey.TARGET_NOTE_TYPE_ID: -1,
+            OpStatisticsKey.NOTES_SELECTED_ALL: 0,
+            OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 0,
             OpStatisticsKey.NOTES_PROCESSED: 0,
             OpStatisticsKey.NOTES_MODIFIED: 0
         }
