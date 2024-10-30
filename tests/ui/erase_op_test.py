@@ -1,7 +1,7 @@
 import time
 from unittest.mock import Mock
 
-from anki.models import NoteType
+from anki.models import NotetypeId
 from aqt import QWidget
 from anki.collection import Collection
 from anki.notes import NoteId
@@ -13,11 +13,12 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.types import FieldNames, Notes, FieldName, Text
 from cross_field_highlighter.ui.operation.erase_op import EraseOp
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
+from cross_field_highlighter.ui.operation.erase_op_statistics import EraseOpStatistics
 from tests.data import Data, DefaultFields, CaseNote
 
 
 def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-               td: Data, bold_format: HighlightFormat, basic_note_type: NoteType):
+               td: Data, bold_format: HighlightFormat, basic_note_type_id: NotetypeId):
     case_notes: list[CaseNote] = td.create_case_notes()
     td.assert_original_case_notes(case_notes)
     notes: Notes = Notes([case_note.note for case_note in case_notes])
@@ -34,9 +35,14 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
 
     progress_manager: ProgressManager = Mock()
 
-    erase_op_params: EraseOpParams = EraseOpParams(basic_note_type['id'], parent, fields)
+    erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, parent, fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, note_ids, erase_op_params,
                                 lambda: None)
     erase_op.run_in_background()
     time.sleep(1)
     td.assert_original_case_notes(case_notes)
+
+    statistics: EraseOpStatistics = erase_op.get_statistics()
+    assert statistics.as_dict() == {'notes_selected': len(case_notes),
+                                    'notes_processed': 13,
+                                    'notes_modified': 12}
