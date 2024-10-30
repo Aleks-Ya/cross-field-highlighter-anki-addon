@@ -41,7 +41,7 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
 
     statistics: OpStatistics = highlight_op.get_statistics()
     assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
-                                    OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
+                                    OpStatisticsKey.NOTES_SELECTED_ALL: 13,
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 13,
                                     OpStatisticsKey.NOTES_PROCESSED: 13,
                                     OpStatisticsKey.NOTES_MODIFIED: 12,
@@ -60,7 +60,7 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
 
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
-    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
+    destination_fields: FieldNames = FieldNames([DefaultFields.basic_back, DefaultFields.basic_extra])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
 
@@ -71,15 +71,18 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
     highlight_op.run_in_background()
     time.sleep(1)
     assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
+    assert col.get_note(note_1.id)[DefaultFields.basic_extra] == 'Extra <b class="cross-field-highlighter">content</b>'
     assert col.get_note(note_2.id)[DefaultFields.basic_back] == \
            'Back <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
+    assert col.get_note(note_2.id)[DefaultFields.basic_extra] == \
+           'Extra <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
     assert col.get_note(note_3.id).fields == note_3.fields
 
     statistics: OpStatistics = highlight_op.get_statistics()
     assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
-                                    OpStatisticsKey.NOTES_SELECTED_ALL: len(notes),
+                                    OpStatisticsKey.NOTES_SELECTED_ALL: 3,
                                     OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 2,
                                     OpStatisticsKey.NOTES_PROCESSED: 2,
                                     OpStatisticsKey.NOTES_MODIFIED: 2,
-                                    OpStatisticsKey.FIELDS_PROCESSED: 2,
-                                    OpStatisticsKey.FIELDS_MODIFIED: 2}
+                                    OpStatisticsKey.FIELDS_PROCESSED: 4,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 4}
