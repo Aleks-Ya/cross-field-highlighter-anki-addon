@@ -66,10 +66,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-                if self.__model.selected_source_field:
-                    selected_source_field: FieldName = FieldName(
-                        self.__model.selected_source_field[self.__model.selected_note_type.name])
-                    self.__source_field_combo_box.set_current_text(selected_source_field)
+            self.__update_source_field_from_model()
             if self.__model.selected_format:
                 self.__format_combo_box.set_current_text(self.__model.selected_format.name)
             if self.__model.selected_stop_words:
@@ -80,6 +77,14 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
             # noinspection PyUnresolvedReferences
             self.show()
             self.adjustSize()
+
+    def __update_source_field_from_model(self):
+        if self.__model.selected_note_type:
+            if self.__model.selected_source_field:
+                if self.__model.selected_note_type.name in self.__model.selected_source_field:
+                    selected_source_field: FieldName = self.__model.selected_source_field[
+                        self.__model.selected_note_type.name]
+                    self.__source_field_combo_box.set_current_text(selected_source_field)
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On note type selected: {index}")
