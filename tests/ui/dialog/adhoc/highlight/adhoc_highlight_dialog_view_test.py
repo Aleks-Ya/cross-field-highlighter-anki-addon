@@ -70,7 +70,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         TitledComboBoxLayout, 0).combobox().get()
     qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
     qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Enter)
+    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field="Text", source_fields=['Text', 'Back Extra'],
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
@@ -85,7 +85,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         TitledComboBoxLayout, 1).combobox().get()
     qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
     qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Enter)
+    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field="Back Extra", source_fields=['Text', 'Back Extra'],
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
@@ -165,6 +165,10 @@ def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: Adho
     __assert_format_group_box(adhoc_highlight_dialog_view, exp_format_names)
 
 
+def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
+    assert repr(adhoc_highlight_dialog_view) == "AdhocHighlightDialogView"
+
+
 def __assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
                   current_field: str, source_fields: list[str], formats: list[str], check_box_texts: list[str],
                   selected_fields: list[str], disabled_field: str):
@@ -177,7 +181,7 @@ def __assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_t
 
 
 def __assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
-                              current_field: str, source_fields: list[str], stop_words: str):
+                              current_source_field: str, source_fields: list[str], stop_words: str):
     group_box: PyQtPath = path(view).group(0)
 
     note_type: PyQtPath = group_box.child(TitledComboBoxLayout, 0)
@@ -186,13 +190,18 @@ def __assert_source_group_box(view: AdhocHighlightDialogView, current_note_type:
     assert note_type_combo_box.currentText() == current_note_type
     assert get_items(note_type_combo_box) == note_types
 
+    __assert_source_combo_box(view, current_source_field, source_fields)
+
+    assert group_box.child(TitledLineEditLayout).get().get_text() == stop_words
+
+
+def __assert_source_combo_box(view: AdhocHighlightDialogView, current_source_field: str, source_fields: list[str]):
+    group_box: PyQtPath = path(view).group(0)
     field_path: PyQtPath = group_box.child(TitledComboBoxLayout, 1)
     assert field_path.label().get().text() == "Field"
     field_combo_box: QComboBox = field_path.combobox().get()
-    assert field_combo_box.currentText() == current_field
+    assert field_combo_box.currentText() == current_source_field
     assert get_items(field_combo_box) == source_fields
-
-    assert group_box.child(TitledLineEditLayout).get().get_text() == stop_words
 
 
 def __assert_format_group_box(view: AdhocHighlightDialogView, formats: list[str]):
@@ -241,7 +250,3 @@ def __assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_c
         'selected_source_field': selected_source_field,
         'selected_stop_words': selected_stop_words}
     assert FakeModelListener.history == model_history
-
-
-def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
-    assert repr(adhoc_highlight_dialog_view) == "AdhocHighlightDialogView"
