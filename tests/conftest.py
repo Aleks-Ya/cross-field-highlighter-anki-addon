@@ -40,6 +40,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields
+from tests.visual_qtbot import VisualQtBot
 
 
 @pytest.fixture
@@ -260,12 +261,12 @@ def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
 
 
 @pytest.fixture
-def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, qtbot: QtBot,
+def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, visual_qtbot: VisualQtBot,
                                 theme_manager: ThemeManager, mw: AnkiQt) -> AdhocHighlightDialogView:
     assert mw is not None  # initialize aqt.mw
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     theme_manager.apply_style()
-    qtbot.addWidget(view)
+    visual_qtbot.addWidget(view)
     return view
 
 
@@ -285,11 +286,11 @@ def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
 
 @pytest.fixture
 def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, theme_manager: ThemeManager,
-                            qtbot: QtBot, mw: AnkiQt) -> AdhocEraseDialogView:
+                            visual_qtbot: VisualQtBot, mw: AnkiQt) -> AdhocEraseDialogView:
     assert mw is not None  # initialize aqt.mw
     view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     theme_manager.apply_style()
-    qtbot.addWidget(view)
+    visual_qtbot.addWidget(view)
     return view
 
 
@@ -313,3 +314,8 @@ def stop_words_tokenizer() -> StopWordsTokenizer:
 @pytest.fixture
 def op_statistics_formatter(col: Collection) -> OpStatisticsFormatter:
     return OpStatisticsFormatter(col)
+
+
+@pytest.fixture
+def visual_qtbot(qtbot: QtBot) -> VisualQtBot:
+    return VisualQtBot(qtbot, 0)

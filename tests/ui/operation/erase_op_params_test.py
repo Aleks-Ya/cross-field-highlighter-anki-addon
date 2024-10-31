@@ -1,18 +1,18 @@
 import pytest
 from anki.models import NoteType, NotetypeId
-from pytestqt.qtbot import QtBot
 from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from tests.data import DefaultFields
+from tests.visual_qtbot import VisualQtBot
 
 
 @pytest.fixture
-def parent(qtbot: QtBot) -> QWidget:
+def parent(visual_qtbot: VisualQtBot) -> QWidget:
     parent: QWidget = QWidget()
-    qtbot.addWidget(parent)
+    visual_qtbot.addWidget(parent)
     return parent
 
 

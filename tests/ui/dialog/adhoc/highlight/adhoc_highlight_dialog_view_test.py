@@ -1,7 +1,6 @@
 from typing import Optional
 
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
-from pytestqt.qtbot import QtBot
 from aqt import QComboBox, Qt, QCheckBox, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
@@ -16,6 +15,7 @@ from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOp
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 from tests.data import DefaultFields
 from tests.qtget import get_items
+from tests.visual_qtbot import VisualQtBot
 
 
 class FakeCallback:
@@ -35,8 +35,9 @@ class FakeModelListener(AdhocHighlightDialogModelListener):
 
 def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
               adhoc_highlight_dialog_model: AdhocHighlightDialogModel, basic_note_type_details: NoteTypeDetails,
-              cloze_note_type_details: NoteTypeDetails, all_highlight_formats: HighlightFormats, bold_format: HighlightFormat,
-              qtbot: QtBot):
+              cloze_note_type_details: NoteTypeDetails, all_highlight_formats: HighlightFormats,
+              bold_format: HighlightFormat,
+              visual_qtbot: VisualQtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     adhoc_highlight_dialog_model.default_stop_words = "a an"
     # Initial state
@@ -70,9 +71,9 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Choose Note Type
     note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 0).combobox().get()
-    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field="Text", source_fields=['Text', 'Back Extra'],
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
@@ -85,9 +86,9 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Choose Field
     filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 1).combobox().get()
-    qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field="Back Extra", source_fields=['Text', 'Back Extra'],
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
@@ -100,11 +101,11 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Start button
     assert FakeCallback.history == []
     check_box: QCheckBox = path(adhoc_highlight_dialog_view).child(FieldsLayout).checkbox().get()
-    qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(check_box, Qt.Key.Key_Space)  # Mouse click just focus on check_box, but doesn't select it
+    visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(check_box, Qt.Key.Key_Space)  # Mouse click just focus on check_box, but doesn't select it
     button_box: QDialogButtonBox = path(adhoc_highlight_dialog_view).child(QDialogButtonBox).get()
     start_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
-    qtbot.mouseClick(start_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(start_button, Qt.MouseButton.LeftButton)
     start_params: HighlightOpParams = HighlightOpParams(note_type_id=cloze_note_type_details.note_type_id,
                                                         note_ids=set(), parent=None,
                                                         source_field=FieldName("Back Extra"),
@@ -121,7 +122,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    model_history=[None, adhoc_highlight_dialog_view])
     # Click Cancel button
     cancel_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Cancel)
-    qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
@@ -132,7 +133,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    model_history=[None, adhoc_highlight_dialog_view, adhoc_highlight_dialog_view])
     # Click Restore Defaults button
     restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
-    qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
@@ -169,7 +170,8 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
                                                           adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
                                                           basic_note_type_details: NoteTypeDetails,
                                                           cloze_note_type_details: NoteTypeDetails,
-                                                          all_highlight_formats: HighlightFormats, qtbot: QtBot):
+                                                          all_highlight_formats: HighlightFormats,
+                                                          visual_qtbot: VisualQtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Fill model
     adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
@@ -181,33 +183,33 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
     # Choose "Back" field in "Basic" note type
     filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 1).combobox().get()
-    qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
     __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back,
                               [DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra])
     # Choose "Cloze" note type
     note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 0).combobox().get()
-    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_text,
                               [DefaultFields.cloze_text, DefaultFields.cloze_extra])
     # Choose "Back Extra" field in "Cloze" note type
     filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 1).combobox().get()
-    qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
     __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_extra,
                               [DefaultFields.cloze_text, DefaultFields.cloze_extra])
     # Choose "Basic" note type
     note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 0).combobox().get()
-    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Up)
-    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Up)
+    visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front,
                               [DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra])
 

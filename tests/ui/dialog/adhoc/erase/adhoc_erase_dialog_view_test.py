@@ -1,7 +1,6 @@
 from typing import Optional
 
 from PyQtPath.path_chain_pyqt6 import path
-from pytestqt.qtbot import QtBot
 from aqt import QComboBox, Qt, QCheckBox, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
@@ -12,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view impor
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from tests.visual_qtbot import VisualQtBot
 
 
 class FakeCallback:
@@ -31,10 +31,10 @@ class FakeModelListener(AdhocEraseDialogModelListener):
 
 def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
               adhoc_erase_dialog_model: AdhocEraseDialogModel, basic_note_type_details: NoteTypeDetails,
-              cloze_note_type_details: NoteTypeDetails, qtbot: QtBot):
+              cloze_note_type_details: NoteTypeDetails, visual_qtbot: VisualQtBot):
     # noinspection PyUnresolvedReferences
     adhoc_erase_dialog_view.show()
-    qtbot.wait_for_window_shown(adhoc_erase_dialog_view)
+    visual_qtbot.waitExposed(adhoc_erase_dialog_view)
     adhoc_erase_dialog_model.add_listener(FakeModelListener())
     # Initial state
     __assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
@@ -55,9 +55,9 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
                    selected_note_type=None, selected_fields=[], model_history=[None])
     # Choose Note Type
     note_type_combo_box: QComboBox = path(adhoc_erase_dialog_view).child(TitledComboBoxLayout).combobox().get()
-    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
-    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_erase_dialog_view, check_box_texts=['Text', 'Back Extra'], selected_fields=[])
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
@@ -65,11 +65,11 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
     # Click Start button
     assert FakeCallback.history == []
     check_box: QCheckBox = path(adhoc_erase_dialog_view).child(FieldsLayout).checkbox().get()
-    qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
-    qtbot.keyClick(check_box, Qt.Key.Key_Space)  # Mouse click just focus on check_box, but doesn't select it
+    visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(check_box, Qt.Key.Key_Space)  # Mouse click just focus on check_box, but doesn't select it
     button_box: QDialogButtonBox = path(adhoc_erase_dialog_view).child(QDialogButtonBox).get()
     start_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
-    qtbot.mouseClick(start_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(start_button, Qt.MouseButton.LeftButton)
     start_params: EraseOpParams = EraseOpParams(note_type_id=cloze_note_type_details.note_type_id, parent=None,
                                                 fields=FieldNames([FieldName('Text')]))
     assert FakeCallback.history == [start_params]
@@ -79,7 +79,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
                    model_history=[None, adhoc_erase_dialog_view])
     # Click Cancel button
     cancel_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Cancel)
-    qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
@@ -87,7 +87,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
                    model_history=[None, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Reset Defaults button
     restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
-    qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
+    visual_qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],

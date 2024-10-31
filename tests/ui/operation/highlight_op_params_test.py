@@ -1,13 +1,13 @@
 import pytest
 from anki.models import NotetypeId
 from anki.notes import NoteId
-from pytestqt.qtbot import QtBot
 from aqt import QWidget
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.types import FieldNames, Text
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.data import DefaultFields, Data
+from tests.visual_qtbot import VisualQtBot
 
 
 @pytest.fixture
@@ -16,9 +16,9 @@ def note_ids(td: Data) -> set[NoteId]:
 
 
 @pytest.fixture
-def parent(qtbot: QtBot) -> QWidget:
+def parent(visual_qtbot: VisualQtBot) -> QWidget:
     parent: QWidget = QWidget()
-    qtbot.addWidget(parent)
+    visual_qtbot.addWidget(parent)
     return parent
 
 
