@@ -49,11 +49,11 @@ class Config:
         base: dict[str, Any] = dict(base if base else {})
         actual: dict[str, Any] = actual if actual else {}
         for k, v in actual.items():
-            if k in base:
-                if isinstance(v, dict):
+            if isinstance(v, dict):
+                if k in base:
                     base[k] = Config.join(base.get(k, {}), v)
-                else:
-                    base[k] = v
+            else:
+                base[k] = v
         return base
 
     def get_dialog_adhoc_highlight_last_note_type_name(self) -> NoteTypeName:

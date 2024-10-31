@@ -1,3 +1,5 @@
+from typing import Any
+
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode
@@ -86,3 +88,42 @@ def test_fire_config_changed(td: Data):
     assert listener.counter == 1
     config.fire_config_changed()
     assert listener.counter == 2
+
+
+def test_join(td: Data):
+    base: dict[str, Any] = {
+        "Dialog": {"Adhoc": {
+            "Highlight": {
+                "Last Note Type": "Basic",
+                "Last Source Field Name": {"Basic": "Front"},
+                "Last Format": "BOLD",
+                "Last Stop Words": None,
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
+            "Erase": {
+                "Last Note Type": None,
+                "Last Field Names": None}}}}
+
+    actual: dict[str, Any] = {
+        "Dialog": {"Adhoc": {
+            "Highlight": {
+                "Last Note Type": "Cloze",
+                "Last Source Field Name": {"Cloze": "Text"},
+                "Last Stop Words": None,
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"}},
+            'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
+
+    joined: dict[str, Any] = Config.join(base, actual)
+    assert joined == {
+        "Dialog": {"Adhoc": {
+            "Highlight": {
+                "Last Note Type": "Cloze",  # Overwrite value in base
+                "Last Source Field Name": {"Basic": "Front", "Cloze": "Text"},  # Join dict field
+                "Last Format": "BOLD",  # Get value from base
+                "Last Stop Words": None,  # Same value in base and actual
+                "Last Destination Field Names": None,
+                "Default Stop Words": "a an to"},
+            "Erase": {  # Get dict from base
+                "Last Note Type": None,
+                "Last Field Names": None}}}}

@@ -81,7 +81,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
             "Erase": {
                 "Last Note Type": "Cloze",
                 "Last Field Names": ["Sentences"]}}},
-        'Unused Top': {'Property 1': 'Value 1'}}
+        'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
         , module_dir)
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
