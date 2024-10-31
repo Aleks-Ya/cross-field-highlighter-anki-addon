@@ -55,7 +55,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': None,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeCallback.call)
     assert FakeCallback.history == []
@@ -70,7 +70,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': None,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
 
 def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -99,7 +99,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': None,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
     # Update config from model
     adhoc_highlight_dialog_model.selected_note_type = basic_note_type_details
@@ -108,7 +108,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': 'Basic',
-                'Last Source Field Name': {"Basic": None},
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': [],
@@ -126,7 +126,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': basic_note_type_details,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
     # Update again
     adhoc_highlight_dialog_model.selected_note_type = cloze_note_type_details
@@ -141,7 +141,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': cloze_note_type_details,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -174,11 +174,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'selected_format': None,
         'selected_stop_words': None,
         'selected_note_type': None,
-        'selected_source_field': None}
+        'selected_source_field': {}}
 
     # Update config from model
     adhoc_highlight_dialog_model.selected_note_type = basic_note_type_details
-    adhoc_highlight_dialog_model.selected_source_field = DefaultFields.basic_front
+    adhoc_highlight_dialog_model.selected_source_field[basic_note_type_details.name] = DefaultFields.basic_front
     adhoc_highlight_dialog_model.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
     adhoc_highlight_dialog_model.selected_stop_words = "to the"
     adhoc_highlight_dialog_model.selected_destination_fields = FieldNames([DefaultFields.basic_back])
@@ -205,7 +205,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
         'selected_stop_words': 'to the',
         'selected_note_type': basic_note_type_details,
-        'selected_source_field': 'Front'})
+        'selected_source_field': {basic_note_type_details.name: 'Front'}})
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -234,4 +234,4 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
         'selected_stop_words': 'to the',
         'selected_note_type': basic_note_type_details,
-        'selected_source_field': 'Front'}
+        'selected_source_field': {basic_note_type_details.name: 'Front'}}

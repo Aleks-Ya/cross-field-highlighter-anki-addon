@@ -66,8 +66,10 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
 
             if self.__model.selected_note_type:
                 self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-            if self.__model.selected_source_field:
-                self.__source_field_combo_box.set_current_text(self.__model.selected_source_field)
+                if self.__model.selected_source_field:
+                    selected_source_field: FieldName = FieldName(
+                        self.__model.selected_source_field[self.__model.selected_note_type.name])
+                    self.__source_field_combo_box.set_current_text(selected_source_field)
             if self.__model.selected_format:
                 self.__format_combo_box.set_current_text(self.__model.selected_format.name)
             if self.__model.selected_stop_words:
@@ -151,7 +153,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
                                                                 self.__model.note_types}
         note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
         self.__model.selected_note_type = note_type
-        self.__model.selected_source_field = source_filed
+        self.__model.selected_source_field[note_type.name] = source_filed
         self.__model.selected_format = highlight_format
         self.__model.selected_stop_words = self.__stop_words_layout.get_text()
         self.__model.selected_destination_fields = destination_fields
@@ -160,7 +162,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
         self.__model.selected_note_type = None
-        self.__model.selected_source_field = None
+        self.__model.selected_source_field = {}
         self.__model.selected_format = None
         self.__model.selected_stop_words = self.__model.default_stop_words
         self.__model.selected_destination_fields = FieldNames([])

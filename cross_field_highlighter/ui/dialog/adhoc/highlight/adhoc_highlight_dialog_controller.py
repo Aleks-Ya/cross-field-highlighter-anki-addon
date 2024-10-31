@@ -47,7 +47,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             last_source_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_source_field_name(
                 last_note_type_name)
             if last_source_field in self.__model.selected_note_type.fields:
-                self.__model.selected_source_field = last_source_field
+                self.__model.selected_source_field[last_note_type_name] = last_source_field
 
             last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(
                 self.__config.get_dialog_adhoc_highlight_last_format())
@@ -67,8 +67,10 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             self.__config.set_dialog_adhoc_highlight_last_note_type_name(
                 selected_note_type.name if selected_note_type else None)
             if selected_note_type:
-                self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name,
-                                                                                self.__model.selected_source_field)
+                if selected_note_type.name in self.__model.selected_source_field:
+                    selected_source_field: FieldName = self.__model.selected_source_field[selected_note_type.name]
+                    self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name,
+                                                                                    selected_source_field)
             self.__config.set_dialog_adhoc_highlight_last_format(
                 self.__model.selected_format.code if self.__model.selected_format else None)
             self.__config.set_dialog_adhoc_highlight_last_stop_words(self.__model.selected_stop_words)
@@ -83,7 +85,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             last_source_field_name: Optional[
                 FieldName] = self.__config.get_dialog_adhoc_highlight_last_source_field_name(last_note_type_name)
             if last_source_field_name:
-                self.__model.selected_source_field = last_source_field_name
+                self.__model.selected_source_field[last_note_type_name] = last_source_field_name
         highlight_format_code: Optional[HighlightFormatCode] = self.__config.get_dialog_adhoc_highlight_last_format()
         if highlight_format_code:
             last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_format_code)
