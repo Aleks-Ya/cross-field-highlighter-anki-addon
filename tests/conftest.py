@@ -20,7 +20,8 @@ from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
+    HighlightFormats
 from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -90,6 +91,11 @@ def notes_highlighter(start_with_note_field_highlighter: StartWithNoteFieldHighl
 @pytest.fixture
 def formatter_facade() -> FormatterFacade:
     return FormatterFacade()
+
+
+@pytest.fixture
+def all_highlight_formats(formatter_facade: FormatterFacade) -> HighlightFormats:
+    return formatter_facade.get_all_formats()
 
 
 @pytest.fixture
