@@ -5,7 +5,7 @@ from typing import Optional, Callable
 
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
@@ -23,7 +23,7 @@ class AdhocHighlightDialogModel:
     def __init__(self):
         self.note_types: list[NoteTypeDetails] = []
         self.note_ids: set[NoteId] = set()
-        self.formats: list[HighlightFormat] = []
+        self.formats: HighlightFormats = HighlightFormats([])
         self.default_stop_words: Optional[str] = None
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: dict[NoteTypeName, FieldName] = {}

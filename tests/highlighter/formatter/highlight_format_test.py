@@ -1,5 +1,6 @@
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat, \
+    HighlightFormats
 
 
 def test_str(formatter_facade: FormatterFacade):
@@ -9,7 +10,7 @@ def test_str(formatter_facade: FormatterFacade):
 
 def test_repr(formatter_facade: FormatterFacade):
     highlight_format: HighlightFormat = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
-    formats: list[HighlightFormat] = [highlight_format]
+    formats: HighlightFormats = HighlightFormats([highlight_format])
     assert str(formats) == "[HighlightFormat(Bold, BOLD)]"
 
 

@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import NewType
 
 
 class HighlightFormatCode(Enum):
@@ -25,3 +26,6 @@ class HighlightFormat:
 
     def __hash__(self):
         return hash((self.name, self.code))
+
+
+HighlightFormats = NewType("HighlightFormats", list[HighlightFormat])

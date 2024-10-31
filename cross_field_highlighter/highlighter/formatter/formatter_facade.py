@@ -2,7 +2,8 @@ import logging
 from logging import Logger
 
 from cross_field_highlighter.highlighter.formatter.formatter import Formatter
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
+    HighlightFormats
 from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
 from cross_field_highlighter.highlighter.types import Text, Word
 
@@ -43,8 +44,8 @@ class FormatterFacade:
             clean_text: Text = formatter.erase(clean_text)
         return clean_text
 
-    def get_all_formats(self) -> list[HighlightFormat]:
-        return list(self.__formatter_dict.keys())
+    def get_all_formats(self) -> HighlightFormats:
+        return HighlightFormats(list(self.__formatter_dict.keys()))
 
     def get_format_by_code(self, highlight_format_code: HighlightFormatCode) -> HighlightFormat:
         return self.__format_dict[highlight_format_code]

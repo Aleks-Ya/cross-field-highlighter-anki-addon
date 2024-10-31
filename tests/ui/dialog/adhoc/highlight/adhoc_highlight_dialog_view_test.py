@@ -5,7 +5,8 @@ from pytestqt.qtbot import QtBot
 from aqt import QComboBox, Qt, QCheckBox, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode, HighlightFormat, \
+    HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Text, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
@@ -41,8 +42,8 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Initial state
     __assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                   formats=[], check_box_texts=[], selected_fields=[], disabled_field="")
-    __assert_model(adhoc_highlight_dialog_model, no_callback=True, note_types=[], formats=[], selected_note_type=None,
-                   selected_format=None, selected_source_field={}, selected_stop_words=None,
+    __assert_model(adhoc_highlight_dialog_model, no_callback=True, note_types=[], formats=HighlightFormats([]),
+                   selected_note_type=None, selected_format=None, selected_source_field={}, selected_stop_words=None,
                    selected_destination_fields=[], model_history=[])
     # Fill model without firing
     adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
@@ -149,7 +150,7 @@ def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: Adho
     assert adhoc_highlight_dialog_model.formats == []
     __assert_format_group_box(adhoc_highlight_dialog_view, [])
 
-    exp_formats: list[HighlightFormat] = formatter_facade.get_all_formats()
+    exp_formats: HighlightFormats = formatter_facade.get_all_formats()
     exp_format_names: list[str] = [highlight_format.name for highlight_format in exp_formats]
     adhoc_highlight_dialog_model.formats = exp_formats
     assert adhoc_highlight_dialog_model.formats == exp_formats
@@ -282,7 +283,7 @@ def __assert_buttons(view: AdhocHighlightDialogView):
 
 
 def __assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_callback: bool,
-                   note_types: list[NoteTypeDetails], formats: list[HighlightFormat],
+                   note_types: list[NoteTypeDetails], formats: HighlightFormats,
                    selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
                    selected_source_field: dict[NoteTypeName, FieldName], selected_stop_words: Optional[str],
                    selected_destination_fields: list[str], model_history: list[object]):
