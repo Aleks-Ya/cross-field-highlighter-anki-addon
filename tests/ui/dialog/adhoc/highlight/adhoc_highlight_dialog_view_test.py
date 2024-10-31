@@ -14,6 +14,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
+from tests.data import DefaultFields
 from tests.qtget import get_items
 
 
@@ -163,6 +164,53 @@ def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: Adho
     adhoc_highlight_dialog_model.fire_model_changed(None)
     assert adhoc_highlight_dialog_model.formats == exp_formats
     __assert_format_group_box(adhoc_highlight_dialog_view, exp_format_names)
+
+
+def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                                          adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                                          basic_note_type_details: NoteTypeDetails,
+                                                          cloze_note_type_details: NoteTypeDetails,
+                                                          formatter_facade: FormatterFacade, qtbot: QtBot):
+    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    # Fill model
+    adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
+    adhoc_highlight_dialog_model.formats = formatter_facade.get_all_formats()
+    adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
+    adhoc_highlight_dialog_model.fire_model_changed(None)
+    __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front,
+                              [DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra])
+    # Choose "Back" field in "Basic" note type
+    filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
+        TitledComboBoxLayout, 1).combobox().get()
+    qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
+    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
+    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
+    __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back,
+                              [DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra])
+    # Choose "Cloze" note type
+    note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
+        TitledComboBoxLayout, 0).combobox().get()
+    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
+    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_text,
+                              [DefaultFields.cloze_text, DefaultFields.cloze_extra])
+    # Choose "Back Extra" field in "Cloze" note type
+    filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
+        TitledComboBoxLayout, 1).combobox().get()
+    qtbot.mouseClick(filed_combo_box, Qt.MouseButton.LeftButton)
+    qtbot.keyClick(filed_combo_box, Qt.Key.Key_Down)
+    qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
+    __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_extra,
+                              [DefaultFields.cloze_text, DefaultFields.cloze_extra])
+    # Choose "Basic" note type
+    note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
+        TitledComboBoxLayout, 0).combobox().get()
+    qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+    qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Up)
+    qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+    __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front,
+                              [DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra])
 
 
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
