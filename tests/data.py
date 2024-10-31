@@ -17,6 +17,8 @@ class DefaultFields:
     basic_extra: FieldName = FieldName('Extra')
     cloze_text: FieldName = FieldName('Text')
     cloze_extra: FieldName = FieldName('Back Extra')
+    all_basic: list[FieldName] = [basic_front, basic_back, basic_extra]
+    all_cloze: list[FieldName] = [cloze_text, cloze_extra]
 
 
 class Case:
