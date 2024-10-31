@@ -81,7 +81,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -108,7 +108,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': 'Basic',
-                'Last Source Field Name': None,
+                'Last Source Field Name': {"Basic": None},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': [],
@@ -156,7 +156,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -187,7 +187,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': 'Basic',
-                'Last Source Field Name': 'Front',
+                'Last Source Field Name': {"Basic": "Front"},
                 'Last Format': 'BOLD',
                 'Last Stop Words': 'to the',
                 'Last Destination Field Names': ['Back'],
@@ -216,7 +216,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': 'Basic',
-                'Last Source Field Name': 'Front',
+                'Last Source Field Name': {"Basic": "Front"},
                 'Last Format': 'BOLD',
                 'Last Stop Words': 'to the',
                 'Last Destination Field Names': ['Back'],

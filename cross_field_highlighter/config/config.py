@@ -64,13 +64,21 @@ class Config:
         self.__set(last_note_type_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
                    self.__key_4_dialog_adhoc_last_note_type)
 
-    def get_dialog_adhoc_highlight_last_source_field_name(self) -> Optional[FieldName]:
-        field: str = self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-                                self.__key_4_dialog_adhoc_last_source_field_name)
-        return FieldName(field) if field else None
+    def get_dialog_adhoc_highlight_last_source_field_name(self, note_type_name: NoteTypeName) -> Optional[FieldName]:
+        field_dict_opt: Optional[dict[NoteTypeName, FieldName]] = self.__get(
+            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+            self.__key_4_dialog_adhoc_last_source_field_name)
+        field_dict: dict[NoteTypeName, FieldName] = field_dict_opt if field_dict_opt else {}
+        return field_dict[note_type_name] if note_type_name in field_dict else None
 
-    def set_dialog_adhoc_highlight_last_source_field_name(self, last_source_field_name: FieldName) -> None:
-        self.__set(last_source_field_name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+    def set_dialog_adhoc_highlight_last_source_field_name(self, note_type_name: NoteTypeName,
+                                                          last_source_field_name: FieldName) -> None:
+        field_dict_opt: Optional[dict[NoteTypeName, FieldName]] = self.__get(
+            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+            self.__key_4_dialog_adhoc_last_source_field_name)
+        field_dict: dict[NoteTypeName, FieldName] = field_dict_opt if field_dict_opt else {}
+        field_dict[note_type_name] = last_source_field_name
+        self.__set(field_dict, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_source_field_name)
 
     def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormatCode]:

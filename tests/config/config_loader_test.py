@@ -23,7 +23,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": None,
-                "Last Source Field Name": None,
+                "Last Source Field Name": {},
                 "Last Format": None,
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
@@ -38,7 +38,7 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -58,7 +58,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": None,
-                "Last Source Field Name": None,
+                "Last Source Field Name": {},
                 "Last Format": "ITALIC",
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
@@ -73,7 +73,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -88,7 +88,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -104,7 +104,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -117,7 +117,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -130,7 +130,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -143,7 +143,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
@@ -153,13 +153,13 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Field Names": ["Sentences"]}}}}
 
 
-def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
+def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_type_name: NoteTypeName) -> None:
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": None,
-                "Last Source Field Name": None,
+                "Last Source Field Name": {},
                 "Last Format": None,
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
@@ -168,7 +168,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
                 "Last Note Type": None,
                 "Last Field Names": None}}}}
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
-    config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
+    config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_erase_last_note_type_name(NoteTypeName("Cloze"))
@@ -179,7 +179,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path) -> None:
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],

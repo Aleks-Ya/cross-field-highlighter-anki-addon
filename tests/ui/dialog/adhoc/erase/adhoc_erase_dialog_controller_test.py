@@ -62,7 +62,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -82,7 +82,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -114,7 +114,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -135,7 +135,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
@@ -157,7 +157,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
         'Dialog': {'Adhoc': {
             'Highlight': {
                 'Last Note Type': None,
-                'Last Source Field Name': None,
+                'Last Source Field Name': {},
                 'Last Format': None,
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,

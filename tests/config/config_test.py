@@ -16,13 +16,13 @@ class CountConfigListener(ConfigListener):
         self.counter += 1
 
 
-def test_setters(td: Data):
+def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     config: Config = td.read_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": None,
-                "Last Source Field Name": None,
+                "Last Source Field Name": {},
                 "Last Format": None,
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
@@ -32,7 +32,7 @@ def test_setters(td: Data):
                 "Last Field Names": None}}}}
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() is None
-    assert config.get_dialog_adhoc_highlight_last_source_field_name() is None
+    assert config.get_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name) is None
     assert config.get_dialog_adhoc_highlight_last_format() is None
     assert config.get_dialog_adhoc_highlight_last_stop_words() is None
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() is None
@@ -41,7 +41,7 @@ def test_setters(td: Data):
     assert config.get_dialog_adhoc_erase_last_field_names() is None
 
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
-    config.set_dialog_adhoc_highlight_last_source_field_name(FieldName("English"))
+    config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_stop_words("a an the")
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
@@ -50,7 +50,7 @@ def test_setters(td: Data):
     config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() == "Basic"
-    assert config.get_dialog_adhoc_highlight_last_source_field_name() == "English"
+    assert config.get_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name) == "English"
     assert config.get_dialog_adhoc_highlight_last_format() == HighlightFormatCode.BOLD
     assert config.get_dialog_adhoc_highlight_last_stop_words() == "a an the"
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() == ["Examples"]
@@ -62,7 +62,7 @@ def test_setters(td: Data):
         "Dialog": {"Adhoc": {
             "Highlight": {
                 "Last Note Type": "Basic",
-                "Last Source Field Name": "English",
+                "Last Source Field Name": {"Basic": "English"},
                 "Last Format": "BOLD",
                 "Last Stop Words": "a an the",
                 "Last Destination Field Names": ["Examples"],
