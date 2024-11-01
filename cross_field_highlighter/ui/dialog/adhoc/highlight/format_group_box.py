@@ -40,7 +40,6 @@ class FormatGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def __on_current_text_changed(self, text: str) -> None:
         highlight_format: HighlightFormat = self.__combo_box.get_current_data()
         self.__model.selected_format = highlight_format
-        self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__

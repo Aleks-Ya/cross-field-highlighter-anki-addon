@@ -43,7 +43,9 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Initial state
     __assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                   formats=[], check_box_texts=[], selected_fields=[], disabled_field="")
-    __assert_model(adhoc_highlight_dialog_model, no_callback=True, note_types=[], formats=HighlightFormats([]),
+    __assert_model(adhoc_highlight_dialog_model, no_callback=True,
+                   destination_fields=[], disabled_destination_fields=[],
+                   note_types=[], formats=HighlightFormats([]),
                    selected_note_type=None, selected_format=None, selected_source_field={}, selected_stop_words=None,
                    selected_destination_fields=[], model_history_counter=0)
     # Fill model without firing
@@ -53,6 +55,7 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     __assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                   formats=[], check_box_texts=[], selected_fields=[], disabled_field="")
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=[], disabled_destination_fields=[],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=None, selected_format=None,
                    selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
@@ -65,10 +68,11 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
                   disabled_field=DefaultFields.basic_front)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
                    selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=2)
+                   model_history_counter=4)
     # Choose Note Type
     note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 0).combobox().get()
@@ -80,10 +84,11 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_text)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_text],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
                    selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=2)
+                   model_history_counter=8)
     # Choose Field
     filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 1).combobox().get()
@@ -95,10 +100,11 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_extra)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
                    selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=2)
+                   model_history_counter=9)
     # Click Start button
     assert FakeCallback.history == []
     check_box: QCheckBox = path(adhoc_highlight_dialog_view).child(FieldsLayout).checkbox().get()
@@ -115,33 +121,36 @@ def test_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                         highlight_format=bold_format)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=cloze_note_type_details,
                    selected_format=bold_format,
                    selected_source_field={cloze_note_type_details.name: DefaultFields.cloze_extra},
                    selected_stop_words='a an to', selected_destination_fields=[DefaultFields.cloze_text],
-                   model_history_counter=5)
+                   model_history_counter=10)
     # Click Cancel button
     cancel_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Cancel)
     visual_qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=cloze_note_type_details,
                    selected_format=bold_format,
                    selected_source_field={cloze_note_type_details.name: DefaultFields.cloze_extra},
                    selected_stop_words='a an to', selected_destination_fields=[DefaultFields.cloze_text],
-                   model_history_counter=8)
+                   model_history_counter=11)
     # Click Restore Defaults button
     restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
     visual_qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
+                   destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    formats=all_highlight_formats, selected_note_type=None,
                    selected_format=bold_format, selected_source_field={},
                    selected_stop_words='a an', selected_destination_fields=[],
-                   model_history_counter=11)
+                   model_history_counter=20)
 
 
 def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
@@ -280,11 +289,14 @@ def __assert_buttons(view: AdhocHighlightDialogView):
 
 def __assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_callback: bool,
                    note_types: list[NoteTypeDetails], formats: HighlightFormats,
+                   destination_fields: list[str], disabled_destination_fields: list[str],
                    selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
                    selected_source_field: dict[NoteTypeName, FieldName], selected_stop_words: Optional[str],
                    selected_destination_fields: list[str], model_history_counter: int):
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an',
+        'destination_fields': destination_fields,
+        'disabled_destination_fields': disabled_destination_fields,
         'formats': formats,
         'note_ids': set(),
         'note_types': note_types,

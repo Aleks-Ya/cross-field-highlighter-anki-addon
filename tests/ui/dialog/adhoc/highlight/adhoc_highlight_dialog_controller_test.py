@@ -47,6 +47,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert FakeModelListener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -62,6 +64,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert FakeModelListener.history == [adhoc_highlight_dialog_controller]
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [bold_format, italic_format, underline_format, mark_format],
         'note_ids': note_ids,
         'note_types': [basic_note_type_details, cloze_note_type_details],
@@ -91,6 +95,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -118,6 +124,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -133,6 +141,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     adhoc_highlight_dialog_model.fire_model_changed(None)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -166,6 +176,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -197,6 +209,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Field Names': None}}}}
     assert (adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
@@ -226,6 +240,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Field Names': None}}}}
     assert model.as_dict() == {
         'default_stop_words': 'a an to',
+        'destination_fields': [],
+        'disabled_destination_fields': [],
         'formats': [],
         'note_ids': set(),
         'note_types': [],
