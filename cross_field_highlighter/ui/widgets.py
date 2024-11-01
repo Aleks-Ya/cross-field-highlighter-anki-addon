@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional, Callable, Any
+from typing import Callable, Any
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox, QLineEdit
 
@@ -8,12 +8,10 @@ log: Logger = logging.getLogger(__name__)
 
 
 class TitledComboBoxLayout(QHBoxLayout):
-    def __init__(self, title: str, items: Optional[list[str]] = None):
+    def __init__(self, title: str):
         super().__init__()
         label: QLabel = QLabel(title)
         self.__combo_box: QComboBox = QComboBox(None)
-        if items:
-            self.__combo_box.addItems(items)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.addWidget(label)
         self.addWidget(self.__combo_box)
