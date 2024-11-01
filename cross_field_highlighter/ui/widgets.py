@@ -45,6 +45,10 @@ class TitledComboBoxLayout(QHBoxLayout):
     def get_current_data(self) -> Any:
         return self.__combo_box.currentData()
 
+    def on_current_text_changed(self, callback: Callable[[str], None]) -> None:
+        # noinspection PyUnresolvedReferences
+        self.__combo_box.currentTextChanged.connect(callback)
+
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")
 
