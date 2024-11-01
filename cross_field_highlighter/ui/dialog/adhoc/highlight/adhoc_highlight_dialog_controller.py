@@ -49,14 +49,14 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             if last_source_field in self.__model.selected_note_type.fields:
                 self.__model.selected_source_field[last_note_type_name] = last_source_field
 
-            last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(
-                self.__config.get_dialog_adhoc_highlight_last_format())
-            if last_format:
-                self.__model.selected_format = last_format
-
             last_destination_fields: FieldNames = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
             if last_destination_fields in self.__model.selected_note_type.fields:
                 self.__model.selected_destination_fields = last_destination_fields
+
+        highlight_last_format: Optional[HighlightFormatCode] = self.__config.get_dialog_adhoc_highlight_last_format()
+        if highlight_last_format:
+            last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_last_format)
+            self.__model.selected_format = last_format
 
         self.__model.fire_model_changed(self)
 
