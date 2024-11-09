@@ -6,20 +6,18 @@ from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushBut
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
-    AdhocEraseDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 
 
-class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
+class AdhocEraseDialogView(QDialog):
 
     def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel):
         super().__init__(parent=None)
         self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
-        self.__model.add_listener(self)
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
@@ -49,18 +47,18 @@ class AdhocEraseDialogView(QDialog, AdhocEraseDialogModelListener):
         self.resize(300, 200)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def model_changed(self, source: object) -> None:
-        if source != self:
-            log.debug("Show dialog")
-            note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
-            self.__note_type_combo_box.set_items(note_type_names)
-            if self.__model.selected_note_type:
-                self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-            if self.__model.selected_fields:
-                self.__fields_vbox.select_fields(self.__model.selected_fields)
-            # noinspection PyUnresolvedReferences
-            self.show()
-            self.adjustSize()
+    def show_view(self) -> None:
+        log.debug("Show view")
+        note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
+        self.__note_type_combo_box.set_items(note_type_names)
+        if self.__model.selected_note_type:
+            self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
+        if self.__model.selected_fields:
+            self.__fields_vbox.select_fields(self.__model.selected_fields)
+        # noinspection PyUnresolvedReferences
+        self.show()
+        self.adjustSize()
+        self.__model.fire_model_changed(self)
 
     def __on_combobox_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")

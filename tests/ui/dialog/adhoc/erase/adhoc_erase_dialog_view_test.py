@@ -29,7 +29,7 @@ class FakeModelListener(AdhocEraseDialogModelListener):
         FakeModelListener.history.append(source)
 
 
-def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
+def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
               adhoc_erase_dialog_model: AdhocEraseDialogModel, basic_note_type_details: NoteTypeDetails,
               cloze_note_type_details: NoteTypeDetails, visual_qtbot: VisualQtBot):
     # noinspection PyUnresolvedReferences
@@ -48,11 +48,11 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    selected_note_type=None, selected_fields=[], model_history=[])
     # Fire model changes
-    adhoc_erase_dialog_model.fire_model_changed(None)
+    adhoc_erase_dialog_view.show_view()
     __assert_view(adhoc_erase_dialog_view, check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[])
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
-                   selected_note_type=None, selected_fields=[], model_history=[None])
+                   selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
     # Choose Note Type
     note_type_combo_box: QComboBox = path(adhoc_erase_dialog_view).child(TitledComboBoxLayout).combobox().get()
     visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
@@ -61,7 +61,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
     __assert_view(adhoc_erase_dialog_view, check_box_texts=['Text', 'Back Extra'], selected_fields=[])
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
-                   selected_note_type=None, selected_fields=[], model_history=[None])
+                   selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
     # Click Start button
     assert FakeCallback.history == []
     check_box: QCheckBox = path(adhoc_erase_dialog_view).child(FieldsLayout).checkbox().get()
@@ -76,7 +76,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    selected_note_type=cloze_note_type_details, selected_fields=['Text'],
-                   model_history=[None, adhoc_erase_dialog_view])
+                   model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Cancel button
     cancel_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Cancel)
     visual_qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
@@ -84,7 +84,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    selected_note_type=cloze_note_type_details, selected_fields=['Text'],
-                   model_history=[None, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
+                   model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Reset Defaults button
     restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
     visual_qtbot.mouseClick(restore_defaults_button, Qt.MouseButton.LeftButton)
@@ -92,7 +92,7 @@ def test_view(adhoc_erase_dialog_view: AdhocEraseDialogView,
     __assert_model(adhoc_erase_dialog_model, no_callback=False,
                    note_types=[basic_note_type_details, cloze_note_type_details],
                    selected_note_type=None, selected_fields=[],
-                   model_history=[None, adhoc_erase_dialog_view, adhoc_erase_dialog_view, None])
+                   model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view, None])
 
 
 def __assert_view(view: AdhocEraseDialogView, check_box_texts: list[str], selected_fields: list[str]):

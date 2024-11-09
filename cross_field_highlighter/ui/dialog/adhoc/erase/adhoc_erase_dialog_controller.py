@@ -9,6 +9,7 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
     AdhocEraseDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
@@ -17,10 +18,11 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogController(AdhocEraseDialogModelListener):
 
-    def __init__(self, model: AdhocEraseDialogModel, note_type_details_factory: NoteTypeDetailsFactory,
-                 config: Config, config_loader: ConfigLoader):
+    def __init__(self, model: AdhocEraseDialogModel, view: AdhocEraseDialogView,
+                 note_type_details_factory: NoteTypeDetailsFactory, config: Config, config_loader: ConfigLoader):
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
+        self.__view: AdhocEraseDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
@@ -53,7 +55,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
             log.debug(f"Selected fields from config: {field_names}")
             self.__model.selected_fields = field_names
 
-        self.__model.fire_model_changed(self)
+        self.__view.show_view()
 
     def model_changed(self, source: object):
         if source != self:

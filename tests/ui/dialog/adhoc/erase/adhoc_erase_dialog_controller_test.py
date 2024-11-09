@@ -8,6 +8,7 @@ from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from tests.conftest import cloze_note_type_details
@@ -30,6 +31,7 @@ class FakeModelListener(AdhocEraseDialogModelListener):
 
 
 def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                     adhoc_erase_dialog_view: AdhocEraseDialogView,
                      adhoc_erase_dialog_model: AdhocEraseDialogModel, td: Data,
                      basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails):
     adhoc_erase_dialog_model.add_listener(FakeModelListener())
@@ -47,7 +49,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
 
     adhoc_erase_dialog_controller.show_dialog(params, FakeCallback.call)
     assert FakeCallback.history == []
-    assert FakeModelListener.history == [adhoc_erase_dialog_controller]
+    assert FakeModelListener.history == [adhoc_erase_dialog_view]
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [basic_note_type_details, cloze_note_type_details],
                                                   'run_op_callback_None': False,
                                                   'selected_fields': [],
@@ -151,8 +153,9 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+    view: AdhocEraseDialogView = AdhocEraseDialogView(model)
     _: AdhocEraseDialogController = AdhocEraseDialogController(
-        model, note_type_details_factory, config, config_loader)
+        model, view, note_type_details_factory, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
