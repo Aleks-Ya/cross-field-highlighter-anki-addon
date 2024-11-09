@@ -82,8 +82,9 @@ class Config:
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_source_field_name)
 
     def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormatCode]:
-        highlight_format_code: str = self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                                                self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_format)
+        highlight_format_code: Optional[str] = self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                                                          self.__key_3_dialog_highlight,
+                                                          self.__key_4_dialog_adhoc_last_format)
         return HighlightFormatCode(highlight_format_code) if highlight_format_code else None
 
     def set_dialog_adhoc_highlight_last_format(self, last_format_code: Optional[HighlightFormatCode]) -> None:
