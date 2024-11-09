@@ -6,7 +6,7 @@ from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBo
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
-    AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
+    AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
@@ -15,12 +15,11 @@ from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineE
 log: Logger = logging.getLogger(__name__)
 
 
-class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
+class AdhocHighlightDialogView(QDialog):
 
     def __init__(self, model: AdhocHighlightDialogModel):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
-        self.__model.add_listener(self)
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
@@ -54,20 +53,22 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.resize(300, 200)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def model_changed(self, source: object) -> None:
-        if source != self:
-            log.debug(f"Model changed")
-            note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
-            self.__note_type_combo_box.set_items(note_type_names)
-            if self.__model.selected_note_type:
-                self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-            self.__update_source_field_from_model()
-            if self.__model.selected_stop_words:
-                self.__stop_words_layout.set_text(self.__model.selected_stop_words)
+    def show_view(self) -> None:
+        log.debug(f"Show view")
+        self.__fill_model()
+        # noinspection PyUnresolvedReferences
+        self.show()
+        self.adjustSize()
+        # self.__model.fire_model_changed(self)
 
-            # noinspection PyUnresolvedReferences
-            self.show()
-            self.adjustSize()
+    def __fill_model(self):
+        note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
+        self.__note_type_combo_box.set_items(note_type_names)
+        if self.__model.selected_note_type:
+            self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
+        self.__update_source_field_from_model()
+        if self.__model.selected_stop_words:
+            self.__stop_words_layout.set_text(self.__model.selected_stop_words)
 
     def __update_source_field_from_model(self):
         if self.__model.selected_note_type:
@@ -147,6 +148,7 @@ class AdhocHighlightDialogView(QDialog, AdhocHighlightDialogModelListener):
         self.__model.selected_format = None
         self.__model.selected_stop_words = self.__model.default_stop_words
         self.__model.selected_destination_fields = FieldNames([])
+        self.__fill_model()
         self.__model.fire_model_changed(None)
 
     def __repr__(self):

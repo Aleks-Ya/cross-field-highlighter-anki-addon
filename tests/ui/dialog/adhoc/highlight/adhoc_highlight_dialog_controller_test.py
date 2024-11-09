@@ -11,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import cloze_note_type_details
@@ -33,6 +34,7 @@ class FakeModelListener(AdhocHighlightDialogModelListener):
 
 
 def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                     adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
                      basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails,
                      bold_format: HighlightFormat, italic_format: HighlightFormat, underline_format: HighlightFormat,
@@ -61,17 +63,18 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeCallback.call)
     assert FakeCallback.history == []
-    assert FakeModelListener.history == [adhoc_highlight_dialog_controller]
+    assert FakeModelListener.history == [adhoc_highlight_dialog_view, adhoc_highlight_dialog_view,
+                                         adhoc_highlight_dialog_view]
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
-        'destination_fields': [],
-        'disabled_destination_fields': [],
+        'destination_fields': DefaultFields.all_basic,
+        'disabled_destination_fields': [DefaultFields.basic_front],
         'formats': [bold_format, italic_format, underline_format, mark_format],
         'note_ids': note_ids,
         'note_types': [basic_note_type_details, cloze_note_type_details],
         'run_op_callback_None': False,
         'selected_destination_fields': [],
-        'selected_format': None,
+        'selected_format': bold_format,
         'selected_stop_words': None,
         'selected_note_type': None,
         'selected_source_field': {}}
@@ -224,8 +227,9 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    _: AdhocHighlightDialogController = AdhocHighlightDialogController(model, note_type_details_factory,
-                                                                       formatter_facade, config, config_loader)
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
+    _: AdhocHighlightDialogController = AdhocHighlightDialogController(
+        model, view, note_type_details_factory, formatter_facade, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {

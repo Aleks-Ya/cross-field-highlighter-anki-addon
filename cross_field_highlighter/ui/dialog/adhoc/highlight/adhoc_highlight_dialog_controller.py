@@ -11,6 +11,7 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 
@@ -19,10 +20,12 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
 
-    def __init__(self, model: AdhocHighlightDialogModel, note_type_details_factory: NoteTypeDetailsFactory,
-                 formatter_facade: FormatterFacade, config: Config, config_loader: ConfigLoader):
+    def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView,
+                 note_type_details_factory: NoteTypeDetailsFactory, formatter_facade: FormatterFacade, config: Config,
+                 config_loader: ConfigLoader):
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
+        self.__view: AdhocHighlightDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__formatter_facade: FormatterFacade = formatter_facade
         self.__config: Config = config
@@ -58,7 +61,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
             last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_last_format)
             self.__model.selected_format = last_format
 
-        self.__model.fire_model_changed(self)
+        self.__view.show_view()
 
     def model_changed(self, source: object):
         if source != self:

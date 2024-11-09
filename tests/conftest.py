@@ -272,11 +272,12 @@ def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDial
 
 @pytest.fixture
 def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                      adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                       note_type_details_factory: NoteTypeDetailsFactory,
                                       formatter_facade: FormatterFacade, config: Config,
                                       config_loader: ConfigLoader) -> AdhocHighlightDialogController:
-    return AdhocHighlightDialogController(
-        adhoc_highlight_dialog_model, note_type_details_factory, formatter_facade, config, config_loader)
+    return AdhocHighlightDialogController(adhoc_highlight_dialog_model, adhoc_highlight_dialog_view,
+                                          note_type_details_factory, formatter_facade, config, config_loader)
 
 
 @pytest.fixture

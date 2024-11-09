@@ -50,10 +50,11 @@ def __initialize(col: Collection):
     config_loader: ConfigLoader = ConfigLoader(mw.addonManager, settings)
     config: Config = config_loader.load_config()
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    _: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
+    adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-        adhoc_highlight_dialog_model, note_type_details_factory, formatter_facade, config, config_loader)
+        adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade, config,
+        config_loader)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
