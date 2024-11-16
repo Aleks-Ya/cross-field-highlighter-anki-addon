@@ -32,7 +32,7 @@ class AdhocHighlightDialogModel:
         self.selected_format: Optional[HighlightFormat] = None
         self.selected_stop_words: Optional[str] = None
         self.selected_destination_fields: FieldNames = FieldNames([])
-        self.run_op_callback: Optional[Callable[[HighlightOpParams], None]] = None
+        self.accept_callback: Optional[Callable[[HighlightOpParams], None]] = None
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -56,7 +56,7 @@ class AdhocHighlightDialogModel:
             "selected_stop_words": self.selected_stop_words,
             "selected_destination_fields": self.selected_destination_fields,
             "default_stop_words": self.default_stop_words,
-            "run_op_callback_None": not self.run_op_callback
+            "accept_callback_None": not self.accept_callback
         }
 
     def __del__(self):

@@ -21,7 +21,7 @@ class AdhocEraseDialogModel:
         self.note_types: list[NoteTypeDetails] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_fields: FieldNames = FieldNames([])
-        self.run_op_callback: Optional[Callable[[EraseOpParams], None]] = None
+        self.accept_callback: Optional[Callable[[EraseOpParams], None]] = None
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -38,7 +38,7 @@ class AdhocEraseDialogModel:
             "note_types": self.note_types,
             "selected_note_type": self.selected_note_type,
             "selected_fields": self.selected_fields,
-            "run_op_callback_None": not self.run_op_callback
+            "accept_callback_None": not self.accept_callback
         }
 
     def __del__(self):

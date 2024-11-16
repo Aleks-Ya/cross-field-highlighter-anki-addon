@@ -51,11 +51,11 @@ def assert_buttons(view: AdhocEraseDialogView):
     assert restore_defaults_button.text() == "Restore Defaults"
 
 
-def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_callback: bool,
+def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_accept_callback: bool,
                  note_types: list[NoteTypeDetails], selected_note_type: Optional[NoteTypeDetails],
                  selected_fields: list[str], model_history: list[object]):
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': note_types,
-                                                  'run_op_callback_None': no_callback,
+                                                  'accept_callback_None': no_accept_callback,
                                                   'selected_fields': selected_fields,
                                                   'selected_note_type': selected_note_type}
     assert FakeModelListener.history == model_history

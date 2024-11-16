@@ -42,7 +42,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     assert FakeCallback.history == []
     assert FakeModelListener.history == []
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
@@ -50,7 +50,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     assert FakeCallback.history == []
     assert FakeModelListener.history == [adhoc_erase_dialog_view]
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
-                                                  'run_op_callback_None': False,
+                                                  'accept_callback_None': False,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
@@ -72,7 +72,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
@@ -92,7 +92,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 'Last Note Type': 'Basic',
                 'Last Field Names': []}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': basic_note_type_details}
 
@@ -100,7 +100,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     adhoc_erase_dialog_model.selected_note_type = cloze_note_type_details
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': cloze_note_type_details}
 
@@ -124,7 +124,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': None,
                 'Last Field Names': None}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
@@ -145,7 +145,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': 'Basic',
                 'Last Field Names': ['Back']}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
-                                                  'run_op_callback_None': True,
+                                                  'accept_callback_None': True,
                                                   'selected_fields': ['Back'],
                                                   'selected_note_type': basic_note_type_details}
 
@@ -168,6 +168,6 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 'Last Note Type': 'Basic',
                 'Last Field Names': ['Back']}}}}
     assert model.as_dict() == {'note_types': [],
-                               'run_op_callback_None': True,
+                               'accept_callback_None': True,
                                'selected_fields': ['Back'],
                                'selected_note_type': basic_note_type_details}

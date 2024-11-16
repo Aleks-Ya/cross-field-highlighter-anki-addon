@@ -32,7 +32,7 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
     def show_dialog(self, params: DialogParams, run_on_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__model.note_types = params.note_types
-        self.__model.run_op_callback = run_on_callback
+        self.__model.accept_callback = run_on_callback
 
         last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_erase_last_note_type_name()
         log.debug(f"Last note type: {last_note_type_name}")

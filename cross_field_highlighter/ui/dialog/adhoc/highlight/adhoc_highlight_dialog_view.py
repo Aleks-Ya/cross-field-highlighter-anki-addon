@@ -116,7 +116,7 @@ class AdhocHighlightDialogView(QDialog):
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type_details.note_type_id, self.__model.note_ids, self.parent(), source_filed,
             self.__model.selected_destination_fields, stop_words, self.__model.selected_format)
-        self.__model.run_op_callback(highlight_op_params)
+        self.__model.accept_callback(highlight_op_params)
 
     def __get_current_note_type_details(self):
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in

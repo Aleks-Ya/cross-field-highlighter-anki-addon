@@ -38,7 +38,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         self.__model.note_types = params.note_types
         self.__model.note_ids = params.note_ids
         self.__model.formats = self.__formatter_facade.get_all_formats()
-        self.__model.run_op_callback = run_op_callback
+        self.__model.accept_callback = run_op_callback
 
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                                 params.note_types}

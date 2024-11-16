@@ -100,7 +100,7 @@ def assert_buttons(view: AdhocHighlightDialogView):
     assert restore_defaults_button.text() == "Restore Defaults"
 
 
-def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_callback: bool,
+def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_accept_callback: bool,
                  note_types: list[NoteTypeDetails], formats: HighlightFormats,
                  destination_fields: list[str], disabled_destination_fields: list[str],
                  selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
@@ -113,7 +113,7 @@ def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_cal
         'formats': formats,
         'note_ids': set(),
         'note_types': note_types,
-        'run_op_callback_None': no_callback,
+        'accept_callback_None': no_accept_callback,
         'selected_destination_fields': selected_destination_fields,
         'selected_format': selected_format,
         'selected_note_type': selected_note_type,

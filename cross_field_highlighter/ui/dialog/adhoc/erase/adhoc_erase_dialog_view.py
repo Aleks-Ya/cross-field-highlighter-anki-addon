@@ -82,7 +82,7 @@ class AdhocEraseDialogView(QDialog):
         log.debug(f"Selected fields: {fields}")
         note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
         erase_op_params: EraseOpParams = EraseOpParams(note_type_details.note_type_id, self.parent(), fields)
-        self.__model.run_op_callback(erase_op_params)
+        self.__model.accept_callback(erase_op_params)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __update_model_from_ui(self):

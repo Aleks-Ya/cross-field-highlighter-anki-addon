@@ -19,25 +19,25 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     adhoc_erase_dialog_model.add_listener(FakeModelListener())
     # Initial state
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, no_callback=True, note_types=[], selected_note_type=None,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=True, note_types=[], selected_note_type=None,
                  selected_fields=[], model_history=[])
     # Fill model without firing
     adhoc_erase_dialog_model.note_types = all_note_type_details
-    adhoc_erase_dialog_model.run_op_callback = FakeCallback.call
+    adhoc_erase_dialog_model.accept_callback = FakeCallback.call
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[], model_history=[])
     # Fire model changes
     adhoc_erase_dialog_view.show_view()
     assert_view(adhoc_erase_dialog_view, check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
     # Choose Note Type
     adhoc_erase_dialog_view_scaffold.select_2nd_note_type()
     assert_view(adhoc_erase_dialog_view, check_box_texts=['Text', 'Back Extra'], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
     # Click Start button
@@ -47,21 +47,21 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     start_params: EraseOpParams = EraseOpParams(note_type_id=cloze_note_type_details.note_type_id, parent=None,
                                                 fields=FieldNames([FieldName('Text')]))
     assert FakeCallback.history == [start_params]
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=cloze_note_type_details, selected_fields=['Text'],
                  model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Cancel button
     adhoc_erase_dialog_view_scaffold.click_cancel_button()
     assert FakeCallback.history == [start_params]
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=cloze_note_type_details, selected_fields=['Text'],
                  model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Reset Defaults button
     adhoc_erase_dialog_view_scaffold.click_restore_defaults_button()
     assert FakeCallback.history == [start_params]
-    assert_model(adhoc_erase_dialog_model, no_callback=False,
+    assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[],
                  model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view, None])

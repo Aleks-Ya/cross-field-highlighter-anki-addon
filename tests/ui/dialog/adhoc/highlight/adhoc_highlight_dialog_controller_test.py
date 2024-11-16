@@ -56,7 +56,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_stop_words': None,
@@ -74,7 +74,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'formats': all_highlight_formats,
         'note_ids': note_ids,
         'note_types': all_note_type_details,
-        'run_op_callback_None': False,
+        'accept_callback_None': False,
         'selected_destination_fields': [],
         'selected_format': bold_format,
         'selected_stop_words': None,
@@ -105,7 +105,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_stop_words': None,
@@ -134,7 +134,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_stop_words': None,
@@ -151,7 +151,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_stop_words': None,
@@ -186,7 +186,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_stop_words': None,
@@ -219,7 +219,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': ['Back'],
         'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
         'selected_stop_words': 'to the',
@@ -251,7 +251,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'formats': [],
         'note_ids': set(),
         'note_types': [],
-        'run_op_callback_None': True,
+        'accept_callback_None': True,
         'selected_destination_fields': ['Back'],
         'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
         'selected_stop_words': 'to the',
@@ -272,7 +272,7 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     # Fill model
     adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
-    adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
+    adhoc_highlight_dialog_model.accept_callback = FakeCallback.call
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
