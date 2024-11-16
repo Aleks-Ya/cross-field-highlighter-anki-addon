@@ -8,21 +8,31 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model impo
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
+from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
 
 class FakeCallback:
-    counter: int = 0
+    def __init__(self):
+        self.counter: int = 0
 
-    @staticmethod
-    def call():
-        FakeCallback.counter += 1
+    def call(self):
+        self.counter += 1
 
 
 class FakeModelListener(AdhocEraseDialogModelListener):
-    history: list[object] = []
+    def __init__(self):
+        self.history: list[object] = []
 
     def model_changed(self, source: object):
-        FakeModelListener.history.append(source)
+        self.history.append(source)
+
+
+class FakeEraseControllerCallback:
+    def __init__(self):
+        self.history: list[EraseOpParams] = []
+
+    def call(self, params: EraseOpParams):
+        self.history.append(params)
 
 
 def assert_view(view: AdhocEraseDialogView, check_box_texts: list[str], selected_fields: list[str]):
@@ -50,7 +60,7 @@ def assert_buttons(view: AdhocEraseDialogView):
     assert restore_defaults_button.text() == "Restore Defaults"
 
 
-def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_accept_callback: bool,
+def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, listener: FakeModelListener, no_accept_callback: bool,
                  note_types: list[NoteTypeDetails], selected_note_type: Optional[NoteTypeDetails],
                  selected_fields: list[str], model_history: list[object]):
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': note_types,
@@ -58,4 +68,4 @@ def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_accept_call
                                                   'reject_callback_None': True,
                                                   'selected_fields': selected_fields,
                                                   'selected_note_type': selected_note_type}
-    assert FakeModelListener.history == model_history
+    assert listener.history == model_history

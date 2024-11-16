@@ -6,50 +6,36 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
-    AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from tests.conftest import cloze_note_type_details
 from tests.data import Data, DefaultFields
-
-
-class FakeCallback:
-    history: list[EraseOpParams] = []
-
-    @staticmethod
-    def call(params: EraseOpParams):
-        FakeCallback.history.append(params)
-
-
-class FakeModelListener(AdhocEraseDialogModelListener):
-    history: list[object] = []
-
-    def model_changed(self, source: object):
-        FakeModelListener.history.append(source)
+from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import FakeModelListener, FakeEraseControllerCallback
 
 
 def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                      adhoc_erase_dialog_view: AdhocEraseDialogView,
                      adhoc_erase_dialog_model: AdhocEraseDialogModel, td: Data,
                      all_note_type_details: list[NoteTypeDetails]):
-    adhoc_erase_dialog_model.add_listener(FakeModelListener())
+    listener: FakeModelListener = FakeModelListener()
+    adhoc_erase_dialog_model.add_listener(listener)
 
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
     params: DialogParams = DialogParams(all_note_type_details, note_ids)
-    assert FakeCallback.history == []
-    assert FakeModelListener.history == []
+    callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
+    assert callback.history == []
+    assert listener.history == []
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}
 
-    adhoc_erase_dialog_controller.show_dialog(params, FakeCallback.call)
-    assert FakeCallback.history == []
-    assert FakeModelListener.history == [adhoc_erase_dialog_view]
+    adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
+    assert callback.history == []
+    assert listener.history == [adhoc_erase_dialog_view]
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,

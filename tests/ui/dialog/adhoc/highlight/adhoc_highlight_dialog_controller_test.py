@@ -10,31 +10,15 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
-    AdhocHighlightDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import cloze_note_type_details
 from tests.data import Data, DefaultFields
-from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box
+from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
+    FakeModelListener, FakeHighlightControllerCallback
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
-
-
-class FakeCallback:
-    history: list[HighlightOpParams] = []
-
-    @staticmethod
-    def call(params: HighlightOpParams):
-        FakeCallback.history.append(params)
-
-
-class FakeModelListener(AdhocHighlightDialogModelListener):
-    history: list[object] = []
-
-    def model_changed(self, source: object):
-        FakeModelListener.history.append(source)
 
 
 def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -42,13 +26,15 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
                      all_note_type_details: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
                      bold_format: HighlightFormat):
-    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
+    listener: FakeModelListener = FakeModelListener()
+    adhoc_highlight_dialog_model.add_listener(listener)
 
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
     params: DialogParams = DialogParams(all_note_type_details, note_ids)
-    assert FakeCallback.history == []
-    assert FakeModelListener.history == []
+    assert callback.history == []
+    assert listener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'destination_fields': [],
@@ -64,10 +50,10 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'selected_note_type': None,
         'selected_source_field': {}}
 
-    adhoc_highlight_dialog_controller.show_dialog(params, FakeCallback.call)
-    assert FakeCallback.history == []
-    assert FakeModelListener.history == [adhoc_highlight_dialog_view, adhoc_highlight_dialog_view,
-                                         adhoc_highlight_dialog_view]
+    adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
+    assert callback.history == []
+    assert listener.history == [adhoc_highlight_dialog_view, adhoc_highlight_dialog_view,
+                                adhoc_highlight_dialog_view]
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'destination_fields': DefaultFields.all_basic,
@@ -276,11 +262,12 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                          italic_format: HighlightFormat,
                          adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
                          visual_qtbot: VisualQtBot):
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Fill model
     adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
-    adhoc_highlight_dialog_model.accept_callback = FakeCallback.call
+    adhoc_highlight_dialog_model.accept_callback = callback.call
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)

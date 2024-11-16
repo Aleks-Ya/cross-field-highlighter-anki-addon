@@ -11,23 +11,33 @@ from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 from tests.qtget import get_items
 
 
 class FakeCallback:
-    counter: int = 0
+    def __init__(self):
+        self.counter: int = 0
 
-    @staticmethod
-    def call():
-        FakeCallback.counter += 1
+    def call(self):
+        self.counter += 1
 
 
 class FakeModelListener(AdhocHighlightDialogModelListener):
-    history: list[object] = []
+    def __init__(self):
+        self.history: list[object] = []
 
     def model_changed(self, source: object):
-        FakeModelListener.history.append(source)
+        self.history.append(source)
+
+
+class FakeHighlightControllerCallback:
+    def __init__(self):
+        self.history: list[HighlightOpParams] = []
+
+    def call(self, params: HighlightOpParams):
+        self.history.append(params)
 
 
 def assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
@@ -99,8 +109,8 @@ def assert_buttons(view: AdhocHighlightDialogView):
     assert restore_defaults_button.text() == "Restore Defaults"
 
 
-def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_accept_callback: bool,
-                 note_types: list[NoteTypeDetails], formats: HighlightFormats,
+def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, listener: FakeModelListener,
+                 no_accept_callback: bool, note_types: list[NoteTypeDetails], formats: HighlightFormats,
                  destination_fields: list[str], disabled_destination_fields: list[str],
                  selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
                  selected_source_field: dict[NoteTypeName, FieldName], selected_stop_words: Optional[str],
@@ -119,4 +129,4 @@ def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_acc
         'selected_note_type': selected_note_type,
         'selected_source_field': selected_source_field,
         'selected_stop_words': selected_stop_words}
-    assert len(FakeModelListener.history) == model_history_counter
+    assert len(listener.history) == model_history_counter
