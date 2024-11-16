@@ -33,13 +33,12 @@ class FakeModelListener(AdhocEraseDialogModelListener):
 def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                      adhoc_erase_dialog_view: AdhocEraseDialogView,
                      adhoc_erase_dialog_model: AdhocEraseDialogModel, td: Data,
-                     basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails):
+                     all_note_type_details: list[NoteTypeDetails]):
     adhoc_erase_dialog_model.add_listener(FakeModelListener())
 
-    note_types: list[NoteTypeDetails] = [basic_note_type_details, cloze_note_type_details]
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
-    params: DialogParams = DialogParams(note_types, note_ids)
+    params: DialogParams = DialogParams(all_note_type_details, note_ids)
     assert FakeCallback.history == []
     assert FakeModelListener.history == []
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
@@ -50,7 +49,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     adhoc_erase_dialog_controller.show_dialog(params, FakeCallback.call)
     assert FakeCallback.history == []
     assert FakeModelListener.history == [adhoc_erase_dialog_view]
-    assert adhoc_erase_dialog_model.as_dict() == {'note_types': [basic_note_type_details, cloze_note_type_details],
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'run_op_callback_None': False,
                                                   'selected_fields': [],
                                                   'selected_note_type': None}

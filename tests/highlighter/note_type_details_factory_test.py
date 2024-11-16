@@ -18,9 +18,9 @@ def test_by_note_type_name(note_type_details_factory: NoteTypeDetailsFactory, ba
 
 
 def test_by_note_ids(note_type_details_factory: NoteTypeDetailsFactory, td: Data,
-                     basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails):
+                     all_note_type_details: list[NoteTypeDetails]):
     note_1: Note = td.create_basic_note_1()
     note_2: Note = td.create_basic_note_2()
     note_3: Note = td.create_cloze_note()
     note_ids: list[NoteId] = [note_1.id, note_2.id, note_3.id]
-    assert note_type_details_factory.by_note_ids(note_ids) == [basic_note_type_details, cloze_note_type_details]
+    assert note_type_details_factory.by_note_ids(note_ids) == all_note_type_details

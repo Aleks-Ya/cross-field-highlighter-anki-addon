@@ -3,7 +3,8 @@ from anki.notes import Note, NoteId
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
+    HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames
@@ -36,15 +37,13 @@ class FakeModelListener(AdhocHighlightDialogModelListener):
 def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                      adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
-                     basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails,
-                     bold_format: HighlightFormat, italic_format: HighlightFormat, underline_format: HighlightFormat,
-                     mark_format: HighlightFormat):
+                     all_note_type_details: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
+                     bold_format: HighlightFormat):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
 
-    note_types: list[NoteTypeDetails] = [basic_note_type_details, cloze_note_type_details]
     note_1: Note = td.create_basic_note_1()
     note_ids: list[NoteId] = [note_1.id]
-    params: DialogParams = DialogParams(note_types, note_ids)
+    params: DialogParams = DialogParams(all_note_type_details, note_ids)
     assert FakeCallback.history == []
     assert FakeModelListener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -69,9 +68,9 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'default_stop_words': 'a an to',
         'destination_fields': DefaultFields.all_basic,
         'disabled_destination_fields': [DefaultFields.basic_front],
-        'formats': [bold_format, italic_format, underline_format, mark_format],
+        'formats': all_highlight_formats,
         'note_ids': note_ids,
-        'note_types': [basic_note_type_details, cloze_note_type_details],
+        'note_types': all_note_type_details,
         'run_op_callback_None': False,
         'selected_destination_fields': [],
         'selected_format': bold_format,

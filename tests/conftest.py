@@ -246,6 +246,12 @@ def cloze_note_type_details(cloze_note_type: NoteType) -> NoteTypeDetails:
 
 
 @pytest.fixture
+def all_note_type_details(basic_note_type_details: NoteTypeDetails,
+                          cloze_note_type_details: NoteTypeDetails) -> list[NoteTypeDetails]:
+    return [basic_note_type_details, cloze_note_type_details]
+
+
+@pytest.fixture
 def theme_manager() -> ThemeManager:
     return ThemeManager()
 

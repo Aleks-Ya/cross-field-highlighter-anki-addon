@@ -35,9 +35,9 @@ class FakeModelListener(AdhocHighlightDialogModelListener):
 
 
 def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
-                   adhoc_highlight_dialog_model: AdhocHighlightDialogModel, basic_note_type_details: NoteTypeDetails,
-                   cloze_note_type_details: NoteTypeDetails, all_highlight_formats: HighlightFormats,
-                   bold_format: HighlightFormat, visual_qtbot: VisualQtBot):
+                   adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                   all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,
+                   all_highlight_formats: HighlightFormats, bold_format: HighlightFormat, visual_qtbot: VisualQtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     adhoc_highlight_dialog_model.default_stop_words = "a an"
     # Initial state
@@ -49,17 +49,16 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    selected_note_type=None, selected_format=None, selected_source_field={}, selected_stop_words=None,
                    selected_destination_fields=[], model_history_counter=0)
     # Fill model without firing
-    adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
+    adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
     adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
     __assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                   selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_field="")
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=[], disabled_destination_fields=[],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=None, selected_format=None,
-                   selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=0)
+                   note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
+                   selected_format=None, selected_source_field={}, selected_stop_words=None,
+                   selected_destination_fields=[], model_history_counter=0)
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
@@ -69,10 +68,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   disabled_field=DefaultFields.basic_front)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
-                   selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=3)
+                   note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
+                   selected_format=bold_format, selected_source_field={}, selected_stop_words=None,
+                   selected_destination_fields=[], model_history_counter=3)
     # Choose Note Type
     note_type_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 0).combobox().get()
@@ -85,10 +83,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_text)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_text],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
-                   selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=7)
+                   note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
+                   selected_format=bold_format, selected_source_field={}, selected_stop_words=None,
+                   selected_destination_fields=[], model_history_counter=7)
     # Choose Field
     filed_combo_box: QComboBox = path(adhoc_highlight_dialog_view).group(0).child(
         TitledComboBoxLayout, 1).combobox().get()
@@ -101,10 +98,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_extra)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=None, selected_format=bold_format,
-                   selected_source_field={}, selected_stop_words=None, selected_destination_fields=[],
-                   model_history_counter=8)
+                   note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
+                   selected_format=bold_format, selected_source_field={}, selected_stop_words=None,
+                   selected_destination_fields=[], model_history_counter=8)
     # Click Start button
     assert FakeCallback.history == []
     check_box: QCheckBox = path(adhoc_highlight_dialog_view).child(FieldsLayout).checkbox().get()
@@ -122,9 +118,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=cloze_note_type_details,
-                   selected_format=bold_format,
+                   note_types=all_note_type_details, formats=all_highlight_formats,
+                   selected_note_type=cloze_note_type_details, selected_format=bold_format,
                    selected_source_field={cloze_note_type_details.name: DefaultFields.cloze_extra},
                    selected_stop_words='a an to', selected_destination_fields=[DefaultFields.cloze_text],
                    model_history_counter=9)
@@ -134,9 +129,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=cloze_note_type_details,
-                   selected_format=bold_format,
+                   note_types=all_note_type_details, formats=all_highlight_formats,
+                   selected_note_type=cloze_note_type_details, selected_format=bold_format,
                    selected_source_field={cloze_note_type_details.name: DefaultFields.cloze_extra},
                    selected_stop_words='a an to', selected_destination_fields=[DefaultFields.cloze_text],
                    model_history_counter=10)
@@ -146,11 +140,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert FakeCallback.history == [start_params]
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
-                   note_types=[basic_note_type_details, cloze_note_type_details],
-                   formats=all_highlight_formats, selected_note_type=None,
-                   selected_format=bold_format, selected_source_field={},
-                   selected_stop_words='a an', selected_destination_fields=[],
-                   model_history_counter=19)
+                   note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
+                   selected_format=bold_format, selected_source_field={}, selected_stop_words='a an',
+                   selected_destination_fields=[], model_history_counter=19)
 
 
 def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
@@ -177,13 +169,12 @@ def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: Adho
 
 def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                           adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                                                          basic_note_type_details: NoteTypeDetails,
-                                                          cloze_note_type_details: NoteTypeDetails,
+                                                          all_note_type_details: list[NoteTypeDetails],
                                                           all_highlight_formats: HighlightFormats,
                                                           visual_qtbot: VisualQtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Fill model
-    adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
+    adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
     adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
     adhoc_highlight_dialog_view.show_view()
@@ -220,15 +211,14 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
 
 def test_remember_format(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                          adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                         basic_note_type_details: NoteTypeDetails,
-                         cloze_note_type_details: NoteTypeDetails,
+                         all_note_type_details: list[NoteTypeDetails],
                          all_highlight_formats: HighlightFormats,
                          bold_format: HighlightFormat,
                          italic_format: HighlightFormat,
                          visual_qtbot: VisualQtBot):
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Fill model
-    adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
+    adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
     adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
     # Show dialog
