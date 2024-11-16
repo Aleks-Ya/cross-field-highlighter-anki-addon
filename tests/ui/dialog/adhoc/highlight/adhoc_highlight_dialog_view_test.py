@@ -63,7 +63,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view.show_view()
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
                   current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                  selected_format=bold_format, formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
+                  selected_format=bold_format, formats=all_highlight_formats,
                   check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
                   disabled_field=DefaultFields.basic_front)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
@@ -80,7 +80,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
-                  selected_format=bold_format, formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
+                  selected_format=bold_format, formats=all_highlight_formats,
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_text)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_text],
@@ -96,7 +96,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     visual_qtbot.keyClick(filed_combo_box.view(), Qt.Key.Key_Enter)
     __assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                   current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
-                  selected_format=bold_format, formats=['Bold', 'Italic', 'Underline', 'Yellow background'],
+                  selected_format=bold_format, formats=all_highlight_formats,
                   check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_field=DefaultFields.cloze_extra)
     __assert_model(adhoc_highlight_dialog_model, no_callback=False,
                    destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
@@ -159,21 +159,19 @@ def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: Adho
     assert adhoc_highlight_dialog_model.formats == []
     __assert_format_group_box(adhoc_highlight_dialog_view, None, [])
 
-    exp_formats: HighlightFormats = all_highlight_formats
-    exp_format_names: list[str] = [highlight_format.name for highlight_format in exp_formats]
-    adhoc_highlight_dialog_model.formats = exp_formats
-    assert adhoc_highlight_dialog_model.formats == exp_formats
+    adhoc_highlight_dialog_model.formats = all_highlight_formats
+    assert adhoc_highlight_dialog_model.formats == all_highlight_formats
     __assert_format_group_box(adhoc_highlight_dialog_view, None, [])
 
     # Fire model fills the format list in combo box
     adhoc_highlight_dialog_model.fire_model_changed(None)
-    assert adhoc_highlight_dialog_model.formats == exp_formats
-    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, exp_format_names)
+    assert adhoc_highlight_dialog_model.formats == all_highlight_formats
+    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
 
     # Fire model again duplicates format list in combo box
     adhoc_highlight_dialog_model.fire_model_changed(None)
-    assert adhoc_highlight_dialog_model.formats == exp_formats
-    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, exp_format_names)
+    assert adhoc_highlight_dialog_model.formats == all_highlight_formats
+    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
 
 
 def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
@@ -225,8 +223,8 @@ def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
 
 def __assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
                   current_field: str, source_fields: list[str], selected_format: Optional[HighlightFormat],
-                  formats: list[str],
-                  check_box_texts: list[str], selected_fields: list[str], disabled_field: str):
+                  formats: list[HighlightFormat], check_box_texts: list[str], selected_fields: list[str],
+                  disabled_field: str):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == "Highlight"
     __assert_buttons(view)
@@ -260,12 +258,13 @@ def __assert_source_combo_box(view: AdhocHighlightDialogView, current_source_fie
 
 
 def __assert_format_group_box(view: AdhocHighlightDialogView, current_format: Optional[HighlightFormat],
-                              formats: list[str]):
+                              formats: list[HighlightFormat]):
     combo_box: PyQtPath = path(view).group(1).child(TitledComboBoxLayout)
     assert combo_box.label().get().text() == "Format"
     format_combo_box: QComboBox = combo_box.combobox().get()
     assert format_combo_box.currentText() == (current_format.name if current_format else "")
-    assert get_items(format_combo_box) == formats
+    format_names: list[str] = [highlight_format.name for highlight_format in formats]
+    assert get_items(format_combo_box) == format_names
 
 
 def __assert_destination_group_box(view: AdhocHighlightDialogView, check_box_texts: list[str],
