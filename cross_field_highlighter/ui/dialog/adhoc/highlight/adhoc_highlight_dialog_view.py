@@ -55,13 +55,13 @@ class AdhocHighlightDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug(f"Show view")
-        self.__fill_model()
+        self.__fill_ui_from_model()
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
         # self.__model.fire_model_changed(self)
 
-    def __fill_model(self):
+    def __fill_ui_from_model(self):
         note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
         self.__note_type_combo_box.set_items(note_type_names)
         if self.__model.selected_note_type:
@@ -148,7 +148,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.selected_format = None
         self.__model.selected_stop_words = self.__model.default_stop_words
         self.__model.selected_destination_fields = FieldNames([])
-        self.__fill_model()
+        self.__fill_ui_from_model()
         self.__model.fire_model_changed(None)
 
     def __repr__(self):
