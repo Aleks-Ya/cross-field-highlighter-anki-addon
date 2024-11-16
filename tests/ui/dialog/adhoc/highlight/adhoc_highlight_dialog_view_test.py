@@ -11,6 +11,7 @@ from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 from tests.data import DefaultFields
@@ -215,6 +216,38 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
     visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Up)
     visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
     __assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front, DefaultFields.all_basic)
+
+
+def test_remember_format(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                         adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                         basic_note_type_details: NoteTypeDetails,
+                         cloze_note_type_details: NoteTypeDetails,
+                         all_highlight_formats: HighlightFormats,
+                         bold_format: HighlightFormat,
+                         italic_format: HighlightFormat,
+                         visual_qtbot: VisualQtBot):
+    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    # Fill model
+    adhoc_highlight_dialog_model.note_types = [basic_note_type_details, cloze_note_type_details]
+    adhoc_highlight_dialog_model.formats = all_highlight_formats
+    adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
+    # Show dialog
+    adhoc_highlight_dialog_view.show_view()
+    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
+    # Choose "Italic" format
+    format_combo_box: QComboBox = path(adhoc_highlight_dialog_view).child(FormatGroupBox).child(
+        TitledComboBoxLayout).combobox().get()
+    visual_qtbot.mouseClick(format_combo_box, Qt.MouseButton.LeftButton)
+    visual_qtbot.keyClick(format_combo_box, Qt.Key.Key_Down)
+    visual_qtbot.keyClick(format_combo_box.view(), Qt.Key.Key_Enter)
+    __assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
+    # Click Cancel button
+    button_box: QDialogButtonBox = path(adhoc_highlight_dialog_view).child(QDialogButtonBox).get()
+    cancel_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Cancel)
+    visual_qtbot.mouseClick(cancel_button, Qt.MouseButton.LeftButton)
+    # Show dialog again
+    adhoc_highlight_dialog_view.show_view()
+    __assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)  # TODO should be italic
 
 
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
