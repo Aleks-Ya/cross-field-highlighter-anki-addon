@@ -4,12 +4,11 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName, Text
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
@@ -113,17 +112,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_model_from_ui()
         self.hide()
         if self.__model.accept_callback:
-            highlight_op_params: HighlightOpParams = self.__prepare_op_params()
-            self.__model.accept_callback(highlight_op_params)
-
-    def __prepare_op_params(self):
-        source_filed: FieldName = self.__model.selected_source_field[self.__model.selected_note_type.name]
-        stop_words: Text = Text(self.__model.selected_stop_words)
-        note_type_details: NoteTypeDetails = self.__model.selected_note_type
-        highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type_details.note_type_id, self.__model.note_ids, self.parent(), source_filed,
-            self.__model.selected_destination_fields, stop_words, self.__model.selected_format)
-        return highlight_op_params
+            self.__model.accept_callback()
 
     def __get_current_note_type_details(self):
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
@@ -136,8 +125,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_model_from_ui()
         self.hide()
         if self.__model.reject_callback:
-            highlight_op_params: HighlightOpParams = self.__prepare_op_params()
-            self.__model.reject_callback(highlight_op_params)
+            self.__model.reject_callback()
 
     def __update_model_from_ui(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())

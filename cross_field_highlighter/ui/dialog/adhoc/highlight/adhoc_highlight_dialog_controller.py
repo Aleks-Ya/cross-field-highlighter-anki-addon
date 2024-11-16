@@ -8,7 +8,7 @@ from cross_field_highlighter.highlighter.formatter.formatter_facade import Forma
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
@@ -107,12 +107,22 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         if default_stop_words:
             self.__model.default_stop_words = default_stop_words
 
-    def __accept_callback(self, erase_op_params: HighlightOpParams):
+    def __prepare_op_params(self):
+        source_filed: FieldName = self.__model.selected_source_field[self.__model.selected_note_type.name]
+        stop_words: Text = Text(self.__model.selected_stop_words)
+        note_type_details: NoteTypeDetails = self.__model.selected_note_type
+        highlight_op_params: HighlightOpParams = HighlightOpParams(
+            note_type_details.note_type_id, self.__model.note_ids, None, source_filed,
+            self.__model.selected_destination_fields, stop_words, self.__model.selected_format)
+        return highlight_op_params
+
+    def __accept_callback(self):
         log.debug("Accept callback")
+        erase_op_params: HighlightOpParams = self.__prepare_op_params()
         self.__run_op_callback(erase_op_params)
 
-    def __reject_callback(self, erase_op_params: HighlightOpParams):
-        log.debug(f"Reject callback: {erase_op_params}")
+    def __reject_callback(self):
+        log.debug("Reject callback")
 
     def __repr__(self):
         return self.__class__.__name__

@@ -41,26 +41,26 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
     # Click Start button
-    assert FakeCallback.history == []
+    assert FakeCallback.counter == 0
     adhoc_erase_dialog_view_scaffold.mark_destination_field()
     adhoc_erase_dialog_view_scaffold.click_start_button()
     start_params: EraseOpParams = EraseOpParams(note_type_id=cloze_note_type_details.note_type_id, parent=None,
                                                 fields=FieldNames([FieldName('Text')]))
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=cloze_note_type_details, selected_fields=['Text'],
                  model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Cancel button
     adhoc_erase_dialog_view_scaffold.click_cancel_button()
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=cloze_note_type_details, selected_fields=['Text'],
                  model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
     # Click Reset Defaults button
     adhoc_erase_dialog_view_scaffold.click_restore_defaults_button()
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_erase_dialog_model, no_accept_callback=False,
                  note_types=all_note_type_details,
                  selected_note_type=None, selected_fields=[],

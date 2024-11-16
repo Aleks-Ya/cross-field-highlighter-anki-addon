@@ -11,17 +11,16 @@ from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
 from tests.qtget import get_items
 
 
 class FakeCallback:
-    history: list[HighlightOpParams] = []
+    counter: int = 0
 
     @staticmethod
-    def call(params: HighlightOpParams):
-        FakeCallback.history.append(params)
+    def call():
+        FakeCallback.counter += 1
 
 
 class FakeModelListener(AdhocHighlightDialogModelListener):

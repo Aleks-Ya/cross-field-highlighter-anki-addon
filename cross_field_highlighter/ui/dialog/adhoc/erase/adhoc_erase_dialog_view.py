@@ -7,7 +7,6 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
@@ -79,12 +78,8 @@ class AdhocEraseDialogView(QDialog):
         self.__update_model_from_ui()
         self.hide()
         if self.__model.accept_callback:
-            erase_op_params: EraseOpParams = self.__prepare_op_params()
-            self.__model.accept_callback(erase_op_params)
+            self.__model.accept_callback()
         log.debug(f"{self.__class__.__name__} was instantiated")
-
-    def __prepare_op_params(self):
-        return EraseOpParams(self.__model.selected_note_type.note_type_id, self.parent(), self.__model.selected_fields)
 
     def __update_model_from_ui(self):
         fields: FieldNames = self.__get_selected_fields()
@@ -107,8 +102,7 @@ class AdhocEraseDialogView(QDialog):
         self.__update_model_from_ui()
         self.reject()
         if self.__model.reject_callback:
-            erase_op_params: EraseOpParams = self.__prepare_op_params()
-            self.__model.reject_callback(erase_op_params)
+            self.__model.reject_callback()
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")

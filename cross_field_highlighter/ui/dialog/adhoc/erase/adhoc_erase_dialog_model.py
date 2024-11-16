@@ -5,7 +5,6 @@ from typing import Callable, Optional
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldNames
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
 log: Logger = logging.getLogger(__name__)
 
@@ -21,8 +20,8 @@ class AdhocEraseDialogModel:
         self.note_types: list[NoteTypeDetails] = []
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_fields: FieldNames = FieldNames([])
-        self.accept_callback: Optional[Callable[[EraseOpParams], None]] = None
-        self.reject_callback: Optional[Callable[[EraseOpParams], None]] = None
+        self.accept_callback: Optional[Callable[[], None]] = None
+        self.reject_callback: Optional[Callable[[], None]] = None
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 

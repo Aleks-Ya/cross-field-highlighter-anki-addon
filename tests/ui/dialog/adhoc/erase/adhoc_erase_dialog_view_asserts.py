@@ -8,15 +8,14 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model impo
     AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
 
 
 class FakeCallback:
-    history: list[EraseOpParams] = []
+    counter: int = 0
 
     @staticmethod
-    def call(params: EraseOpParams):
-        FakeCallback.history.append(params)
+    def call():
+        FakeCallback.counter += 1
 
 
 class FakeModelListener(AdhocEraseDialogModelListener):

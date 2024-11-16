@@ -74,7 +74,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_format=bold_format, selected_source_field={}, selected_stop_words=None,
                  selected_destination_fields=[], model_history_counter=8)
     # Click Start button
-    assert FakeCallback.history == []
+    assert FakeCallback.counter == 0
     adhoc_highlight_dialog_view_scaffold.mark_destination_field()
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     start_params: HighlightOpParams = HighlightOpParams(note_type_id=cloze_note_type_details.note_type_id,
@@ -83,7 +83,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                         destination_fields=FieldNames([DefaultFields.cloze_text]),
                                                         stop_words=Text("a an to"),
                                                         highlight_format=bold_format)
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_highlight_dialog_model, no_accept_callback=False,
                  destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                  note_types=all_note_type_details, formats=all_highlight_formats,
@@ -93,7 +93,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  model_history_counter=9)
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_highlight_dialog_model, no_accept_callback=False,
                  destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                  note_types=all_note_type_details, formats=all_highlight_formats,
@@ -103,7 +103,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  model_history_counter=10)
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
-    assert FakeCallback.history == [start_params]
+    assert FakeCallback.counter == 1
     assert_model(adhoc_highlight_dialog_model, no_accept_callback=False,
                  destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
                  note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,

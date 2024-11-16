@@ -77,12 +77,16 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         if last_field_names:
             self.__model.selected_fields = last_field_names
 
-    def __accept_callback(self, erase_op_params: EraseOpParams):
+    def __accept_callback(self):
         log.debug("Accept callback")
+        erase_op_params: EraseOpParams = self.__prepare_op_params()
         self.__run_op_callback(erase_op_params)
 
-    def __reject_callback(self, erase_op_params: EraseOpParams):
-        log.debug(f"Reject callback: {erase_op_params}")
+    def __reject_callback(self):
+        log.debug("Reject callback")
+
+    def __prepare_op_params(self):
+        return EraseOpParams(self.__model.selected_note_type.note_type_id, None, self.__model.selected_fields)
 
     def __repr__(self):
         return self.__class__.__name__
