@@ -114,6 +114,7 @@ def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, no_acc
         'note_ids': set(),
         'note_types': note_types,
         'accept_callback_None': no_accept_callback,
+        'reject_callback_None': True,
         'selected_destination_fields': selected_destination_fields,
         'selected_format': selected_format,
         'selected_note_type': selected_note_type,

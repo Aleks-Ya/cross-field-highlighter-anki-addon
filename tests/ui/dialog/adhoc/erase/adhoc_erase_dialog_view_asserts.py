@@ -56,6 +56,7 @@ def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, no_accept_call
                  selected_fields: list[str], model_history: list[object]):
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': note_types,
                                                   'accept_callback_None': no_accept_callback,
+                                                  'reject_callback_None': True,
                                                   'selected_fields': selected_fields,
                                                   'selected_note_type': selected_note_type}
     assert FakeModelListener.history == model_history

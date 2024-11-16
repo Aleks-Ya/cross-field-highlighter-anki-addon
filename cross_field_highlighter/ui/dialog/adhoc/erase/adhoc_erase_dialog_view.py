@@ -78,12 +78,17 @@ class AdhocEraseDialogView(QDialog):
         log.info("Starting")
         self.__update_model_from_ui()
         self.hide()
+        if self.__model.accept_callback:
+            erase_op_params: EraseOpParams = self.__prepare_erase_op_params()
+            self.__model.accept_callback(erase_op_params)
+        log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def __prepare_erase_op_params(self):
         fields: FieldNames = self.__get_selected_fields()
         log.debug(f"Selected fields: {fields}")
         note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
         erase_op_params: EraseOpParams = EraseOpParams(note_type_details.note_type_id, self.parent(), fields)
-        self.__model.accept_callback(erase_op_params)
-        log.debug(f"{self.__class__.__name__} was instantiated")
+        return erase_op_params
 
     def __update_model_from_ui(self):
         fields: FieldNames = self.__get_selected_fields()
@@ -105,6 +110,9 @@ class AdhocEraseDialogView(QDialog):
         log.info("Cancelled")
         self.__update_model_from_ui()
         self.reject()
+        if self.__model.reject_callback:
+            erase_op_params: EraseOpParams = self.__prepare_erase_op_params()
+            self.__model.reject_callback(erase_op_params)
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")

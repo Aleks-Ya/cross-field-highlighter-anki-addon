@@ -31,6 +31,7 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__fill_model_from_config()
+        self.__run_op_callback: Optional[Callable[[HighlightOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
@@ -38,7 +39,9 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         self.__model.note_types = params.note_types
         self.__model.note_ids = params.note_ids
         self.__model.formats = self.__formatter_facade.get_all_formats()
-        self.__model.accept_callback = run_op_callback
+        self.__run_op_callback = run_op_callback
+        self.__model.accept_callback = self.__accept_callback
+        self.__model.reject_callback = self.__reject_callback
 
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
                                                                 params.note_types}
@@ -103,6 +106,13 @@ class AdhocHighlightDialogController(AdhocHighlightDialogModelListener):
         default_stop_words: Optional[FieldNames] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
             self.__model.default_stop_words = default_stop_words
+
+    def __accept_callback(self, erase_op_params: HighlightOpParams):
+        log.debug("Accept callback")
+        self.__run_op_callback(erase_op_params)
+
+    def __reject_callback(self, erase_op_params: HighlightOpParams):
+        log.debug(f"Reject callback: {erase_op_params}")
 
     def __repr__(self):
         return self.__class__.__name__

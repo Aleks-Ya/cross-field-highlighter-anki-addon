@@ -27,12 +27,15 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__fill_model_from_config()
+        self.__run_op_callback: Optional[Callable[[EraseOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def show_dialog(self, params: DialogParams, run_on_callback: Callable[[EraseOpParams], None]) -> None:
+    def show_dialog(self, params: DialogParams, run_op_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__model.note_types = params.note_types
-        self.__model.accept_callback = run_on_callback
+        self.__run_op_callback = run_op_callback
+        self.__model.accept_callback = self.__accept_callback
+        self.__model.reject_callback = self.__reject_callback
 
         last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_erase_last_note_type_name()
         log.debug(f"Last note type: {last_note_type_name}")
@@ -73,6 +76,13 @@ class AdhocEraseDialogController(AdhocEraseDialogModelListener):
         last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
         if last_field_names:
             self.__model.selected_fields = last_field_names
+
+    def __accept_callback(self, erase_op_params: EraseOpParams):
+        log.debug("Accept callback")
+        self.__run_op_callback(erase_op_params)
+
+    def __reject_callback(self, erase_op_params: EraseOpParams):
+        log.debug(f"Reject callback: {erase_op_params}")
 
     def __repr__(self):
         return self.__class__.__name__

@@ -109,14 +109,19 @@ class AdhocHighlightDialogView(QDialog):
     def __accept(self) -> None:
         log.info("Starting")
         self.__update_model_from_ui()
+        self.hide()
+        if self.__model.accept_callback:
+            highlight_op_params: HighlightOpParams = self.__prepare_highlight_op_params()
+            self.__model.accept_callback(highlight_op_params)
+
+    def __prepare_highlight_op_params(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         stop_words: Text = Text(self.__stop_words_layout.get_text())
         note_type_details: NoteTypeDetails = self.__get_current_note_type_details()
-        self.hide()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type_details.note_type_id, self.__model.note_ids, self.parent(), source_filed,
             self.__model.selected_destination_fields, stop_words, self.__model.selected_format)
-        self.__model.accept_callback(highlight_op_params)
+        return highlight_op_params
 
     def __get_current_note_type_details(self):
         note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
@@ -128,6 +133,9 @@ class AdhocHighlightDialogView(QDialog):
         log.info("Cancelled")
         self.__update_model_from_ui()
         self.hide()
+        if self.__model.reject_callback:
+            highlight_op_params: HighlightOpParams = self.__prepare_highlight_op_params()
+            self.__model.reject_callback(highlight_op_params)
 
     def __update_model_from_ui(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
