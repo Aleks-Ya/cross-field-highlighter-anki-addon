@@ -162,32 +162,5 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front, DefaultFields.all_basic)
 
 
-def test_remember_format(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
-                         adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                         all_note_type_details: list[NoteTypeDetails],
-                         all_highlight_formats: HighlightFormats,
-                         bold_format: HighlightFormat,
-                         italic_format: HighlightFormat,
-                         adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
-                         visual_qtbot: VisualQtBot):
-    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
-    # Fill model
-    adhoc_highlight_dialog_model.note_types = all_note_type_details
-    adhoc_highlight_dialog_model.formats = all_highlight_formats
-    adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
-    # Show dialog
-    adhoc_highlight_dialog_view.show_view()
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
-    assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
-    # Choose "Italic" format
-    adhoc_highlight_dialog_view_scaffold.select_2nd_format_combo_box()
-    assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
-    # Click Cancel button
-    adhoc_highlight_dialog_view_scaffold.click_cancel_button()
-    # Show dialog again
-    adhoc_highlight_dialog_view.show_view()
-    assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)  # TODO should be italic
-
-
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):
     assert repr(adhoc_highlight_dialog_view) == "AdhocHighlightDialogView"

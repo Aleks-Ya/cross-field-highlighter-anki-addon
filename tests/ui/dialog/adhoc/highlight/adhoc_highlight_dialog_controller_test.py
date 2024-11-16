@@ -17,6 +17,9 @@ from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import cloze_note_type_details
 from tests.data import Data, DefaultFields
+from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box
+from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
+from tests.visual_qtbot import VisualQtBot
 
 
 class FakeCallback:
@@ -254,3 +257,30 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'selected_stop_words': 'to the',
         'selected_note_type': basic_note_type_details,
         'selected_source_field': {basic_note_type_details.name: 'Front'}}
+
+
+def test_remember_format(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                         adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                         all_note_type_details: list[NoteTypeDetails],
+                         all_highlight_formats: HighlightFormats,
+                         bold_format: HighlightFormat,
+                         italic_format: HighlightFormat,
+                         adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                         visual_qtbot: VisualQtBot):
+    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    # Fill model
+    adhoc_highlight_dialog_model.note_types = all_note_type_details
+    adhoc_highlight_dialog_model.formats = all_highlight_formats
+    adhoc_highlight_dialog_model.run_op_callback = FakeCallback.call
+    # Show dialog
+    adhoc_highlight_dialog_view.show_view()
+    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
+    # Choose "Italic" format
+    adhoc_highlight_dialog_view_scaffold.select_2nd_format_combo_box()
+    assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
+    # Click Cancel button
+    adhoc_highlight_dialog_view_scaffold.click_cancel_button()
+    # Show dialog again
+    adhoc_highlight_dialog_view.show_view()
+    assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)  # TODO should be italic
