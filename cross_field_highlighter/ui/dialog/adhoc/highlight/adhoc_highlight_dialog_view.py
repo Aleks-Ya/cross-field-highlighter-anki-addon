@@ -69,6 +69,8 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_source_field_from_model()
         if self.__model.selected_stop_words:
             self.__stop_words_layout.set_text(self.__model.selected_stop_words)
+        if self.__model.selected_stop_words:
+            self.__stop_words_layout.set_text(self.__model.selected_stop_words)
 
     def __update_source_field_from_model(self):
         if self.__model.selected_note_type:
@@ -111,13 +113,13 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_model_from_ui()
         self.hide()
         if self.__model.accept_callback:
-            highlight_op_params: HighlightOpParams = self.__prepare_highlight_op_params()
+            highlight_op_params: HighlightOpParams = self.__prepare_op_params()
             self.__model.accept_callback(highlight_op_params)
 
-    def __prepare_highlight_op_params(self):
-        source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
-        stop_words: Text = Text(self.__stop_words_layout.get_text())
-        note_type_details: NoteTypeDetails = self.__get_current_note_type_details()
+    def __prepare_op_params(self):
+        source_filed: FieldName = self.__model.selected_source_field[self.__model.selected_note_type.name]
+        stop_words: Text = Text(self.__model.selected_stop_words)
+        note_type_details: NoteTypeDetails = self.__model.selected_note_type
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type_details.note_type_id, self.__model.note_ids, self.parent(), source_filed,
             self.__model.selected_destination_fields, stop_words, self.__model.selected_format)
@@ -134,7 +136,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_model_from_ui()
         self.hide()
         if self.__model.reject_callback:
-            highlight_op_params: HighlightOpParams = self.__prepare_highlight_op_params()
+            highlight_op_params: HighlightOpParams = self.__prepare_op_params()
             self.__model.reject_callback(highlight_op_params)
 
     def __update_model_from_ui(self):
