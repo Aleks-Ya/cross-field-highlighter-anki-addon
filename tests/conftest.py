@@ -40,6 +40,8 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields
+from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
+from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
 
@@ -287,6 +289,12 @@ def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlig
 
 
 @pytest.fixture
+def adhoc_highlight_dialog_view_scaffold(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                         visual_qtbot: VisualQtBot) -> AdhocHighlightDialogViewScaffold:
+    return AdhocHighlightDialogViewScaffold(adhoc_highlight_dialog_view, visual_qtbot)
+
+
+@pytest.fixture
 def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
     return AdhocEraseDialogModel()
 
@@ -308,6 +316,12 @@ def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogMode
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory,
                                       config, config_loader)
+
+
+@pytest.fixture
+def adhoc_erase_dialog_view_scaffold(adhoc_erase_dialog_view: AdhocEraseDialogView,
+                                     visual_qtbot: VisualQtBot) -> AdhocEraseDialogViewScaffold:
+    return AdhocEraseDialogViewScaffold(adhoc_erase_dialog_view, visual_qtbot)
 
 
 @pytest.fixture
