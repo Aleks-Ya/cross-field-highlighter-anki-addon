@@ -259,7 +259,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'selected_source_field': {basic_note_type_details.name: 'Front'}}
 
 
-def test_remember_format(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                         adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                          adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
                          all_note_type_details: list[NoteTypeDetails],
                          all_highlight_formats: HighlightFormats,
