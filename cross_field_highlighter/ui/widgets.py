@@ -32,9 +32,13 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.addItems(items)
 
     def set_data_items(self, items: dict[str, Any]) -> None:
+        current_item: object = self.get_current_data()
         self.__combo_box.clear()
         for item, data in items.items():
             self.add_item(item, data)
+        if current_item in items.values():
+            index: int = list(items.values()).index(current_item)
+            self.__combo_box.setCurrentIndex(index)
 
     def add_item(self, item: str, data: Any) -> None:
         self.__combo_box.addItem(item, data)

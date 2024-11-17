@@ -290,4 +290,4 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     # Show dialog again
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)  # TODO should be italic
+    assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
