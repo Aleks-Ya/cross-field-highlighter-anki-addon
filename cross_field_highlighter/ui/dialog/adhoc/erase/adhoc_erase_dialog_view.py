@@ -62,14 +62,14 @@ class AdhocEraseDialogView(QDialog):
         self.adjustSize()
         self.__model.fire_model_changed(self)
 
-    def __on_combobox_changed(self, index: int):
+    def __on_note_type_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
         field_names: FieldNames = FieldNames(self.__model.note_types[index].fields)
         self.__fields_vbox.set_items(field_names)
 
     def __field_widget(self) -> QVBoxLayout:
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
+        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
         self.__fields_vbox: FieldsLayout = FieldsLayout()
         self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         group_layout: QVBoxLayout = QVBoxLayout()
