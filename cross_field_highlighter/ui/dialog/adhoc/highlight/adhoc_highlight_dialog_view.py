@@ -129,7 +129,6 @@ class AdhocHighlightDialogView(QDialog):
 
     def __update_model_from_ui(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
-        self.__format_group_box.update_model_from_ui()
         note_type_details: NoteTypeDetails = self.__get_current_note_type_details()
         self.__model.selected_note_type = note_type_details
         self.__model.selected_source_field[note_type_details.name] = source_filed
