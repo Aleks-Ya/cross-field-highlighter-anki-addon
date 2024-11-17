@@ -67,8 +67,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_source_field_from_model()
         if self.__model.selected_stop_words:
             self.__stop_words_layout.set_text(self.__model.selected_stop_words)
-        if self.__model.selected_stop_words:
-            self.__stop_words_layout.set_text(self.__model.selected_stop_words)
+        self.__model.fire_model_changed(self)
 
     def __update_source_field_from_model(self):
         if self.__model.selected_note_type:
