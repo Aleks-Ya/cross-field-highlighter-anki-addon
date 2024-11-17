@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Optional
 
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
@@ -83,8 +84,16 @@ class AdhocHighlightDialogView(QDialog):
         log.debug(f"On note type selected: {index}")
         field_names: FieldNames = self.__model.note_types[index].fields
         self.__model.destination_fields = field_names
+
+        selected_note_type_text: Optional[str] = self.__note_type_combo_box.get_current_text()
+        if selected_note_type_text:
+            note_type_name: NoteTypeName = NoteTypeName(selected_note_type_text)
+            note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(note_type_name)
+            self.__model.selected_note_type = note_type_details
+
         self.__source_field_combo_box.set_items(field_names)
         self.__on_source_field_changed(self.__source_field_combo_box.get_current_text())
+
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
@@ -95,7 +104,6 @@ class AdhocHighlightDialogView(QDialog):
     def __create_source_widget(self):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
-        self.__note_type_combo_box.on_current_text_changed(self.__on_note_type_selected)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
@@ -143,15 +151,6 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.selected_destination_fields = FieldNames([])
         self.__fill_ui_from_model()
         self.__model.fire_model_changed(None)
-
-    def __on_note_type_selected(self, text: str) -> None:
-        if text != '':
-            note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
-            note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(note_type_name)
-            self.__model.selected_note_type = note_type_details
-        else:
-            self.__model.selected_note_type = None
-        self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__
