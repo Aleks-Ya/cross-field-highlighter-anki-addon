@@ -1,10 +1,8 @@
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
     HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.data import DefaultFields
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
     assert_source_combo_box, assert_model, assert_view, FakeModelListener, FakeCallback
@@ -79,12 +77,6 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert callback.counter == 0
     adhoc_highlight_dialog_view_scaffold.mark_destination_field()
     adhoc_highlight_dialog_view_scaffold.click_start_button()
-    start_params: HighlightOpParams = HighlightOpParams(note_type_id=cloze_note_type_details.note_type_id,
-                                                        note_ids=set(), parent=None,
-                                                        source_field=DefaultFields.cloze_extra,
-                                                        destination_fields=FieldNames([DefaultFields.cloze_text]),
-                                                        stop_words=Text("a an to"),
-                                                        highlight_format=bold_format)
     assert callback.counter == 1
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
                  destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
