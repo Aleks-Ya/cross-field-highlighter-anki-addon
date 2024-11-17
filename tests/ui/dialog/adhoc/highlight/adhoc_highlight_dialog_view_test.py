@@ -23,7 +23,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.default_stop_words = "a an"
     # Initial state
     assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
-                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[])
+                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
+                stop_words="a an to")
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=True,
                  destination_fields=[], disabled_destination_fields=[],
                  note_types=[], formats=HighlightFormats([]),
@@ -34,7 +35,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.formats = all_highlight_formats
     adhoc_highlight_dialog_model.accept_callback = callback.call
     assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
-                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[])
+                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
+                stop_words="a an to")
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
                  destination_fields=[], disabled_destination_fields=[],
                  note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
@@ -47,7 +49,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
-                disabled_fields=[DefaultFields.basic_front])
+                disabled_fields=[DefaultFields.basic_front], stop_words="a an to")
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
                  destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
                  note_types=all_note_type_details, formats=all_highlight_formats,
@@ -59,7 +61,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text])
+                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text],
+                stop_words="a an to")
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
                  destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_text],
                  note_types=all_note_type_details, formats=all_highlight_formats,
@@ -71,7 +74,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_extra])
+                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_extra],
+                stop_words="a an to")
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
                  destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
                  note_types=all_note_type_details, formats=all_highlight_formats,

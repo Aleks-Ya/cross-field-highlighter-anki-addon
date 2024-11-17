@@ -44,11 +44,11 @@ class FakeHighlightControllerCallback:
 def assert_view(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
                 current_field: str, source_fields: list[str], selected_format: Optional[HighlightFormat],
                 formats: list[HighlightFormat], check_box_texts: list[str], selected_fields: list[str],
-                disabled_fields: list[str]):
+                disabled_fields: list[str], stop_words: str):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == "Highlight"
     assert_buttons(view)
-    assert_source_group_box(view, current_note_type, note_types, current_field, source_fields, "a an to")
+    assert_source_group_box(view, current_note_type, note_types, current_field, source_fields, stop_words)
     assert_format_group_box(view, selected_format, formats)
     assert_destination_group_box(view, check_box_texts, selected_fields, disabled_fields)
 
