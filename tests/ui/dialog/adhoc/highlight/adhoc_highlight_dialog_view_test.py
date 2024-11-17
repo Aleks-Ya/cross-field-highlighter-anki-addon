@@ -117,7 +117,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
                  note_types=all_note_type_details, formats=all_highlight_formats,
                  selected_note_type=basic_note_type_details, selected_format=bold_format,
-                 selected_source_field={basic_note_type_details.name: DefaultFields.basic_front},
+                 selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
+                                        cloze_note_type_details.name: DefaultFields.cloze_text},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=19)
 
 

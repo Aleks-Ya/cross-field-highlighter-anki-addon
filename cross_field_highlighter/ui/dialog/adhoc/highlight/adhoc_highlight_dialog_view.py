@@ -1,10 +1,8 @@
 import logging
 from logging import Logger
-from typing import Optional
 
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
@@ -86,18 +84,10 @@ class AdhocHighlightDialogView(QDialog):
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On note type selected: {index}")
-        field_names: FieldNames = self.__model.note_types[index].fields
-        self.__model.destination_fields = field_names
-
-        selected_note_type_text: Optional[str] = self.__note_type_combo_box.get_current_text()
-        if selected_note_type_text:
-            note_type_name: NoteTypeName = NoteTypeName(selected_note_type_text)
-            note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(note_type_name)
-            self.__model.selected_note_type = note_type_details
-
-        self.__source_field_combo_box.set_items(field_names)
+        self.__model.selected_note_type = self.__model.note_types[index]
+        self.__model.destination_fields = self.__model.selected_note_type.fields
+        self.__source_field_combo_box.set_items(self.__model.destination_fields)
         self.__on_source_field_changed(self.__source_field_combo_box.get_current_text())
-
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
