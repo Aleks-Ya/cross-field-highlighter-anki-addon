@@ -131,7 +131,7 @@ class AdhocHighlightDialogView(QDialog):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         note_type_details: NoteTypeDetails = self.__get_current_note_type_details()
         self.__model.selected_note_type = note_type_details
-        self.__model.selected_source_field[note_type_details.name] = source_filed
+        self.__model.selected_source_field[self.__model.selected_note_type.name] = source_filed
         self.__model.selected_stop_words = self.__stop_words_layout.get_text()
         self.__model.fire_model_changed(self)
 
