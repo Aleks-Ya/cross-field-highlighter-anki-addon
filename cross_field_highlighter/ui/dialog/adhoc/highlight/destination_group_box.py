@@ -18,6 +18,7 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
         self.__destination_fields_vbox: FieldsLayout = FieldsLayout()
+        self.__destination_fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         layout: QVBoxLayout = QVBoxLayout()
         layout.addLayout(self.__destination_fields_vbox)
         self.setLayout(layout)
@@ -31,9 +32,9 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             if self.__model.selected_destination_fields:
                 self.__destination_fields_vbox.set_selected_fields(self.__model.selected_destination_fields)
 
-    def update_model_from_ui(self):
-        destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()
-        self.__model.selected_destination_fields = destination_fields
+    def __on_field_selected_callback(self, selected_field_names: FieldNames):
+        log.debug(f"On field selected: {selected_field_names}")
+        self.__model.selected_destination_fields = selected_field_names
 
     def __repr__(self):
         return self.__class__.__name__

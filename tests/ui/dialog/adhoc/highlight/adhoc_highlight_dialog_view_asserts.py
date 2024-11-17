@@ -91,7 +91,6 @@ def assert_destination_group_box(view: AdhocHighlightDialogView, check_box_texts
     group_box: PyQtPath = path(view).group(2)
     assert group_box.label().get().text() == "Fields:"
     fields_layout: FieldsLayout = group_box.child(FieldsLayout).get()
-    assert fields_layout.get_selected_field_names() == selected_fields
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     texts: list[str] = [check_box.text() for check_box in check_boxes]
     assert texts == check_box_texts

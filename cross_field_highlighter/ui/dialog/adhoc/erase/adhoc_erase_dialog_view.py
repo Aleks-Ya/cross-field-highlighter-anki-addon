@@ -68,6 +68,7 @@ class AdhocEraseDialogView(QDialog):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_combobox_changed)
         self.__fields_vbox: FieldsLayout = FieldsLayout()
+        self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__fields_vbox)
@@ -81,11 +82,13 @@ class AdhocEraseDialogView(QDialog):
             self.__model.accept_callback()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
+    def __on_field_selected_callback(self, selected_field_names: FieldNames):
+        log.debug(f"On field selected: {selected_field_names}")
+        self.__model.selected_fields = selected_field_names
+
     def __update_model_from_ui(self):
-        fields: FieldNames = self.__get_selected_fields()
         note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
         self.__model.selected_note_type = note_type_details
-        self.__model.selected_fields = fields
         self.__model.fire_model_changed(self)
 
     def __get_selected_note_type_details(self):
@@ -93,9 +96,6 @@ class AdhocEraseDialogView(QDialog):
                                                            self.__model.note_types}
         note_type_details: NoteTypeDetails = note_types[NoteTypeName(self.__note_type_combo_box.get_current_text())]
         return note_type_details
-
-    def __get_selected_fields(self):
-        return self.__fields_vbox.get_selected_field_names()
 
     def __reject(self) -> None:
         log.info("Cancelled")

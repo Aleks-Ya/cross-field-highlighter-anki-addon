@@ -134,7 +134,6 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.selected_note_type = note_type_details
         self.__model.selected_source_field[note_type_details.name] = source_filed
         self.__model.selected_stop_words = self.__stop_words_layout.get_text()
-        self.__destination_group_box.update_model_from_ui()
         self.__model.fire_model_changed(self)
 
     def __restore_defaults(self) -> None:

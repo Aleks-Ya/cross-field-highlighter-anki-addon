@@ -44,13 +44,10 @@ class FieldsLayout(QVBoxLayout):
     def set_on_field_selected_callback(self, callback: Callable[[FieldNames], None]):
         self.__on_field_selected_callback = callback
 
-    def get_selected_field_names(self) -> FieldNames:
-        return FieldNames(
-            [field_name for field_name, check_box in self.__field_name_checkboxes.items() if check_box.isChecked()])
-
     def __on_state_changed(self, _: int):
         if self.__on_field_selected_callback:
-            selected_field_names: FieldNames = self.get_selected_field_names()
+            selected_field_names: FieldNames = FieldNames(
+                [field_name for field_name, check_box in self.__field_name_checkboxes.items() if check_box.isChecked()])
             self.__on_field_selected_callback(selected_field_names)
 
     def __del__(self):

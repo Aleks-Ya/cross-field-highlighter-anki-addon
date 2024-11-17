@@ -45,7 +45,6 @@ def assert_view(view: AdhocEraseDialogView, check_box_texts: list[str], selected
 def assert_destination_group_box(view: AdhocEraseDialogView, check_box_texts: list[str], selected_fields: list[str]):
     fields_layout: FieldsLayout = path(view).child(FieldsLayout).get()
     assert path(fields_layout).label().get().text() == "Fields:"
-    assert fields_layout.get_selected_field_names() == selected_fields
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     texts: list[str] = [check_box.text() for check_box in check_boxes]
     assert texts == check_box_texts
