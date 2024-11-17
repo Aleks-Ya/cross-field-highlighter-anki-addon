@@ -280,7 +280,7 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_model.formats = all_highlight_formats
     adhoc_highlight_dialog_model.accept_callback = callback.call
     # Show dialog
-    adhoc_highlight_dialog_view.show_view()
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
     assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
     # Choose "Italic" format
@@ -289,5 +289,5 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     # Show dialog again
-    adhoc_highlight_dialog_view.show_view()
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)  # TODO should be italic
