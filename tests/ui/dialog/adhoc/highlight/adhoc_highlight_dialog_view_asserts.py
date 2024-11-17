@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
 from aqt import QComboBox, QCheckBox, QDialogButtonBox, QPushButton
@@ -114,7 +114,8 @@ def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, listen
                  selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
                  selected_source_field: dict[NoteTypeName, FieldName], selected_stop_words: Optional[str],
                  selected_destination_fields: list[str], model_history_counter: int):
-    assert adhoc_highlight_dialog_model.as_dict() == {
+    act_model_dict: dict[str, Any] = adhoc_highlight_dialog_model.as_dict()
+    exp_model_dict: dict[str, Any] = {
         'default_stop_words': 'a an',
         'destination_fields': destination_fields,
         'disabled_destination_fields': disabled_destination_fields,
@@ -128,4 +129,10 @@ def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, listen
         'selected_note_type': selected_note_type,
         'selected_source_field': selected_source_field,
         'selected_stop_words': selected_stop_words}
-    assert len(listener.history) == model_history_counter
+    print(f"Expected model dict: {dict(sorted(exp_model_dict.items()))}")
+    print(f"Actual model dict: {dict(sorted(act_model_dict.items()))}")
+    assert act_model_dict == exp_model_dict
+    act_listener_history_length: int = len(listener.history)
+    print(f"Actual listener history length: {act_listener_history_length}")
+    print(f"Expected listener history length: {model_history_counter}")
+    assert act_listener_history_length == model_history_counter

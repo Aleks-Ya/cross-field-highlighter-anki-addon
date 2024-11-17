@@ -13,7 +13,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_co
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats
+from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
 from tests.data import Data, DefaultFields
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
     FakeModelListener, FakeHighlightControllerCallback
@@ -25,7 +25,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                      adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
                      all_note_type_details: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
-                     bold_format: HighlightFormat):
+                     bold_format: HighlightFormat, basic_note_type_details: NoteTypeDetails):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
@@ -53,7 +53,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
     assert listener.history == [adhoc_highlight_dialog_view, adhoc_highlight_dialog_view,
-                                adhoc_highlight_dialog_view]
+                                adhoc_highlight_dialog_view, adhoc_highlight_dialog_view]
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'destination_fields': DefaultFields.all_basic,
@@ -66,7 +66,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'selected_destination_fields': [],
         'selected_format': bold_format,
         'selected_stop_words': None,
-        'selected_note_type': None,
+        'selected_note_type': basic_note_type_details,
         'selected_source_field': {}}
 
 

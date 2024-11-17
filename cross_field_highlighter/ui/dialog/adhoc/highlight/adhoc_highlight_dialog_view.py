@@ -58,7 +58,6 @@ class AdhocHighlightDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
-        # self.__model.fire_model_changed(self)
 
     def __fill_ui_from_model(self):
         note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
@@ -95,6 +94,7 @@ class AdhocHighlightDialogView(QDialog):
     def __create_source_widget(self):
         self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
         self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
+        self.__note_type_combo_box.on_current_text_changed(self.__on_note_type_selected)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
@@ -129,8 +129,6 @@ class AdhocHighlightDialogView(QDialog):
 
     def __update_model_from_ui(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
-        note_type_details: NoteTypeDetails = self.__get_current_note_type_details()
-        self.__model.selected_note_type = note_type_details
         self.__model.selected_source_field[self.__model.selected_note_type.name] = source_filed
         self.__model.selected_stop_words = self.__stop_words_layout.get_text()
         self.__model.fire_model_changed(self)
@@ -146,6 +144,16 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.selected_destination_fields = FieldNames([])
         self.__fill_ui_from_model()
         self.__model.fire_model_changed(None)
+
+    def __on_note_type_selected(self, text: str) -> None:
+        if text != '':
+            note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                                    self.__model.note_types}
+            note_type_details: NoteTypeDetails = note_type_names[NoteTypeName(text)]
+            self.__model.selected_note_type = note_type_details
+        else:
+            self.__model.selected_note_type = None
+        self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__
