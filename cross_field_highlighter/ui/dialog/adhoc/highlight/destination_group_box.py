@@ -29,7 +29,7 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             self.__destination_fields_vbox.set_items(self.__model.destination_fields)
             self.__destination_fields_vbox.set_disabled_fields(self.__model.disabled_destination_fields)
             if self.__model.selected_destination_fields:
-                self.__destination_fields_vbox.select_fields(self.__model.selected_destination_fields)
+                self.__destination_fields_vbox.set_selected_fields(self.__model.selected_destination_fields)
 
     def update_model_from_ui(self):
         destination_fields: FieldNames = self.__destination_fields_vbox.get_selected_field_names()

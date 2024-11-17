@@ -53,7 +53,7 @@ class AdhocEraseDialogView(QDialog):
         if self.__model.selected_note_type:
             self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
         if self.__model.selected_fields:
-            self.__fields_vbox.select_fields(self.__model.selected_fields)
+            self.__fields_vbox.set_selected_fields(self.__model.selected_fields)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
