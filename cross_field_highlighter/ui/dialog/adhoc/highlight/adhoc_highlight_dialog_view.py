@@ -102,7 +102,10 @@ class AdhocHighlightDialogView(QDialog):
 
     def __on_source_field_changed(self, item: str):
         log.debug(f"On source field selected: {item}")
-        self.__model.disabled_destination_fields = FieldNames([FieldName(item)])
+        field_name: FieldName = FieldName(item)
+        if self.__model.selected_note_type:
+            self.__model.selected_source_field[self.__model.selected_note_type.name] = field_name
+        self.__model.disabled_destination_fields = FieldNames([field_name])
         self.__model.fire_model_changed(self)
 
     def __create_source_widget(self):
@@ -123,7 +126,6 @@ class AdhocHighlightDialogView(QDialog):
 
     def __accept(self) -> None:
         log.info("Starting")
-        self.__update_model_from_ui()
         self.hide()
         if self.__model.accept_callback:
             self.__model.accept_callback()
@@ -134,15 +136,9 @@ class AdhocHighlightDialogView(QDialog):
 
     def __reject(self) -> None:
         log.info("Cancelled")
-        self.__update_model_from_ui()
         self.hide()
         if self.__model.reject_callback:
             self.__model.reject_callback()
-
-    def __update_model_from_ui(self):
-        source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
-        self.__model.selected_source_field[self.__model.selected_note_type.name] = source_filed
-        self.__model.fire_model_changed(self)
 
     def __on_stop_words_text_changed(self, text: str):
         self.__model.selected_stop_words = text

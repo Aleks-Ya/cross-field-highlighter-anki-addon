@@ -67,7 +67,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'selected_format': bold_format,
         'selected_stop_words': None,
         'selected_note_type': basic_note_type_details,
-        'selected_source_field': {}}
+        'selected_source_field': {basic_note_type_details.name: DefaultFields.basic_front}}
 
 
 def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
