@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from PyQtPath.path_chain_pyqt6 import path
 from aqt import QCheckBox, QDialogButtonBox, QPushButton
@@ -47,7 +47,7 @@ def assert_destination_group_box(view: AdhocEraseDialogView, check_box_texts: li
     assert path(fields_layout).label().get().text() == "Fields:"
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     texts: list[str] = [check_box.text() for check_box in check_boxes]
-    assert texts == check_box_texts
+    assert texts == check_box_texts, f"'{texts}' != '{check_box_texts}'"
 
 
 def assert_buttons(view: AdhocEraseDialogView):
@@ -62,9 +62,11 @@ def assert_buttons(view: AdhocEraseDialogView):
 def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, listener: FakeModelListener, no_accept_callback: bool,
                  note_types: list[NoteTypeDetails], selected_note_type: Optional[NoteTypeDetails],
                  selected_fields: list[str], model_history: list[object]):
-    assert adhoc_erase_dialog_model.as_dict() == {'note_types': note_types,
-                                                  'accept_callback_None': no_accept_callback,
-                                                  'reject_callback_None': True,
-                                                  'selected_fields': selected_fields,
-                                                  'selected_note_type': selected_note_type}
-    assert listener.history == model_history
+    act_dict: dict[str, Any] = dict(sorted(adhoc_erase_dialog_model.as_dict().items()))
+    exp_dict: dict[str, Any] = dict(sorted({'note_types': note_types,
+                                            'accept_callback_None': no_accept_callback,
+                                            'reject_callback_None': True,
+                                            'selected_fields': selected_fields,
+                                            'selected_note_type': selected_note_type}.items()))
+    assert act_dict == exp_dict, f"'{act_dict}' != '{exp_dict}'"
+    assert listener.history == model_history, f"'{listener.history}' != '{model_history}'"
