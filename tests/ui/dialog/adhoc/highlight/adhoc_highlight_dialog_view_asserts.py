@@ -1,7 +1,7 @@
 from typing import Optional, Any
 
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
-from aqt import QComboBox, QDialogButtonBox, QPushButton
+from aqt import QComboBox, QDialogButtonBox, QPushButton, QLineEdit
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
     HighlightFormats
@@ -66,7 +66,8 @@ def assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: s
 
     assert_source_combo_box(view, current_source_field, source_fields)
 
-    assert group_box.child(TitledLineEditLayout).get().get_text() == stop_words
+    act_stop_words: str = group_box.child(TitledLineEditLayout).child(QLineEdit).get().text()
+    assert act_stop_words == stop_words, f"'{act_stop_words}' != '{stop_words}'"
 
 
 def assert_source_combo_box(view: AdhocHighlightDialogView, current_source_field: str, source_fields: list[str]):

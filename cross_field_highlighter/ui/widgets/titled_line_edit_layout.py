@@ -20,9 +20,6 @@ class TitledLineEditLayout(QHBoxLayout):
         self.__on_text_changed_callback: Optional[Callable[[Text], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def get_text(self) -> str:
-        return self.__line_edit.text()
-
     def set_text(self, text: str) -> None:
         self.__line_edit.setText(text)
 

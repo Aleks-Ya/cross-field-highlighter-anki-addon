@@ -71,6 +71,9 @@ class AdhocHighlightDialogView(QDialog):
         self.__update_source_field_from_model()
         if self.__model.selected_stop_words:
             self.__stop_words_layout.set_text(self.__model.selected_stop_words)
+        else:
+            if self.__model.default_stop_words:
+                self.__stop_words_layout.set_text(self.__model.default_stop_words)
         self.__model.fire_model_changed(self)
 
     def __update_source_field_from_model(self):
@@ -109,6 +112,7 @@ class AdhocHighlightDialogView(QDialog):
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Exclude words:", text="a an to", clear_button_enabled=True)
+        self.__stop_words_layout.set_on_text_changed_callback(self.__on_stop_words_text_changed)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__source_field_combo_box)
@@ -138,8 +142,10 @@ class AdhocHighlightDialogView(QDialog):
     def __update_model_from_ui(self):
         source_filed: FieldName = FieldName(self.__source_field_combo_box.get_current_text())
         self.__model.selected_source_field[self.__model.selected_note_type.name] = source_filed
-        self.__model.selected_stop_words = self.__stop_words_layout.get_text()
         self.__model.fire_model_changed(self)
+
+    def __on_stop_words_text_changed(self, text: str):
+        self.__model.selected_stop_words = text
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
