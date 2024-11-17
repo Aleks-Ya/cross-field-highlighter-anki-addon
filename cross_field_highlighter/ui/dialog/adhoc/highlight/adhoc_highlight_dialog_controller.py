@@ -40,7 +40,7 @@ class AdhocHighlightDialogController:
         self.__fill_model_from_config()
         if not self.__model.selected_note_type:
             if len(self.__model.note_types) > 0:
-                self.__model.selected_note_type = self.__model.note_types[0].name
+                self.__model.selected_note_type = self.__model.note_types[0]
         self.__view.show_view()
 
     def __save_model_to_config(self):
