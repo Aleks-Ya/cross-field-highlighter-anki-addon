@@ -153,7 +153,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    view: AdhocEraseDialogView = AdhocEraseDialogView(model)
+    view: AdhocEraseDialogView = AdhocEraseDialogView(model, note_type_details_factory)
     _: AdhocEraseDialogController = AdhocEraseDialogController(
         model, view, note_type_details_factory, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {

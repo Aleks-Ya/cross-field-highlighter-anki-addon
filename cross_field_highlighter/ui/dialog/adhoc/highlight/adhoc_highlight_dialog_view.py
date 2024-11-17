@@ -4,6 +4,7 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
@@ -16,9 +17,10 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogView(QDialog):
 
-    def __init__(self, model: AdhocHighlightDialogModel):
+    def __init__(self, model: AdhocHighlightDialogModel, note_type_details_factory: NoteTypeDetailsFactory):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
+        self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
@@ -114,10 +116,8 @@ class AdhocHighlightDialogView(QDialog):
             self.__model.accept_callback()
 
     def __get_current_note_type_details(self):
-        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                                self.__model.note_types}
-        note_type: NoteTypeDetails = note_type_names[NoteTypeName(self.__note_type_combo_box.get_current_text())]
-        return note_type
+        note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
+        return self.__note_type_details_factory.by_note_type_name(note_type_name)
 
     def __reject(self) -> None:
         log.info("Cancelled")
@@ -146,9 +146,8 @@ class AdhocHighlightDialogView(QDialog):
 
     def __on_note_type_selected(self, text: str) -> None:
         if text != '':
-            note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                                    self.__model.note_types}
-            note_type_details: NoteTypeDetails = note_type_names[NoteTypeName(text)]
+            note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
+            note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(note_type_name)
             self.__model.selected_note_type = note_type_details
         else:
             self.__model.selected_note_type = None

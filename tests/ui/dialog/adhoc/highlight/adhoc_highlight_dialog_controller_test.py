@@ -233,7 +233,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, note_type_details_factory)
     _: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {

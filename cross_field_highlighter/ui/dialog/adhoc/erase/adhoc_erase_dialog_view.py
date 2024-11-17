@@ -4,6 +4,7 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -14,9 +15,11 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogView(QDialog):
 
-    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel):
+    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel,
+                 note_type_details_factory: NoteTypeDetailsFactory):
         super().__init__(parent=None)
         self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
+        self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
@@ -92,10 +95,8 @@ class AdhocEraseDialogView(QDialog):
         self.__model.fire_model_changed(self)
 
     def __get_selected_note_type_details(self):
-        note_types: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                           self.__model.note_types}
-        note_type_details: NoteTypeDetails = note_types[NoteTypeName(self.__note_type_combo_box.get_current_text())]
-        return note_type_details
+        note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
+        return self.__note_type_details_factory.by_note_type_name(note_type_name)
 
     def __reject(self) -> None:
         log.info("Cancelled")
