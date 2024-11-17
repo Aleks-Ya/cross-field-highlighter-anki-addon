@@ -87,7 +87,13 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.selected_note_type = self.__model.note_types[index]
         self.__model.destination_fields = self.__model.selected_note_type.fields
         self.__source_field_combo_box.set_items(self.__model.destination_fields)
-        self.__on_source_field_changed(self.__source_field_combo_box.get_current_text())
+        if self.__model.selected_note_type.name in self.__model.selected_source_field:
+            previous_selected_source_field: FieldName = self.__model.selected_source_field[
+                self.__model.selected_note_type.name]
+            if previous_selected_source_field in self.__model.selected_note_type.fields:
+                self.__model.selected_source_field[
+                    self.__model.selected_note_type.name] = previous_selected_source_field
+                self.__model.disabled_destination_fields = FieldNames([previous_selected_source_field])
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):

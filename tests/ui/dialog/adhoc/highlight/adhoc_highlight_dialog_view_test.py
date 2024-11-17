@@ -56,7 +56,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  note_types=all_note_type_details, formats=all_highlight_formats,
                  selected_note_type=basic_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front},
-                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=4)
+                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=3)
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_2nd_note_type()
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
@@ -71,7 +71,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_text},
                  selected_stop_words=exp_default_stop_words,
-                 selected_destination_fields=[], model_history_counter=8)
+                 selected_destination_fields=[], model_history_counter=6)
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
@@ -85,7 +85,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_note_type=cloze_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
-                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=9)
+                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=7)
     # Click Start button
     assert callback.counter == 0
     adhoc_highlight_dialog_view_scaffold.mark_destination_field()
@@ -98,7 +98,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[DefaultFields.cloze_text],
-                 model_history_counter=9)
+                 model_history_counter=7)
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
@@ -109,7 +109,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[DefaultFields.cloze_text],
-                 model_history_counter=9)
+                 model_history_counter=7)
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
@@ -119,7 +119,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                  selected_note_type=basic_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_text},
-                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=19)
+                 selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=15)
 
 
 def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
