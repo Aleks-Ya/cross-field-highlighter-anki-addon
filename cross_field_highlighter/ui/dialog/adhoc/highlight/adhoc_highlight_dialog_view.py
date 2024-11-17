@@ -11,7 +11,8 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
     AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
 

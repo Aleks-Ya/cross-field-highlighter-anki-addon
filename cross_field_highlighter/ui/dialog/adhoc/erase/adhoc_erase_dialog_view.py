@@ -8,7 +8,7 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 

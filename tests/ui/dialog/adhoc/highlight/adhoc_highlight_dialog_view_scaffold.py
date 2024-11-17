@@ -4,7 +4,7 @@ from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from tests.visual_qtbot import VisualQtBot
 
 

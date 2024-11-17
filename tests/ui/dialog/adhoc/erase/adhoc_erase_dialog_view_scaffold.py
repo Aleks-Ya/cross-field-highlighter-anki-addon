@@ -3,7 +3,7 @@ from aqt import QDialogButtonBox, QPushButton, Qt, QComboBox, QCheckBox
 
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from tests.visual_qtbot import VisualQtBot
 
 

@@ -16,6 +16,10 @@ class VisualQtBot:
         self.__qtbot.keyClick(widget, key)
         self.__qtbot.wait(self.__wait_ms)
 
+    def keyClicks(self, widget: QWidget, text: str):
+        self.__qtbot.keyClicks(widget, text)
+        self.__qtbot.wait(self.__wait_ms)
+
     def mouseClick(self, widget: QWidget, mouse_button: Qt.MouseButton):
         self.__qtbot.mouseClick(widget, mouse_button)
         self.__qtbot.wait(self.__wait_ms)

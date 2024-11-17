@@ -6,7 +6,7 @@ from aqt.qt import QVBoxLayout, QGroupBox
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 

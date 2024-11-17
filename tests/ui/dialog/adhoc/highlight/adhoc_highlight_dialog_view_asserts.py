@@ -12,7 +12,8 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
-from cross_field_highlighter.ui.widgets import TitledComboBoxLayout, TitledLineEditLayout
+from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 from tests.qtget import get_items
 from tests.ui.dialog.adhoc.fields_layout_asserts import assert_fields_layout
 

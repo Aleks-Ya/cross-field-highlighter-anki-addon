@@ -2,7 +2,7 @@ import logging
 from logging import Logger
 from typing import Callable, Any
 
-from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox, QLineEdit
+from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
 
 log: Logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.addWidget(label)
         self.addWidget(self.__combo_box)
+        log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_current_text(self, current_text: str) -> None:
         self.__combo_box.setCurrentText(current_text)
@@ -52,26 +53,6 @@ class TitledComboBoxLayout(QHBoxLayout):
     def on_current_text_changed(self, callback: Callable[[str], None]) -> None:
         # noinspection PyUnresolvedReferences
         self.__combo_box.currentTextChanged.connect(callback)
-
-    def __del__(self):
-        log.debug(f"{self.__class__.__name__} was deleted")
-
-
-class TitledLineEditLayout(QHBoxLayout):
-    def __init__(self, title: str, text: str = None, placeholder: str = None, clear_button_enabled: bool = False):
-        super().__init__()
-        label: QLabel = QLabel(title)
-        self.__line_edit: QLineEdit = QLineEdit(text)
-        self.__line_edit.setPlaceholderText(placeholder)
-        self.__line_edit.setClearButtonEnabled(clear_button_enabled)
-        self.addWidget(label)
-        self.addWidget(self.__line_edit)
-
-    def get_text(self) -> str:
-        return self.__line_edit.text()
-
-    def set_text(self, text: str) -> None:
-        self.__line_edit.setText(text)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")
