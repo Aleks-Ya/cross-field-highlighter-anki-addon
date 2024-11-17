@@ -4,7 +4,6 @@ from typing import Callable, Optional
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -30,32 +29,9 @@ class AdhocEraseDialogController:
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
-        self.__model.note_types = params.note_types
         self.__run_op_callback = run_op_callback
-        self.__model.accept_callback = self.__accept_callback
-        self.__model.reject_callback = self.__reject_callback
-
-        last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_erase_last_note_type_name()
-        log.debug(f"Last note type: {last_note_type_name}")
-        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                                params.note_types}
-        log.debug(f"Note type names: {note_type_names}")
-        if last_note_type_name in note_type_names:
-            log.debug(f"Set selected note type: {note_type_names[last_note_type_name]}")
-            self.__model.selected_note_type = note_type_names[last_note_type_name]
-
-        if self.__model.selected_note_type:
-            last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
-            log.debug(f"Last field: {last_field_names}")
-            field_names: FieldNames = FieldNames([])
-            if last_field_names:
-                for last_field in last_field_names:
-                    if last_field in self.__model.selected_note_type.fields:
-                        log.debug(f"Set selected field: {last_field}")
-                        field_names.append(last_field)
-            log.debug(f"Selected fields from config: {field_names}")
-            self.__model.selected_fields = field_names
-
+        self.__model.note_types = params.note_types
+        self.__fill_model_from_config()
         self.__view.show_view()
 
     def __save_model_to_config(self):
@@ -67,6 +43,8 @@ class AdhocEraseDialogController:
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self):
+        self.__model.accept_callback = self.__accept_callback
+        self.__model.reject_callback = self.__reject_callback
         last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_erase_last_note_type_name()
         if last_note_type_name:
             self.__model.selected_note_type = self.__note_type_details_factory.by_note_type_name(last_note_type_name)

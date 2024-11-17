@@ -34,34 +34,10 @@ class AdhocHighlightDialogController:
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
+        self.__run_op_callback = run_op_callback
         self.__model.note_types = params.note_types
         self.__model.note_ids = params.note_ids
-        self.__model.formats = self.__formatter_facade.get_all_formats()
-        self.__run_op_callback = run_op_callback
-        self.__model.accept_callback = self.__accept_callback
-        self.__model.reject_callback = self.__reject_callback
-
-        note_type_names: dict[NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                                params.note_types}
-        last_note_type_name: NoteTypeName = self.__config.get_dialog_adhoc_highlight_last_note_type_name()
-        if last_note_type_name in note_type_names:
-            self.__model.selected_note_type = note_type_names[last_note_type_name]
-
-        if self.__model.selected_note_type:
-            last_source_field: FieldName = self.__config.get_dialog_adhoc_highlight_last_source_field_name(
-                last_note_type_name)
-            if last_source_field in self.__model.selected_note_type.fields:
-                self.__model.selected_source_field[last_note_type_name] = last_source_field
-
-            last_destination_fields: FieldNames = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
-            if last_destination_fields in self.__model.selected_note_type.fields:
-                self.__model.selected_destination_fields = last_destination_fields
-
-        highlight_last_format: Optional[HighlightFormatCode] = self.__config.get_dialog_adhoc_highlight_last_format()
-        if highlight_last_format:
-            last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_last_format)
-            self.__model.selected_format = last_format
-
+        self.__fill_model_from_config()
         self.__view.show_view()
 
     def __save_model_to_config(self):
@@ -82,6 +58,9 @@ class AdhocHighlightDialogController:
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self):
+        self.__model.accept_callback = self.__accept_callback
+        self.__model.reject_callback = self.__reject_callback
+        self.__model.formats = self.__formatter_facade.get_all_formats()
         last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_highlight_last_note_type_name()
         if last_note_type_name:
             self.__model.selected_note_type = self.__note_type_details_factory.by_note_type_name(last_note_type_name)
