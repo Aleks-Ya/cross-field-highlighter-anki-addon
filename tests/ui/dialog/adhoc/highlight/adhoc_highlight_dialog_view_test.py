@@ -172,7 +172,8 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_extra, DefaultFields.all_cloze)
     # Choose "Basic" note type again
     adhoc_highlight_dialog_view_scaffold.select_1st_note_type()
-    assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front, DefaultFields.all_basic)
+    assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front,
+                            DefaultFields.all_basic)  # TODO should be DefaultFields.basic_back
 
 
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):

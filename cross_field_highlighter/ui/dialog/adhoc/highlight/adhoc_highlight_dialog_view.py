@@ -31,8 +31,8 @@ class AdhocHighlightDialogView(QDialog):
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                                         QDialogButtonBox.StandardButton.Cancel |
                                                         QDialogButtonBox.StandardButton.RestoreDefaults)
-        ok_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
-        ok_button.setText("Start")
+        start_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
+        start_button.setText("Start")
         self.__destination_group_box: DestinationGroupBox = DestinationGroupBox(model)
         # noinspection PyUnresolvedReferences
         button_box.accepted.connect(self.__accept)
