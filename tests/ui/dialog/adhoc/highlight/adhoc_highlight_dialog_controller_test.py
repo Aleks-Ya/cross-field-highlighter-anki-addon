@@ -43,11 +43,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'note_types': [],
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': None,
-        'selected_stop_words': None,
-        'selected_note_type': None,
-        'selected_source_field': {}}
+        'states': {},
+        'current_state': None}
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
@@ -60,11 +57,16 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': bold_format,
-        'selected_stop_words': None,
-        'selected_note_type': basic_note_type_details,
-        'selected_source_field': {basic_note_type_details.name: DefaultFields.basic_front}}
+        'states': {'Basic': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': basic_note_type_details,
+                             'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'a an to'}},
+        'current_state': {'selected_destination_fields': [],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': 'a an to'}}
 
 
 def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -94,16 +96,13 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'note_types': [],
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': None,
-        'selected_stop_words': None,
-        'selected_note_type': None,
-        'selected_source_field': {}}
+        'states': {},
+        'current_state': None}
 
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    adhoc_highlight_dialog_model.selected_note_type = basic_note_type_details
-    adhoc_highlight_dialog_model.selected_source_field[basic_note_type_details.name] = DefaultFields.basic_front
+    adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
+    adhoc_highlight_dialog_model.current_state.selected_source_field = DefaultFields.basic_front
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.accept_callback()
     assert config_loader.load_config().get_as_dict() == {
@@ -112,7 +111,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Note Type': 'Basic',
                 'Last Source Field Name': {basic_note_type_details.name: DefaultFields.basic_front},
                 'Last Format': bold_format.code.name,
-                'Last Stop Words': None,
+                'Last Stop Words': 'a an to',
                 'Last Destination Field Names': [],
                 "Default Stop Words": "a an to"},
             'Erase': {
@@ -126,11 +125,16 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': bold_format,
-        'selected_stop_words': None,
-        'selected_note_type': basic_note_type_details,
-        'selected_source_field': {basic_note_type_details.name: DefaultFields.basic_front}}
+        'states': {'Basic': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': basic_note_type_details,
+                             'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'a an to'}},
+        'current_state': {'selected_destination_fields': [],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': 'a an to'}}
 
     # Update again
     adhoc_highlight_dialog_model.selected_note_type = cloze_note_type_details
@@ -143,11 +147,16 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': bold_format,
-        'selected_stop_words': None,
-        'selected_note_type': cloze_note_type_details,
-        'selected_source_field': {basic_note_type_details.name: DefaultFields.basic_front}}
+        'states': {'Basic': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': basic_note_type_details,
+                             'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'a an to'}},
+        'current_state': {'selected_destination_fields': [],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': 'a an to'}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -181,19 +190,16 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'note_types': [],
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [],
-        'selected_format': None,
-        'selected_stop_words': None,
-        'selected_note_type': None,
-        'selected_source_field': {}}
+        'states': {},
+        'current_state': None}
 
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    adhoc_highlight_dialog_model.selected_note_type = basic_note_type_details
-    adhoc_highlight_dialog_model.selected_source_field[basic_note_type_details.name] = DefaultFields.basic_front
+    adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
+    adhoc_highlight_dialog_model.current_state.selected_source_field = DefaultFields.basic_front
     adhoc_highlight_dialog_model.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
-    adhoc_highlight_dialog_model.selected_stop_words = "to the"
-    adhoc_highlight_dialog_model.selected_destination_fields = FieldNames([DefaultFields.basic_back])
+    adhoc_highlight_dialog_model.current_state.selected_stop_words = "to the"
+    adhoc_highlight_dialog_model.current_state.selected_destination_fields = FieldNames([DefaultFields.basic_back])
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.accept_callback()
     assert config_loader.load_config().get_as_dict() == {
@@ -216,11 +222,16 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': [DefaultFields.basic_back],
-        'selected_format': bold_format,
-        'selected_stop_words': 'to the',
-        'selected_note_type': basic_note_type_details,
-        'selected_source_field': {basic_note_type_details.name: DefaultFields.basic_front}}
+        'states': {'Basic': {'selected_destination_fields': [DefaultFields.basic_back],
+                             'selected_format': bold_format,
+                             'selected_note_type': basic_note_type_details,
+                             'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'to the'}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': 'to the'}}
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -248,11 +259,16 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'note_types': [],
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'selected_destination_fields': ['Back'],
-        'selected_format': formatter_facade.get_format_by_code(HighlightFormatCode.BOLD),
-        'selected_stop_words': 'to the',
-        'selected_note_type': basic_note_type_details,
-        'selected_source_field': {basic_note_type_details.name: 'Front'}}
+        'states': {'Basic': {'selected_destination_fields': [DefaultFields.basic_back],
+                             'selected_format': bold_format,
+                             'selected_note_type': basic_note_type_details,
+                             'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'to the'}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': 'to the'}}
 
 
 def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,

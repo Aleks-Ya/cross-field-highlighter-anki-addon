@@ -28,16 +28,17 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         if source != self:
             log.debug(f"Model changed")
             self.__destination_fields_vbox.set_items(self.__model.destination_fields)
-            disabled_fields: FieldNames = FieldNames(
-                [self.__model.selected_source_field[self.__model.selected_note_type.name]]) \
-                if self.__model.selected_note_type is not None and self.__model.selected_note_type.name in self.__model.selected_source_field else []
-            self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
-            if self.__model.selected_destination_fields:
-                self.__destination_fields_vbox.set_selected_fields(self.__model.selected_destination_fields)
+            if self.__model.current_state:
+                disabled_fields: FieldNames = FieldNames([self.__model.current_state.selected_source_field]) \
+                    if self.__model.current_state.selected_source_field is not None else None
+                self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
+                if self.__model.current_state.selected_destination_fields:
+                    self.__destination_fields_vbox.set_selected_fields(
+                        self.__model.current_state.selected_destination_fields)
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        self.__model.selected_destination_fields = selected_field_names
+        self.__model.current_state.selected_destination_fields = selected_field_names
 
     def __repr__(self):
         return self.__class__.__name__

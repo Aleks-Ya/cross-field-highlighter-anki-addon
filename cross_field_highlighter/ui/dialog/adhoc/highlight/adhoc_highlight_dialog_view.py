@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
 
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
@@ -64,42 +65,33 @@ class AdhocHighlightDialogView(QDialog):
     def __fill_ui_from_model(self):
         note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
         self.__note_type_combo_box.set_items(note_type_names)
-        if self.__model.selected_note_type:
-            self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
+        if self.__model.current_state.selected_note_type:
+            self.__note_type_combo_box.set_current_text(self.__model.current_state.selected_note_type.name)
         self.__update_source_field_from_model()
-        if self.__model.selected_stop_words:
-            self.__stop_words_layout.set_text(self.__model.selected_stop_words)
+        if self.__model.current_state.selected_stop_words:
+            self.__stop_words_layout.set_text(self.__model.current_state.selected_stop_words)
         else:
             if self.__model.default_stop_words:
                 self.__stop_words_layout.set_text(self.__model.default_stop_words)
         self.__model.fire_model_changed(self)
 
     def __update_source_field_from_model(self):
-        if self.__model.selected_note_type:
-            if self.__model.selected_source_field:
-                if self.__model.selected_note_type.name in self.__model.selected_source_field:
-                    selected_source_field: FieldName = self.__model.selected_source_field[
-                        self.__model.selected_note_type.name]
-                    self.__source_field_combo_box.set_current_text(selected_source_field)
+        if self.__model.current_state.selected_source_field:
+            selected_source_field: FieldName = self.__model.current_state.selected_source_field
+            self.__source_field_combo_box.set_current_text(selected_source_field)
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On note type selected: {index}")
-        self.__model.selected_note_type = self.__model.note_types[index]
-        self.__model.destination_fields = self.__model.selected_note_type.fields
+        selected_note_type: NoteTypeDetails = self.__model.note_types[index]
+        self.__model.switch_state(selected_note_type)
+        self.__model.destination_fields = self.__model.current_state.selected_note_type.fields
         self.__source_field_combo_box.set_items(self.__model.destination_fields)
-        if self.__model.selected_note_type.name in self.__model.selected_source_field:
-            previous_selected_source_field: FieldName = self.__model.selected_source_field[
-                self.__model.selected_note_type.name]
-            if previous_selected_source_field in self.__model.selected_note_type.fields:
-                self.__model.selected_source_field[
-                    self.__model.selected_note_type.name] = previous_selected_source_field
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
         log.debug(f"On source field selected: {item}")
         field_name: FieldName = FieldName(item)
-        if self.__model.selected_note_type:
-            self.__model.selected_source_field[self.__model.selected_note_type.name] = field_name
+        self.__model.current_state.selected_source_field = field_name
         self.__model.fire_model_changed(self)
 
     def __create_source_widget(self):
@@ -135,16 +127,16 @@ class AdhocHighlightDialogView(QDialog):
             self.__model.reject_callback()
 
     def __on_stop_words_text_changed(self, text: str):
-        self.__model.selected_stop_words = text
+        self.__model.current_state.selected_stop_words = text
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
         self.__model.destination_fields = FieldNames([])
-        self.__model.selected_note_type = None
-        self.__model.selected_source_field = {}
-        self.__model.selected_format = None
-        self.__model.selected_stop_words = self.__model.default_stop_words
-        self.__model.selected_destination_fields = FieldNames([])
+        self.__model.current_state.selected_note_type = None
+        self.__model.current_state.selected_source_field = None
+        self.__model.current_state.selected_format = None
+        self.__model.current_state.selected_stop_words = self.__model.default_stop_words
+        self.__model.current_state.selected_destination_fields = FieldNames([])
         self.__fill_ui_from_model()
         self.__model.fire_model_changed(None)
 

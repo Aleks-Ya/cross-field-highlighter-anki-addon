@@ -5,9 +5,10 @@ from typing import Optional, Callable
 
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormats
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
 
 log: Logger = logging.getLogger(__name__)
 
@@ -25,15 +26,21 @@ class AdhocHighlightDialogModel:
         self.formats: HighlightFormats = HighlightFormats([])
         self.default_stop_words: Optional[str] = None
         self.destination_fields: FieldNames = FieldNames([])
-        self.selected_note_type: Optional[NoteTypeDetails] = None
-        self.selected_source_field: dict[NoteTypeName, FieldName] = {}
-        self.selected_format: Optional[HighlightFormat] = None
-        self.selected_stop_words: Optional[str] = None
-        self.selected_destination_fields: FieldNames = FieldNames([])
         self.accept_callback: Optional[Callable[[], None]] = None
         self.reject_callback: Optional[Callable[[], None]] = None
+        self.current_state: Optional[AdhocHighlightDialogState] = None
+        self.__states: dict[NoteTypeName, AdhocHighlightDialogState] = {}
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def switch_state(self, note_type_details: NoteTypeDetails):
+        note_type_name: NoteTypeName = note_type_details.name
+        if note_type_name not in self.__states:
+            self.__states[note_type_name] = AdhocHighlightDialogState()
+        self.current_state = self.__states[note_type_name]
+        self.current_state.selected_note_type = note_type_details
+        if not self.current_state.selected_stop_words:
+            self.current_state.selected_stop_words = self.default_stop_words
 
     def add_listener(self, listener: AdhocHighlightDialogModelListener):
         self.__listeners.add(listener)
@@ -48,11 +55,8 @@ class AdhocHighlightDialogModel:
             "note_ids": self.note_ids,
             "formats": self.formats,
             "destination_fields": self.destination_fields,
-            "selected_note_type": self.selected_note_type,
-            "selected_source_field": self.selected_source_field,
-            "selected_format": self.selected_format,
-            "selected_stop_words": self.selected_stop_words,
-            "selected_destination_fields": self.selected_destination_fields,
+            "states": {k: v.as_dict() for k, v in self.__states.items()},
+            "current_state": self.current_state.as_dict() if self.current_state else None,
             "default_stop_words": self.default_stop_words,
             "accept_callback_None": not self.accept_callback,
             "reject_callback_None": not self.reject_callback

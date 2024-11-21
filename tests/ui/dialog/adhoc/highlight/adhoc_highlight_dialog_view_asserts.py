@@ -1,14 +1,11 @@
-from typing import Optional, Any
+from typing import Optional
 
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
 from aqt import QComboBox, QDialogButtonBox, QPushButton, QLineEdit
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
-    HighlightFormats
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, NoteTypeName
+from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel, \
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
@@ -104,32 +101,3 @@ def assert_buttons(view: AdhocHighlightDialogView):
     assert cancel_button.text() == "&Cancel"
     restore_defaults_button: QPushButton = path(view).child(QDialogButtonBox).button(2).get()
     assert restore_defaults_button.text() == "Restore Defaults"
-
-
-def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, listener: FakeModelListener,
-                 no_accept_callback: bool, note_types: list[NoteTypeDetails], formats: HighlightFormats,
-                 destination_fields: list[str], selected_note_type: Optional[NoteTypeDetails],
-                 selected_format: Optional[HighlightFormat], selected_source_field: dict[NoteTypeName, FieldName],
-                 selected_stop_words: Optional[str], selected_destination_fields: list[str],
-                 model_history_counter: int):
-    act_model_dict: dict[str, Any] = adhoc_highlight_dialog_model.as_dict()
-    exp_model_dict: dict[str, Any] = {
-        'default_stop_words': 'a an',
-        'destination_fields': destination_fields,
-        'formats': formats,
-        'note_ids': set(),
-        'note_types': note_types,
-        'accept_callback_None': no_accept_callback,
-        'reject_callback_None': True,
-        'selected_destination_fields': selected_destination_fields,
-        'selected_format': selected_format,
-        'selected_note_type': selected_note_type,
-        'selected_source_field': selected_source_field,
-        'selected_stop_words': selected_stop_words}
-    print(f"Expected model dict: {dict(sorted(exp_model_dict.items()))}")
-    print(f"Actual model dict: {dict(sorted(act_model_dict.items()))}")
-    assert act_model_dict == exp_model_dict
-    act_listener_history_length: int = len(listener.history)
-    print(f"Actual listener history length: {act_listener_history_length}")
-    print(f"Expected listener history length: {model_history_counter}")
-    assert act_listener_history_length == model_history_counter
