@@ -25,7 +25,6 @@ class AdhocHighlightDialogModel:
         self.formats: HighlightFormats = HighlightFormats([])
         self.default_stop_words: Optional[str] = None
         self.destination_fields: FieldNames = FieldNames([])
-        self.disabled_destination_fields: FieldNames = FieldNames([])
         self.selected_note_type: Optional[NoteTypeDetails] = None
         self.selected_source_field: dict[NoteTypeName, FieldName] = {}
         self.selected_format: Optional[HighlightFormat] = None
@@ -49,7 +48,6 @@ class AdhocHighlightDialogModel:
             "note_ids": self.note_ids,
             "formats": self.formats,
             "destination_fields": self.destination_fields,
-            "disabled_destination_fields": self.disabled_destination_fields,
             "selected_note_type": self.selected_note_type,
             "selected_source_field": self.selected_source_field,
             "selected_format": self.selected_format,

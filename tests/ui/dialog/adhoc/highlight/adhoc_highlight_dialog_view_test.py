@@ -26,11 +26,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                 selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
                 stop_words="a an to")
-    assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=True,
-                 destination_fields=[], disabled_destination_fields=[],
-                 note_types=[], formats=HighlightFormats([]),
-                 selected_note_type=None, selected_format=None, selected_source_field={}, selected_stop_words=None,
-                 selected_destination_fields=[], model_history_counter=0)
+    assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=True, destination_fields=[], note_types=[],
+                 formats=HighlightFormats([]), selected_note_type=None, selected_format=None, selected_source_field={},
+                 selected_stop_words=None, selected_destination_fields=[], model_history_counter=0)
     # Fill model without firing
     adhoc_highlight_dialog_model.note_types = all_note_type_details
     adhoc_highlight_dialog_model.formats = all_highlight_formats
@@ -38,8 +36,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
                 selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
                 stop_words="a an to")
-    assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=[], disabled_destination_fields=[],
+    assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False, destination_fields=[],
                  note_types=all_note_type_details, formats=all_highlight_formats, selected_note_type=None,
                  selected_format=None, selected_source_field={}, selected_stop_words=None,
                  selected_destination_fields=[], model_history_counter=0)
@@ -52,9 +49,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
                 disabled_fields=[DefaultFields.basic_front], stop_words=exp_default_stop_words)
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=basic_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_basic, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=basic_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=3)
     # Choose Note Type
@@ -65,9 +61,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text],
                 stop_words=exp_default_stop_words)
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_text],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=cloze_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_cloze, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=cloze_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_text},
                  selected_stop_words=exp_default_stop_words,
@@ -80,9 +75,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_extra],
                 stop_words=exp_default_stop_words)
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=cloze_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_cloze, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=cloze_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=7)
@@ -92,9 +86,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=cloze_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_cloze, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=cloze_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[DefaultFields.cloze_text],
@@ -103,9 +96,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_cloze, disabled_destination_fields=[DefaultFields.cloze_extra],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=cloze_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_cloze, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=cloze_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_extra},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[DefaultFields.cloze_text],
@@ -114,9 +106,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
     assert_model(adhoc_highlight_dialog_model, listener, no_accept_callback=False,
-                 destination_fields=DefaultFields.all_basic, disabled_destination_fields=[DefaultFields.basic_front],
-                 note_types=all_note_type_details, formats=all_highlight_formats,
-                 selected_note_type=basic_note_type_details, selected_format=bold_format,
+                 destination_fields=DefaultFields.all_basic, note_types=all_note_type_details,
+                 formats=all_highlight_formats, selected_note_type=basic_note_type_details, selected_format=bold_format,
                  selected_source_field={basic_note_type_details.name: DefaultFields.basic_front,
                                         cloze_note_type_details.name: DefaultFields.cloze_text},
                  selected_stop_words=exp_default_stop_words, selected_destination_fields=[], model_history_counter=15)

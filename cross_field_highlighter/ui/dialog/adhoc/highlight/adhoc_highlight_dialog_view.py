@@ -93,7 +93,6 @@ class AdhocHighlightDialogView(QDialog):
             if previous_selected_source_field in self.__model.selected_note_type.fields:
                 self.__model.selected_source_field[
                     self.__model.selected_note_type.name] = previous_selected_source_field
-                self.__model.disabled_destination_fields = FieldNames([previous_selected_source_field])
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
@@ -101,7 +100,6 @@ class AdhocHighlightDialogView(QDialog):
         field_name: FieldName = FieldName(item)
         if self.__model.selected_note_type:
             self.__model.selected_source_field[self.__model.selected_note_type.name] = field_name
-        self.__model.disabled_destination_fields = FieldNames([field_name])
         self.__model.fire_model_changed(self)
 
     def __create_source_widget(self):
@@ -142,7 +140,6 @@ class AdhocHighlightDialogView(QDialog):
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
         self.__model.destination_fields = FieldNames([])
-        self.__model.disabled_destination_fields = FieldNames([])
         self.__model.selected_note_type = None
         self.__model.selected_source_field = {}
         self.__model.selected_format = None

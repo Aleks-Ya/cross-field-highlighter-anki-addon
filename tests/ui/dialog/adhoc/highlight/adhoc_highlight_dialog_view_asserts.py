@@ -108,15 +108,14 @@ def assert_buttons(view: AdhocHighlightDialogView):
 
 def assert_model(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, listener: FakeModelListener,
                  no_accept_callback: bool, note_types: list[NoteTypeDetails], formats: HighlightFormats,
-                 destination_fields: list[str], disabled_destination_fields: list[str],
-                 selected_note_type: Optional[NoteTypeDetails], selected_format: Optional[HighlightFormat],
-                 selected_source_field: dict[NoteTypeName, FieldName], selected_stop_words: Optional[str],
-                 selected_destination_fields: list[str], model_history_counter: int):
+                 destination_fields: list[str], selected_note_type: Optional[NoteTypeDetails],
+                 selected_format: Optional[HighlightFormat], selected_source_field: dict[NoteTypeName, FieldName],
+                 selected_stop_words: Optional[str], selected_destination_fields: list[str],
+                 model_history_counter: int):
     act_model_dict: dict[str, Any] = adhoc_highlight_dialog_model.as_dict()
     exp_model_dict: dict[str, Any] = {
         'default_stop_words': 'a an',
         'destination_fields': destination_fields,
-        'disabled_destination_fields': disabled_destination_fields,
         'formats': formats,
         'note_ids': set(),
         'note_types': note_types,
