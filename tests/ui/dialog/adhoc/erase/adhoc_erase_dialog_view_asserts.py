@@ -47,7 +47,7 @@ def assert_destination_group_box(view: AdhocEraseDialogView, check_box_texts: li
     assert path(fields_layout).label().get().text() == "Fields:"
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     texts: list[str] = [check_box.text() for check_box in check_boxes]
-    assert texts == check_box_texts, f"'{texts}' != '{check_box_texts}'"
+    assert texts == check_box_texts, f"check_box_texts: '{texts}' != '{check_box_texts}'"
 
 
 def assert_buttons(view: AdhocEraseDialogView):
