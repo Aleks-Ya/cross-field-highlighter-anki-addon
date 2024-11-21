@@ -1,11 +1,7 @@
-from typing import Optional, Any
-
 from PyQtPath.path_chain_pyqt6 import path
 from aqt import QCheckBox, QDialogButtonBox, QPushButton
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel, \
-    AdhocEraseDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
@@ -57,16 +53,3 @@ def assert_buttons(view: AdhocEraseDialogView):
     assert cancel_button.text() == "&Cancel"
     restore_defaults_button: QPushButton = path(view).child(QDialogButtonBox).button(2).get()
     assert restore_defaults_button.text() == "Restore Defaults"
-
-
-def assert_model(adhoc_erase_dialog_model: AdhocEraseDialogModel, listener: FakeModelListener, no_accept_callback: bool,
-                 note_types: list[NoteTypeDetails], selected_note_type: Optional[NoteTypeDetails],
-                 selected_fields: list[str], model_history: list[object]):
-    act_dict: dict[str, Any] = dict(sorted(adhoc_erase_dialog_model.as_dict().items()))
-    exp_dict: dict[str, Any] = dict(sorted({'note_types': note_types,
-                                            'accept_callback_None': no_accept_callback,
-                                            'reject_callback_None': True,
-                                            'selected_fields': selected_fields,
-                                            'selected_note_type': selected_note_type}.items()))
-    assert act_dict == exp_dict, f"'{act_dict}' != '{exp_dict}'"
-    assert listener.history == model_history, f"'{listener.history}' != '{model_history}'"

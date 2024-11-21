@@ -2,8 +2,7 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from tests.data import DefaultFields
-from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import FakeModelListener, FakeCallback, assert_model, \
-    assert_view
+from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import FakeModelListener, FakeCallback, assert_view
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
@@ -20,50 +19,69 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     adhoc_erase_dialog_model.add_listener(listener)
     # Initial state
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=True, note_types=[], selected_note_type=None,
-                 selected_fields=[], model_history=[])
+    assert listener.history == []
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
+                                                  'accept_callback_None': True,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}
     # Fill model without firing
     adhoc_erase_dialog_model.note_types = all_note_type_details
     adhoc_erase_dialog_model.accept_callback = callback.call
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=None, selected_fields=[], model_history=[])
+    assert listener.history == []
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}
     # Fire model changes
     adhoc_erase_dialog_view.show_view()
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_basic, selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
+    assert listener.history == [adhoc_erase_dialog_view]
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}
     # Choose Note Type
     adhoc_erase_dialog_view_scaffold.select_2nd_note_type()
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_cloze, selected_fields=[])
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=None, selected_fields=[], model_history=[adhoc_erase_dialog_view])
+    assert listener.history == [adhoc_erase_dialog_view]
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}
     # Click Start button
     assert callback.counter == 0
     adhoc_erase_dialog_view_scaffold.mark_destination_field()
     adhoc_erase_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=cloze_note_type_details, selected_fields=[DefaultFields.cloze_text],
-                 model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view])
+    assert listener.history == [adhoc_erase_dialog_view, adhoc_erase_dialog_view]
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [DefaultFields.cloze_text],
+                                                  'selected_note_type': cloze_note_type_details}
     # Click Cancel button
     adhoc_erase_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=cloze_note_type_details, selected_fields=[DefaultFields.cloze_text],
-                 model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view])
+    assert listener.history == [adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view]
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [DefaultFields.cloze_text],
+                                                  'selected_note_type': cloze_note_type_details}
     # Click Reset Defaults button
     adhoc_erase_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert_model(adhoc_erase_dialog_model, listener, no_accept_callback=False,
-                 note_types=all_note_type_details,
-                 selected_note_type=None, selected_fields=[],
-                 model_history=[adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view, None])
+    assert listener.history == [adhoc_erase_dialog_view, adhoc_erase_dialog_view, adhoc_erase_dialog_view, None]
+    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
+                                                  'accept_callback_None': False,
+                                                  'reject_callback_None': True,
+                                                  'selected_fields': [],
+                                                  'selected_note_type': None}
 
 
 def test_repr(adhoc_erase_dialog_view: AdhocEraseDialogView):
