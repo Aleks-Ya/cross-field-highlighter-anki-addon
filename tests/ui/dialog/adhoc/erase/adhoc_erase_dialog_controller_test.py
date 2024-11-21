@@ -31,7 +31,9 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': None}
+                                                  'selected_note_type': None,
+                                                  'current_state': None,
+                                                  'states': {}}
 
     adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
     assert callback.history == []
@@ -40,7 +42,9 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': None}
+                                                  'selected_note_type': None,
+                                                  'current_state': None,
+                                                  'states': {}}
 
 
 def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController,
@@ -65,7 +69,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': None}
+                                                  'selected_note_type': None,
+                                                  'current_state': None,
+                                                  'states': {}}
 
     # Update config from model
     adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
@@ -88,7 +94,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': basic_note_type_details}
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'current_state': None,
+                                                  'states': {}}
 
     # Update again
     adhoc_erase_dialog_model.selected_note_type = cloze_note_type_details
@@ -97,7 +105,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': cloze_note_type_details}
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'current_state': None,
+                                                  'states': {}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocEraseDialogController,
@@ -124,7 +134,9 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': [],
-                                                  'selected_note_type': None}
+                                                  'selected_note_type': None,
+                                                  'current_state': None,
+                                                  'states': {}}
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
 
     # Update config from model
@@ -148,7 +160,9 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
                                                   'selected_fields': ['Back'],
-                                                  'selected_note_type': basic_note_type_details}
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'current_state': None,
+                                                  'states': {}}
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -172,4 +186,6 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                'accept_callback_None': False,
                                'reject_callback_None': False,
                                'selected_fields': ['Back'],
-                               'selected_note_type': basic_note_type_details}
+                               'selected_note_type': basic_note_type_details,
+                               'current_state': None,
+                               'states': {}}

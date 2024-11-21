@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+User --> BrowserMenuEraseAction: click
+BrowserMenuEraseAction --> AdhocEraseDialogController: show_dialog(DialogParams)
+AdhocEraseDialogController --> AdhocEraseDialogModel: set values from config
+AdhocEraseDialogController --> AdhocEraseDialogView: show_view()
+BrowserMenuEraseAction <-- AdhocEraseDialogController
+@enduml
