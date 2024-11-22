@@ -7,7 +7,7 @@ from anki.notes import NoteId
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -25,7 +25,6 @@ class AdhocHighlightDialogModel:
         self.note_ids: set[NoteId] = set()
         self.formats: HighlightFormats = HighlightFormats([])
         self.default_stop_words: Optional[str] = None
-        self.destination_fields: FieldNames = FieldNames([])
         self.accept_callback: Optional[Callable[[], None]] = None
         self.reject_callback: Optional[Callable[[], None]] = None
         self.current_state: Optional[AdhocHighlightDialogState] = None
@@ -54,7 +53,6 @@ class AdhocHighlightDialogModel:
             "note_types": self.note_types,
             "note_ids": self.note_ids,
             "formats": self.formats,
-            "destination_fields": self.destination_fields,
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.current_state.as_dict() if self.current_state else None,
             "default_stop_words": self.default_stop_words,

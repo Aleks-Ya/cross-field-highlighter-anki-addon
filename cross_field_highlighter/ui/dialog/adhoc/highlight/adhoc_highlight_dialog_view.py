@@ -84,8 +84,7 @@ class AdhocHighlightDialogView(QDialog):
         log.debug(f"On note type selected: {index}")
         selected_note_type: NoteTypeDetails = self.__model.note_types[index]
         self.__model.switch_state(selected_note_type)
-        self.__model.destination_fields = self.__model.current_state.selected_note_type.fields
-        self.__source_field_combo_box.set_items(self.__model.destination_fields)
+        self.__source_field_combo_box.set_items(self.__model.current_state.selected_note_type.fields)
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
@@ -131,7 +130,6 @@ class AdhocHighlightDialogView(QDialog):
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
-        self.__model.destination_fields = FieldNames([])
         self.__model.current_state.selected_note_type = None
         self.__model.current_state.selected_source_field = None
         self.__model.current_state.selected_format = None
