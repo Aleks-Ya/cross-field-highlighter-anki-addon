@@ -18,7 +18,9 @@ class TitledComboBoxLayout(QHBoxLayout):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_current_text(self, current_text: str) -> None:
+        self.__combo_box.blockSignals(True)
         self.__combo_box.setCurrentText(current_text)
+        self.__combo_box.blockSignals(False)
 
     def add_current_index_changed_callback(self, callback: Callable[[int], None]) -> None:
         # noinspection PyUnresolvedReferences

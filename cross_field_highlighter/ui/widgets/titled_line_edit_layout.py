@@ -21,7 +21,9 @@ class TitledLineEditLayout(QHBoxLayout):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_text(self, text: str) -> None:
+        self.__line_edit.blockSignals(True)
         self.__line_edit.setText(text)
+        self.__line_edit.blockSignals(False)
 
     def set_on_text_changed_callback(self, callback: Callable[[Text], None]):
         self.__on_text_changed_callback = callback

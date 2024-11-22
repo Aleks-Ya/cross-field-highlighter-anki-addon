@@ -31,15 +31,19 @@ class FieldsLayout(QVBoxLayout):
 
     def set_selected_fields(self, field_names: FieldNames) -> None:
         for field_name, check_box in self.__field_name_checkboxes.items():
+            check_box.blockSignals(True)
             check_box.setChecked(field_name in field_names)
+            check_box.blockSignals(False)
 
     def set_disabled_fields(self, field_names: FieldNames):
         log.debug(f"Disable fields: {field_names}")
         for field_name, check_box in self.__field_name_checkboxes.items():
+            check_box.blockSignals(True)
             disabled: bool = field_name in field_names
             check_box.setDisabled(disabled)
             if disabled:
                 check_box.setChecked(False)
+            check_box.blockSignals(False)
 
     def set_on_field_selected_callback(self, callback: Callable[[FieldNames], None]):
         self.__on_field_selected_callback = callback

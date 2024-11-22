@@ -26,7 +26,7 @@ def test_set_text(visual_qtbot: VisualQtBot):
     exp_test: str = "the of"
     layout.set_text(exp_test)
     assert line_edit.text() == exp_test
-    assert callback.text_changed_history == [exp_test]
+    assert callback.text_changed_history == []
 
 
 def test_set_on_text_changed_callback(visual_qtbot: VisualQtBot):

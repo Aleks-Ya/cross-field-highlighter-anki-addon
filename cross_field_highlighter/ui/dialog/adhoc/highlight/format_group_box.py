@@ -27,11 +27,13 @@ class FormatGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def model_changed(self, source: object) -> None:
         if source != self:
             log.debug(f"Model changed")
+            self.__combo_box.blockSignals(True)
             highlight_formats: dict[str, HighlightFormat] = {highlight_format.name: highlight_format for
                                                              highlight_format in self.__model.formats}
             self.__combo_box.set_data_items(highlight_formats)
             if self.__model.current_state:
                 self.__combo_box.set_current_text(self.__model.current_state.selected_format.name)
+            self.__combo_box.blockSignals(False)
 
     def __on_current_text_changed(self, _: str) -> None:
         highlight_format: HighlightFormat = self.__combo_box.get_current_data()
