@@ -73,7 +73,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
-    assert len(listener.history) == 3
+    assert len(listener.history) == 4
     assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -98,7 +98,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_2nd_note_type()
-    assert len(listener.history) == 6
+    assert len(listener.history) == 7
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -128,7 +128,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
-    assert len(listener.history) == 7
+    assert len(listener.history) == 8
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -161,7 +161,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.mark_destination_field()
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
-    assert len(listener.history) == 7
+    assert len(listener.history) == 8
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -187,7 +187,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
-    assert len(listener.history) == 7
+    assert len(listener.history) == 8
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -213,7 +213,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert len(listener.history) == 15
+    assert len(listener.history) == 16
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [],

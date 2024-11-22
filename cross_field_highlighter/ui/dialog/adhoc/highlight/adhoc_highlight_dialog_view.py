@@ -1,17 +1,15 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QGroupBox, QPushButton, Qt
+from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton, Qt
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
-from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
-from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
+from cross_field_highlighter.ui.dialog.adhoc.highlight.source_group_box import SourceGroupBox
 
 log: Logger = logging.getLogger(__name__)
 
@@ -26,7 +24,7 @@ class AdhocHighlightDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')
 
-        source_group_box: QGroupBox = self.__create_source_widget()
+        source_group_box: SourceGroupBox = SourceGroupBox(model)
         self.__format_group_box: FormatGroupBox = FormatGroupBox(model)
 
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -57,57 +55,10 @@ class AdhocHighlightDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug(f"Show view")
-        self.__fill_ui_from_model()
+        self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
-
-    def __fill_ui_from_model(self):
-        note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
-        self.__note_type_combo_box.set_items(note_type_names)
-        if self.__model.current_state.selected_note_type:
-            self.__note_type_combo_box.set_current_text(self.__model.current_state.selected_note_type.name)
-        self.__update_source_field_from_model()
-        if self.__model.current_state.selected_stop_words:
-            self.__stop_words_layout.set_text(self.__model.current_state.selected_stop_words)
-        else:
-            if self.__model.default_stop_words:
-                self.__stop_words_layout.set_text(self.__model.default_stop_words)
-        self.__model.fire_model_changed(self)
-
-    def __update_source_field_from_model(self):
-        if self.__model.current_state.selected_source_field:
-            selected_source_field: FieldName = self.__model.current_state.selected_source_field
-            self.__source_field_combo_box.set_current_text(selected_source_field)
-
-    def __on_note_type_changed(self, index: int):
-        log.debug(f"On note type selected: {index}")
-        selected_note_type: NoteTypeDetails = self.__model.note_types[index]
-        self.__model.switch_state(selected_note_type)
-        self.__source_field_combo_box.set_items(self.__model.current_state.selected_note_type.fields)
-        self.__model.fire_model_changed(self)
-
-    def __on_source_field_changed(self, item: str):
-        log.debug(f"On source field selected: {item}")
-        field_name: FieldName = FieldName(item)
-        self.__model.current_state.selected_source_field = field_name
-        self.__model.fire_model_changed(self)
-
-    def __create_source_widget(self):
-        self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
-        self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
-        self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
-        self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
-            "Exclude words:", text="a an to", clear_button_enabled=True)
-        self.__stop_words_layout.set_on_text_changed_callback(self.__on_stop_words_text_changed)
-        group_layout: QVBoxLayout = QVBoxLayout()
-        group_layout.addLayout(self.__note_type_combo_box)
-        group_layout.addLayout(self.__source_field_combo_box)
-        group_layout.addLayout(self.__stop_words_layout)
-        group_box: QGroupBox = QGroupBox("Source")
-        group_box.setLayout(group_layout)
-        return group_box
 
     def __accept(self) -> None:
         log.info("Starting")
@@ -115,18 +66,11 @@ class AdhocHighlightDialogView(QDialog):
         if self.__model.accept_callback:
             self.__model.accept_callback()
 
-    def __get_current_note_type_details(self):
-        note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
-        return self.__note_type_details_factory.by_note_type_name(note_type_name)
-
     def __reject(self) -> None:
         log.info("Cancelled")
         self.hide()
         if self.__model.reject_callback:
             self.__model.reject_callback()
-
-    def __on_stop_words_text_changed(self, text: str):
-        self.__model.current_state.selected_stop_words = text
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
@@ -135,7 +79,6 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.current_state.selected_format = None
         self.__model.current_state.selected_stop_words = self.__model.default_stop_words
         self.__model.current_state.selected_destination_fields = FieldNames([])
-        self.__fill_ui_from_model()
         self.__model.fire_model_changed(None)
 
     def __repr__(self):

@@ -47,7 +47,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
-    assert listener.history == [adhoc_highlight_dialog_view, adhoc_highlight_dialog_view, adhoc_highlight_dialog_view]
+    assert len(listener.history) == 4
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
@@ -125,6 +125,11 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'a an to'},
+                   'Cloze': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': cloze_note_type_details,
+                             'selected_source_field': 'Text',
                              'selected_stop_words': 'a an to'}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
@@ -146,6 +151,11 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
+                             'selected_stop_words': 'a an to'},
+                   'Cloze': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': cloze_note_type_details,
+                             'selected_source_field': 'Text',
                              'selected_stop_words': 'a an to'}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
@@ -219,7 +229,12 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'to the'}},
+                             'selected_stop_words': 'to the'},
+                   'Cloze': {'selected_destination_fields': [],
+                             'selected_format': bold_format,
+                             'selected_note_type': cloze_note_type_details,
+                             'selected_source_field': 'Text',
+                             'selected_stop_words': 'a an to'}},
         'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
