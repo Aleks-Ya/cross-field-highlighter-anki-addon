@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
@@ -33,22 +34,24 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
             log.debug(f"Model changed")
             note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
             self.__note_type_combo_box.set_items(note_type_names)
-            if self.__model.selected_note_type:
-                self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-            if self.__model.selected_fields:
-                self.__fields_vbox.set_selected_fields(self.__model.selected_fields)
+            if self.__model.current_state and self.__model.current_state.selected_note_type:
+                self.__note_type_combo_box.set_current_text(self.__model.current_state.selected_note_type.name)
+            if self.__model.current_state and self.__model.current_state.selected_fields:
+                self.__fields_vbox.set_selected_fields(self.__model.current_state.selected_fields)
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
-        field_names: FieldNames = FieldNames(self.__model.note_types[index].fields)
+        selected_note_type: NoteTypeDetails = self.__model.note_types[index]
+        field_names: FieldNames = FieldNames(selected_note_type.fields)
         self.__fields_vbox.set_items(field_names)
+        self.__model.switch_state(selected_note_type)
+        self.__model.fire_model_changed(self)
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        self.__model.selected_fields = selected_field_names
-
-    def get_selected_note_type_name(self) -> NoteTypeName:
-        return NoteTypeName(self.__note_type_combo_box.get_current_text())
+        if self.__model.current_state.selected_fields != selected_field_names:
+            self.__model.current_state.selected_fields = selected_field_names
+            self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__

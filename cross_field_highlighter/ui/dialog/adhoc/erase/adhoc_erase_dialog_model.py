@@ -4,7 +4,7 @@ from abc import abstractmethod
 from typing import Callable, Optional
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_state import AdhocEraseDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -19,8 +19,6 @@ class AdhocEraseDialogModelListener:
 class AdhocEraseDialogModel:
     def __init__(self):
         self.note_types: list[NoteTypeDetails] = []
-        self.selected_note_type: Optional[NoteTypeDetails] = None
-        self.selected_fields: FieldNames = FieldNames([])
         self.current_state: Optional[AdhocEraseDialogState] = None
         self.accept_callback: Optional[Callable[[], None]] = None
         self.reject_callback: Optional[Callable[[], None]] = None
@@ -33,6 +31,7 @@ class AdhocEraseDialogModel:
         if note_type_name not in self.__states:
             self.__states[note_type_name] = AdhocEraseDialogState()
         self.current_state = self.__states[note_type_name]
+        self.current_state.selected_note_type = note_type_details
 
     def add_listener(self, listener: AdhocEraseDialogModelListener):
         self.__listeners.add(listener)
@@ -45,8 +44,6 @@ class AdhocEraseDialogModel:
     def as_dict(self) -> dict[str, any]:
         return {
             "note_types": self.note_types,
-            "selected_note_type": self.selected_note_type,
-            "selected_fields": self.selected_fields,
             "accept_callback_None": not self.accept_callback,
             "reject_callback_None": not self.reject_callback,
             "states": {k: v.as_dict() for k, v in self.__states.items()},

@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton, Qt
 
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
@@ -55,6 +56,10 @@ class AdhocHighlightDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug(f"Show view")
+        if not self.__model.current_state or not self.__model.current_state.selected_note_type:
+            if len(self.__model.note_types) > 0:
+                selected_note_type_details: NoteTypeDetails = self.__model.note_types[0]
+                self.__model.switch_state(selected_note_type_details)
         self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences
         self.show()

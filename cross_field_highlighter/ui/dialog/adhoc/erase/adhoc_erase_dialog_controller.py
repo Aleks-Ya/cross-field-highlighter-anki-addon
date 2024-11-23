@@ -37,20 +37,22 @@ class AdhocEraseDialogController:
     def __save_model_to_config(self):
         log.debug("Save model to config")
         note_type_name: Optional[
-            NoteTypeName] = self.__model.selected_note_type.name if self.__model.selected_note_type else None
+            NoteTypeName] = self.__model.current_state.selected_note_type.name \
+            if self.__model.current_state.selected_note_type else None
         self.__config.set_dialog_adhoc_erase_last_note_type_name(note_type_name)
-        self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.selected_fields)
+        self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.current_state.selected_fields)
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self):
         self.__model.accept_callback = self.__accept_callback
         self.__model.reject_callback = self.__reject_callback
         last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_erase_last_note_type_name()
-        if last_note_type_name:
-            self.__model.selected_note_type = self.__note_type_details_factory.by_note_type_name(last_note_type_name)
+        if self.__model.current_state and last_note_type_name:
+            self.__model.current_state.selected_note_type = self.__note_type_details_factory.by_note_type_name(
+                last_note_type_name)
         last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
-        if last_field_names:
-            self.__model.selected_fields = last_field_names
+        if self.__model.current_state and last_field_names:
+            self.__model.current_state.selected_fields = last_field_names
 
     def __accept_callback(self):
         log.debug("Accept callback")
@@ -63,7 +65,8 @@ class AdhocEraseDialogController:
         self.__save_model_to_config()
 
     def __prepare_op_params(self):
-        return EraseOpParams(self.__model.selected_note_type.note_type_id, None, self.__model.selected_fields)
+        return EraseOpParams(self.__model.current_state.selected_note_type.note_type_id, None,
+                             self.__model.current_state.selected_fields)
 
     def __repr__(self):
         return self.__class__.__name__

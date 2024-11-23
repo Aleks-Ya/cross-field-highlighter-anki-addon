@@ -49,7 +49,6 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         else:
             if self.__model.default_stop_words:
                 self.__stop_words_layout.set_text(self.__model.default_stop_words)
-        self.__model.fire_model_changed(self)
 
     def __update_source_field_from_model(self):
         if self.__model.current_state and self.__model.current_state.selected_source_field:
@@ -66,8 +65,9 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def __on_source_field_changed(self, item: str):
         log.debug(f"On source field selected: {item}")
         field_name: FieldName = FieldName(item)
-        self.__model.current_state.selected_source_field = field_name
-        self.__model.fire_model_changed(self)
+        if self.__model.current_state.selected_source_field != field_name:
+            self.__model.current_state.selected_source_field = field_name
+            self.__model.fire_model_changed(self)
 
     def __on_stop_words_text_changed(self, text: str):
         self.__model.current_state.selected_stop_words = text

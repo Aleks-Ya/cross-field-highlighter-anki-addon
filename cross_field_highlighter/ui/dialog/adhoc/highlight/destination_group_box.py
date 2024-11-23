@@ -39,7 +39,8 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        self.__model.current_state.selected_destination_fields = selected_field_names
+        if self.__model.current_state.selected_destination_fields != selected_field_names:
+            self.__model.current_state.selected_destination_fields = selected_field_names
 
     def __repr__(self):
         return self.__class__.__name__
