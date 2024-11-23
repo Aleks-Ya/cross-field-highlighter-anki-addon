@@ -9,6 +9,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
     AdhocHighlightDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 from tests.qtget import get_items
@@ -55,7 +56,7 @@ def assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: s
                             current_source_field: str, source_fields: list[str], stop_words: str):
     group_box: PyQtPath = path(view).group(0)
 
-    note_type: PyQtPath = group_box.child(TitledComboBoxLayout, 0)
+    note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
     assert note_type.label().get().text() == "Note Type"
     note_type_combo_box: QComboBox = note_type.combobox().get()
     assert note_type_combo_box.currentText() == current_note_type
@@ -69,7 +70,7 @@ def assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: s
 
 def assert_source_combo_box(view: AdhocHighlightDialogView, current_source_field: str, source_fields: list[str]):
     group_box: PyQtPath = path(view).group(0)
-    field_path: PyQtPath = group_box.child(TitledComboBoxLayout, 1)
+    field_path: PyQtPath = group_box.child(TitledComboBoxLayout)
     assert field_path.label().get().text() == "Field"
     field_combo_box: QComboBox = field_path.combobox().get()
     assert field_combo_box.currentText() == current_source_field

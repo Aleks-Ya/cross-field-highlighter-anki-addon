@@ -53,11 +53,14 @@ class AdhocEraseDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
+        self.__select_first_note_type()
+        self.__model.fire_model_changed(self)
+
+    def __select_first_note_type(self):
         if not self.__model.current_state or not self.__model.current_state.selected_note_type:
             if len(self.__model.note_types) > 0:
                 selected_note_type_details: NoteTypeDetails = self.__model.note_types[0]
                 self.__model.switch_state(selected_note_type_details)
-        self.__model.fire_model_changed(self)
 
     def __accept(self) -> None:
         log.info("Starting")
@@ -74,7 +77,7 @@ class AdhocEraseDialogView(QDialog):
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
-        self.__model.current_state.selected_note_type = None
+        self.__select_first_note_type()
         self.__model.current_state.selected_fields = FieldNames([])
         self.__model.fire_model_changed(None)
 

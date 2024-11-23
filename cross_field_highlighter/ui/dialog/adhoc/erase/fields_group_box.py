@@ -8,7 +8,7 @@ from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 
@@ -19,8 +19,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         super().__init__(title=None, parent=None)
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
-        self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
+        self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
+        self.__note_type_combo_box.add_note_type_changed_callback(self.__on_note_type_changed)
         self.__fields_vbox: FieldsLayout = FieldsLayout()
         self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         group_layout: QVBoxLayout = QVBoxLayout()
@@ -32,10 +32,9 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
     def model_changed(self, source: object) -> None:
         if source != self:
             log.debug(f"Model changed")
-            note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
-            self.__note_type_combo_box.set_items(note_type_names)
+            self.__note_type_combo_box.set_note_types(self.__model.note_types)
             if self.__model.current_state and self.__model.current_state.selected_note_type:
-                self.__note_type_combo_box.set_current_text(self.__model.current_state.selected_note_type.name)
+                self.__note_type_combo_box.set_current_note_type(self.__model.current_state.selected_note_type)
             if self.__model.current_state and self.__model.current_state.selected_fields:
                 self.__fields_vbox.set_selected_fields(self.__model.current_state.selected_fields)
 

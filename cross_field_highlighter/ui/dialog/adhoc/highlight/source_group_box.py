@@ -7,6 +7,7 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 
@@ -19,8 +20,8 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         super().__init__(title="Source", parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
-        self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
+        self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
+        self.__note_type_combo_box.add_note_type_changed_callback(self.__on_note_type_changed)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
@@ -39,10 +40,9 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             self.__fill_ui_from_model()
 
     def __fill_ui_from_model(self):
-        note_type_names: list[str] = [note_type.name for note_type in self.__model.note_types]
-        self.__note_type_combo_box.set_items(note_type_names)
+        self.__note_type_combo_box.set_note_types(self.__model.note_types)
         if self.__model.current_state and self.__model.current_state.selected_note_type:
-            self.__note_type_combo_box.set_current_text(self.__model.current_state.selected_note_type.name)
+            self.__note_type_combo_box.set_current_note_type(self.__model.current_state.selected_note_type)
         self.__update_source_field_from_model()
         if self.__model.current_state and self.__model.current_state.selected_stop_words:
             self.__stop_words_layout.set_text(self.__model.current_state.selected_stop_words)

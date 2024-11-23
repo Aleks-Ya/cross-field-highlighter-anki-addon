@@ -4,6 +4,7 @@ from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from tests.visual_qtbot import VisualQtBot
 
@@ -56,10 +57,10 @@ class AdhocHighlightDialogViewScaffold:
         self.__click_button(self.__get_restore_defaults_button())
 
     def __get_note_type_combo_box(self) -> QComboBox:
-        return path(self.__view).group(0).child(TitledComboBoxLayout, 0).combobox().get()
+        return path(self.__view).group(0).child(NoteTypeComboBoxLayout).combobox().get()
 
     def __get_source_field_combo_box(self) -> QComboBox:
-        return path(self.__view).group(0).child(TitledComboBoxLayout, 1).combobox().get()
+        return path(self.__view).group(0).child(TitledComboBoxLayout).combobox().get()
 
     def __click_button(self, button: QPushButton) -> None:
         self.__visual_qtbot.mouseClick(button, Qt.MouseButton.LeftButton)

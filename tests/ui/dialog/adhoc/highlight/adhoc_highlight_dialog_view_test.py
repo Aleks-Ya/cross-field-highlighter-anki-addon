@@ -213,13 +213,13 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert len(listener.history) == 14
+    assert len(listener.history) == 17
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
-                          'selected_note_type': basic_note_type_details,
-                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_note_type': cloze_note_type_details,
+                          'selected_source_field': DefaultFields.cloze_text,
                           'selected_stop_words': exp_default_stop_words},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,

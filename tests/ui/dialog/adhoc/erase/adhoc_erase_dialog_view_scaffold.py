@@ -3,7 +3,7 @@ from aqt import QDialogButtonBox, QPushButton, Qt, QComboBox, QCheckBox
 
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from tests.visual_qtbot import VisualQtBot
 
 
@@ -34,7 +34,7 @@ class AdhocEraseDialogViewScaffold:
         self.__click_button(self.__get_restore_defaults_button())
 
     def __get_note_type_combo_box(self) -> QComboBox:
-        return path(self.__view).child(TitledComboBoxLayout).combobox().get()
+        return path(self.__view).child(NoteTypeComboBoxLayout).combobox().get()
 
     def __get_start_button(self) -> QPushButton:
         return self.__get_button(QDialogButtonBox.StandardButton.Ok)
