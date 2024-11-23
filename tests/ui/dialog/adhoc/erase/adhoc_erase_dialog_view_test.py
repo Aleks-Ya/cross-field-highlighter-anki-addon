@@ -14,13 +14,13 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                    adhoc_erase_dialog_view_scaffold: AdhocEraseDialogViewScaffold, visual_qtbot: VisualQtBot):
     callback: FakeCallback = FakeCallback()
     listener: FakeModelListener = FakeModelListener()
+    adhoc_erase_dialog_model.add_listener(listener)
     # noinspection PyUnresolvedReferences
     adhoc_erase_dialog_view.show()
     visual_qtbot.waitExposed(adhoc_erase_dialog_view)
-    adhoc_erase_dialog_model.add_listener(listener)
     # Initial state
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert listener.history == []
+    assert len(listener.history) == 0
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -30,7 +30,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     adhoc_erase_dialog_model.note_types = all_note_type_details
     adhoc_erase_dialog_model.accept_callback = callback.call
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
-    assert listener.history == []
+    assert len(listener.history) == 0
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,

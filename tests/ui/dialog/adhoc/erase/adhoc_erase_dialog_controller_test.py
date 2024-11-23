@@ -71,7 +71,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'states': {}}
 
     # Update config from model
-    adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
+    adhoc_erase_dialog_model.switch_state(basic_note_type_details)
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     adhoc_erase_dialog_model.accept_callback()
@@ -96,7 +96,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                                        'selected_note_type': basic_note_type_details}}}
 
     # Update again
-    adhoc_erase_dialog_model.selected_note_type = cloze_note_type_details
+    adhoc_erase_dialog_model.switch_state(cloze_note_type_details)
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
@@ -137,7 +137,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
 
     # Update config from model
-    adhoc_erase_dialog_model.selected_note_type = basic_note_type_details
+    adhoc_erase_dialog_model.switch_state(basic_note_type_details)
     adhoc_erase_dialog_model.current_state.selected_fields = FieldNames([DefaultFields.basic_back])
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.accept_callback()

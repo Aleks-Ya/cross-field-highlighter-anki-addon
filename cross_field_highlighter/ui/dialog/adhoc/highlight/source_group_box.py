@@ -70,7 +70,9 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             self.__model.fire_model_changed(self)
 
     def __on_stop_words_text_changed(self, text: str):
-        self.__model.current_state.selected_stop_words = text
+        if self.__model.current_state.selected_stop_words != text:
+            self.__model.current_state.selected_stop_words = text
+            self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__

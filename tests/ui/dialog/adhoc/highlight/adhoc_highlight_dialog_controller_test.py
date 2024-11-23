@@ -138,7 +138,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                           'selected_stop_words': 'a an to'}}
 
     # Update again
-    adhoc_highlight_dialog_model.selected_note_type = cloze_note_type_details
+    adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
     adhoc_highlight_dialog_model.fire_model_changed(None)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
@@ -201,7 +201,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     adhoc_highlight_dialog_model.current_state.selected_source_field = DefaultFields.basic_front
-    adhoc_highlight_dialog_model.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
+    adhoc_highlight_dialog_model.current_state.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
     adhoc_highlight_dialog_model.current_state.selected_stop_words = "to the"
     adhoc_highlight_dialog_model.current_state.selected_destination_fields = FieldNames([DefaultFields.basic_back])
     adhoc_highlight_dialog_model.fire_model_changed(None)
