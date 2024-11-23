@@ -1,14 +1,13 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QVBoxLayout, QDialogButtonBox, QPushButton
+from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
-from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
+from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 
@@ -24,7 +23,7 @@ class AdhocEraseDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
 
-        group_layout: QVBoxLayout = self.__field_widget()
+        self.fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model)
 
         button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                                         QDialogButtonBox.StandardButton.Cancel |
@@ -42,7 +41,7 @@ class AdhocEraseDialogView(QDialog):
         restore_defaults_button.clicked.connect(self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
-        layout.addLayout(group_layout, 0, 0)
+        layout.addWidget(self.fields_group_layout, 0, 0)
         layout.addWidget(button_box, 3, 0)
 
         self.setLayout(layout)
@@ -51,31 +50,10 @@ class AdhocEraseDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug("Show view")
-        note_type_names: list[NoteTypeName] = [note_type.name for note_type in self.__model.note_types]
-        self.__note_type_combo_box.set_items(note_type_names)
-        if self.__model.selected_note_type:
-            self.__note_type_combo_box.set_current_text(self.__model.selected_note_type.name)
-        if self.__model.selected_fields:
-            self.__fields_vbox.set_selected_fields(self.__model.selected_fields)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
         self.__model.fire_model_changed(self)
-
-    def __on_note_type_changed(self, index: int):
-        log.debug(f"On combobox changed: {index}")
-        field_names: FieldNames = FieldNames(self.__model.note_types[index].fields)
-        self.__fields_vbox.set_items(field_names)
-
-    def __field_widget(self) -> QVBoxLayout:
-        self.__note_type_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Note Type")
-        self.__note_type_combo_box.add_current_index_changed_callback(self.__on_note_type_changed)
-        self.__fields_vbox: FieldsLayout = FieldsLayout()
-        self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
-        group_layout: QVBoxLayout = QVBoxLayout()
-        group_layout.addLayout(self.__note_type_combo_box)
-        group_layout.addLayout(self.__fields_vbox)
-        return group_layout
 
     def __accept(self) -> None:
         log.info("Starting")
@@ -85,18 +63,11 @@ class AdhocEraseDialogView(QDialog):
             self.__model.accept_callback()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def __on_field_selected_callback(self, selected_field_names: FieldNames):
-        log.debug(f"On field selected: {selected_field_names}")
-        self.__model.selected_fields = selected_field_names
-
     def __update_model_from_ui(self):
-        note_type_details: NoteTypeDetails = self.__get_selected_note_type_details()
+        note_type_name: NoteTypeName = self.fields_group_layout.get_selected_note_type_name()
+        note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(note_type_name)
         self.__model.selected_note_type = note_type_details
         self.__model.fire_model_changed(self)
-
-    def __get_selected_note_type_details(self):
-        note_type_name: NoteTypeName = NoteTypeName(self.__note_type_combo_box.get_current_text())
-        return self.__note_type_details_factory.by_note_type_name(note_type_name)
 
     def __reject(self) -> None:
         log.info("Cancelled")
