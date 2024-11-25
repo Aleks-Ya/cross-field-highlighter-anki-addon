@@ -41,8 +41,8 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def __fill_ui_from_model(self):
         self.__note_type_combo_box.set_note_types(self.__model.note_types)
-        if self.__model.current_state and self.__model.current_state.selected_note_type:
-            self.__note_type_combo_box.set_current_note_type(self.__model.current_state.selected_note_type)
+        if self.__model.current_state:
+            self.__note_type_combo_box.set_current_note_type(self.__model.current_state.get_selected_note_type())
         self.__update_source_field_from_model()
         if self.__model.current_state and self.__model.current_state.selected_stop_words:
             self.__stop_words_layout.set_text(self.__model.current_state.selected_stop_words)
@@ -59,7 +59,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         log.debug(f"On note type selected: {index}")
         selected_note_type: NoteTypeDetails = self.__model.note_types[index]
         self.__model.switch_state(selected_note_type)
-        self.__source_field_combo_box.set_items(self.__model.current_state.selected_note_type.fields)
+        self.__source_field_combo_box.set_items(self.__model.current_state.get_selected_note_type().fields)
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):

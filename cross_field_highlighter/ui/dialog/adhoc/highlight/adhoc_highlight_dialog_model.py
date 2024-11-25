@@ -35,9 +35,8 @@ class AdhocHighlightDialogModel:
     def switch_state(self, note_type_details: NoteTypeDetails):
         note_type_name: NoteTypeName = note_type_details.name
         if note_type_name not in self.__states:
-            self.__states[note_type_name] = AdhocHighlightDialogState()
+            self.__states[note_type_name] = AdhocHighlightDialogState(note_type_details)
         self.current_state = self.__states[note_type_name]
-        self.current_state.selected_note_type = note_type_details
         if not self.current_state.selected_stop_words:
             self.current_state.selected_stop_words = self.default_stop_words
 

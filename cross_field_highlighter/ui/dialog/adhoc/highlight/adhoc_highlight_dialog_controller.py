@@ -38,20 +38,18 @@ class AdhocHighlightDialogController:
         self.__model.note_types = params.note_types
         self.__model.note_ids = params.note_ids
         self.__fill_model_from_config()
-        if self.__model.current_state and not self.__model.current_state.selected_note_type:
+        if not self.__model.current_state:
             if len(self.__model.note_types) > 0:
-                self.__model.current_state.selected_note_type = self.__model.note_types[0]
+                note_type_details: NoteTypeDetails = self.__model.note_types[0]
+                self.__model.switch_state(note_type_details)
         self.__view.show_view()
 
     def __save_model_to_config(self):
         log.debug("Update config from model")
-        selected_note_type: Optional[NoteTypeDetails] = self.__model.current_state.selected_note_type
-        self.__config.set_dialog_adhoc_highlight_last_note_type_name(
-            selected_note_type.name if selected_note_type else None)
-        if selected_note_type:
-            selected_source_field: FieldName = self.__model.current_state.selected_source_field
-            self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name,
-                                                                            selected_source_field)
+        selected_note_type: NoteTypeDetails = self.__model.current_state.get_selected_note_type()
+        self.__config.set_dialog_adhoc_highlight_last_note_type_name(selected_note_type.name)
+        selected_source_field: FieldName = self.__model.current_state.selected_source_field
+        self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name, selected_source_field)
         self.__config.set_dialog_adhoc_highlight_last_format(
             self.__model.current_state.selected_format.code if self.__model.current_state.selected_format else None)
         self.__config.set_dialog_adhoc_highlight_last_stop_words(self.__model.current_state.selected_stop_words)
@@ -90,7 +88,7 @@ class AdhocHighlightDialogController:
     def __prepare_op_params(self):
         source_filed: FieldName = self.__model.current_state.selected_source_field
         stop_words: Text = Text(self.__model.current_state.selected_stop_words)
-        note_type_details: NoteTypeDetails = self.__model.current_state.selected_note_type
+        note_type_details: NoteTypeDetails = self.__model.current_state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type_details.note_type_id, self.__model.note_ids, None, source_filed,
             self.__model.current_state.selected_destination_fields, stop_words,

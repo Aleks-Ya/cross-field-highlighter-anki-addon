@@ -10,13 +10,16 @@ log: Logger = logging.getLogger(__name__)
 
 
 class AdhocHighlightDialogState:
-    def __init__(self):
-        self.selected_note_type: Optional[NoteTypeDetails] = None
+    def __init__(self, note_type_details: NoteTypeDetails):
+        self.selected_note_type: NoteTypeDetails = note_type_details
         self.selected_source_field: Optional[FieldName] = None
         self.selected_format: Optional[HighlightFormat] = None
         self.selected_stop_words: Optional[Text] = None
         self.selected_destination_fields: FieldNames = FieldNames([])
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def get_selected_note_type(self) -> NoteTypeDetails:
+        return self.selected_note_type
 
     def as_dict(self) -> dict[str, any]:
         return {
