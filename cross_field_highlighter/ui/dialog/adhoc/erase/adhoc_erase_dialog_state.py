@@ -11,13 +11,22 @@ log: Logger = logging.getLogger(__name__)
 class AdhocEraseDialogState:
     def __init__(self):
         self.selected_note_type: Optional[NoteTypeDetails] = None
-        self.selected_fields: FieldNames = FieldNames([])
+        self.__selected_fields: FieldNames = FieldNames([])
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def get_selected_fields(self) -> FieldNames:
+        return self.__selected_fields
+
+    def select_fields(self, field_names: FieldNames) -> None:
+        existing_field_names: FieldNames = FieldNames(
+            [field_name for field_name in field_names
+             if self.selected_note_type and field_name in self.selected_note_type.fields])
+        self.__selected_fields = existing_field_names
 
     def as_dict(self) -> dict[str, any]:
         return {
             "selected_note_type": self.selected_note_type,
-            "selected_fields": self.selected_fields
+            "selected_fields": self.__selected_fields
         }
 
     def __repr__(self):

@@ -4,7 +4,7 @@ from logging import Logger
 from aqt.qt import QVBoxLayout, QGroupBox
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
     AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
@@ -35,8 +35,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
             self.__note_type_combo_box.set_note_types(self.__model.note_types)
             if self.__model.current_state and self.__model.current_state.selected_note_type:
                 self.__note_type_combo_box.set_current_note_type(self.__model.current_state.selected_note_type)
-            if self.__model.current_state and self.__model.current_state.selected_fields:
-                self.__fields_vbox.set_selected_fields(self.__model.current_state.selected_fields)
+            if self.__model.current_state and self.__model.current_state.get_selected_fields():
+                self.__fields_vbox.set_selected_fields(self.__model.current_state.get_selected_fields())
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
@@ -48,8 +48,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        if self.__model.current_state.selected_fields != selected_field_names:
-            self.__model.current_state.selected_fields = selected_field_names
+        if self.__model.current_state.get_selected_fields() != selected_field_names:
+            self.__model.current_state.select_fields(selected_field_names)
             self.__model.fire_model_changed(self)
 
     def __repr__(self):
