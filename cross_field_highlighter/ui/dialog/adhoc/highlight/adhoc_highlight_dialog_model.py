@@ -40,6 +40,11 @@ class AdhocHighlightDialogModel:
         if not self.current_state.selected_stop_words:
             self.current_state.selected_stop_words = self.default_stop_words
 
+    def switch_to_first_state(self) -> None:
+        if len(self.note_types) > 0:
+            note_type_details: NoteTypeDetails = self.note_types[0]
+            self.switch_state(note_type_details)
+
     def add_listener(self, listener: AdhocHighlightDialogModelListener):
         self.__listeners.add(listener)
 

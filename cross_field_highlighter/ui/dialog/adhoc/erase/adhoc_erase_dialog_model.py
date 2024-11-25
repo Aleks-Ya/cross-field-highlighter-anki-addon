@@ -32,6 +32,11 @@ class AdhocEraseDialogModel:
             self.__states[note_type_name] = AdhocEraseDialogState(note_type_details)
         self.current_state = self.__states[note_type_name]
 
+    def switch_to_first_state(self) -> None:
+        if len(self.note_types) > 0:
+            note_type_details: NoteTypeDetails = self.note_types[0]
+            self.switch_state(note_type_details)
+
     def add_listener(self, listener: AdhocEraseDialogModelListener):
         self.__listeners.add(listener)
 

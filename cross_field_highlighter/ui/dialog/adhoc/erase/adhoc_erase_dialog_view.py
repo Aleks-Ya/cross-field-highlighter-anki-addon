@@ -3,7 +3,6 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
@@ -58,9 +57,7 @@ class AdhocEraseDialogView(QDialog):
 
     def __select_first_note_type(self):
         if not self.__model.current_state:
-            if len(self.__model.note_types) > 0:
-                selected_note_type_details: NoteTypeDetails = self.__model.note_types[0]
-                self.__model.switch_state(selected_note_type_details)
+            self.__model.switch_to_first_state()
 
     def __accept(self) -> None:
         log.info("Starting")
