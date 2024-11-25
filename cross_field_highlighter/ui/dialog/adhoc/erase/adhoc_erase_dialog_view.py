@@ -57,7 +57,7 @@ class AdhocEraseDialogView(QDialog):
         self.__model.fire_model_changed(self)
 
     def __select_first_note_type(self):
-        if not self.__model.current_state or not self.__model.current_state.selected_note_type:
+        if not self.__model.current_state:
             if len(self.__model.note_types) > 0:
                 selected_note_type_details: NoteTypeDetails = self.__model.note_types[0]
                 self.__model.switch_state(selected_note_type_details)

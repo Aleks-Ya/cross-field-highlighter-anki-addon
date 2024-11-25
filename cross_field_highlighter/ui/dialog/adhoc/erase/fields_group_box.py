@@ -33,8 +33,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         if source != self:
             log.debug(f"Model changed")
             self.__note_type_combo_box.set_note_types(self.__model.note_types)
-            if self.__model.current_state and self.__model.current_state.selected_note_type:
-                self.__note_type_combo_box.set_current_note_type(self.__model.current_state.selected_note_type)
+            if self.__model.current_state and self.__model.current_state.get_selected_note_type():
+                self.__note_type_combo_box.set_current_note_type(self.__model.current_state.get_selected_note_type())
             if self.__model.current_state and self.__model.current_state.get_selected_fields():
                 self.__fields_vbox.set_selected_fields(self.__model.current_state.get_selected_fields())
 
