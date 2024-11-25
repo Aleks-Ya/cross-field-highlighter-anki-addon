@@ -77,7 +77,7 @@ class AdhocHighlightDialogView(QDialog):
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
         self.__model.switch_to_first_state()
-        self.__model.current_state.selected_source_field = None
+        self.__model.current_state.select_first_source_field()
         self.__model.current_state.selected_format = None
         self.__model.current_state.selected_stop_words = self.__model.default_stop_words
         self.__model.current_state.selected_destination_fields = FieldNames([])

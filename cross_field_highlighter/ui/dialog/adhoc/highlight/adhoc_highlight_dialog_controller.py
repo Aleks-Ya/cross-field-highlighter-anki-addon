@@ -48,7 +48,7 @@ class AdhocHighlightDialogController:
         log.debug("Update config from model")
         selected_note_type: NoteTypeDetails = self.__model.current_state.get_selected_note_type()
         self.__config.set_dialog_adhoc_highlight_last_note_type_name(selected_note_type.name)
-        selected_source_field: FieldName = self.__model.current_state.selected_source_field
+        selected_source_field: FieldName = self.__model.current_state.get_selected_source_filed()
         self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name, selected_source_field)
         self.__config.set_dialog_adhoc_highlight_last_format(
             self.__model.current_state.selected_format.code if self.__model.current_state.selected_format else None)
@@ -69,7 +69,7 @@ class AdhocHighlightDialogController:
             last_source_field_name: Optional[
                 FieldName] = self.__config.get_dialog_adhoc_highlight_last_source_field_name(last_note_type_name)
             if last_source_field_name:
-                self.__model.current_state.selected_source_field = last_source_field_name
+                self.__model.current_state.select_source_field(last_source_field_name)
         highlight_format_code: Optional[HighlightFormatCode] = self.__config.get_dialog_adhoc_highlight_last_format()
         if highlight_format_code:
             last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_format_code)
@@ -86,7 +86,7 @@ class AdhocHighlightDialogController:
             self.__model.default_stop_words = default_stop_words
 
     def __prepare_op_params(self):
-        source_filed: FieldName = self.__model.current_state.selected_source_field
+        source_filed: FieldName = self.__model.current_state.get_selected_source_filed()
         stop_words: Text = Text(self.__model.current_state.selected_stop_words)
         note_type_details: NoteTypeDetails = self.__model.current_state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(

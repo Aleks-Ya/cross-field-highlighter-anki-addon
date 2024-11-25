@@ -20,7 +20,7 @@ def test_as_dict_empty(basic_note_type_details: NoteTypeDetails):
 
 def test_as_dict_full(basic_note_type_details: NoteTypeDetails, bold_format: HighlightFormat):
     state: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
-    state.selected_source_field = DefaultFields.basic_front
+    state.select_source_field(DefaultFields.basic_front)
     state.selected_format = bold_format
     state.selected_stop_words = Text("a an")
     state.selected_destination_fields = DefaultFields.all_basic
@@ -47,13 +47,13 @@ def test_eq_none(basic_note_type_details: NoteTypeDetails):
 
 def test_eq_full(basic_note_type_details: NoteTypeDetails, bold_format: HighlightFormat):
     state1: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
-    state1.selected_source_field = DefaultFields.basic_front
+    state1.select_source_field(DefaultFields.basic_front)
     state1.selected_format = bold_format
     state1.selected_stop_words = Text("a an")
     state1.selected_destination_fields = DefaultFields.all_basic
 
     state2: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
-    state2.selected_source_field = DefaultFields.basic_front
+    state2.select_source_field(DefaultFields.basic_front)
     state2.selected_format = bold_format
     state2.selected_stop_words = Text("a an")
     state2.selected_destination_fields = DefaultFields.all_basic

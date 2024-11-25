@@ -30,8 +30,8 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             if self.__model.current_state:
                 self.__destination_fields_vbox.set_items(self.__model.current_state.get_selected_note_type().fields)
             if self.__model.current_state:
-                disabled_fields: FieldNames = FieldNames([self.__model.current_state.selected_source_field]) \
-                    if self.__model.current_state.selected_source_field is not None else []
+                disabled_fields: FieldNames = FieldNames([self.__model.current_state.get_selected_source_filed()]) \
+                    if self.__model.current_state.get_selected_source_filed() is not None else []
                 self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
                 if self.__model.current_state.selected_destination_fields:
                     self.__destination_fields_vbox.set_selected_fields(
