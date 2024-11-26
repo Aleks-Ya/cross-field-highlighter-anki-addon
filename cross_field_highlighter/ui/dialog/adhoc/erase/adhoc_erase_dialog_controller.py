@@ -43,21 +43,22 @@ class AdhocEraseDialogController:
                 last_note_type_name)
             self.__model.switch_state(last_note_type_details)
         last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
-        if self.__model.current_state and last_field_names:
-            self.__model.current_state.select_fields(last_field_names)
+        if last_field_names:
+            self.__model.get_current_state().select_fields(last_field_names)
 
     def __save_model_to_config(self):
         log.debug("Save model to config")
-        note_type_name: NoteTypeName = self.__model.current_state.get_selected_note_type().name
+        note_type_name: NoteTypeName = self.__model.get_current_state().get_selected_note_type().name
         self.__config.set_dialog_adhoc_erase_last_note_type_name(note_type_name)
-        self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.current_state.get_selected_fields())
+        self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.get_current_state().get_selected_fields())
         self.__config_loader.write_config(self.__config)
 
     def __accept_callback(self):
         log.debug("Accept callback")
         self.__save_model_to_config()
-        erase_op_params: EraseOpParams = EraseOpParams(self.__model.current_state.get_selected_note_type().note_type_id,
-                                                       None, self.__model.current_state.get_selected_fields())
+        erase_op_params: EraseOpParams = EraseOpParams(
+            self.__model.get_current_state().get_selected_note_type().note_type_id,
+            None, self.__model.get_current_state().get_selected_fields())
         self.__run_op_callback(erase_op_params)
 
     def __reject_callback(self):

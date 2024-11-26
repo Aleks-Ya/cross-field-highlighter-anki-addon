@@ -56,8 +56,7 @@ class AdhocEraseDialogView(QDialog):
         self.__model.fire_model_changed(self)
 
     def __select_first_note_type(self):
-        if not self.__model.current_state:
-            self.__model.switch_to_first_state()
+        self.__model.get_current_state()
 
     def __accept(self) -> None:
         log.info("Starting")
@@ -75,7 +74,7 @@ class AdhocEraseDialogView(QDialog):
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
         self.__select_first_note_type()
-        self.__model.current_state.select_fields(FieldNames([]))
+        self.__model.get_current_state().select_fields(FieldNames([]))
         self.__model.fire_model_changed(None)
 
     def __repr__(self):

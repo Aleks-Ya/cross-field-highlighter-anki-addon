@@ -138,7 +138,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
 
     # Update config from model
     adhoc_erase_dialog_model.switch_state(basic_note_type_details)
-    adhoc_erase_dialog_model.current_state.select_fields(FieldNames([DefaultFields.basic_back]))
+    adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.basic_back]))
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.accept_callback()
     assert config_loader.load_config().get_as_dict() == {

@@ -33,10 +33,9 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         if source != self:
             log.debug(f"Model changed")
             self.__note_type_combo_box.set_note_types(self.__model.note_types)
-            if self.__model.current_state and self.__model.current_state.get_selected_note_type():
-                self.__note_type_combo_box.set_current_note_type(self.__model.current_state.get_selected_note_type())
-            if self.__model.current_state and self.__model.current_state.get_selected_fields():
-                self.__fields_vbox.set_selected_fields(self.__model.current_state.get_selected_fields())
+            self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
+            if self.__model.get_current_state().get_selected_fields():
+                self.__fields_vbox.set_selected_fields(self.__model.get_current_state().get_selected_fields())
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On combobox changed: {index}")
@@ -48,8 +47,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        if self.__model.current_state.get_selected_fields() != selected_field_names:
-            self.__model.current_state.select_fields(selected_field_names)
+        if self.__model.get_current_state().get_selected_fields() != selected_field_names:
+            self.__model.get_current_state().select_fields(selected_field_names)
             self.__model.fire_model_changed(self)
 
     def __repr__(self):
