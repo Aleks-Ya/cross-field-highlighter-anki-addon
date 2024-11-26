@@ -99,7 +99,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
-    adhoc_highlight_dialog_model.current_state.select_source_field(DefaultFields.basic_front)
+    adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.accept_callback()
     assert config_loader.load_config().get_as_dict() == {
@@ -200,10 +200,10 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
-    adhoc_highlight_dialog_model.current_state.select_source_field(DefaultFields.basic_front)
-    adhoc_highlight_dialog_model.current_state.selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
-    adhoc_highlight_dialog_model.current_state.selected_stop_words = "to the"
-    adhoc_highlight_dialog_model.current_state.selected_destination_fields = FieldNames([DefaultFields.basic_back])
+    adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
+    adhoc_highlight_dialog_model.get_current_state().selected_format = formatter_facade.get_format_by_code(HighlightFormatCode.BOLD)
+    adhoc_highlight_dialog_model.get_current_state().selected_stop_words = "to the"
+    adhoc_highlight_dialog_model.get_current_state().selected_destination_fields = FieldNames([DefaultFields.basic_back])
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.accept_callback()
     assert config_loader.load_config().get_as_dict() == {

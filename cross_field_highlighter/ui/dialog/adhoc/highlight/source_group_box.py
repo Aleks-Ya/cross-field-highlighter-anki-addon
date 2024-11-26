@@ -41,37 +41,36 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def __fill_ui_from_model(self):
         self.__note_type_combo_box.set_note_types(self.__model.note_types)
-        if self.__model.current_state:
-            self.__note_type_combo_box.set_current_note_type(self.__model.current_state.get_selected_note_type())
+        self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
         self.__update_source_field_from_model()
-        if self.__model.current_state and self.__model.current_state.selected_stop_words:
-            self.__stop_words_layout.set_text(self.__model.current_state.selected_stop_words)
+        if self.__model.get_current_state().selected_stop_words:
+            self.__stop_words_layout.set_text(self.__model.get_current_state().selected_stop_words)
         else:
             if self.__model.default_stop_words:
                 self.__stop_words_layout.set_text(self.__model.default_stop_words)
 
     def __update_source_field_from_model(self):
-        if self.__model.current_state and self.__model.current_state.get_selected_source_filed():
-            selected_source_field: FieldName = self.__model.current_state.get_selected_source_filed()
+        if self.__model.get_current_state().get_selected_source_filed():
+            selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
             self.__source_field_combo_box.set_current_text(selected_source_field)
 
     def __on_note_type_changed(self, index: int):
         log.debug(f"On note type selected: {index}")
         selected_note_type: NoteTypeDetails = self.__model.note_types[index]
         self.__model.switch_state(selected_note_type)
-        self.__source_field_combo_box.set_items(self.__model.current_state.get_selected_note_type().fields)
+        self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):
         log.debug(f"On source field selected: {item}")
         field_name: FieldName = FieldName(item)
-        if self.__model.current_state.get_selected_source_filed() != field_name:
-            self.__model.current_state.select_source_field(field_name)
+        if self.__model.get_current_state().get_selected_source_filed() != field_name:
+            self.__model.get_current_state().select_source_field(field_name)
             self.__model.fire_model_changed(self)
 
     def __on_stop_words_text_changed(self, text: str):
-        if self.__model.current_state.selected_stop_words != text:
-            self.__model.current_state.selected_stop_words = text
+        if self.__model.get_current_state().selected_stop_words != text:
+            self.__model.get_current_state().selected_stop_words = text
             self.__model.fire_model_changed(self)
 
     def __repr__(self):

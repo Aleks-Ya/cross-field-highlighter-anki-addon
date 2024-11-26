@@ -238,11 +238,13 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
 
 
-def test_bug_duplicate_formats_after_reopening(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+def test_bug_duplicate_formats_after_reopening(all_note_type_details: list[NoteTypeDetails],
+                                               adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
                                                all_highlight_formats: HighlightFormats,
                                                bold_format: HighlightFormat):
     assert adhoc_highlight_dialog_model.formats == []
+    adhoc_highlight_dialog_model.note_types = all_note_type_details
     assert_format_group_box(adhoc_highlight_dialog_view, None, [])
 
     adhoc_highlight_dialog_model.formats = all_highlight_formats

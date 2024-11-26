@@ -27,23 +27,29 @@ class AdhocHighlightDialogModel:
         self.default_stop_words: Optional[str] = None
         self.accept_callback: Optional[Callable[[], None]] = None
         self.reject_callback: Optional[Callable[[], None]] = None
-        self.current_state: Optional[AdhocHighlightDialogState] = None
+        self.__current_state: Optional[AdhocHighlightDialogState] = None
         self.__states: dict[NoteTypeName, AdhocHighlightDialogState] = {}
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def get_current_state(self) -> AdhocHighlightDialogState:
+        if not self.__current_state:
+            self.switch_to_first_state()
+        return self.__current_state
 
     def switch_state(self, note_type_details: NoteTypeDetails):
         note_type_name: NoteTypeName = note_type_details.name
         if note_type_name not in self.__states:
             self.__states[note_type_name] = AdhocHighlightDialogState(note_type_details)
-        self.current_state = self.__states[note_type_name]
-        if not self.current_state.selected_stop_words:
-            self.current_state.selected_stop_words = self.default_stop_words
+        self.__current_state = self.__states[note_type_name]
+        if not self.__current_state.selected_stop_words:
+            self.__current_state.selected_stop_words = self.default_stop_words
 
     def switch_to_first_state(self) -> None:
-        if len(self.note_types) > 0:
-            note_type_details: NoteTypeDetails = self.note_types[0]
-            self.switch_state(note_type_details)
+        if len(self.note_types) < 1:
+            raise Exception("At least one note type should exist")
+        note_type_details: NoteTypeDetails = self.note_types[0]
+        self.switch_state(note_type_details)
 
     def add_listener(self, listener: AdhocHighlightDialogModelListener):
         self.__listeners.add(listener)
@@ -58,7 +64,7 @@ class AdhocHighlightDialogModel:
             "note_ids": self.note_ids,
             "formats": self.formats,
             "states": {k: v.as_dict() for k, v in self.__states.items()},
-            "current_state": self.current_state.as_dict() if self.current_state else None,
+            "current_state": self.__current_state.as_dict() if self.__current_state else None,
             "default_stop_words": self.default_stop_words,
             "accept_callback_None": not self.accept_callback,
             "reject_callback_None": not self.reject_callback

@@ -27,20 +27,18 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def model_changed(self, source: object) -> None:
         if source != self:
             log.debug(f"Model changed")
-            if self.__model.current_state:
-                self.__destination_fields_vbox.set_items(self.__model.current_state.get_selected_note_type().fields)
-            if self.__model.current_state:
-                disabled_fields: FieldNames = FieldNames([self.__model.current_state.get_selected_source_filed()]) \
-                    if self.__model.current_state.get_selected_source_filed() is not None else []
-                self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
-                if self.__model.current_state.selected_destination_fields:
-                    self.__destination_fields_vbox.set_selected_fields(
-                        self.__model.current_state.selected_destination_fields)
+            self.__destination_fields_vbox.set_items(self.__model.get_current_state().get_selected_note_type().fields)
+            disabled_fields: FieldNames = FieldNames([self.__model.get_current_state().get_selected_source_filed()]) \
+                if self.__model.get_current_state().get_selected_source_filed() is not None else []
+            self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
+            if self.__model.get_current_state().selected_destination_fields:
+                self.__destination_fields_vbox.set_selected_fields(
+                    self.__model.get_current_state().selected_destination_fields)
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        if self.__model.current_state.selected_destination_fields != selected_field_names:
-            self.__model.current_state.selected_destination_fields = selected_field_names
+        if self.__model.get_current_state().selected_destination_fields != selected_field_names:
+            self.__model.get_current_state().selected_destination_fields = selected_field_names
 
     def __repr__(self):
         return self.__class__.__name__
