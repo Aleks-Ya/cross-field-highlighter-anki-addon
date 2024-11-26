@@ -20,7 +20,7 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
         self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
-        self.__note_type_combo_box.add_note_type_changed_callback(self.__on_note_type_changed)
+        self.__note_type_combo_box.set_note_type_changed_callback(self.__on_note_type_changed)
         self.__fields_vbox: FieldsLayout = FieldsLayout()
         self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         group_layout: QVBoxLayout = QVBoxLayout()
@@ -37,9 +37,8 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
             if self.__model.get_current_state().get_selected_fields():
                 self.__fields_vbox.set_selected_fields(self.__model.get_current_state().get_selected_fields())
 
-    def __on_note_type_changed(self, index: int):
-        log.debug(f"On combobox changed: {index}")
-        selected_note_type: NoteTypeDetails = self.__model.note_types[index]
+    def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
+        log.debug(f"On combobox changed")
         field_names: FieldNames = FieldNames(selected_note_type.fields)
         self.__fields_vbox.set_items(field_names)
         self.__model.switch_state(selected_note_type)

@@ -21,7 +21,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
         self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
-        self.__note_type_combo_box.add_note_type_changed_callback(self.__on_note_type_changed)
+        self.__note_type_combo_box.set_note_type_changed_callback(self.__on_note_type_changed)
         self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
@@ -54,9 +54,8 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
             self.__source_field_combo_box.set_current_text(selected_source_field)
 
-    def __on_note_type_changed(self, index: int):
-        log.debug(f"On note type selected: {index}")
-        selected_note_type: NoteTypeDetails = self.__model.note_types[index]
+    def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
+        log.debug(f"On note type selected")
         self.__model.switch_state(selected_note_type)
         self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
         self.__model.fire_model_changed(self)

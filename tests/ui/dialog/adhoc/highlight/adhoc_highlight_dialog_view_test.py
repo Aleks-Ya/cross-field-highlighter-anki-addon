@@ -33,7 +33,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'current_state': {'selected_destination_fields': [],
                           'selected_format': None,
                           'selected_note_type': basic_note_type_details,
-                          'selected_source_field': None,
+                          'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': exp_default_stop_words},
         'default_stop_words': 'a an',
         'formats': [],
@@ -43,7 +43,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'states': {'Basic': {'selected_destination_fields': [],
                              'selected_format': None,
                              'selected_note_type': basic_note_type_details,
-                             'selected_source_field': None,
+                             'selected_source_field': DefaultFields.basic_front,
                              'selected_stop_words': exp_default_stop_words}}}
     # Fill model without firing
     adhoc_highlight_dialog_model.note_types = all_note_type_details
@@ -58,7 +58,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'current_state': {'selected_destination_fields': [],
                           'selected_format': None,
                           'selected_note_type': basic_note_type_details,
-                          'selected_source_field': None,
+                          'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': exp_default_stop_words},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,
@@ -68,7 +68,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'states': {'Basic': {'selected_destination_fields': [],
                              'selected_format': None,
                              'selected_note_type': basic_note_type_details,
-                             'selected_source_field': None,
+                             'selected_source_field': DefaultFields.basic_front,
                              'selected_stop_words': exp_default_stop_words}}}
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
@@ -213,7 +213,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert len(listener.history) == 13
+    assert len(listener.history) == 11
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],

@@ -21,10 +21,6 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         self.addWidget(self.__combo_box)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def add_note_type_changed_callback(self, callback: Callable[[int], None]) -> None:
-        # noinspection PyUnresolvedReferences
-        self.__combo_box.currentIndexChanged.connect(callback)
-
     def set_note_type_changed_callback(self, callback: Callable[[NoteTypeDetails], None]) -> None:
         self.__callback = callback
 
@@ -46,7 +42,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
             self.__combo_box.setCurrentIndex(index)
 
     def __on_current_index_changed(self, _: int) -> None:
-        if self.__callback:
+        if self.__callback and self.__combo_box.currentData():
             self.__callback(self.__combo_box.currentData())
 
     def __del__(self):
