@@ -29,7 +29,8 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() is None
     assert config.get_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name) is None
@@ -69,7 +70,8 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
                 "Default Stop Words": "the"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
 
 
 def test_set_absent_field():
@@ -102,7 +104,8 @@ def test_join(td: Data):
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}
 
     actual: dict[str, Any] = {
         "Dialog": {"Adhoc": {
@@ -126,4 +129,5 @@ def test_join(td: Data):
                 "Default Stop Words": "a an to"},
             "Erase": {  # Get dict from base
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}

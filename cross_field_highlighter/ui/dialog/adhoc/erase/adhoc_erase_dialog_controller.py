@@ -1,12 +1,11 @@
 import logging
 from logging import Logger
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
@@ -36,17 +35,12 @@ class AdhocEraseDialogController:
         self.__view.show_view()
 
     def __fill_model_from_config(self):
-        last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_erase_last_note_type_name()
-        if last_note_type_name:
-            last_note_type_details: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(
-                last_note_type_name)
-            self.__model.switch_state(last_note_type_details)
-        last_field_names: Optional[FieldNames] = self.__config.get_dialog_adhoc_erase_last_field_names()
-        if last_field_names:
-            self.__model.get_current_state().select_fields(last_field_names)
+        data: dict[str, Any] = self.__config.get_dialog_adhoc_erase_states()
+        self.__model.deserialize_states(data)
 
     def __save_model_to_config(self):
         log.debug("Save model to config")
+        self.__config.set_dialog_adhoc_erase_states(self.__model.serialize_states())
         note_type_name: NoteTypeName = self.__model.get_current_state().get_selected_note_type().name
         self.__config.set_dialog_adhoc_erase_last_note_type_name(note_type_name)
         self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.get_current_state().get_selected_fields())

@@ -85,7 +85,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': [],
@@ -113,7 +114,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
@@ -180,7 +182,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': [],
@@ -213,7 +216,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
@@ -250,7 +254,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,

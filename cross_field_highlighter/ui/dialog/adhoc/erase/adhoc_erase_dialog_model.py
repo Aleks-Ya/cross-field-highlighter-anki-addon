@@ -94,17 +94,19 @@ class AdhocEraseDialogModel:
 
     def deserialize_states(self, json: dict[str, any]) -> None:
         note_type_dict: [NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in self.__note_types}
-        for state_obj in json["states"]:
-            saved_note_type_name: NoteTypeName = state_obj["note_type"]
-            if saved_note_type_name in note_type_dict:
-                saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_name]
-                self.switch_state(saved_note_type_details)
-                saved_fields: FieldNames = FieldNames(state_obj["fields"])
-                self.get_current_state().select_fields(saved_fields)
-        current_state_name: NoteTypeName = json["current_state"]
-        if current_state_name in note_type_dict:
-            current_note_type_details: NoteTypeDetails = note_type_dict[current_state_name]
-            self.switch_state(current_note_type_details)
+        if "states" in json:
+            for state_obj in json["states"]:
+                saved_note_type_name: NoteTypeName = state_obj["note_type"]
+                if saved_note_type_name in note_type_dict:
+                    saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_name]
+                    self.switch_state(saved_note_type_details)
+                    saved_fields: FieldNames = FieldNames(state_obj["fields"])
+                    self.get_current_state().select_fields(saved_fields)
+        if "current_state" in json:
+            current_state_name: NoteTypeName = json["current_state"]
+            if current_state_name in note_type_dict:
+                current_note_type_details: NoteTypeDetails = note_type_dict[current_state_name]
+                self.switch_state(current_note_type_details)
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.as_dict()})"

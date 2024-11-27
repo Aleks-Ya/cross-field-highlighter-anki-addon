@@ -24,6 +24,7 @@ class Config:
     __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
     __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
+    __key_4_dialog_erase_states: str = 'States'
 
     def __init__(self, config: dict[str, Any]):
         self.__config: dict[str, Any] = config
@@ -135,6 +136,14 @@ class Config:
     def set_dialog_adhoc_erase_last_field_names(self, last_field_names: FieldNames) -> None:
         self.__set(last_field_names, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                    self.__key_4_dialog_erase_last_field_names)
+
+    def get_dialog_adhoc_erase_states(self) -> dict[str, any]:
+        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
+                          self.__key_4_dialog_erase_states)
+
+    def set_dialog_adhoc_erase_states(self, states: dict[str, any]) -> None:
+        self.__set(states, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
+                   self.__key_4_dialog_erase_states)
 
     def get_as_dict(self) -> dict[str, Any]:
         return self.__config

@@ -63,7 +63,8 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -87,7 +88,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': 'Basic',
-                'Last Field Names': []}}}}
+                'Last Field Names': [],
+                'States': {'current_state': 'Basic',
+                           'states': [{'fields': [], 'note_type': 'Basic'}]}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
@@ -129,7 +132,8 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': None,
-                'Last Field Names': None}}}}
+                'Last Field Names': None,
+                'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -153,7 +157,9 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': 'Basic',
-                'Last Field Names': ['Back']}}}}
+                'Last Field Names': ['Back'],
+                'States': {'current_state': 'Basic',
+                           'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': False,
@@ -179,7 +185,9 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                 "Default Stop Words": "a an to"},
             'Erase': {
                 'Last Note Type': 'Basic',
-                'Last Field Names': ['Back']}}}}
+                'Last Field Names': ['Back'],
+                'States': {'current_state': 'Basic',
+                           'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
     assert model.as_dict() == {'note_types': [],
                                'accept_callback_None': True,
                                'reject_callback_None': True,

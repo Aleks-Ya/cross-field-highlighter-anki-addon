@@ -11,7 +11,8 @@
       },
       "Erase": {
         "Last Note Type": null,
-        "Last Field Names": null
+        "Last Field Names": null,
+        "States": {}
       }
     }
   }

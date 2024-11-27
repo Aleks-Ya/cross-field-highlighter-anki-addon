@@ -30,7 +30,8 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}
 
 
 def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
@@ -45,7 +46,8 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
     __write_meta_json_config(meta_json_config, module_dir)
     config: Config = config_loader.load_config()
     assert meta_json_config == config.get_as_dict()
@@ -65,7 +67,8 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}
 
 
 def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader):
@@ -80,7 +83,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}},
+                "Last Field Names": ["Sentences"],
+                'States': {}}}},
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
         , module_dir)
     config: Config = config_loader.load_config()
@@ -95,7 +99,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
 
 
 def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLoader, module_name: str,
@@ -111,7 +116,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}, module_dir)
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}, module_dir)
     config_origin: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_origin == {
         "Dialog": {"Adhoc": {
@@ -124,7 +130,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
@@ -137,7 +144,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
     config_saved: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_saved == {
         "Dialog": {"Adhoc": {
@@ -150,7 +158,8 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
 
 
 def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_type_name: NoteTypeName) -> None:
@@ -166,7 +175,8 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": None,
-                "Last Field Names": None}}}}
+                "Last Field Names": None,
+                'States': {}}}}}
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
     config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
@@ -186,7 +196,8 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
                 "Default Stop Words": "a an to"},
             "Erase": {
                 "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"]}}}}
+                "Last Field Names": ["Sentences"],
+                'States': {}}}}}
 
 
 def __write_meta_json_config(meta_json_config, module_dir: Path) -> None:
