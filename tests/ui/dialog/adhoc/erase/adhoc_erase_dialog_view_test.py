@@ -27,8 +27,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                                                   'current_state': None,
                                                   'states': {}}
     # Fill model without firing
-    adhoc_erase_dialog_model.note_types = all_note_type_details
-    adhoc_erase_dialog_model.accept_callback = callback.call
+    adhoc_erase_dialog_model.fill(all_note_type_details, callback.call, None)
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
     assert len(listener.history) == 0
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,

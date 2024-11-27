@@ -61,15 +61,13 @@ class AdhocEraseDialogView(QDialog):
     def __accept(self) -> None:
         log.info("Starting")
         self.hide()
-        if self.__model.accept_callback:
-            self.__model.accept_callback()
+        self.__model.call_accept_callback()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __reject(self) -> None:
         log.info("Cancelled")
         self.reject()
-        if self.__model.reject_callback:
-            self.__model.reject_callback()
+        self.__model.call_reject_callback()
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")

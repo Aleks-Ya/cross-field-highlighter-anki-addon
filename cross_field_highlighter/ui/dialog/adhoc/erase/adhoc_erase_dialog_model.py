@@ -18,13 +18,22 @@ class AdhocEraseDialogModelListener:
 
 class AdhocEraseDialogModel:
     def __init__(self):
-        self.note_types: list[NoteTypeDetails] = []
+        self.__note_types: list[NoteTypeDetails] = []
         self.__current_state: Optional[AdhocEraseDialogState] = None
-        self.accept_callback: Optional[Callable[[], None]] = None
-        self.reject_callback: Optional[Callable[[], None]] = None
+        self.__accept_callback: Optional[Callable[[], None]] = None
+        self.__reject_callback: Optional[Callable[[], None]] = None
         self.__states: dict[NoteTypeName, AdhocEraseDialogState] = {}
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
+
+    def fill(self, note_types: list[NoteTypeDetails], accept_callback: Optional[Callable[[], None]],
+             reject_callback: Optional[Callable[[], None]]) -> None:
+        self.__note_types = note_types
+        self.__accept_callback = accept_callback
+        self.__reject_callback = reject_callback
+
+    def get_note_types(self) -> list[NoteTypeDetails]:
+        return self.__note_types
 
     def get_current_state(self) -> AdhocEraseDialogState:
         if not self.__current_state:
@@ -38,27 +47,35 @@ class AdhocEraseDialogModel:
         self.__current_state = self.__states[note_type_name]
 
     def switch_to_first_state(self) -> None:
-        if len(self.note_types) < 1:
+        if len(self.__note_types) < 1:
             raise Exception("At least one note type should exist")
-        note_type_details: NoteTypeDetails = self.note_types[0]
+        note_type_details: NoteTypeDetails = self.__note_types[0]
         self.switch_state(note_type_details)
 
-    def add_listener(self, listener: AdhocEraseDialogModelListener):
+    def add_listener(self, listener: AdhocEraseDialogModelListener) -> None:
         self.__listeners.add(listener)
 
-    def fire_model_changed(self, source: object):
+    def call_accept_callback(self) -> None:
+        if self.__accept_callback:
+            self.__accept_callback()
+
+    def call_reject_callback(self) -> None:
+        if self.__reject_callback:
+            self.__reject_callback()
+
+    def fire_model_changed(self, source: object) -> None:
         log.debug(f"Fire model changed: {source}")
         for listener in self.__listeners:
             listener.model_changed(source)
 
     def as_dict(self) -> dict[str, any]:
         return {
-            "note_types": self.note_types,
-            "accept_callback_None": not self.accept_callback,
-            "reject_callback_None": not self.reject_callback,
+            "note_types": self.__note_types,
+            "accept_callback_None": not self.__accept_callback,
+            "reject_callback_None": not self.__reject_callback,
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.__current_state.as_dict() if self.__current_state else None
         }
 
-    def __del__(self):
+    def __del__(self) -> None:
         log.debug(f"{self.__class__.__name__} was deleted")

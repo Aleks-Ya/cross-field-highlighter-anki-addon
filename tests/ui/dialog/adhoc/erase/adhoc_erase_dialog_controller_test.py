@@ -75,7 +75,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     # adhoc_erase_dialog_model.switch_state(basic_note_type_details)
     # adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    adhoc_erase_dialog_model.accept_callback()
+    adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -141,7 +141,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     adhoc_erase_dialog_model.switch_state(basic_note_type_details)
     adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.basic_back]))
     adhoc_erase_dialog_model.fire_model_changed(None)
-    adhoc_erase_dialog_model.accept_callback()
+    adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
