@@ -32,6 +32,9 @@ class AdhocHighlightDialogModel:
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
+    def get_note_types(self) -> list[NoteTypeDetails]:
+        return self.note_types
+
     def get_current_state(self) -> AdhocHighlightDialogState:
         if not self.__current_state:
             self.switch_to_first_state()

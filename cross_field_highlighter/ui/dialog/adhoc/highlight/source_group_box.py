@@ -40,7 +40,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             self.__fill_ui_from_model()
 
     def __fill_ui_from_model(self):
-        self.__note_type_combo_box.set_note_types(self.__model.note_types)
+        self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
         self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
         self.__update_source_field_from_model()
         if self.__model.get_current_state().selected_stop_words:
