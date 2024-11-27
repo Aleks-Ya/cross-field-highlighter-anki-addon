@@ -83,10 +83,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
                 "Default Stop Words": "a an to"},
-            'Erase': {
-                'Last Note Type': None,
-                'Last Field Names': None,
-                'States': {}}}}}
+            'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': [],
@@ -112,10 +109,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Stop Words': 'a an to',
                 'Last Destination Field Names': [],
                 "Default Stop Words": "a an to"},
-            'Erase': {
-                'Last Note Type': None,
-                'Last Field Names': None,
-                'States': {}}}}}
+            'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
@@ -180,10 +174,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Stop Words': None,
                 'Last Destination Field Names': None,
                 "Default Stop Words": "a an to"},
-            'Erase': {
-                'Last Note Type': None,
-                'Last Field Names': None,
-                'States': {}}}}}
+            'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': [],
@@ -214,10 +205,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Stop Words': 'to the',
                 'Last Destination Field Names': ['Back'],
                 "Default Stop Words": "a an to"},
-            'Erase': {
-                'Last Note Type': None,
-                'Last Field Names': None,
-                'States': {}}}}}
+            'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
@@ -252,10 +240,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Stop Words': 'to the',
                 'Last Destination Field Names': ['Back'],
                 "Default Stop Words": "a an to"},
-            'Erase': {
-                'Last Note Type': None,
-                'Last Field Names': None,
-                'States': {}}}}}
+            'Erase': {'States': {}}}}}
     assert model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,

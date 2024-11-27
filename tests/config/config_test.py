@@ -27,10 +27,7 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": None,
-                "Last Field Names": None,
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() is None
     assert config.get_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name) is None
@@ -38,8 +35,7 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_dialog_adhoc_highlight_last_stop_words() is None
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() is None
     assert config.get_dialog_adhoc_highlight_default_stop_words() == "a an to"
-    assert config.get_dialog_adhoc_erase_last_note_type_name() is None
-    assert config.get_dialog_adhoc_erase_last_field_names() is None
+    assert config.get_dialog_adhoc_erase_states() == {}
 
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
     config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
@@ -47,8 +43,8 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     config.set_dialog_adhoc_highlight_last_stop_words("a an the")
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
     config.set_dialog_adhoc_highlight_default_stop_words("the")
-    config.set_dialog_adhoc_erase_last_note_type_name(NoteTypeName("Cloze"))
-    config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
+    config.set_dialog_adhoc_erase_states(
+        {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]})
 
     assert config.get_dialog_adhoc_highlight_last_note_type_name() == "Basic"
     assert config.get_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name) == "English"
@@ -56,8 +52,8 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_dialog_adhoc_highlight_last_stop_words() == "a an the"
     assert config.get_dialog_adhoc_highlight_last_destination_field_names() == ["Examples"]
     assert config.get_dialog_adhoc_highlight_default_stop_words() == "the"
-    assert config.get_dialog_adhoc_erase_last_note_type_name() == "Cloze"
-    assert config.get_dialog_adhoc_erase_last_field_names() == ["Sentences"]
+    assert config.get_dialog_adhoc_erase_states() == {'current_state': 'Basic',
+                                                      'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}
 
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
@@ -68,10 +64,7 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
                 "Last Stop Words": "a an the",
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "the"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
 
 
 def test_set_absent_field():
@@ -102,10 +95,7 @@ def test_join(td: Data):
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": None,
-                "Last Field Names": None,
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
     actual: dict[str, Any] = {
         "Dialog": {"Adhoc": {
@@ -128,6 +118,4 @@ def test_join(td: Data):
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
             "Erase": {  # Get dict from base
-                "Last Note Type": None,
-                "Last Field Names": None,
                 'States': {}}}}}

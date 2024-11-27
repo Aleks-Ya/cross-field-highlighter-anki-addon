@@ -28,10 +28,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": None,
-                "Last Field Names": None,
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
 
 def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
@@ -44,10 +41,7 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
     __write_meta_json_config(meta_json_config, module_dir)
     config: Config = config_loader.load_config()
     assert meta_json_config == config.get_as_dict()
@@ -65,10 +59,7 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": None,
-                "Last Field Names": None,
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
 
 def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader):
@@ -81,10 +72,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}},
+            "Erase": {'States': {}}}},
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
         , module_dir)
     config: Config = config_loader.load_config()
@@ -97,10 +85,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
 
 def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLoader, module_name: str,
@@ -114,10 +99,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}, module_dir)
+            "Erase": {'States': {}}}}}, module_dir)
     config_origin: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_origin == {
         "Dialog": {"Adhoc": {
@@ -128,10 +110,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
@@ -142,10 +121,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
     config_saved: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_saved == {
         "Dialog": {"Adhoc": {
@@ -156,10 +132,7 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
 
 
 def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_type_name: NoteTypeName) -> None:
@@ -173,16 +146,13 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
                 "Last Stop Words": None,
                 "Last Destination Field Names": None,
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": None,
-                "Last Field Names": None,
-                'States': {}}}}}
+            "Erase": {'States': {}}}}}
     config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
     config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
     config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
     config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
-    config.set_dialog_adhoc_erase_last_note_type_name(NoteTypeName("Cloze"))
-    config.set_dialog_adhoc_erase_last_field_names(FieldNames([FieldName("Sentences")]))
+    config.set_dialog_adhoc_erase_states(
+        {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]})
     config_loader.write_config(config)
     act_config: Config = config_loader.load_config()
     assert act_config.get_as_dict() == {
@@ -194,10 +164,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
                 "Last Stop Words": None,
                 "Last Destination Field Names": ["Examples"],
                 "Default Stop Words": "a an to"},
-            "Erase": {
-                "Last Note Type": "Cloze",
-                "Last Field Names": ["Sentences"],
-                'States': {}}}}}
+            "Erase": {'States': {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
 
 
 def __write_meta_json_config(meta_json_config, module_dir: Path) -> None:

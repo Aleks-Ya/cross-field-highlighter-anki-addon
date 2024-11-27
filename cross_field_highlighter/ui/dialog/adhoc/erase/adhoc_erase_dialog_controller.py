@@ -5,7 +5,6 @@ from typing import Callable, Optional, Any
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
@@ -41,9 +40,6 @@ class AdhocEraseDialogController:
     def __save_model_to_config(self):
         log.debug("Save model to config")
         self.__config.set_dialog_adhoc_erase_states(self.__model.serialize_states())
-        note_type_name: NoteTypeName = self.__model.get_current_state().get_selected_note_type().name
-        self.__config.set_dialog_adhoc_erase_last_note_type_name(note_type_name)
-        self.__config.set_dialog_adhoc_erase_last_field_names(self.__model.get_current_state().get_selected_fields())
         self.__config_loader.write_config(self.__config)
 
     def __accept_callback(self):

@@ -119,24 +119,6 @@ class Config:
         self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
 
-    def get_dialog_adhoc_erase_last_note_type_name(self) -> NoteTypeName:
-        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
-                          self.__key_4_dialog_erase_last_note_type)
-
-    def set_dialog_adhoc_erase_last_note_type_name(self, last_note_type_name: NoteTypeName) -> None:
-        self.__set(last_note_type_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
-                   self.__key_4_dialog_erase_last_note_type)
-
-    def get_dialog_adhoc_erase_last_field_names(self) -> Optional[FieldNames]:
-        fields: Optional[list[str]] = self.__get(
-            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
-            self.__key_4_dialog_erase_last_field_names)
-        return FieldNames([FieldName(field) for field in fields]) if fields else None
-
-    def set_dialog_adhoc_erase_last_field_names(self, last_field_names: FieldNames) -> None:
-        self.__set(last_field_names, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
-                   self.__key_4_dialog_erase_last_field_names)
-
     def get_dialog_adhoc_erase_states(self) -> dict[str, any]:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,
                           self.__key_4_dialog_erase_states)

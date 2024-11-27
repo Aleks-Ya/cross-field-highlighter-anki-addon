@@ -10,8 +10,6 @@
         "Default Stop Words": "a an to"
       },
       "Erase": {
-        "Last Note Type": null,
-        "Last Field Names": null,
         "States": {}
       }
     }
