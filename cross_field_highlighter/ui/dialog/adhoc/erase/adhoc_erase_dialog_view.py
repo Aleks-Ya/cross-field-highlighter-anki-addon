@@ -4,7 +4,6 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton
 
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 
@@ -52,11 +51,7 @@ class AdhocEraseDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
-        self.__select_first_note_type()
         self.__model.fire_model_changed(self)
-
-    def __select_first_note_type(self):
-        self.__model.get_current_state()
 
     def __accept(self) -> None:
         log.info("Starting")
@@ -71,8 +66,7 @@ class AdhocEraseDialogView(QDialog):
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
-        self.__select_first_note_type()
-        self.__model.get_current_state().select_fields(FieldNames([]))
+        self.__model.reset_states()
         self.__model.fire_model_changed(None)
 
     def __repr__(self):

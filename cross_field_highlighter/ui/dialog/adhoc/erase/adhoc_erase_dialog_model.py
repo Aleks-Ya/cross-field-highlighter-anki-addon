@@ -4,7 +4,7 @@ from abc import abstractmethod
 from typing import Callable, Optional
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import NoteTypeName
+from cross_field_highlighter.highlighter.types import NoteTypeName, FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_state import AdhocEraseDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -67,6 +67,11 @@ class AdhocEraseDialogModel:
         log.debug(f"Fire model changed: {source}")
         for listener in self.__listeners:
             listener.model_changed(source)
+
+    def reset_states(self) -> None:
+        for state in self.__states.values():
+            state.select_fields(FieldNames([]))
+        self.switch_to_first_state()
 
     def as_dict(self) -> dict[str, any]:
         return {
