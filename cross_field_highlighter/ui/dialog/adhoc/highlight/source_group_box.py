@@ -4,7 +4,7 @@ from logging import Logger
 from aqt.qt import QVBoxLayout, QGroupBox
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName
+from cross_field_highlighter.highlighter.types import FieldName, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
 from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
@@ -43,7 +43,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
         self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
         self.__update_source_field_from_model()
-        self.__stop_words_layout.set_text(self.__model.get_current_state().selected_stop_words)
+        self.__stop_words_layout.set_text(self.__model.get_current_state().get_selected_stop_words())
 
     def __update_source_field_from_model(self):
         if self.__model.get_current_state().get_selected_source_filed():
@@ -63,9 +63,9 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             self.__model.get_current_state().select_source_field(field_name)
             self.__model.fire_model_changed(self)
 
-    def __on_stop_words_text_changed(self, text: str):
-        if self.__model.get_current_state().selected_stop_words != text:
-            self.__model.get_current_state().selected_stop_words = text
+    def __on_stop_words_text_changed(self, text: Text):
+        if self.__model.get_current_state().get_selected_stop_words() != text:
+            self.__model.get_current_state().set_stop_words(text)
             self.__model.fire_model_changed(self)
 
     def __repr__(self):

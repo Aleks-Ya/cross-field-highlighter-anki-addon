@@ -31,14 +31,14 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
             disabled_fields: FieldNames = FieldNames([self.__model.get_current_state().get_selected_source_filed()]) \
                 if self.__model.get_current_state().get_selected_source_filed() is not None else []
             self.__destination_fields_vbox.set_disabled_fields(disabled_fields)
-            if self.__model.get_current_state().selected_destination_fields:
+            if self.__model.get_current_state().get_selected_destination_fields():
                 self.__destination_fields_vbox.set_selected_fields(
-                    self.__model.get_current_state().selected_destination_fields)
+                    self.__model.get_current_state().get_selected_destination_fields())
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
         log.debug(f"On field selected: {selected_field_names}")
-        if self.__model.get_current_state().selected_destination_fields != selected_field_names:
-            self.__model.get_current_state().selected_destination_fields = selected_field_names
+        if self.__model.get_current_state().get_selected_destination_fields() != selected_field_names:
+            self.__model.get_current_state().select_destination_fields(selected_field_names)
 
     def __repr__(self):
         return self.__class__.__name__

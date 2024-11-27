@@ -7,7 +7,7 @@ from cross_field_highlighter.highlighter.formatter.highlight_format import Highl
     HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldNames
+from cross_field_highlighter.highlighter.types import FieldNames, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
@@ -189,11 +189,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
-    adhoc_highlight_dialog_model.get_current_state().selected_format = formatter_facade.get_format_by_code(
-        HighlightFormatCode.BOLD)
-    adhoc_highlight_dialog_model.get_current_state().selected_stop_words = "to the"
-    adhoc_highlight_dialog_model.get_current_state().selected_destination_fields = FieldNames(
-        [DefaultFields.basic_back])
+    adhoc_highlight_dialog_model.get_current_state().select_format(formatter_facade.get_format_by_code(
+        HighlightFormatCode.BOLD))
+    adhoc_highlight_dialog_model.get_current_state().set_stop_words(Text("to the"))
+    adhoc_highlight_dialog_model.get_current_state().select_destination_fields(FieldNames(
+        [DefaultFields.basic_back]))
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {

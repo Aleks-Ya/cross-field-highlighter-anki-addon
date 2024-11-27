@@ -7,7 +7,7 @@ from anki.notes import NoteId
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import NoteTypeName, FieldNames
+from cross_field_highlighter.highlighter.types import NoteTypeName, FieldNames, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -42,9 +42,9 @@ class AdhocHighlightDialogModel:
 
     def reset_states(self) -> None:
         for state in self.__states.values():
-            state.selected_format = self.__formats[0]
-            state.selected_stop_words = self.__default_stop_words
-            state.selected_destination_fields = FieldNames([])
+            state.select_format(self.__formats[0])
+            state.set_stop_words(Text(self.__default_stop_words))
+            state.select_destination_fields(FieldNames([]))
             state.select_first_source_field()
         self.switch_to_first_state()
 
@@ -71,11 +71,11 @@ class AdhocHighlightDialogModel:
             state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details)
             state.select_first_source_field()
             if len(self.__formats) > 0:
-                state.selected_format = self.__formats[0]
+                state.select_format(self.__formats[0])
             self.__states[note_type_name] = state
         self.__current_state = self.__states[note_type_name]
-        if not self.__current_state.selected_stop_words:
-            self.__current_state.selected_stop_words = self.__default_stop_words
+        if not self.__current_state.get_selected_stop_words():
+            self.__current_state.set_stop_words(Text(self.__default_stop_words))
 
     def switch_to_first_state(self) -> None:
         if len(self.__note_types) < 1:

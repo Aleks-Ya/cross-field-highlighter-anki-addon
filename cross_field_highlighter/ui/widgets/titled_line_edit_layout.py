@@ -1,8 +1,10 @@
 import logging
 from logging import Logger
-from typing import Optional, Callable, Text
+from typing import Optional, Callable
 
 from aqt.qt import QHBoxLayout, QLabel, QLineEdit
+
+from cross_field_highlighter.highlighter.types import Text
 
 log: Logger = logging.getLogger(__name__)
 
@@ -30,7 +32,7 @@ class TitledLineEditLayout(QHBoxLayout):
 
     def __on_state_changed(self, text: str):
         if self.__on_text_changed_callback:
-            self.__on_text_changed_callback(text)
+            self.__on_text_changed_callback(Text(text))
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")
