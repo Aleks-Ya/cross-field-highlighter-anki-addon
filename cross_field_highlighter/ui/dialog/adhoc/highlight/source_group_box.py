@@ -43,11 +43,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
         self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
         self.__update_source_field_from_model()
-        if self.__model.get_current_state().selected_stop_words:
-            self.__stop_words_layout.set_text(self.__model.get_current_state().selected_stop_words)
-        else:
-            if self.__model.default_stop_words:
-                self.__stop_words_layout.set_text(self.__model.default_stop_words)
+        self.__stop_words_layout.set_text(self.__model.get_current_state().selected_stop_words)
 
     def __update_source_field_from_model(self):
         if self.__model.get_current_state().get_selected_source_filed():

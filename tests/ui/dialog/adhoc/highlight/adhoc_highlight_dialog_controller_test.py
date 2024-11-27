@@ -37,11 +37,11 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert listener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
-        'formats': all_highlight_formats,
-        'note_ids': set(),
+        'formats': [],
+        'note_ids': [],
         'note_types': [],
-        'accept_callback_None': False,
-        'reject_callback_None': False,
+        'accept_callback_None': True,
+        'reject_callback_None': True,
         'states': {},
         'current_state': None}
 
@@ -88,11 +88,11 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
-        'formats': all_highlight_formats,
-        'note_ids': set(),
+        'formats': [],
+        'note_ids': [],
         'note_types': [],
-        'accept_callback_None': False,
-        'reject_callback_None': False,
+        'accept_callback_None': True,
+        'reject_callback_None': True,
         'states': {},
         'current_state': None}
 
@@ -101,7 +101,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.fire_model_changed(None)
-    adhoc_highlight_dialog_model.accept_callback()
+    adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -183,11 +183,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 'Last Field Names': None}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
-        'formats': all_highlight_formats,
-        'note_ids': set(),
+        'formats': [],
+        'note_ids': [],
         'note_types': [],
-        'accept_callback_None': False,
-        'reject_callback_None': False,
+        'accept_callback_None': True,
+        'reject_callback_None': True,
         'states': {},
         'current_state': None}
 
@@ -201,7 +201,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_model.get_current_state().selected_destination_fields = FieldNames(
         [DefaultFields.basic_back])
     adhoc_highlight_dialog_model.fire_model_changed(None)
-    adhoc_highlight_dialog_model.accept_callback()
+    adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -236,8 +236,9 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     config: Config = config_loader.load_config()
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, note_type_details_factory)
-    _: AdhocHighlightDialogController = AdhocHighlightDialogController(
+    controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, config, config_loader)
+    controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -253,8 +254,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert model.as_dict() == {
         'default_stop_words': 'a an to',
         'formats': all_highlight_formats,
-        'note_ids': set(),
-        'note_types': [],
+        'note_ids': [],
+        'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
         'states': {'Basic': {'selected_destination_fields': [DefaultFields.basic_back],
@@ -281,9 +282,7 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Fill model
-    adhoc_highlight_dialog_model.note_types = all_note_type_details
-    adhoc_highlight_dialog_model.formats = all_highlight_formats
-    adhoc_highlight_dialog_model.accept_callback = callback.call
+    adhoc_highlight_dialog_model.fill(all_note_type_details, [], all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)

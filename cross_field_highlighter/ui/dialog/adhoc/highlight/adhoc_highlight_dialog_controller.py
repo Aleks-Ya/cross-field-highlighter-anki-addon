@@ -35,10 +35,10 @@ class AdhocHighlightDialogController:
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__run_op_callback = run_op_callback
-        self.__model.note_types = params.note_types
-        self.__model.note_ids = params.note_ids
+        self.__model.fill(params.note_types, list(set(params.note_ids)), self.__formatter_facade.get_all_formats(),
+                          self.__accept_callback, self.__reject_callback)
         self.__fill_model_from_config()
-        self.__model.get_current_state() #choose 1st if not selected
+        self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
 
     def __save_model_to_config(self):
@@ -55,9 +55,6 @@ class AdhocHighlightDialogController:
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self):
-        self.__model.accept_callback = self.__accept_callback
-        self.__model.reject_callback = self.__reject_callback
-        self.__model.formats = self.__formatter_facade.get_all_formats()
         last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_highlight_last_note_type_name()
         if last_note_type_name:
             selected_note_type: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(
@@ -78,16 +75,16 @@ class AdhocHighlightDialogController:
             FieldNames] = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
         if last_destination_field_names:
             self.__model.get_current_state().selected_destination_fields = last_destination_field_names
-        default_stop_words: Optional[FieldNames] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
+        default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
-            self.__model.default_stop_words = default_stop_words
+            self.__model.set_default_stop_words(default_stop_words)
 
     def __prepare_op_params(self):
         source_filed: FieldName = self.__model.get_current_state().get_selected_source_filed()
         stop_words: Text = Text(self.__model.get_current_state().selected_stop_words)
         note_type_details: NoteTypeDetails = self.__model.get_current_state().get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type_details.note_type_id, self.__model.note_ids, None, source_filed,
+            note_type_details.note_type_id, self.__model.get_note_ids(), None, source_filed,
             self.__model.get_current_state().selected_destination_fields, stop_words,
             self.__model.get_current_state().selected_format)
         return highlight_op_params

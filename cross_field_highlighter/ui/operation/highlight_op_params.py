@@ -13,11 +13,11 @@ log: Logger = logging.getLogger(__name__)
 
 
 class HighlightOpParams:
-    def __init__(self, note_type_id: NotetypeId, note_ids: set[NoteId], parent: Optional[QWidget],
+    def __init__(self, note_type_id: NotetypeId, note_ids: list[NoteId], parent: Optional[QWidget],
                  source_field: FieldName, destination_fields: FieldNames, stop_words: Text,
                  highlight_format: HighlightFormat):
         self.note_type_id: NotetypeId = note_type_id
-        self.note_ids: set[NoteId] = note_ids
+        self.note_ids: list[NoteId] = note_ids
         self.parent: Optional[QWidget] = parent
         self.source_field: FieldName = source_field
         self.destination_fields: FieldNames = destination_fields

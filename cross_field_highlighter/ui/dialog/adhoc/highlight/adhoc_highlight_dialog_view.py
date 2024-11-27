@@ -4,7 +4,6 @@ from logging import Logger
 from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton, Qt
 
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
@@ -55,7 +54,7 @@ class AdhocHighlightDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug(f"Show view")
-        self.__model.get_current_state() #select 1st if not chosen
+        self.__model.get_current_state()  # select 1st if not chosen
         self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences
         self.show()
@@ -64,22 +63,16 @@ class AdhocHighlightDialogView(QDialog):
     def __accept(self) -> None:
         log.info("Starting")
         self.hide()
-        if self.__model.accept_callback:
-            self.__model.accept_callback()
+        self.__model.call_accept_callback()
 
     def __reject(self) -> None:
         log.info("Cancelled")
         self.hide()
-        if self.__model.reject_callback:
-            self.__model.reject_callback()
+        self.__model.call_reject_callback()
 
     def __restore_defaults(self) -> None:
         log.info("Restore defaults")
-        self.__model.switch_to_first_state()
-        self.__model.get_current_state().select_first_source_field()
-        self.__model.get_current_state().selected_format = None
-        self.__model.get_current_state().selected_stop_words = self.__model.default_stop_words
-        self.__model.get_current_state().selected_destination_fields = FieldNames([])
+        self.__model.reset_states()
         self.__model.fire_model_changed(None)
 
     def __repr__(self):
