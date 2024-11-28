@@ -1,6 +1,7 @@
 from PyQtPath.path_chain_pyqt6 import path
 from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox
 
+from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
@@ -33,11 +34,15 @@ class AdhocHighlightDialogViewScaffold:
         self.__visual_qtbot.keyClick(format_combo_box, Qt.Key.Key_Down)
         self.__visual_qtbot.keyClick(format_combo_box.view(), Qt.Key.Key_Enter)
 
-    def mark_destination_field(self) -> None:
-        check_box: QCheckBox = path(self.__view).child(FieldsLayout).checkbox().get()
-        self.__visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
-        self.__visual_qtbot.keyClick(check_box,
-                                     Qt.Key.Key_Space)  # Mouse click just focus on check_box, but doesn't select it
+    def mark_destination_field(self, field_name: FieldName) -> None:
+        checkboxes: list[QCheckBox] = path(self.__view).child(FieldsLayout).children(QCheckBox)
+        for check_box in checkboxes:
+            if check_box.text() == field_name:
+                self.__visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
+                # Mouse click just focus on check_box, but doesn't select it
+                self.__visual_qtbot.keyClick(check_box, Qt.Key.Key_Space)
+                return
+        raise AssertionError(f"Field '{field_name}' not found")
 
     def get_format_combo_box(self) -> QComboBox:
         return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()

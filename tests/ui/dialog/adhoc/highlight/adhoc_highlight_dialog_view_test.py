@@ -158,7 +158,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
     # Click Start button
     assert callback.counter == 0
-    adhoc_highlight_dialog_view_scaffold.mark_destination_field()
+    adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
     assert len(listener.history) == 5

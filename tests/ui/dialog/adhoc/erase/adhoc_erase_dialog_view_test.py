@@ -63,7 +63,8 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                                                                        'selected_note_type': cloze_note_type_details}}}
     # Click Start button
     assert callback.counter == 0
-    adhoc_erase_dialog_view_scaffold.mark_destination_field()
+    # adhoc_erase_dialog_view_scaffold.mark_destination_field()
+    adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     adhoc_erase_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
     assert len(listener.history) == 4
@@ -129,7 +130,7 @@ def test_remember_selected_fields_when_changing_note_type(
                                                                        'selected_note_type': basic_note_type_details}}}
 
     # Choose field for basic
-    adhoc_erase_dialog_view_scaffold.mark_destination_field()
+    adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_front)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_basic,
                 selected_fields=[DefaultFields.basic_front])
     assert len(listener.history) == 3
@@ -156,7 +157,7 @@ def test_remember_selected_fields_when_changing_note_type(
                                                                        'selected_note_type': cloze_note_type_details}}}
 
     # Choose field for cloze
-    adhoc_erase_dialog_view_scaffold.mark_destination_field()
+    adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_cloze,
                 selected_fields=[DefaultFields.cloze_text])
     assert len(listener.history) == 5
