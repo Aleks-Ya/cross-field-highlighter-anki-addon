@@ -54,6 +54,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         log.debug(f"On note type selected")
         self.__model.switch_state(selected_note_type)
         self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
+        self.__update_source_field_from_model()
         self.__model.fire_model_changed(self)
 
     def __on_source_field_changed(self, item: str):

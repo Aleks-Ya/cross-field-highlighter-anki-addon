@@ -73,8 +73,9 @@ def assert_source_combo_box(view: AdhocHighlightDialogView, current_source_field
     field_path: PyQtPath = group_box.child(TitledComboBoxLayout)
     assert field_path.label().get().text() == "Field"
     field_combo_box: QComboBox = field_path.combobox().get()
-    assert field_combo_box.currentText() == current_source_field
-    assert get_items(field_combo_box) == source_fields
+    assert field_combo_box.currentText() == current_source_field, f"current_source_field: '{current_source_field}' != '{field_combo_box.currentText()}'"
+    assert get_items(
+        field_combo_box) == source_fields, f"all source fields: '{get_items(field_combo_box)}' != '{source_fields}'"
 
 
 def assert_format_group_box(view: AdhocHighlightDialogView, current_format: Optional[HighlightFormat],

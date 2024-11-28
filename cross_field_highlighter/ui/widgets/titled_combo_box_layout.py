@@ -31,8 +31,10 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.currentTextChanged.connect(callback)
 
     def set_items(self, items: list[str]) -> None:
+        self.__combo_box.blockSignals(True)
         self.__combo_box.clear()
         self.__combo_box.addItems(items)
+        self.__combo_box.blockSignals(False)
 
     def set_data_items(self, items: dict[str, Any]) -> None:
         current_item: object = self.get_current_data()
