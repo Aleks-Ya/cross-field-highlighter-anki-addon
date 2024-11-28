@@ -1,3 +1,5 @@
+from aqt import Qt
+
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
     HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
@@ -95,7 +97,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_source_field': DefaultFields.basic_front,
                              'selected_stop_words': exp_default_stop_words}}}
     # Choose Note Type
-    adhoc_highlight_dialog_view_scaffold.select_2nd_note_type()
+    adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert len(listener.history) == 4
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
@@ -277,13 +279,13 @@ def test_remember_selected_source_when_changing_note_type(adhoc_highlight_dialog
     adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back, DefaultFields.all_basic)
     # Choose "Cloze" note type
-    adhoc_highlight_dialog_view_scaffold.select_2nd_note_type()
+    adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_text, DefaultFields.all_cloze)
     # Choose "Back Extra" field in "Cloze" note type
     adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_extra, DefaultFields.all_cloze)
     # Choose "Basic" note type again
-    adhoc_highlight_dialog_view_scaffold.select_1st_note_type()
+    adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front,
                             DefaultFields.all_basic)  # TODO should be DefaultFields.basic_back
 

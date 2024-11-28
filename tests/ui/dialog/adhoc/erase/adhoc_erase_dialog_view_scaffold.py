@@ -12,10 +12,11 @@ class AdhocEraseDialogViewScaffold:
         self.__view = view
         self.__visual_qtbot = visual_qtbot
 
-    def select_2nd_note_type(self) -> None:
+    def select_note_type(self, *keys: Qt.Key) -> None:
         note_type_combo_box: QComboBox = self.__get_note_type_combo_box()
         self.__visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
-        self.__visual_qtbot.keyClick(note_type_combo_box, Qt.Key.Key_Down)
+        for key in keys:
+            self.__visual_qtbot.keyClick(note_type_combo_box, key)
         self.__visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
 
     def mark_destination_field(self) -> None:

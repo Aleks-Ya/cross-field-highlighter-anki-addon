@@ -1,3 +1,5 @@
+from aqt import Qt
+
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
@@ -47,7 +49,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                                                   'states': {'Basic': {'selected_fields': [],
                                                                        'selected_note_type': basic_note_type_details}}}
     # Choose Note Type
-    adhoc_erase_dialog_view_scaffold.select_2nd_note_type()
+    adhoc_erase_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_cloze, selected_fields=[])
     assert len(listener.history) == 3
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
