@@ -14,9 +14,9 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
-from tests.data import Data, DefaultFields
+from tests.data import Data, DefaultFields, DefaultStopWords
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
-    FakeModelListener, FakeHighlightControllerCallback
+    FakeModelListener, FakeHighlightControllerCallback, assert_stop_words
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
@@ -199,8 +199,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
-                                       'stop_words': 'to '
-                                                     'the'}]}},
+                                       'stop_words': 'to the'}]}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': 'a an to',
@@ -236,8 +235,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
-                                       'stop_words': 'to '
-                                                     'the'}]}},
+                                       'stop_words': 'to the'}]}},
             'Erase': {'States': {}}}}}
     assert model.as_dict() == {
         'default_stop_words': 'a an to',
@@ -258,19 +256,17 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                           'selected_stop_words': 'to the'}}
 
 
-def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
-                         adhoc_highlight_dialog_view: AdhocHighlightDialogView,
-                         adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                         all_note_type_details: list[NoteTypeDetails],
-                         all_highlight_formats: HighlightFormats,
-                         bold_format: HighlightFormat,
-                         italic_format: HighlightFormat,
-                         adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
-                         visual_qtbot: VisualQtBot):
+def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                   adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                   adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                   all_note_type_details: list[NoteTypeDetails],
+                                   all_highlight_formats: HighlightFormats,
+                                   bold_format: HighlightFormat,
+                                   italic_format: HighlightFormat,
+                                   adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                   visual_qtbot: VisualQtBot):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
-    # Fill model
-    adhoc_highlight_dialog_model.fill(all_note_type_details, [], all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
@@ -283,3 +279,30 @@ def test_remember_format(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     # Show dialog again
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
+
+
+def test_remember_stop_words_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                       adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                       adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                       all_note_type_details: list[NoteTypeDetails],
+                                       all_highlight_formats: HighlightFormats,
+                                       bold_format: HighlightFormat,
+                                       italic_format: HighlightFormat,
+                                       adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                       visual_qtbot: VisualQtBot):
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
+    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    # Show dialog
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    assert_stop_words(adhoc_highlight_dialog_view, DefaultStopWords.in_config)
+    # Modify stop words
+    appended_stop_words: str = " the"
+    exp_stop_words: str = DefaultStopWords.in_config + appended_stop_words
+    adhoc_highlight_dialog_view_scaffold.print_to_stop_words(appended_stop_words)
+    assert_stop_words(adhoc_highlight_dialog_view, exp_stop_words)
+    # Click Cancel button
+    adhoc_highlight_dialog_view_scaffold.click_cancel_button()
+    # Show dialog again
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    assert_stop_words(adhoc_highlight_dialog_view, exp_stop_words)

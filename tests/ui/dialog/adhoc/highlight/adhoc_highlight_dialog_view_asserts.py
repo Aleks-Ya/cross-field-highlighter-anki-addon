@@ -63,7 +63,11 @@ def assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: s
     assert get_items(note_type_combo_box) == note_types
 
     assert_source_combo_box(view, current_source_field, source_fields)
+    assert_stop_words(view, stop_words)
 
+
+def assert_stop_words(view: AdhocHighlightDialogView, stop_words: str):
+    group_box: PyQtPath = path(view).group(0)
     act_stop_words: str = group_box.child(TitledLineEditLayout).child(QLineEdit).get().text()
     assert act_stop_words == stop_words, f"'{act_stop_words}' != '{stop_words}'"
 

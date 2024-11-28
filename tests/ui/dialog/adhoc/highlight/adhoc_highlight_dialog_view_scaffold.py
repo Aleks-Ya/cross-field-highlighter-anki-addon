@@ -1,3 +1,4 @@
+from PyQt6.QtWidgets import QLineEdit
 from PyQtPath.path_chain_pyqt6 import path
 from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox
 
@@ -7,6 +8,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
 from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 from tests.visual_qtbot import VisualQtBot
 
 
@@ -44,6 +46,10 @@ class AdhocHighlightDialogViewScaffold:
                 return
         raise AssertionError(f"Field '{field_name}' not found")
 
+    def print_to_stop_words(self, stop_words: str) -> None:
+        stop_words_line_edit: QLineEdit = self.__get_stop_words_line_edit()
+        self.__visual_qtbot.keyClicks(stop_words_line_edit, stop_words)
+
     def get_format_combo_box(self) -> QComboBox:
         return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()
 
@@ -77,3 +83,6 @@ class AdhocHighlightDialogViewScaffold:
     def __get_button(self, button: QDialogButtonBox.StandardButton) -> QPushButton:
         button_box: QDialogButtonBox = path(self.__view).child(QDialogButtonBox).get()
         return button_box.button(button)
+
+    def __get_stop_words_line_edit(self) -> QLineEdit:
+        return path(self.__view).group(0).child(TitledLineEditLayout).child(QLineEdit).get()

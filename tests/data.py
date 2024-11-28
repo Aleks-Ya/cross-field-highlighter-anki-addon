@@ -21,6 +21,10 @@ class DefaultFields:
     all_cloze: list[FieldName] = [cloze_text, cloze_extra]
 
 
+class DefaultStopWords:
+    in_config: str = "a an to"
+
+
 class Case:
     def __init__(self, name: str, phrase: str, original_text: str, highlighted_text: str):
         self.name: str = name
