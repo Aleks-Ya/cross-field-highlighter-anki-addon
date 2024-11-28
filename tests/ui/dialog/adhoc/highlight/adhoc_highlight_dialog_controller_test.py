@@ -102,7 +102,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                 "Default Stop Words": "a an to",
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': [],
-                                       'format': 'Bold',
+                                       'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
                                        'stop_words': 'a an '
@@ -196,7 +196,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 "Default Stop Words": "a an to",
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
-                                       'format': 'Bold',
+                                       'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
                                        'stop_words': 'to '
@@ -233,7 +233,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 "Default Stop Words": "a an to",
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
-                                       'format': 'Bold',
+                                       'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
                                        'stop_words': 'to '

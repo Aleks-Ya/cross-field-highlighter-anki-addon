@@ -115,7 +115,7 @@ class AdhocHighlightDialogModel:
         states: list[dict[str, any]] = [{
             "note_type": state.get_selected_note_type().name,
             "source_field": state.get_selected_source_filed(),
-            "format": state.get_selected_format().name,
+            "format": state.get_selected_format().code.value,
             "stop_words": state.get_selected_stop_words(),
             "destination_fields": state.get_selected_destination_fields()
         } for state in self.__states.values()]
@@ -136,8 +136,7 @@ class AdhocHighlightDialogModel:
                     self.switch_state(saved_note_type_details)
                     saved_source_field: FieldName = FieldName(state_obj["source_field"])
                     self.get_current_state().select_source_field(saved_source_field)
-                    saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(
-                        str(state_obj["format"]).upper())
+                    saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(state_obj["format"])
                     saved_highlight_format: HighlightFormat = highlight_formats[saved_highlight_format_code]
                     self.get_current_state().select_format(saved_highlight_format)
                     saved_stop_words: Text = Text(state_obj["stop_words"])
