@@ -33,6 +33,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         self.__combo_box.blockSignals(False)
 
     def set_note_types(self, note_types: list[NoteTypeDetails]) -> None:
+        self.__combo_box.blockSignals(True)
         current_item: NoteTypeDetails = self.__combo_box.currentData()
         self.__combo_box.clear()
         for note_type_details in note_types:
@@ -40,6 +41,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         if current_item in note_types:
             index: int = self.__combo_box.findData(current_item)
             self.__combo_box.setCurrentIndex(index)
+        self.__combo_box.blockSignals(False)
 
     def __on_current_index_changed(self, _: int) -> None:
         if self.__callback and self.__combo_box.currentData():

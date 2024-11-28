@@ -37,23 +37,19 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def model_changed(self, source: object) -> None:
         if source != self:
             log.debug(f"Model changed")
-            self.__fill_ui_from_model()
-
-    def __fill_ui_from_model(self):
-        self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
-        self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
-        self.__update_source_field_from_model()
-        self.__stop_words_layout.set_text(self.__model.get_current_state().get_selected_stop_words())
+            self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
+            self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
+            self.__update_source_field_from_model()
+            self.__stop_words_layout.set_text(self.__model.get_current_state().get_selected_stop_words())
 
     def __update_source_field_from_model(self):
-        if self.__model.get_current_state().get_selected_source_filed():
-            selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
-            self.__source_field_combo_box.set_current_text(selected_source_field)
+        self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
+        selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
+        self.__source_field_combo_box.set_current_text(selected_source_field)
 
     def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
         log.debug(f"On note type selected")
         self.__model.switch_state(selected_note_type)
-        self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
         self.__update_source_field_from_model()
         self.__model.fire_model_changed(self)
 

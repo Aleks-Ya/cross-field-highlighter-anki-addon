@@ -24,6 +24,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.add_listener(listener)
     exp_default_stop_words: str = "a an"
     adhoc_highlight_dialog_model.fill(all_note_type_details, [], all_highlight_formats, callback.call, None)
+    adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     # Initial state
     assert len(listener.history) == 0
@@ -35,8 +36,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': None},
-        'default_stop_words': None,
+                          'selected_stop_words': 'a an'},
+        'default_stop_words': 'a an',
         'formats': all_highlight_formats,
         'note_ids': [],
         'note_types': all_note_type_details,
@@ -46,7 +47,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None}}}
+                             'selected_stop_words': 'a an'}}}
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     assert len(listener.history) == 0
@@ -59,7 +60,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': None},
+                          'selected_stop_words': 'a an'},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,
         'note_ids': [],
@@ -69,11 +70,11 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None}}}
+                             'selected_stop_words': 'a an'}}}
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
-    assert len(listener.history) == 2
+    assert len(listener.history) == 1
     assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -98,7 +99,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
-    assert len(listener.history) == 3
+    assert len(listener.history) == 2
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -128,7 +129,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words}}}
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
-    assert len(listener.history) == 4
+    assert len(listener.history) == 3
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats,
@@ -161,7 +162,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
-    assert len(listener.history) == 4
+    assert len(listener.history) == 3
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -187,7 +188,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
-    assert len(listener.history) == 4
+    assert len(listener.history) == 3
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -213,13 +214,13 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert len(listener.history) == 7
+    assert len(listener.history) == 4
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
-                          'selected_note_type': cloze_note_type_details,
-                          'selected_source_field': DefaultFields.cloze_text,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': exp_default_stop_words},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,

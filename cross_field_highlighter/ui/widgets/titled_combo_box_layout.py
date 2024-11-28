@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Callable, Any
+from typing import Callable
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
 
@@ -36,22 +36,21 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.addItems(items)
         self.__combo_box.blockSignals(False)
 
-    def set_data_items(self, items: dict[str, Any]) -> None:
+    def set_data_items(self, items: dict[str, any]) -> None:
+        self.__combo_box.blockSignals(True)
         current_item: object = self.get_current_data()
         self.__combo_box.clear()
         for item, data in items.items():
-            self.add_item(item, data)
+            self.__combo_box.addItem(item, data)
         if current_item in items.values():
             index: int = list(items.values()).index(current_item)
             self.__combo_box.setCurrentIndex(index)
-
-    def add_item(self, item: str, data: Any) -> None:
-        self.__combo_box.addItem(item, data)
+        self.__combo_box.blockSignals(False)
 
     def get_current_text(self) -> str:
         return self.__combo_box.currentText()
 
-    def get_current_data(self) -> Any:
+    def get_current_data(self) -> any:
         return self.__combo_box.currentData()
 
     def on_current_text_changed(self, callback: Callable[[str], None]) -> None:

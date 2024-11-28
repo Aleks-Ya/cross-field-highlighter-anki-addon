@@ -47,7 +47,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
-    assert len(listener.history) == 2
+    assert len(listener.history) == 1
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
