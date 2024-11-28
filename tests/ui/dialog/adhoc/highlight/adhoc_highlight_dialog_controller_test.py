@@ -36,7 +36,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert callback.history == []
     assert listener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
         'note_ids': [],
         'note_types': [],
@@ -49,7 +49,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert callback.history == []
     assert len(listener.history) == 2
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
         'note_ids': note_ids,
         'note_types': all_note_type_details,
@@ -59,12 +59,12 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'a an to'}},
+                             'selected_stop_words': DefaultStopWords.in_config}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': 'a an to'}}
+                          'selected_stop_words': DefaultStopWords.in_config}}
 
 
 def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -77,11 +77,11 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
         'note_ids': [],
         'note_types': [],
@@ -99,7 +99,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': [],
                                        'format': 'BOLD',
@@ -109,7 +109,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                                                      'to'}]}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
         'note_ids': [],
         'note_types': all_note_type_details,
@@ -119,17 +119,17 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'a an to'}},
+                             'selected_stop_words': DefaultStopWords.in_config}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': 'a an to'}}
+                          'selected_stop_words': DefaultStopWords.in_config}}
 
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
         'note_ids': [],
         'note_types': all_note_type_details,
@@ -139,17 +139,17 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'a an to'},
+                             'selected_stop_words': DefaultStopWords.in_config},
                    'Cloze': {'selected_destination_fields': [],
                              'selected_format': bold_format,
                              'selected_note_type': cloze_note_type_details,
                              'selected_source_field': 'Text',
-                             'selected_stop_words': 'a an to'}},
+                             'selected_stop_words': DefaultStopWords.in_config}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': cloze_note_type_details,
                           'selected_source_field': DefaultFields.cloze_text,
-                          'selected_stop_words': 'a an to'}}
+                          'selected_stop_words': DefaultStopWords.in_config}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -166,11 +166,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
         'note_ids': [],
         'note_types': [],
@@ -193,7 +193,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
                                        'format': 'BOLD',
@@ -202,7 +202,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'stop_words': 'to the'}]}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
         'note_ids': [],
         'note_types': all_note_type_details,
@@ -229,7 +229,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
                                        'format': 'BOLD',
@@ -238,7 +238,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'stop_words': 'to the'}]}},
             'Erase': {'States': {}}}}}
     assert model.as_dict() == {
-        'default_stop_words': 'a an to',
+        'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
         'note_ids': [],
         'note_types': all_note_type_details,

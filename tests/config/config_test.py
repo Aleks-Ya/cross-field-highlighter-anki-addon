@@ -3,7 +3,7 @@ from typing import Any
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.types import NoteTypeName
-from tests.data import Data
+from tests.data import Data, DefaultStopWords
 
 
 class CountConfigListener(ConfigListener):
@@ -20,12 +20,12 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
     assert config.get_dialog_adhoc_highlight_states() == {}
-    assert config.get_dialog_adhoc_highlight_default_stop_words() == "a an to"
+    assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultStopWords.in_config
     assert config.get_dialog_adhoc_erase_states() == {}
 
     assert config.get_dialog_adhoc_highlight_states() == {}
@@ -61,14 +61,14 @@ def test_join(td: Data):
     base: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
     actual: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}}},
             'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
 
@@ -76,7 +76,7 @@ def test_join(td: Data):
     assert joined == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {  # Get dict from base
                 'States': {}}}}}

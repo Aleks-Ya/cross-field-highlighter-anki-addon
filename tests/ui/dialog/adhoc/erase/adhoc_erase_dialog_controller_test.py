@@ -10,7 +10,7 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model impo
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, basic_note_type_details
-from tests.data import Data, DefaultFields
+from tests.data import Data, DefaultFields, DefaultStopWords
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import FakeModelListener, FakeEraseControllerCallback
 
 
@@ -55,7 +55,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
@@ -70,7 +70,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {'current_state': 'Basic',
                                  'states': [{'fields': [], 'note_type': 'Basic'}]}}}}}
@@ -107,7 +107,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
@@ -125,7 +125,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {'current_state': 'Basic',
                                  'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
@@ -146,7 +146,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             'Erase': {'States': {'current_state': 'Basic',
                                  'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}

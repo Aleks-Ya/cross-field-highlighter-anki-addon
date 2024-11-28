@@ -8,6 +8,7 @@ from aqt.addons import AddonManager
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.types import NoteTypeName
+from tests.data import DefaultStopWords
 
 
 def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
@@ -21,7 +22,7 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
@@ -30,7 +31,7 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
     meta_json_config: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
     __write_meta_json_config(meta_json_config, module_dir)
@@ -53,7 +54,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
     __write_meta_json_config({
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}},
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
@@ -62,7 +63,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
@@ -72,28 +73,28 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
     __write_meta_json_config({
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}, module_dir)
     config_origin: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_origin == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
     config_saved: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_saved == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
@@ -103,7 +104,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
             "Erase": {'States': {}}}}}
     config.set_dialog_adhoc_highlight_states({'current_state': 'Basic',
@@ -120,7 +121,7 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
     assert act_config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": "a an to",
+                "Default Stop Words": DefaultStopWords.in_config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
                                        'format': 'Bold',
