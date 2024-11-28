@@ -5,10 +5,9 @@ from typing import Callable, Optional
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName, Text
+from cross_field_highlighter.highlighter.types import FieldName, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
@@ -43,39 +42,12 @@ class AdhocHighlightDialogController:
 
     def __save_model_to_config(self):
         log.debug("Update config from model")
-        selected_note_type: NoteTypeDetails = self.__model.get_current_state().get_selected_note_type()
-        self.__config.set_dialog_adhoc_highlight_last_note_type_name(selected_note_type.name)
-        selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
-        self.__config.set_dialog_adhoc_highlight_last_source_field_name(selected_note_type.name, selected_source_field)
-        self.__config.set_dialog_adhoc_highlight_last_format(
-            self.__model.get_current_state().get_selected_format().code if self.__model.get_current_state().get_selected_format() else None)
-        self.__config.set_dialog_adhoc_highlight_last_stop_words(
-            self.__model.get_current_state().get_selected_stop_words())
-        self.__config.set_dialog_adhoc_highlight_last_destination_field_names(
-            self.__model.get_current_state().get_selected_destination_fields())
+        self.__config.set_dialog_adhoc_highlight_states(self.__model.serialize_states())
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self):
-        last_note_type_name: Optional[NoteTypeName] = self.__config.get_dialog_adhoc_highlight_last_note_type_name()
-        if last_note_type_name:
-            selected_note_type: NoteTypeDetails = self.__note_type_details_factory.by_note_type_name(
-                last_note_type_name)
-            self.__model.switch_state(selected_note_type)
-            last_source_field_name: Optional[
-                FieldName] = self.__config.get_dialog_adhoc_highlight_last_source_field_name(last_note_type_name)
-            if last_source_field_name:
-                self.__model.get_current_state().select_source_field(last_source_field_name)
-        highlight_format_code: Optional[HighlightFormatCode] = self.__config.get_dialog_adhoc_highlight_last_format()
-        if highlight_format_code:
-            last_format: HighlightFormat = self.__formatter_facade.get_format_by_code(highlight_format_code)
-            self.__model.get_current_state().select_format(last_format)
-        last_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_last_stop_words()
-        if last_stop_words:
-            self.__model.get_current_state().set_stop_words(Text(last_stop_words))
-        last_destination_field_names: Optional[
-            FieldNames] = self.__config.get_dialog_adhoc_highlight_last_destination_field_names()
-        if last_destination_field_names:
-            self.__model.get_current_state().select_destination_fields(last_destination_field_names)
+        data: dict[str, any] = self.__config.get_dialog_adhoc_highlight_states()
+        self.__model.deserialize_states(data)
         default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
             self.__model.set_default_stop_words(default_stop_words)

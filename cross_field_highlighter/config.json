@@ -2,12 +2,8 @@
   "Dialog": {
     "Adhoc": {
       "Highlight": {
-        "Last Note Type": null,
-        "Last Source Field Name": {},
-        "Last Format": null,
-        "Last Stop Words": null,
-        "Last Destination Field Names": null,
-        "Default Stop Words": "a an to"
+        "Default Stop Words": "a an to",
+        "States": {}
       },
       "Erase": {
         "States": {}

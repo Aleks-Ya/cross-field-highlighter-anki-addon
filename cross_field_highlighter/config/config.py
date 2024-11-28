@@ -5,8 +5,6 @@ from pathlib import Path
 from typing import Any, Optional
 
 from .config_listener import ConfigListener
-from ..highlighter.formatter.highlight_format import HighlightFormatCode
-from ..highlighter.types import FieldName, FieldNames, NoteTypeName
 
 log: Logger = logging.getLogger(__name__)
 
@@ -16,12 +14,8 @@ class Config:
     __key_2_dialog_adhoc: str = 'Adhoc'
     __key_3_dialog_highlight: str = 'Highlight'
     __key_3_dialog_erase: str = 'Erase'
-    __key_4_dialog_adhoc_last_note_type: str = 'Last Note Type'
-    __key_4_dialog_adhoc_last_source_field_name: str = 'Last Source Field Name'
-    __key_4_dialog_adhoc_last_format: str = 'Last Format'
-    __key_4_dialog_adhoc_last_stop_words: str = 'Last Stop Words'
-    __key_4_dialog_adhoc_last_destination_field_names: str = 'Last Destination Field Names'
     __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
+    __key_4_dialog_highlight_states: str = 'States'
     __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
     __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
     __key_4_dialog_erase_states: str = 'States'
@@ -57,60 +51,6 @@ class Config:
                 base[k] = v
         return base
 
-    def get_dialog_adhoc_highlight_last_note_type_name(self) -> NoteTypeName:
-        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-                          self.__key_4_dialog_adhoc_last_note_type)
-
-    def set_dialog_adhoc_highlight_last_note_type_name(self, last_note_type_name: NoteTypeName) -> None:
-        self.__set(last_note_type_name, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-                   self.__key_4_dialog_adhoc_last_note_type)
-
-    def get_dialog_adhoc_highlight_last_source_field_name(self, note_type_name: NoteTypeName) -> Optional[FieldName]:
-        field_dict_opt: Optional[dict[NoteTypeName, FieldName]] = self.__get(
-            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-            self.__key_4_dialog_adhoc_last_source_field_name)
-        field_dict: dict[NoteTypeName, FieldName] = field_dict_opt if field_dict_opt else {}
-        return field_dict[note_type_name] if note_type_name in field_dict else None
-
-    def set_dialog_adhoc_highlight_last_source_field_name(self, note_type_name: NoteTypeName,
-                                                          last_source_field_name: FieldName) -> None:
-        field_dict_opt: Optional[dict[NoteTypeName, FieldName]] = self.__get(
-            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-            self.__key_4_dialog_adhoc_last_source_field_name)
-        field_dict: dict[NoteTypeName, FieldName] = field_dict_opt if field_dict_opt else {}
-        field_dict[note_type_name] = last_source_field_name
-        self.__set(field_dict, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_source_field_name)
-
-    def get_dialog_adhoc_highlight_last_format(self) -> Optional[HighlightFormatCode]:
-        highlight_format_code: Optional[str] = self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                                                          self.__key_3_dialog_highlight,
-                                                          self.__key_4_dialog_adhoc_last_format)
-        return HighlightFormatCode(highlight_format_code) if highlight_format_code else None
-
-    def set_dialog_adhoc_highlight_last_format(self, last_format_code: Optional[HighlightFormatCode]) -> None:
-        name: Optional[str] = last_format_code.name if last_format_code else None
-        self.__set(name, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_format)
-
-    def get_dialog_adhoc_highlight_last_stop_words(self) -> Optional[str]:
-        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                          self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_stop_words)
-
-    def set_dialog_adhoc_highlight_last_stop_words(self, last_stop_words: Optional[str]) -> None:
-        self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_stop_words)
-
-    def get_dialog_adhoc_highlight_last_destination_field_names(self) -> Optional[FieldNames]:
-        fields: Optional[list[str]] = self.__get(
-            self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
-            self.__key_4_dialog_adhoc_last_destination_field_names)
-        return FieldNames([FieldName(field) for field in fields]) if fields else None
-
-    def set_dialog_adhoc_highlight_last_destination_field_names(self, fields: FieldNames) -> None:
-        self.__set(fields, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_last_destination_field_names)
-
     def get_dialog_adhoc_highlight_default_stop_words(self) -> Optional[str]:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
                           self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
@@ -118,6 +58,14 @@ class Config:
     def set_dialog_adhoc_highlight_default_stop_words(self, last_stop_words: Optional[str]) -> None:
         self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
+
+    def get_dialog_adhoc_highlight_states(self) -> dict[str, any]:
+        return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+                          self.__key_4_dialog_highlight_states)
+
+    def set_dialog_adhoc_highlight_states(self, states: dict[str, any]) -> None:
+        self.__set(states, self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_highlight,
+                   self.__key_4_dialog_highlight_states)
 
     def get_dialog_adhoc_erase_states(self) -> dict[str, any]:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc, self.__key_3_dialog_erase,

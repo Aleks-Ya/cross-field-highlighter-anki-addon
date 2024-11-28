@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Callable, Optional, Any
+from typing import Callable, Optional
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
@@ -34,7 +34,7 @@ class AdhocEraseDialogController:
         self.__view.show_view()
 
     def __fill_model_from_config(self):
-        data: dict[str, Any] = self.__config.get_dialog_adhoc_erase_states()
+        data: dict[str, any] = self.__config.get_dialog_adhoc_erase_states()
         self.__model.deserialize_states(data)
 
     def __save_model_to_config(self):

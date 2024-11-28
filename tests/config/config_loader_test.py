@@ -7,8 +7,7 @@ from aqt.addons import AddonManager
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormatCode
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, NoteTypeName
+from cross_field_highlighter.highlighter.types import NoteTypeName
 
 
 def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
@@ -22,12 +21,8 @@ def test_default_values(config_loader: ConfigLoader, module_dir: Path):
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": None,
-                "Last Source Field Name": {},
-                "Last Format": None,
-                "Last Stop Words": None,
-                "Last Destination Field Names": None,
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
 
 
@@ -35,12 +30,8 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
     meta_json_config: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
     __write_meta_json_config(meta_json_config, module_dir)
     config: Config = config_loader.load_config()
@@ -48,17 +39,13 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
 
 
 def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
-    __write_meta_json_config({'Dialog': {'Adhoc': {'Highlight': {'Last Format': 'ITALIC'}}}}, module_dir)
+    __write_meta_json_config({'Dialog': {'Adhoc': {'Highlight': {'Default Stop Words': 'the'}}}}, module_dir)
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": None,
-                "Last Source Field Name": {},
-                "Last Format": "ITALIC",
-                "Last Stop Words": None,
-                "Last Destination Field Names": None,
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "the",
+                'States': {}},
             "Erase": {'States': {}}}}}
 
 
@@ -66,12 +53,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
     __write_meta_json_config({
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}},
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
         , module_dir)
@@ -79,12 +62,8 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
 
 
@@ -93,45 +72,29 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
     __write_meta_json_config({
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}, module_dir)
     config_origin: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_origin == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
     config_saved: Optional[dict[str, Any]] = addon_manager.getConfig(module_name)
     assert config_saved == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
 
 
@@ -140,17 +103,16 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": None,
-                "Last Source Field Name": {},
-                "Last Format": None,
-                "Last Stop Words": None,
-                "Last Destination Field Names": None,
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {}},
             "Erase": {'States': {}}}}}
-    config.set_dialog_adhoc_highlight_last_note_type_name(NoteTypeName("Basic"))
-    config.set_dialog_adhoc_highlight_last_source_field_name(basic_note_type_name, FieldName("English"))
-    config.set_dialog_adhoc_highlight_last_format(HighlightFormatCode.BOLD)
-    config.set_dialog_adhoc_highlight_last_destination_field_names(FieldNames([FieldName("Examples")]))
+    config.set_dialog_adhoc_highlight_states({'current_state': 'Basic',
+                                              'states': [{'destination_fields': ['Back'],
+                                                          'format': 'Bold',
+                                                          'note_type': 'Basic',
+                                                          'source_field': 'Front',
+                                                          'stop_words': 'to '
+                                                                        'the'}]})
     config.set_dialog_adhoc_erase_states(
         {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]})
     config_loader.write_config(config)
@@ -158,12 +120,14 @@ def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_
     assert act_config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Last Note Type": "Basic",
-                "Last Source Field Name": {"Basic": "English"},
-                "Last Format": "BOLD",
-                "Last Stop Words": None,
-                "Last Destination Field Names": ["Examples"],
-                "Default Stop Words": "a an to"},
+                "Default Stop Words": "a an to",
+                'States': {'current_state': 'Basic',
+                           'states': [{'destination_fields': ['Back'],
+                                       'format': 'Bold',
+                                       'note_type': 'Basic',
+                                       'source_field': 'Front',
+                                       'stop_words': 'to '
+                                                     'the'}]}},
             "Erase": {'States': {'current_state': 'Basic', 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
 
 
