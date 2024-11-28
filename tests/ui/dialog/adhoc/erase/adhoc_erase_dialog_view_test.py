@@ -129,29 +129,33 @@ def test_remember_selected_fields_when_changing_note_type(
                                                   'states': {'Basic': {'selected_fields': [],
                                                                        'selected_note_type': basic_note_type_details}}}
 
-    # Choose field for basic
+    # Choose fields for basic
     adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_front)
+    adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_back)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_basic,
-                selected_fields=[DefaultFields.basic_front])
-    assert len(listener.history) == 3
+                selected_fields=[DefaultFields.basic_front, DefaultFields.basic_back])
+    assert len(listener.history) == 4
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,
-                                                  'current_state': {'selected_fields': [DefaultFields.basic_front],
+                                                  'current_state': {'selected_fields': [DefaultFields.basic_front,
+                                                                                        DefaultFields.basic_back],
                                                                     'selected_note_type': basic_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front],
+                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front,
+                                                                                           DefaultFields.basic_back],
                                                                        'selected_note_type': basic_note_type_details}}}
 
     # Choose Note Type: cloze
     adhoc_erase_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_cloze, selected_fields=[])
-    assert len(listener.history) == 4
+    assert len(listener.history) == 5
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,
                                                   'current_state': {'selected_fields': [],
                                                                     'selected_note_type': cloze_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front],
+                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front,
+                                                                                           DefaultFields.basic_back],
                                                                        'selected_note_type': basic_note_type_details},
                                                              'Cloze': {'selected_fields': [],
                                                                        'selected_note_type': cloze_note_type_details}}}
@@ -160,13 +164,14 @@ def test_remember_selected_fields_when_changing_note_type(
     adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_cloze,
                 selected_fields=[DefaultFields.cloze_text])
-    assert len(listener.history) == 5
+    assert len(listener.history) == 6
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,
                                                   'current_state': {'selected_fields': [DefaultFields.cloze_text],
                                                                     'selected_note_type': cloze_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front],
+                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front,
+                                                                                           DefaultFields.basic_back],
                                                                        'selected_note_type': basic_note_type_details},
                                                              'Cloze': {'selected_fields': [DefaultFields.cloze_text],
                                                                        'selected_note_type': cloze_note_type_details}}}
@@ -174,14 +179,16 @@ def test_remember_selected_fields_when_changing_note_type(
     # Choose Note Type: basic
     adhoc_erase_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
     assert_view(adhoc_erase_dialog_view, check_box_texts=DefaultFields.all_basic,
-                selected_fields=[DefaultFields.basic_front])
-    assert len(listener.history) == 6
+                selected_fields=[DefaultFields.basic_front, DefaultFields.basic_back])
+    assert len(listener.history) == 7
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,
-                                                  'current_state': {'selected_fields': [DefaultFields.basic_front],
+                                                  'current_state': {'selected_fields': [DefaultFields.basic_front,
+                                                                                        DefaultFields.basic_back],
                                                                     'selected_note_type': basic_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front],
+                                                  'states': {'Basic': {'selected_fields': [DefaultFields.basic_front,
+                                                                                           DefaultFields.basic_back],
                                                                        'selected_note_type': basic_note_type_details},
                                                              'Cloze': {'selected_fields': [DefaultFields.cloze_text],
                                                                        'selected_note_type': cloze_note_type_details}}}

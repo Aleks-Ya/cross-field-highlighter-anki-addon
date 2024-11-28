@@ -42,8 +42,7 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         field_names: FieldNames = FieldNames(selected_note_type.fields)
         self.__fields_vbox.set_items(field_names)
         self.__model.switch_state(selected_note_type)
-        for selected_field in self.__model.get_current_state().get_selected_fields():
-            self.__fields_vbox.set_selected_fields(FieldNames([selected_field]))
+        self.__fields_vbox.set_selected_fields(self.__model.get_current_state().get_selected_fields())
         self.__model.fire_model_changed(self)
 
     def __on_field_selected_callback(self, selected_field_names: FieldNames):
