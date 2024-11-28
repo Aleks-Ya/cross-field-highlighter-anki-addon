@@ -115,27 +115,44 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                                   'reject_callback_None': True,
                                                   'current_state': None,
                                                   'states': {}}
-    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
 
-    # Update config from model
-    adhoc_erase_dialog_model.switch_state(basic_note_type_details)
-    adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.basic_back]))
-    adhoc_erase_dialog_model.fire_model_changed(None)
-    adhoc_erase_dialog_model.call_accept_callback()
+    # Show dialog
+    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
                 "Default Stop Words": DefaultStopWords.in_config,
                 'States': {}},
-            'Erase': {'States': {'current_state': 'Basic',
-                                 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
-    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
-                                                  'accept_callback_None': False,
-                                                  'reject_callback_None': False,
-                                                  'current_state': {'selected_fields': ['Back'],
+            'Erase': {'States': {}}}}}
+    assert adhoc_erase_dialog_model.as_dict() == {'accept_callback_None': False,
+                                                  'current_state': {'selected_fields': [],
                                                                     'selected_note_type': basic_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': ['Back'],
+                                                  'note_types': all_note_type_details,
+                                                  'reject_callback_None': False,
+                                                  'states': {'Basic': {'selected_fields': [],
                                                                        'selected_note_type': basic_note_type_details}}}
+
+    # Update config from model
+    adhoc_erase_dialog_model.switch_state(cloze_note_type_details)
+    adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.cloze_extra]))
+    adhoc_erase_dialog_model.fire_model_changed(None)
+    adhoc_erase_dialog_model.call_accept_callback()
+    assert config_loader.load_config().get_as_dict() == {
+        'Dialog': {'Adhoc': {
+            'Erase': {'States': {'current_state': 'Basic',
+                                 'states': [{'fields': [], 'note_type': 'Basic'},
+                                            {'fields': ['Back Extra'], 'note_type': 'Cloze'}]}},
+            'Highlight': {'Default Stop Words': DefaultStopWords.in_config, 'States': {}}}}}
+    assert adhoc_erase_dialog_model.as_dict() == {
+        'accept_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': basic_note_type_details},
+        'note_types': all_note_type_details,
+        'reject_callback_None': False,
+        'states': {'Basic': {'selected_fields': [],
+                             'selected_note_type': basic_note_type_details},
+                   'Cloze': {'selected_fields': ['Back Extra'],
+                             'selected_note_type': cloze_note_type_details}}}
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -145,11 +162,10 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
         model, view, note_type_details_factory, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
-            'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
-                'States': {}},
             'Erase': {'States': {'current_state': 'Basic',
-                                 'states': [{'fields': ['Back'], 'note_type': 'Basic'}]}}}}}
+                                 'states': [{'fields': [], 'note_type': 'Basic'},
+                                            {'fields': ['Back Extra'], 'note_type': 'Cloze'}]}},
+            'Highlight': {'Default Stop Words': DefaultStopWords.in_config, 'States': {}}}}}
     assert model.as_dict() == {'note_types': [],
                                'accept_callback_None': True,
                                'reject_callback_None': True,

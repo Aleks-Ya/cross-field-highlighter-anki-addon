@@ -39,7 +39,8 @@ class AdhocEraseDialogController:
 
     def __save_model_to_config(self):
         log.debug("Save model to config")
-        self.__config.set_dialog_adhoc_erase_states(self.__model.serialize_states())
+        data: dict[str, any] = self.__model.serialize_states()
+        self.__config.set_dialog_adhoc_erase_states(data)
         self.__config_loader.write_config(self.__config)
 
     def __accept_callback(self):
