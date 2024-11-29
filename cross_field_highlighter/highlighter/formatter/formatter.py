@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from cross_field_highlighter.highlighter.types import Word, Text
+from ...highlighter.types import Word, Text
 
 
 class Formatter(ABC):

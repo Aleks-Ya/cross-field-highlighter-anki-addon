@@ -1,8 +1,8 @@
 import logging
 from logging import Logger
 
-from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
-from cross_field_highlighter.highlighter.types import Words, Word, Text
+from ...highlighter.tokenizer.tokenizer import Tokenizer
+from ...highlighter.types import Words, Word, Text
 
 log: Logger = logging.getLogger(__name__)
 

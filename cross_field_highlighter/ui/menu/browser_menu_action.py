@@ -7,8 +7,8 @@ from anki.notes import NoteId, Note
 from aqt import QAction
 from aqt.browser import Browser
 
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
+from ...ui.dialog.dialog_params import DialogParams
+from ...ui.menu.dialog_params_factory import DialogParamsFactory
 
 log: Logger = logging.getLogger(__name__)
 

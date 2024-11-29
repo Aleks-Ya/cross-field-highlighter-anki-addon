@@ -5,12 +5,11 @@ from typing import Callable
 from aqt import gui_hooks, QMenu
 from aqt.browser import Browser
 
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
-    AdhocHighlightDialogController
-from cross_field_highlighter.ui.menu.browser_menu import BrowserMenu
-from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
-from cross_field_highlighter.ui.operation.op_factory import OpFactory
+from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
+from ..ui.menu.browser_menu import BrowserMenu
+from ..ui.menu.dialog_params_factory import DialogParamsFactory
+from ..ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

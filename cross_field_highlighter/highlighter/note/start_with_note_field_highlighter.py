@@ -1,10 +1,10 @@
 from anki.notes import Note
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.note.note_field_highlighter import NoteFieldHighlighter, NoteFieldHighlightResult, \
+from ...highlighter.formatter.highlight_format import HighlightFormat
+from ...highlighter.note.note_field_highlighter import NoteFieldHighlighter, NoteFieldHighlightResult, \
     NoteFieldEraseResult
-from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
-from cross_field_highlighter.highlighter.types import FieldName, Text
+from ...highlighter.text.text_highlighter import TextHighlighter
+from ...highlighter.types import FieldName, Text
 
 
 class StartWithNoteFieldHighlighter(NoteFieldHighlighter):

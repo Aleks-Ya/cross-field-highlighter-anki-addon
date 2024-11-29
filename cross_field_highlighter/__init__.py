@@ -5,31 +5,31 @@ from aqt import mw, gui_hooks
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 
-from cross_field_highlighter.config.config import Config
-from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.config.settings import Settings
-from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.note.note_field_highlighter import NoteFieldHighlighter
-from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
-from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
-from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
-from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
-from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
-from cross_field_highlighter.ui.browser_hooks import BrowserHooks
-from cross_field_highlighter.log.logs import Logs
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
+from .config.config import Config
+from .config.config_loader import ConfigLoader
+from .config.settings import Settings
+from .highlighter.formatter.formatter_facade import FormatterFacade
+from .highlighter.note.note_field_highlighter import NoteFieldHighlighter
+from .highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
+from .highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from .highlighter.notes.notes_highlighter import NotesHighlighter
+from .highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
+from .highlighter.text.text_highlighter import TextHighlighter
+from .highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from .highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
+from .highlighter.tokenizer.tokenizer import Tokenizer
+from .ui.browser_hooks import BrowserHooks
+from .log.logs import Logs
+from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from .ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
+from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
-from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
-from cross_field_highlighter.ui.operation.op_factory import OpFactory
+from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from .ui.menu.dialog_params_factory import DialogParamsFactory
+from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
+from .ui.operation.op_factory import OpFactory
 
 
 def __initialize(col: Collection):

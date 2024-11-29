@@ -1,8 +1,8 @@
 import logging
 from logging import Logger
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import FieldNames
 
 log: Logger = logging.getLogger(__name__)
 

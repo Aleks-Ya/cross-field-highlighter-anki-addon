@@ -3,13 +3,13 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldName, Text
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
-    AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
-from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
-from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
-from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import FieldName, Text
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModelListener, \
+    AdhocHighlightDialogModel
+from .....ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
+from .....ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
+from .....ui.widgets.titled_line_edit_layout import TitledLineEditLayout
 
 log: Logger = logging.getLogger(__name__)
 

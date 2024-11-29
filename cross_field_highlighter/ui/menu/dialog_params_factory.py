@@ -6,9 +6,9 @@ from anki.cards import CardId
 from anki.collection import Collection
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from ...highlighter.note_type_details import NoteTypeDetails
+from ...highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from ...ui.dialog.dialog_params import DialogParams
 
 log: Logger = logging.getLogger(__name__)
 

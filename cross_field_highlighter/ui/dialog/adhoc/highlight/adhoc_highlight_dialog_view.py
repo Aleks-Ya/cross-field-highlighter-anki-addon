@@ -3,12 +3,11 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, Qt
 
-from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
-    AdhocHighlightDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
-from cross_field_highlighter.ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
-from cross_field_highlighter.ui.dialog.adhoc.highlight.source_group_box import SourceGroupBox
+from .....ui.dialog.adhoc.button_box import ButtonBox
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from .....ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
+from .....ui.dialog.adhoc.highlight.format_group_box import FormatGroupBox
+from .....ui.dialog.adhoc.highlight.source_group_box import SourceGroupBox
 
 log: Logger = logging.getLogger(__name__)
 

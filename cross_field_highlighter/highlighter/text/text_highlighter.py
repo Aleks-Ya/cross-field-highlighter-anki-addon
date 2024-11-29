@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import Text
+from ...highlighter.formatter.highlight_format import HighlightFormat
+from ...highlighter.types import Text
 
 
 class TextHighlighter(ABC):

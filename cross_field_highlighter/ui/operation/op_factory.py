@@ -11,7 +11,7 @@ from .erase_op import EraseOp
 from .erase_op_params import EraseOpParams
 from .op_statistics_formatter import OpStatisticsFormatter
 from .highlight_op import HighlightOp
-from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from ...highlighter.notes.notes_highlighter import NotesHighlighter
 from .highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)

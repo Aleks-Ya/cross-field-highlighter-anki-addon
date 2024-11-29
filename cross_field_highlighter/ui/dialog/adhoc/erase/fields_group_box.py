@@ -3,12 +3,11 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
-    AdhocEraseDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import FieldNames
+from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, AdhocEraseDialogModel
+from .....ui.dialog.adhoc.fields_layout import FieldsLayout
+from .....ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 
 log: Logger = logging.getLogger(__name__)
 

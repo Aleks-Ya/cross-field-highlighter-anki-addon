@@ -11,11 +11,11 @@ from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
-from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
-from cross_field_highlighter.highlighter.types import FieldNames, Notes
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
-from cross_field_highlighter.ui.operation.op_statistics import OpStatistics, OpStatisticsKey
-from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
+from ...highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
+from ...highlighter.types import FieldNames, Notes
+from ...ui.operation.erase_op_params import EraseOpParams
+from ...ui.operation.op_statistics import OpStatistics, OpStatisticsKey
+from ...ui.operation.op_statistics_formatter import OpStatisticsFormatter
 
 log: Logger = logging.getLogger(__name__)
 

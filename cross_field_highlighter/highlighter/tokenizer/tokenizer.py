@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from cross_field_highlighter.highlighter.types import Text, Words
+from ...highlighter.types import Text, Words
 
 
 class Tokenizer(ABC):

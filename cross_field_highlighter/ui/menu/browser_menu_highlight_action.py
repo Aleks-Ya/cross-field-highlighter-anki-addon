@@ -4,14 +4,13 @@ from logging import Logger
 from aqt import qconnect
 from aqt.browser import Browser
 
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
-    AdhocHighlightDialogController
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
-from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
-from cross_field_highlighter.ui.operation.highlight_op import HighlightOp
-from cross_field_highlighter.ui.operation.op_factory import OpFactory
+from ...ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
+from ...ui.operation.highlight_op_params import HighlightOpParams
+from ...ui.menu.browser_menu_action import BrowserMenuAction
+from ...ui.dialog.dialog_params import DialogParams
+from ...ui.menu.dialog_params_factory import DialogParamsFactory
+from ...ui.operation.highlight_op import HighlightOp
+from ...ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

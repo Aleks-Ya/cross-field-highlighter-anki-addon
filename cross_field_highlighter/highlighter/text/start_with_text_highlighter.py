@@ -3,12 +3,12 @@ import logging
 from logging import Logger
 from re import RegexFlag
 
-from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.text.text_highlighter import TextHighlighter
-from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
-from cross_field_highlighter.highlighter.types import Text, Word, Words
+from ...highlighter.formatter.formatter_facade import FormatterFacade
+from ...highlighter.formatter.highlight_format import HighlightFormat
+from ...highlighter.text.text_highlighter import TextHighlighter
+from ...highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
+from ...highlighter.tokenizer.tokenizer import Tokenizer
+from ...highlighter.types import Text, Word, Words
 
 log: Logger = logging.getLogger(__name__)
 

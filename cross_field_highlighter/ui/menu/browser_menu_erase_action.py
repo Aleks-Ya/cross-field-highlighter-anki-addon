@@ -5,13 +5,13 @@ from anki.notes import NoteId
 from aqt import qconnect
 from aqt.browser import Browser
 
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from cross_field_highlighter.ui.menu.browser_menu_action import BrowserMenuAction
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
-from cross_field_highlighter.ui.operation.erase_op import EraseOp
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
-from cross_field_highlighter.ui.operation.op_factory import OpFactory
+from ...ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from ...ui.menu.browser_menu_action import BrowserMenuAction
+from ...ui.dialog.dialog_params import DialogParams
+from ...ui.menu.dialog_params_factory import DialogParamsFactory
+from ...ui.operation.erase_op import EraseOp
+from ...ui.operation.erase_op_params import EraseOpParams
+from ...ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ from typing import Callable, Optional
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from ...highlighter.note_type_details import NoteTypeDetails
 
 log: Logger = logging.getLogger(__name__)
 

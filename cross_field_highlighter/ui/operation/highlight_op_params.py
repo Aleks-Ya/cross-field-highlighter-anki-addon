@@ -6,8 +6,8 @@ from anki.models import NotetypeId
 from anki.notes import NoteId
 from aqt import QWidget
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames, Text
+from ...highlighter.formatter.highlight_format import HighlightFormat
+from ...highlighter.types import FieldName, FieldNames, Text
 
 log: Logger = logging.getLogger(__name__)
 

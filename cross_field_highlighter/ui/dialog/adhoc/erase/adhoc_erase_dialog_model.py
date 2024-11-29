@@ -3,9 +3,9 @@ from logging import Logger
 from abc import abstractmethod
 from typing import Callable, Optional
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import NoteTypeName, FieldNames
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_state import AdhocEraseDialogState
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import NoteTypeName, FieldNames
+from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_state import AdhocEraseDialogState
 
 log: Logger = logging.getLogger(__name__)
 

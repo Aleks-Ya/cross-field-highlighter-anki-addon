@@ -5,7 +5,7 @@ from typing import Optional
 from anki.models import NotetypeId
 from aqt import QWidget
 
-from cross_field_highlighter.highlighter.types import FieldNames
+from ...highlighter.types import FieldNames
 
 log: Logger = logging.getLogger(__name__)
 

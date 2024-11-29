@@ -2,16 +2,16 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
-from cross_field_highlighter.config.config import Config
-from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import FieldName, Text
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
+from .....config.config import Config
+from .....config.config_loader import ConfigLoader
+from .....highlighter.formatter.formatter_facade import FormatterFacade
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from .....highlighter.types import FieldName, Text
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from .....ui.dialog.dialog_params import DialogParams
+from .....ui.operation.highlight_op_params import HighlightOpParams
 
 log: Logger = logging.getLogger(__name__)
 

@@ -2,13 +2,13 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
-from cross_field_highlighter.config.config import Config
-from cross_field_highlighter.config.config_loader import ConfigLoader
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
-from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
-from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
+from .....config.config import Config
+from .....config.config_loader import ConfigLoader
+from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
+from .....ui.dialog.dialog_params import DialogParams
+from .....ui.operation.erase_op_params import EraseOpParams
 
 log: Logger = logging.getLogger(__name__)
 

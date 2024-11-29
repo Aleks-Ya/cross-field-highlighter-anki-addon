@@ -2,9 +2,9 @@ import logging
 from logging import Logger
 from typing import Optional
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import FieldNames, FieldName, Text
+from .....highlighter.formatter.highlight_format import HighlightFormat
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import FieldNames, FieldName, Text
 
 log: Logger = logging.getLogger(__name__)
 

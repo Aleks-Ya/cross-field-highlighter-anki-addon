@@ -5,11 +5,10 @@ from typing import Optional, Callable
 
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats, HighlightFormatCode, \
-    HighlightFormat
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import NoteTypeName, FieldNames, Text, FieldName
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
+from .....highlighter.formatter.highlight_format import HighlightFormats, HighlightFormatCode, HighlightFormat
+from .....highlighter.note_type_details import NoteTypeDetails
+from .....highlighter.types import NoteTypeName, FieldNames, Text, FieldName
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
 
 log: Logger = logging.getLogger(__name__)
 

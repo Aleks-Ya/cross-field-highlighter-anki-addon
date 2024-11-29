@@ -4,7 +4,7 @@ from typing import Sequence
 
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from ...highlighter.note_type_details import NoteTypeDetails
 
 log: Logger = logging.getLogger(__name__)
 

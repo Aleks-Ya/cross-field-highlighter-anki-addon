@@ -3,9 +3,9 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout
 
-from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
-from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from .....ui.dialog.adhoc.button_box import ButtonBox
+from .....ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
+from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 
 log: Logger = logging.getLogger(__name__)
 

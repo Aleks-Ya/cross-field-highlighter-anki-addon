@@ -6,8 +6,8 @@ from anki.collection import Collection
 from anki.models import NotetypeId, NoteType
 from anki.notes import NoteId
 
-from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.highlighter.types import NoteTypeName
+from ..highlighter.note_type_details import NoteTypeDetails
+from ..highlighter.types import NoteTypeName
 
 log: Logger = logging.getLogger(__name__)
 

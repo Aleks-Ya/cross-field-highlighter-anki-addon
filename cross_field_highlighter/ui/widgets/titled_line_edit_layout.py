@@ -4,7 +4,7 @@ from typing import Optional, Callable
 
 from aqt.qt import QHBoxLayout, QLabel, QLineEdit
 
-from cross_field_highlighter.highlighter.types import Text
+from ...highlighter.types import Text
 
 log: Logger = logging.getLogger(__name__)
 

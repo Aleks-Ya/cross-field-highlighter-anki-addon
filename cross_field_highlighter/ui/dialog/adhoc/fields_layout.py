@@ -4,7 +4,7 @@ from typing import Callable, Optional
 
 from aqt import QVBoxLayout, QCheckBox, QLabel, Qt
 
-from cross_field_highlighter.highlighter.types import FieldName, FieldNames
+from ....highlighter.types import FieldName, FieldNames
 
 log: Logger = logging.getLogger(__name__)
 

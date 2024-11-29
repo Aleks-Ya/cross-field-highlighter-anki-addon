@@ -1,8 +1,8 @@
 from re import Pattern, split, compile, escape
 import string
 
-from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
-from cross_field_highlighter.highlighter.types import Word, Text, Words
+from ...highlighter.tokenizer.tokenizer import Tokenizer
+from ...highlighter.types import Word, Text, Words
 
 
 class RegExTokenizer(Tokenizer):

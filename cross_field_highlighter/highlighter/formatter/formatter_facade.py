@@ -1,11 +1,10 @@
 import logging
 from logging import Logger
 
-from cross_field_highlighter.highlighter.formatter.formatter import Formatter
-from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
-    HighlightFormats
-from cross_field_highlighter.highlighter.formatter.tag_formatter import TagFormatter
-from cross_field_highlighter.highlighter.types import Text, Word
+from ...highlighter.formatter.formatter import Formatter
+from ...highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, HighlightFormats
+from ...highlighter.formatter.tag_formatter import TagFormatter
+from ...highlighter.types import Text, Word
 
 log: Logger = logging.getLogger(__name__)
 

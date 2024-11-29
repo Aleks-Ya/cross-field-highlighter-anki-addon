@@ -3,10 +3,10 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
-from cross_field_highlighter.highlighter.types import FieldNames
-from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
-from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
-    AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
+from .....highlighter.types import FieldNames
+from .....ui.dialog.adhoc.fields_layout import FieldsLayout
+from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModelListener, \
+    AdhocHighlightDialogModel
 
 log: Logger = logging.getLogger(__name__)
 

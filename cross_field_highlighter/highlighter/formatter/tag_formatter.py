@@ -1,7 +1,7 @@
 import re
 
-from cross_field_highlighter.highlighter.formatter.formatter import Formatter
-from cross_field_highlighter.highlighter.types import Word, Text
+from ...highlighter.formatter.formatter import Formatter
+from ...highlighter.types import Word, Text
 
 
 class TagFormatter(Formatter):

@@ -3,7 +3,7 @@ from logging import Logger
 
 from anki.collection import Collection
 
-from cross_field_highlighter.ui.operation.op_statistics import OpStatistics, OpStatisticsKey
+from ...ui.operation.op_statistics import OpStatistics, OpStatisticsKey
 
 log: Logger = logging.getLogger(__name__)
 

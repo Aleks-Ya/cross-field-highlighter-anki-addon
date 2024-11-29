@@ -1,6 +1,6 @@
 from anki.models import NotetypeId
 
-from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName
+from ..highlighter.types import FieldNames, NoteTypeName
 
 
 class NoteTypeDetails:
