@@ -46,7 +46,7 @@ class AdhocHighlightDialogView(QDialog):
         layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)
         layout.addWidget(self.__format_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
         layout.addWidget(self.__destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(button_box, 3, 0, Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(button_box, 3, 0, 1, 3, Qt.AlignmentFlag.AlignRight)
 
         self.setLayout(layout)
         self.setMinimumSize(300, 200)
