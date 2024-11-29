@@ -14,6 +14,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         super().__init__()
         label: QLabel = QLabel("Note Type")
         self.__combo_box: QComboBox = QComboBox(None)
+        self.__combo_box.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
         self.__callback: Optional[Callable[[NoteTypeDetails], None]] = None
         self.__combo_box.currentIndexChanged.connect(self.__on_current_index_changed)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
