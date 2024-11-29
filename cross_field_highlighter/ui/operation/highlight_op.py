@@ -35,7 +35,7 @@ class HighlightOp(QueryOp):
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
         self.__note_type_id: NotetypeId = params.note_type_id
-        self.__note_ids: set[NoteId] = params.note_ids
+        self.__note_ids: set[NoteId] = set(params.note_ids)
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
