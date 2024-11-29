@@ -16,7 +16,7 @@ def _read_long_description():
 
 
 def _read_version() -> str:
-    version_file: str = os.path.join(os.path.dirname(__file__), 'note_size', 'version.txt')
+    version_file: str = os.path.join(os.path.dirname(__file__), 'cross_field_highlighter', 'version.txt')
     with open(version_file, 'r') as f:
         return f.read().strip()
 
@@ -59,17 +59,19 @@ class MakeDistributionCommand(Command):
         print("Running integration tests...")
         result: CompletedProcess[str] = subprocess.run(
             ['pytest', '-m', 'integration'], capture_output=True, text=True)
-        if result.returncode != 0:
+        if result.returncode == 5:
+            print("No integration tests found")
+        elif result.returncode != 0:
             print(result.stderr)
             print(result.stdout)
             raise SystemExit(result.returncode)
 
     def __package_zip(self):
         print("Packaging...")
-        note_size_dir: str = 'note_size'
-        note_size_package_dir: Path = Path(self.project_dir, note_size_dir)
-        dest_subdir: Path = Path(self.build_dir, note_size_dir)
-        shutil.copytree(note_size_package_dir, dest_subdir,
+        addon_dir: str = 'cross_field_highlighter'
+        addon_package_dir: Path = Path(self.project_dir, addon_dir)
+        dest_subdir: Path = Path(self.build_dir, addon_dir)
+        shutil.copytree(addon_package_dir, dest_subdir,
                         ignore=shutil.ignore_patterns("*.log", "__pycache__", "meta.json"))
         self.__generate_manifest(dest_subdir)
         self.__copy_file_to_build("LICENSE", dest_subdir)
@@ -110,13 +112,13 @@ class MakeDistributionCommand(Command):
 
 
 setuptools.setup(
-    name="note_size_anki_addon",
+    name="cross_field_highlighter_anki_addon",
     version=_version,
     author=_author,
-    description="Note Size Anki addon",
+    description="Cross-Field Highlighter Anki addon",
     long_description=_read_long_description(),
     long_description_content_type="text/markdown",
-    url="https://github.com/Aleks-Ya/note-size-anki-addon",
+    url="https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon",
     packages=list(),
     test_suite="tests",
     cmdclass={
