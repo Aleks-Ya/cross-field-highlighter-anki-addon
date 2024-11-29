@@ -41,7 +41,7 @@ Run automated tests:
 
 ## SonarQube
 
-Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)
+Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_note-size-anki-addon)
 
 ## Local deploy
 
