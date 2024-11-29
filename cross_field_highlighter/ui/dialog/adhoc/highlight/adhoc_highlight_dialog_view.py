@@ -1,9 +1,10 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton, Qt
+from aqt.qt import QDialog, QGridLayout, Qt
 
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
@@ -24,28 +25,14 @@ class AdhocHighlightDialogView(QDialog):
         self.setWindowTitle('Highlight')
 
         source_group_box: SourceGroupBox = SourceGroupBox(model)
-        self.__format_group_box: FormatGroupBox = FormatGroupBox(model)
-
-        button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                                        QDialogButtonBox.StandardButton.Cancel |
-                                                        QDialogButtonBox.StandardButton.RestoreDefaults)
-        start_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
-        start_button.setText("Start")
-        self.__destination_group_box: DestinationGroupBox = DestinationGroupBox(model)
-        # noinspection PyUnresolvedReferences
-        button_box.accepted.connect(self.__accept)
-        # noinspection PyUnresolvedReferences
-        button_box.rejected.connect(self.__reject)
-        restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
-        # noinspection PyUnresolvedReferences
-        restore_defaults_button.setToolTip('Reset settings in this dialog to defaults')
-        # noinspection PyUnresolvedReferences
-        restore_defaults_button.clicked.connect(self.__restore_defaults)
+        format_group_box: FormatGroupBox = FormatGroupBox(model)
+        destination_group_box: DestinationGroupBox = DestinationGroupBox(model)
+        button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(self)
         layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(self.__format_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(self.__destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(format_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
         layout.addWidget(button_box, 3, 0, 1, 3, Qt.AlignmentFlag.AlignRight)
 
         self.setLayout(layout)

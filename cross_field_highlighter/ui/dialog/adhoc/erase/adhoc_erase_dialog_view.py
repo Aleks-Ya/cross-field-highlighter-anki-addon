@@ -1,9 +1,10 @@
 import logging
 from logging import Logger
 
-from aqt.qt import QDialog, QGridLayout, QDialogButtonBox, QPushButton
+from aqt.qt import QDialog, QGridLayout
 
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
+from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 
@@ -21,25 +22,11 @@ class AdhocEraseDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')
 
-        self.__fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model)
-
-        button_box: QDialogButtonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                                        QDialogButtonBox.StandardButton.Cancel |
-                                                        QDialogButtonBox.StandardButton.RestoreDefaults)
-        start_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.Ok)
-        start_button.setText("Start")
-        # noinspection PyUnresolvedReferences
-        button_box.accepted.connect(self.__accept)
-        # noinspection PyUnresolvedReferences
-        button_box.rejected.connect(self.__reject)
-        restore_defaults_button: QPushButton = button_box.button(QDialogButtonBox.StandardButton.RestoreDefaults)
-        # noinspection PyUnresolvedReferences
-        restore_defaults_button.setToolTip('Reset settings in this dialog to defaults')
-        # noinspection PyUnresolvedReferences
-        restore_defaults_button.clicked.connect(self.__restore_defaults)
+        fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model)
+        button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
-        layout.addWidget(self.__fields_group_layout, 0, 0)
+        layout.addWidget(fields_group_layout, 0, 0)
         layout.addWidget(button_box, 3, 0)
 
         self.setLayout(layout)
