@@ -77,7 +77,7 @@ class MakeDistributionCommand(Command):
         self.__copy_file_to_build("LICENSE", dest_subdir)
         self.__copy_file_to_build("README.md", dest_subdir)
         self.__copy_file_to_build("CHANGELOG.md", dest_subdir)
-        output_zip: Path = Path(self.build_dir, f'note-size-{_version}')
+        output_zip: Path = Path(self.build_dir, f'cross-field-highlighter-{_version}')
         actual_output_zip: Path = Path(shutil.make_archive(str(output_zip), 'zip', dest_subdir))
         renamed_output_zip: Path = Path(actual_output_zip.parent, f"{actual_output_zip.stem}.ankiaddon")
         os.rename(actual_output_zip, renamed_output_zip)
@@ -96,13 +96,13 @@ class MakeDistributionCommand(Command):
         commit: Commit = tag.commit if tag in repo.tags else repo.head.commit
         commit_epoch_sec: int = int(commit.committed_datetime.timestamp())
         draft: dict[str, any] = {
-            "name": f"Note Size - sort notes by size {version}",
-            "package": "1188705668",
+            "name": f"Cross-Field Highlighter {version}",
+            "package": "000",
             "author": _author,
-            "min_point_version": 240401,
-            "max_point_version": 240603,
+            "min_point_version": 240603,
+            "max_point_version": 241100,
             "human_version": version,
-            "homepage": "https://ankiweb.net/shared/info/1188705668",
+            "homepage": "https://ankiweb.net/shared/info/000",
             "mod": commit_epoch_sec
         }
         path: Path = Path(dest_subdir, 'manifest.json')
