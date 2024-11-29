@@ -34,7 +34,7 @@ class AdhocHighlightDialogView(QDialog):
         layout.addWidget(button_box, 3, 0, 1, 3, Qt.AlignmentFlag.AlignRight)
 
         self.setLayout(layout)
-        self.setMinimumSize(300, 200)
+        self.resize(300, 200)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_view(self) -> None:
