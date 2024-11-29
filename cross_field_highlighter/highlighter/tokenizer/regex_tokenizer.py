@@ -1,4 +1,4 @@
-import re
+from re import Pattern, split, compile, escape
 import string
 
 from cross_field_highlighter.highlighter.tokenizer.tokenizer import Tokenizer
@@ -6,13 +6,35 @@ from cross_field_highlighter.highlighter.types import Word, Text, Words
 
 
 class RegExTokenizer(Tokenizer):
-    __punctuation = string.punctuation.replace("/", "").replace("<", "").replace(">", "")
-    __punctuation_pattern: re.Pattern[str] = re.compile(f"([{re.escape(__punctuation)}])")
+    def __init__(self):
+        self.__punctuation_pattern: Pattern[str] = self.__create_punctuation_pattern()
 
     def tokenize(self, text: Text) -> Words:
         super().tokenize(text)
-        words: Words = Words([Word(word) for word in re.split(r'(\s)', text)])
-        words_list: list[Words] = [Words(re.split(self.__punctuation_pattern, word)) for word in words]
-        words2: Words = Words([item for sublist in words_list for item in sublist])
-        non_empty_words: Words = Words([word for word in words2 if word != ''])
-        return non_empty_words
+        by_space: Words = self.__split_by_spaces(text)
+        by_punctuation: Words = self.__split_by_punctuation(by_space)
+        non_empty: Words = self.__remove_empty_words(by_punctuation)
+        return non_empty
+
+    @staticmethod
+    def __create_punctuation_pattern() -> Pattern[str]:
+        punctuation: str = string.punctuation.replace("/", "").replace("<", "").replace(">", "")
+        punctuation_escaped: str = escape(punctuation)
+        punctuation_pattern: Pattern[str] = compile(f"([{punctuation_escaped}])")
+        return punctuation_pattern
+
+    @staticmethod
+    def __remove_empty_words(words: Words):
+        return Words([word for word in words if word != ''])
+
+    def __split_by_punctuation(self, words: Words) -> Words:
+        words: list[Words] = [Words(split(self.__punctuation_pattern, word)) for word in words]
+        return self.__flatten(words)
+
+    @staticmethod
+    def __split_by_spaces(text: Text) -> Words:
+        return Words([Word(word) for word in split(r'(\s)', text)])
+
+    @staticmethod
+    def __flatten(words_list: list[Words]) -> Words:
+        return Words([item for sublist in words_list for item in sublist])
