@@ -1,6 +1,6 @@
 # "Cross-Field Highlighter" Anki addon
 
-"Cross-Field Highlighter" (CFH) takes word or collocation from the source field and highlights it in the destination
+"Cross-Field Highlighter" takes word or collocation from the source field and highlights it in the destination
 fields:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/short-description-2.png)
 
