@@ -3,7 +3,6 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, Qt
 
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModel
@@ -16,10 +15,9 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogView(QDialog):
 
-    def __init__(self, model: AdhocHighlightDialogModel, note_type_details_factory: NoteTypeDetailsFactory):
+    def __init__(self, model: AdhocHighlightDialogModel):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
-        self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Highlight')

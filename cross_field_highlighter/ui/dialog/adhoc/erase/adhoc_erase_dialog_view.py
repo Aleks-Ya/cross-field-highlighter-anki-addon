@@ -3,7 +3,6 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout
 
-from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.ui.dialog.adhoc.button_box import ButtonBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -13,11 +12,9 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogView(QDialog):
 
-    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel,
-                 note_type_details_factory: NoteTypeDetailsFactory):
+    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel):
         super().__init__(parent=None)
         self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
-        self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
         self.setWindowTitle('Erase')

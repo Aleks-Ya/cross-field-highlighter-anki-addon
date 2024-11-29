@@ -274,11 +274,10 @@ def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
 
 
 @pytest.fixture
-def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                                note_type_details_factory: NoteTypeDetailsFactory, visual_qtbot: VisualQtBot,
+def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, visual_qtbot: VisualQtBot,
                                 theme_manager: ThemeManager, mw: AnkiQt) -> AdhocHighlightDialogView:
     assert mw is not None  # initialize aqt.mw
-    view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model, note_type_details_factory)
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     theme_manager.apply_style()
     visual_qtbot.addWidget(view)
     return view
@@ -306,11 +305,10 @@ def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
 
 
 @pytest.fixture
-def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel,
-                            note_type_details_factory: NoteTypeDetailsFactory, theme_manager: ThemeManager,
+def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, theme_manager: ThemeManager,
                             visual_qtbot: VisualQtBot, mw: AnkiQt) -> AdhocEraseDialogView:
     assert mw is not None  # initialize aqt.mw
-    view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model, note_type_details_factory)
+    view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     theme_manager.apply_style()
     visual_qtbot.addWidget(view)
     return view
