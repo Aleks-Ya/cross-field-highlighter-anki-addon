@@ -1,1 +1,1 @@
-# Cross-Field Highlighter Anki addon
+# "Cross-Field Highlighter" Anki addon
