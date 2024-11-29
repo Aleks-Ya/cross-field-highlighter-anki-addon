@@ -48,12 +48,12 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
 
     statistics: OpStatistics = erase_op.get_statistics()
     assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
-                                    OpStatisticsKey.NOTES_SELECTED_ALL: 13,
-                                    OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 13,
-                                    OpStatisticsKey.NOTES_PROCESSED: 13,
-                                    OpStatisticsKey.NOTES_MODIFIED: 12,
-                                    OpStatisticsKey.FIELDS_PROCESSED: 13,
-                                    OpStatisticsKey.FIELDS_MODIFIED: 12}
+                                    OpStatisticsKey.NOTES_SELECTED_ALL: 14,
+                                    OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 14,
+                                    OpStatisticsKey.NOTES_PROCESSED: 14,
+                                    OpStatisticsKey.NOTES_MODIFIED: 13,
+                                    OpStatisticsKey.FIELDS_PROCESSED: 14,
+                                    OpStatisticsKey.FIELDS_MODIFIED: 13}
 
 
 def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
@@ -63,7 +63,7 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
     note_2: Note = td.create_basic_note_2()
     note_3: Note = td.create_cloze_note()
     notes: Notes = Notes([note_1, note_2, note_3])
-    note_ids: set[NoteId] = {note.id for note in notes}
+    note_ids: list[NoteId] = [note.id for note in notes]
 
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
@@ -86,7 +86,7 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
     assert col.get_note(note_3.id).fields == note_3.fields
 
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, parent, destination_fields)
-    erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
+    erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, set(note_ids),
                                 op_statistics_formatter, erase_op_params, lambda: None)
     erase_op.run_in_background()
     time.sleep(1)

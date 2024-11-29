@@ -150,7 +150,11 @@ class Data:
             Case("tag div",
                  'ivy',
                  '<li><div>There is ivy trailing all over the wall.</div></li>',
-                 '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>')
+                 '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>'),
+            Case("the beginning of a sentence",
+                 'hello',
+                 'Hello beautiful world!',
+                 '<b class="cross-field-highlighter">Hello</b> beautiful world!')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
@@ -178,4 +182,6 @@ class Data:
     def assert_highlighted_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:
             act_note: Note = self.col.get_note(case_note.note.id)
-            assert act_note[DefaultFields.basic_back] == case_note.highlighted_content
+            act_content: str = act_note[DefaultFields.basic_back]
+            exp_content: FieldContent = case_note.highlighted_content
+            assert act_content == exp_content, f"Field content: '{act_content}' != '{exp_content}'"
