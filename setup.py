@@ -97,12 +97,12 @@ class MakeDistributionCommand(Command):
         commit_epoch_sec: int = int(commit.committed_datetime.timestamp())
         draft: dict[str, any] = {
             "name": f"Cross-Field Highlighter {version}",
-            "package": "000",
+            "package": "1312127886",
             "author": _author,
             "min_point_version": 240603,
             "max_point_version": 241100,
             "human_version": version,
-            "homepage": "https://ankiweb.net/shared/info/000",
+            "homepage": "https://ankiweb.net/shared/info/1312127886",
             "mod": commit_epoch_sec
         }
         path: Path = Path(dest_subdir, 'manifest.json')
