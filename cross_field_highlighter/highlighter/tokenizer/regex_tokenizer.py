@@ -12,7 +12,8 @@ class RegExTokenizer(Tokenizer):
     def tokenize(self, text: Text) -> Words:
         super().tokenize(text)
         by_space: Words = self.__split_by_spaces(text)
-        by_punctuation: Words = self.__split_by_punctuation(by_space)
+        by_tags: Words = self.__split_by_tags(by_space)
+        by_punctuation: Words = self.__split_by_punctuation(by_tags)
         non_empty: Words = self.__remove_empty_words(by_punctuation)
         return non_empty
 
@@ -29,6 +30,11 @@ class RegExTokenizer(Tokenizer):
 
     def __split_by_punctuation(self, words: Words) -> Words:
         words: list[Words] = [Words(split(self.__punctuation_pattern, word)) for word in words]
+        return self.__flatten(words)
+
+    def __split_by_tags(self, words: Words) -> Words:
+        pattern: Pattern[str] = compile(f"(<[^>]+>)")
+        words: list[Words] = [Words(split(pattern, word)) for word in words]
         return self.__flatten(words)
 
     @staticmethod

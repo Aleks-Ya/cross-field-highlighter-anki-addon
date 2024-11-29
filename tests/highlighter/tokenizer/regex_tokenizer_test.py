@@ -20,4 +20,9 @@ def test_tokenize_by_line_break(tokenize: Callable[[str], Words]):
 
 
 def test_tokenize_tag(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, <b>beautiful</b>\nworld!') == ['Hello', ',', ' ', '<b>beautiful</b>', '\n', 'world', '!']
+    assert tokenize('Hello, <b>beautiful</b>\nworld!') == ['Hello', ',', ' ', '<b>', 'beautiful', '</b>', '\n', 'world',
+                                                           '!']
+
+
+def test_tokenize_html_tags(tokenize: Callable[[str], Words]):
+    assert tokenize('<li>Hello, world!</li>') == ['<li>', 'Hello', ',', ' ', 'world', '!', '</li>']

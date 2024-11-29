@@ -154,7 +154,11 @@ class Data:
             Case("the beginning of a sentence",
                  'hello',
                  'Hello beautiful world!',
-                 '<b class="cross-field-highlighter">Hello</b> beautiful world!')
+                 '<b class="cross-field-highlighter">Hello</b> beautiful world!'),
+            Case("phrase touches tag",
+                 'hello',
+                 '<li>Hello, beautiful world!</li>',
+                 '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
