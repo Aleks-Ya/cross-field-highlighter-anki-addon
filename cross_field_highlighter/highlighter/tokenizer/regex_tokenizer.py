@@ -2,7 +2,7 @@ from re import Pattern, split, compile, escape
 import string
 
 from ...highlighter.tokenizer.tokenizer import Tokenizer
-from ...highlighter.types import Word, Text, Words
+from ...highlighter.types import Text, Words, Word
 
 
 class RegExTokenizer(Tokenizer):
@@ -11,7 +11,8 @@ class RegExTokenizer(Tokenizer):
 
     def tokenize(self, text: Text) -> Words:
         super().tokenize(text)
-        by_space: Words = self.__split_by_spaces(text)
+        words: Words = Words([Word(text)])
+        by_space: Words = self.__split_by_spaces(words)
         by_tags: Words = self.__split_by_tags(by_space)
         by_punctuation: Words = self.__split_by_punctuation(by_tags)
         non_empty: Words = self.__remove_empty_words(by_punctuation)
@@ -37,9 +38,9 @@ class RegExTokenizer(Tokenizer):
         words: list[Words] = [Words(split(pattern, word)) for word in words]
         return self.__flatten(words)
 
-    @staticmethod
-    def __split_by_spaces(text: Text) -> Words:
-        return Words([Word(word) for word in split(r'(\s)', text)])
+    def __split_by_spaces(self, words: Words) -> Words:
+        words: list[Words] = [Words(split(r'(\s)', word)) for word in words]
+        return self.__flatten(words)
 
     @staticmethod
     def __flatten(words_list: list[Words]) -> Words:
