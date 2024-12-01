@@ -7,7 +7,7 @@ from ...highlighter.formatter.formatter_facade import FormatterFacade
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.text.text_highlighter import TextHighlighter
 from ...highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from ...highlighter.tokenizer.tokenizer import Tokenizer
+from ...highlighter.tokenizer.tokenizer import Tokenizer, Tokens
 from ...highlighter.types import Text, Word, Words
 
 log: Logger = logging.getLogger(__name__)
@@ -25,22 +25,21 @@ class StartWithTextHighlighter(TextHighlighter):
     def highlight(self, collocation: Text, text: Text, stop_words: Text,
                   highlight_format: HighlightFormat) -> Text:
         super().highlight(collocation, text, stop_words, highlight_format)
-        collocation_words: Words = Words(self.__tokenizer.tokenize_distinct(collocation))
-        if self.__space in collocation_words:
-            collocation_words.remove(self.__space)
-        stop_words_tokenized: Words = self.__stop_words_tokenizer.tokenize(stop_words)
-        for stop_word in stop_words_tokenized:
-            if stop_word in collocation_words:
-                collocation_words.remove(stop_word)
+        collocation_tokens: Tokens = self.__tokenizer.tokenize_distinct(collocation)
+        collocation_tokens.delete_word(self.__space)
+        stop_words_tokenized: Tokens = self.__stop_words_tokenizer.tokenize(stop_words)
+        for stop_token in stop_words_tokenized:
+            collocation_tokens.delete_word(stop_token.word)
         highlighted_words: Words = Words([])
         clean_text: Text = self.erase(text)
-        text_words: Words = self.__tokenizer.tokenize(clean_text)
-        for text_word in text_words:
-            highlighted_word: Word = text_word
-            for word in collocation_words:
+        text_tokens: Tokens = self.__tokenizer.tokenize(clean_text)
+        for text_token in text_tokens:
+            highlighted_word: Word = text_token.word
+            for token in collocation_tokens:
+                word: Word = token.word
                 word_regexp: str = fr"{word[:len(word) - 1]}\w*" if len(word) > 2 else word
-                if re.match(word_regexp, text_word, RegexFlag.IGNORECASE | RegexFlag.UNICODE):
-                    highlighted_word: Word = self.__formatter_facade.format(text_word, highlight_format)
+                if re.match(word_regexp, text_token.word, RegexFlag.IGNORECASE | RegexFlag.UNICODE):
+                    highlighted_word: Word = self.__formatter_facade.format(text_token.word, highlight_format)
                     break
             highlighted_words.append(highlighted_word)
         return Text("".join(highlighted_words))

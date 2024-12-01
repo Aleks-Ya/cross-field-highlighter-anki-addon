@@ -9,3 +9,7 @@
 ## [v0.1.3](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.1.3) - 2024-11-29
 
 1. __[MISC]__ Update addon ID
+
+## [v0.1.4](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.1.4) - 2024-12-01
+
+1. __[BUG]__ Do not highlight collocation within HTML tags

@@ -162,7 +162,11 @@ class Data:
             Case("tag contains spaces",
                  'hello',
                  '<p class="big">Hello, beautiful world!</p>',
-                 '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>')
+                 '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'),
+            Case("collocation within a tag",
+                 'hello',
+                 '<p class="hello">Hello, beautiful world!</p>',
+                 '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
