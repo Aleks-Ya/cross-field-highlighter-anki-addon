@@ -20,3 +20,4 @@ CFH menu:
 ## Links
 
 - [GitHub project](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon)
+- [Changelog](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md)
