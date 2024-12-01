@@ -12,9 +12,9 @@ class RegExTokenizer(Tokenizer):
     def tokenize(self, text: Text) -> Words:
         super().tokenize(text)
         words: Words = Words([Word(text)])
-        by_space: Words = self.__split_by_spaces(words)
-        by_tags: Words = self.__split_by_tags(by_space)
-        by_punctuation: Words = self.__split_by_punctuation(by_tags)
+        by_tags: Words = self.__split_by_tags(words)
+        by_space: Words = self.__split_by_spaces(by_tags)
+        by_punctuation: Words = self.__split_by_punctuation(by_space)
         non_empty: Words = self.__remove_empty_words(by_punctuation)
         return non_empty
 

@@ -158,7 +158,11 @@ class Data:
             Case("phrase touches tag",
                  'hello',
                  '<li>Hello, beautiful world!</li>',
-                 '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>')
+                 '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>'),
+            Case("tag contains spaces",
+                 'hello',
+                 '<p class="big">Hello, beautiful world!</p>',
+                 '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
