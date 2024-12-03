@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+
+start
+partition Erase {
+    :Erase field;
+}
+partition Tokenize {
+    :Tokenize by tags;
+    :Tokenize by spaces;
+    :Tokenize by punctuation;
+}
+partition Highlight {
+    :Highlight field;
+}
+stop
+
+@enduml

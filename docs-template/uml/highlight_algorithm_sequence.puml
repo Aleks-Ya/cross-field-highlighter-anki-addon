@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+HighlightOp -> NotesHighlighter: highlight(Notes)
+    loop for each Note
+        NotesHighlighter -> NoteFieldHighlighter: highlight(Note)
+            NoteFieldHighlighter -> TextHighlighter: highlight(Text)
+                TextHighlighter -> Tokenizer: tokenize_distinct(collocation)
+                TextHighlighter <-- Tokenizer: Tokens
+                TextHighlighter -> StopWordsTokenizer: tokenize(stop_words)
+                TextHighlighter <-- StopWordsTokenizer: Tokens
+                TextHighlighter -> TextHighlighter: erase()
+                TextHighlighter -> Tokenizer: tokenize(clear_text)
+                loop for each Token
+                    TextHighlighter -> TokenHighlighter: highlight(Token)
+                    TextHighlighter <-- TokenHighlighter: Word
+                end
+            NoteFieldHighlighter <-- TextHighlighter: Text
+        NotesHighlighter <-- NoteFieldHighlighter: NoteFieldHighlightResult
+    end
+HighlightOp <-- NotesHighlighter: NotesHighlighterResult
+
+@enduml
