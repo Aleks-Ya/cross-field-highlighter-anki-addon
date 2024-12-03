@@ -1,4 +1,5 @@
 from anki.notes import Note, NoteId
+from aqt import Qt
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
@@ -285,7 +286,7 @@ def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighl
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
     assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
     # Choose "Italic" format
-    adhoc_highlight_dialog_view_scaffold.select_2nd_format_combo_box()
+    adhoc_highlight_dialog_view_scaffold.select_format(Qt.Key.Key_Down)
     assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()

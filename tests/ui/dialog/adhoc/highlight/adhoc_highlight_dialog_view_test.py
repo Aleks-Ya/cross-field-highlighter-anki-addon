@@ -138,7 +138,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'selected_stop_words': exp_default_stop_words,
                              'space_delimited_language': True}}}
     # Choose Field
-    adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
+    adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert len(listener.history) == 4
     assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
@@ -298,13 +298,13 @@ def test_remember_selected_source_when_changing_note_type(
     visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front, DefaultFields.all_basic)
     # Choose "Back" field in "Basic" note type
-    adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
+    adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back, DefaultFields.all_basic)
     # Choose "Cloze" note type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_text, DefaultFields.all_cloze)
     # Choose "Back Extra" field in "Cloze" note type
-    adhoc_highlight_dialog_view_scaffold.select_2nd_source_field_combo_box()
+    adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.cloze_extra, DefaultFields.all_cloze)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],

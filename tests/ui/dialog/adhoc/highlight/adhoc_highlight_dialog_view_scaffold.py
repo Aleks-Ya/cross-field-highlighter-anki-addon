@@ -19,21 +19,20 @@ class AdhocHighlightDialogViewScaffold:
 
     def select_note_type(self, *keys: Qt.Key) -> None:
         note_type_combo_box: QComboBox = self.__get_note_type_combo_box()
-        self.__visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
         for key in keys:
             self.__visual_qtbot.keyClick(note_type_combo_box, key)
         self.__visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
 
-    def select_2nd_source_field_combo_box(self) -> None:
+    def select_source_field(self, *keys: Qt.Key) -> None:
         source_field_combo_box: QComboBox = self.__get_source_field_combo_box()
-        self.__visual_qtbot.mouseClick(source_field_combo_box, Qt.MouseButton.LeftButton)
-        self.__visual_qtbot.keyClick(source_field_combo_box, Qt.Key.Key_Down)
+        for key in keys:
+            self.__visual_qtbot.keyClick(source_field_combo_box, key)
         self.__visual_qtbot.keyClick(source_field_combo_box.view(), Qt.Key.Key_Enter)
 
-    def select_2nd_format_combo_box(self) -> None:
-        format_combo_box: QComboBox = self.get_format_combo_box()
-        self.__visual_qtbot.mouseClick(format_combo_box, Qt.MouseButton.LeftButton)
-        self.__visual_qtbot.keyClick(format_combo_box, Qt.Key.Key_Down)
+    def select_format(self, *keys: Qt.Key) -> None:
+        format_combo_box: QComboBox = self.__get_format_combo_box()
+        for key in keys:
+            self.__visual_qtbot.keyClick(format_combo_box, key)
         self.__visual_qtbot.keyClick(format_combo_box.view(), Qt.Key.Key_Enter)
 
     def mark_destination_field(self, field_name: FieldName) -> None:
@@ -49,9 +48,6 @@ class AdhocHighlightDialogViewScaffold:
     def print_to_stop_words(self, stop_words: str) -> None:
         stop_words_line_edit: QLineEdit = self.__get_stop_words_line_edit()
         self.__visual_qtbot.keyClicks(stop_words_line_edit, stop_words)
-
-    def get_format_combo_box(self) -> QComboBox:
-        return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()
 
     def click_space_delimited_language(self) -> None:
         checkbox: QCheckBox = self.__get_space_delimited_language_checkbox()
@@ -74,6 +70,9 @@ class AdhocHighlightDialogViewScaffold:
 
     def __get_space_delimited_language_checkbox(self) -> QCheckBox:
         return path(self.__view).group().checkbox().get()
+
+    def __get_format_combo_box(self) -> QComboBox:
+        return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()
 
     def __click_button(self, button: QPushButton) -> None:
         self.__visual_qtbot.mouseClick(button, Qt.MouseButton.LeftButton)
