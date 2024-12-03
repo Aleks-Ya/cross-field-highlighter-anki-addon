@@ -16,8 +16,6 @@ class Config:
     __key_3_dialog_erase: str = 'Erase'
     __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
     __key_4_dialog_highlight_states: str = 'States'
-    __key_4_dialog_erase_last_note_type: str = 'Last Note Type'
-    __key_4_dialog_erase_last_field_names: str = 'Last Field Names'
     __key_4_dialog_erase_states: str = 'States'
 
     def __init__(self, config: dict[str, Any]):
