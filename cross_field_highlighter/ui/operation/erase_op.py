@@ -52,7 +52,7 @@ class EraseOp(QueryOp):
         note_ids_list: list[NoteId] = list(self.__note_ids)
         self.__statistics.set_value(OpStatisticsKey.NOTES_SELECTED_ALL, len(note_ids_list))
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + c] for i in range(0, len(note_ids_list), c)]
-        highlighted_counter: int = 0
+        erased_counter: int = 0
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"All notes: {len(notes)}")
@@ -66,11 +66,11 @@ class EraseOp(QueryOp):
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_PROCESSED, result.total_fields)
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_MODIFIED, result.modified_fields)
             self.__col.update_notes(result.notes)
-            log.debug(f"Highlighted notes: {result.notes}")
-            highlighted_counter += len(result.notes)
-            self.__update_progress("Highlighting", highlighted_counter, len(self.__note_ids))
+            log.debug(f"Erased notes: {result.notes}")
+            erased_counter += len(result.notes)
+            self.__update_progress("Erasing", erased_counter, len(self.__note_ids))
             if self.__progress_manager.want_cancel():
-                return highlighted_counter
+                return erased_counter
         return len(note_ids_list)
 
     def __update_progress(self, label: str, value: int, max_value: int) -> None:
@@ -81,14 +81,14 @@ class EraseOp(QueryOp):
         self.__progress_manager.update(label=label, value=value, max=max_value)
 
     def __on_success(self, count: int) -> None:
-        log.info(f"Highlighting finished: {count}")
+        log.info(f"Erasing finished: {count}")
         show_info(title=self.__progress_dialog_title,
                   text=self.__op_statistics_formatter.format(self.get_statistics()), parent=self.__parent)
         self.__callback()
 
     def __on_failure(self, e: Exception) -> None:
-        log.error("Error during highlighting", exc_info=e)
-        show_critical(title=self.__progress_dialog_title, text="Error during highlighting (see logs)",
+        log.error("Error during erasing", exc_info=e)
+        show_critical(title=self.__progress_dialog_title, text="Error during erasing (see logs)",
                       parent=self.__parent)
         self.__callback()
 
