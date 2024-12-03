@@ -2,6 +2,7 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
+from .adhoc_highlight_dialog_state import AdhocHighlightDialogState
 from .....config.config import Config
 from .....config.config_loader import ConfigLoader
 from .....highlighter.formatter.formatter_facade import FormatterFacade
@@ -40,35 +41,36 @@ class AdhocHighlightDialogController:
         self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
 
-    def __save_model_to_config(self):
+    def __save_model_to_config(self) -> None:
         log.debug("Update config from model")
         self.__config.set_dialog_adhoc_highlight_states(self.__model.serialize_states())
         self.__config_loader.write_config(self.__config)
 
-    def __fill_model_from_config(self):
+    def __fill_model_from_config(self) -> None:
         data: dict[str, any] = self.__config.get_dialog_adhoc_highlight_states()
         self.__model.deserialize_states(data)
         default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
             self.__model.set_default_stop_words(default_stop_words)
 
-    def __prepare_op_params(self):
-        source_filed: FieldName = self.__model.get_current_state().get_selected_source_filed()
-        stop_words: Text = Text(self.__model.get_current_state().get_selected_stop_words())
-        note_type_details: NoteTypeDetails = self.__model.get_current_state().get_selected_note_type()
+    def __prepare_op_params(self) -> HighlightOpParams:
+        state: AdhocHighlightDialogState = self.__model.get_current_state()
+        source_filed: FieldName = state.get_selected_source_filed()
+        stop_words: Text = Text(state.get_selected_stop_words())
+        note_type_details: NoteTypeDetails = state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type_details.note_type_id, self.__model.get_note_ids(), None, source_filed,
-            self.__model.get_current_state().get_selected_destination_fields(), stop_words,
-            self.__model.get_current_state().get_selected_format())
+            state.get_space_delimited_language(), state.get_selected_destination_fields(), stop_words,
+            state.get_selected_format())
         return highlight_op_params
 
-    def __accept_callback(self):
+    def __accept_callback(self) -> None:
         log.debug("Accept callback")
         self.__save_model_to_config()
-        erase_op_params: HighlightOpParams = self.__prepare_op_params()
-        self.__run_op_callback(erase_op_params)
+        highlight_op_params: HighlightOpParams = self.__prepare_op_params()
+        self.__run_op_callback(highlight_op_params)
 
-    def __reject_callback(self):
+    def __reject_callback(self) -> None:
         log.debug("Reject callback")
         self.__save_model_to_config()
 

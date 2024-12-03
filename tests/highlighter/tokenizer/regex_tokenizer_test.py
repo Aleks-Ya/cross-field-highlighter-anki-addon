@@ -60,3 +60,12 @@ def test_tokenize_html_tags(tokenize: Callable[[str], Words]):
         Token(Word('!'), TokenType.WORD),
         Token(Word('</li>'), TokenType.TAG)
     ]
+
+
+def test_tokenize_japanese(tokenize: Callable[[str], Words]):
+    assert tokenize('中にあるテキスト') == [Token(Word('中にあるテキスト'), TokenType.WORD)]
+    assert tokenize('<li>中にあるテキスト</li>') == [
+        Token(Word('<li>'), TokenType.TAG),
+        Token(Word('中にあるテキスト'), TokenType.WORD),
+        Token(Word('</li>'), TokenType.TAG)
+    ]

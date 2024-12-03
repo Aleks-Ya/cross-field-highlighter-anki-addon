@@ -1,7 +1,8 @@
 import logging
+import textwrap
 from logging import Logger
 
-from aqt.qt import QVBoxLayout, QGroupBox
+from aqt.qt import QVBoxLayout, QGroupBox, QCheckBox
 
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import FieldName, Text
@@ -27,10 +28,17 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Exclude words:", text="a an to", clear_button_enabled=True)
         self.__stop_words_layout.set_on_text_changed_callback(self.__on_stop_words_text_changed)
+        self.__space_delimited_language_check_box: QCheckBox = QCheckBox("Space-delimited language")
+        self.__space_delimited_language_check_box.setToolTip(
+            textwrap.dedent("""\
+                Yes for English, French, Spanish, etc.
+                No for Chinese, Japanese, Thai, etc."""))
+        self.__space_delimited_language_check_box.stateChanged.connect(self.__on_space_delimited_language_changed)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)
         group_layout.addLayout(self.__source_field_combo_box)
         group_layout.addLayout(self.__stop_words_layout)
+        group_layout.addWidget(self.__space_delimited_language_check_box)
         self.setLayout(group_layout)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -46,6 +54,8 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
         selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
         self.__source_field_combo_box.set_current_text(selected_source_field)
+        self.__space_delimited_language_check_box.setChecked(
+            self.__model.get_current_state().get_space_delimited_language())
 
     def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
         log.debug(f"On note type selected")
@@ -64,6 +74,12 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         if self.__model.get_current_state().get_selected_stop_words() != text:
             self.__model.get_current_state().set_stop_words(text)
             self.__model.fire_model_changed(self)
+
+    def __on_space_delimited_language_changed(self, state: int):
+        log.debug(f"On space-delimited language clicked: {state}")
+        is_checked: bool = self.__space_delimited_language_check_box.isChecked()
+        self.__model.get_current_state().set_space_delimited_language(is_checked)
+        self.__model.fire_model_changed(self)
 
     def __repr__(self):
         return self.__class__.__name__

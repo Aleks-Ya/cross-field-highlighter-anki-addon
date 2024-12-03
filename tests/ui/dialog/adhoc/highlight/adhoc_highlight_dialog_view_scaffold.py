@@ -53,6 +53,10 @@ class AdhocHighlightDialogViewScaffold:
     def get_format_combo_box(self) -> QComboBox:
         return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()
 
+    def click_space_delimited_language(self) -> None:
+        checkbox: QCheckBox = self.__get_space_delimited_language_checkbox()
+        self.__visual_qtbot.mouseClick(checkbox, Qt.MouseButton.LeftButton)
+
     def click_start_button(self) -> None:
         self.__click_button(self.__get_start_button())
 
@@ -63,10 +67,13 @@ class AdhocHighlightDialogViewScaffold:
         self.__click_button(self.__get_restore_defaults_button())
 
     def __get_note_type_combo_box(self) -> QComboBox:
-        return path(self.__view).group(0).child(NoteTypeComboBoxLayout).combobox().get()
+        return path(self.__view).group().child(NoteTypeComboBoxLayout).combobox().get()
 
     def __get_source_field_combo_box(self) -> QComboBox:
-        return path(self.__view).group(0).child(TitledComboBoxLayout).combobox().get()
+        return path(self.__view).group().child(TitledComboBoxLayout).combobox().get()
+
+    def __get_space_delimited_language_checkbox(self) -> QCheckBox:
+        return path(self.__view).group().checkbox().get()
 
     def __click_button(self, button: QPushButton) -> None:
         self.__visual_qtbot.mouseClick(button, Qt.MouseButton.LeftButton)
@@ -85,4 +92,4 @@ class AdhocHighlightDialogViewScaffold:
         return button_box.button(button)
 
     def __get_stop_words_line_edit(self) -> QLineEdit:
-        return path(self.__view).group(0).child(TitledLineEditLayout).child(QLineEdit).get()
+        return path(self.__view).group().child(TitledLineEditLayout).child(QLineEdit).get()

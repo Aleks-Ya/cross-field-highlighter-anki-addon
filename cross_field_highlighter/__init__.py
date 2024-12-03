@@ -15,6 +15,7 @@ from .highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from .highlighter.notes.notes_highlighter import NotesHighlighter
 from .highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from .highlighter.text.text_highlighter import TextHighlighter
+from .highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
 from .highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
 from .highlighter.token.token_highlighter import TokenHighlighter
 from .highlighter.tokenizer.regex_tokenizer import RegExTokenizer
@@ -43,9 +44,12 @@ def __initialize(col: Collection):
     tokenizer: RegExTokenizer = RegExTokenizer()
     formatter_facade: FormatterFacade = FormatterFacade()
     stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
-    token_highlighter: TokenHighlighter = StartWithTokenHighlighter(formatter_facade)
-    text_highlighter: TextHighlighter = StartWithTextHighlighter(token_highlighter, formatter_facade, tokenizer,
-                                                                 stop_words_tokenizer)
+    start_with_token_highlighter: StartWithTokenHighlighter = StartWithTokenHighlighter(formatter_facade)
+    find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter = FindAndReplaceTokenHighlighter(
+        formatter_facade)
+    text_highlighter: TextHighlighter = StartWithTextHighlighter(
+        start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade, tokenizer,
+        stop_words_tokenizer)
     note_field_highlighter: NoteFieldHighlighter = StartWithNoteFieldHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_field_highlighter)
     task_manager: TaskManager = mw.taskman

@@ -13,6 +13,7 @@ class AdhocHighlightDialogState:
     def __init__(self, note_type_details: NoteTypeDetails):
         self.__selected_note_type: NoteTypeDetails = note_type_details
         self.__selected_source_field: Optional[FieldName] = None
+        self.__space_delimited_language: bool = True
         self.__selected_format: Optional[HighlightFormat] = None
         self.__selected_stop_words: Optional[Text] = None
         self.__selected_destination_fields: FieldNames = FieldNames([])
@@ -26,6 +27,9 @@ class AdhocHighlightDialogState:
             self.select_first_source_field()
         return self.__selected_source_field
 
+    def get_space_delimited_language(self) -> bool:
+        return self.__space_delimited_language
+
     def get_selected_format(self) -> HighlightFormat:
         return self.__selected_format
 
@@ -34,6 +38,9 @@ class AdhocHighlightDialogState:
 
     def get_selected_destination_fields(self) -> FieldNames:
         return self.__selected_destination_fields
+
+    def set_space_delimited_language(self, space_delimited_language: bool) -> None:
+        self.__space_delimited_language = space_delimited_language
 
     def select_destination_fields(self, field_names: FieldNames) -> None:
         self.__selected_destination_fields = field_names
@@ -57,6 +64,7 @@ class AdhocHighlightDialogState:
         return {
             "selected_note_type": self.__selected_note_type,
             "selected_source_field": self.__selected_source_field,
+            "space_delimited_language": self.__space_delimited_language,
             "selected_format": self.__selected_format,
             "selected_stop_words": self.__selected_stop_words,
             "selected_destination_fields": self.__selected_destination_fields

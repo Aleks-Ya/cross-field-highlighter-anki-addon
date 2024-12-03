@@ -43,7 +43,8 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                 'format': 'MARK',
                                 'note_type': 'Cloze',
                                 'source_field': 'Back Extra',
-                                'stop_words': 'the'}]}
+                                'stop_words': 'the',
+                                'space_delimited_language': True}]}
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model2.fill(all_note_type_details, [NoteId(1), NoteId(2)], all_highlight_formats, lambda: None, lambda: None)
     model2.switch_state(cloze_note_type_details)
@@ -59,7 +60,8 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                                   'selected_format': mark_format,
                                                   'selected_note_type': cloze_note_type_details,
                                                   'selected_source_field': DefaultFields.cloze_extra,
-                                                  'selected_stop_words': 'the'},
+                                                  'selected_stop_words': 'the',
+                                                  'space_delimited_language': True},
                                 'default_stop_words': None,
                                 'formats': all_highlight_formats,
                                 'note_ids': [1, 2],
@@ -69,4 +71,5 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                                      'selected_format': mark_format,
                                                      'selected_note_type': cloze_note_type_details,
                                                      'selected_source_field': DefaultFields.cloze_extra,
-                                                     'selected_stop_words': 'the'}}}
+                                                     'selected_stop_words': 'the',
+                                                     'space_delimited_language': True}}}

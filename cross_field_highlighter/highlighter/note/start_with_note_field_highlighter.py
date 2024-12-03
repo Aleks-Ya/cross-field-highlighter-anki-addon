@@ -12,11 +12,13 @@ class StartWithNoteFieldHighlighter(NoteFieldHighlighter):
         self.__text_highlighter: TextHighlighter = text_highlighter
 
     def highlight(self, note: Note, source_field: FieldName, destination_field: FieldName,
-                  stop_words: Text, highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
-        super().highlight(note, source_field, destination_field, stop_words, highlight_format)
+                  stop_words: Text, space_delimited_language: bool,
+                  highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
+        super().highlight(note, source_field, destination_field, stop_words, space_delimited_language, highlight_format)
         phrase: Text = Text(note[source_field])
         original_text: Text = Text(note[destination_field])
-        highlighted_text: Text = self.__text_highlighter.highlight(phrase, original_text, stop_words, highlight_format)
+        highlighted_text: Text = self.__text_highlighter.highlight(phrase, original_text, stop_words,
+                                                                   space_delimited_language, highlight_format)
         note[destination_field] = highlighted_text
         return NoteFieldHighlightResult(note, source_field, destination_field, original_text, highlighted_text)
 

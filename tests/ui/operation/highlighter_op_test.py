@@ -30,14 +30,16 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
+    space_delimited_language: bool = True
 
     highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent, source_field,
-                                                               destination_fields, stop_words, bold_format)
+                                                               space_delimited_language, destination_fields, stop_words,
+                                                               bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, highlight_op_params,
                                             op_statistics_formatter, lambda: None)
     highlight_op.run_in_background()
     time.sleep(1)
-    td.assert_highlighted_case_notes(case_notes)
+    td.assert_highlighted_case_notes(case_notes, space_delimited_language)
 
     statistics: OpStatistics = highlight_op.get_statistics()
     assert statistics.as_dict() == {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
@@ -63,8 +65,10 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back, DefaultFields.basic_extra])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
+    space_delimited_language: bool = True
 
-    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent, source_field,
+    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent,
+                                                               source_field, space_delimited_language,
                                                                destination_fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, highlight_op_params,
                                             op_statistics_formatter, lambda: None)

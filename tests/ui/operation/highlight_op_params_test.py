@@ -26,14 +26,14 @@ def parent(visual_qtbot: VisualQtBot) -> QWidget:
 def params(basic_note_type_id: NotetypeId, note_ids: set[NoteId], bold_format: HighlightFormat,
            parent: QWidget) -> HighlightOpParams:
     stop_words: Text = Text("a an")
-    return HighlightOpParams(basic_note_type_id, note_ids, parent, DefaultFields.basic_front,
-                             FieldNames([DefaultFields.basic_back]), stop_words,
-                             bold_format)
+    space_delimited_language: bool = True
+    return HighlightOpParams(basic_note_type_id, list(note_ids), parent, DefaultFields.basic_front,
+                             space_delimited_language, FieldNames([DefaultFields.basic_back]), stop_words, bold_format)
 
 
 def test_str(params: HighlightOpParams, note_ids: set[NoteId], basic_note_type_id: NotetypeId):
-    exp: str = (f"HighlightOpParams(note_type_id={basic_note_type_id}, "
-                f"note_ids={sorted(note_ids)}, source_field=Front, destination_fields=Back, "
+    exp: str = (f"HighlightOpParams(note_type_id={basic_note_type_id}, note_ids={sorted(note_ids)}, "
+                "source_field=Front, space_delimited_language=True, destination_fields=Back, "
                 "stop_words='a an', highlight_format=HighlightFormat(Bold, BOLD))")
     assert str(params) == exp
     assert str([params]) == f"[{exp}]"
@@ -42,8 +42,9 @@ def test_str(params: HighlightOpParams, note_ids: set[NoteId], basic_note_type_i
 def test_eq(params: HighlightOpParams, basic_note_type_id: NotetypeId, parent: QWidget, note_ids: set[NoteId],
             bold_format: HighlightFormat):
     stop_words: Text = Text("a an")
-    params2: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent,
-                                                   DefaultFields.basic_front,
+    space_delimited_language: bool = True
+    params2: HighlightOpParams = HighlightOpParams(basic_note_type_id, list(note_ids), parent,
+                                                   DefaultFields.basic_front, space_delimited_language,
                                                    FieldNames([DefaultFields.basic_back]), stop_words,
                                                    bold_format)
     assert params == params2

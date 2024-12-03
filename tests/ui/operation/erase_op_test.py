@@ -29,13 +29,14 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
     note_ids: set[NoteId] = {note.id for note in notes}
     fields: FieldNames = FieldNames([DefaultFields.basic_back])
     parent: QWidget = QWidget()
+    space_delimited_language: bool = True
 
     source_field: FieldName = DefaultFields.basic_front
     stop_words: Text = td.stop_words()
     notes_highlighter_result: NotesHighlighterResult = notes_highlighter.highlight(
-        notes, source_field, fields, stop_words, bold_format)
+        notes, source_field, fields, stop_words, space_delimited_language, bold_format)
     col.update_notes(notes_highlighter_result.notes)
-    td.assert_highlighted_case_notes(case_notes)
+    td.assert_highlighted_case_notes(case_notes, space_delimited_language)
 
     progress_manager: ProgressManager = Mock()
 
@@ -70,9 +71,11 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back, DefaultFields.basic_extra])
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
+    space_delimited_language: bool = True
 
     highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, note_ids, parent, source_field,
-                                                               destination_fields, stop_words, bold_format)
+                                                               space_delimited_language, destination_fields, stop_words,
+                                                               bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, highlight_op_params,
                                             op_statistics_formatter, lambda: None)
     highlight_op.run_in_background()

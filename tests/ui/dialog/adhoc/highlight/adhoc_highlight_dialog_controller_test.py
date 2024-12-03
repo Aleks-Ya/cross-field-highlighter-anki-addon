@@ -16,7 +16,7 @@ from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
 from tests.data import Data, DefaultFields, DefaultStopWords
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
-    FakeModelListener, FakeHighlightControllerCallback, assert_stop_words
+    FakeModelListener, FakeHighlightControllerCallback, assert_stop_words, assert_space_delimited_language
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
@@ -47,7 +47,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
-    assert len(listener.history) == 1
+    assert len(listener.history) == 2
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
@@ -59,12 +59,14 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': DefaultStopWords.in_config}},
+                             'selected_stop_words': DefaultStopWords.in_config,
+                             'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': DefaultStopWords.in_config}}
+                          'selected_stop_words': DefaultStopWords.in_config,
+                          'space_delimited_language': True}}
 
 
 def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -105,8 +107,8 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                                        'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
-                                       'stop_words': 'a an '
-                                                     'to'}]}},
+                                       'stop_words': 'a an to',
+                                       'space_delimited_language': True}]}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
@@ -119,12 +121,14 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': DefaultStopWords.in_config}},
+                             'selected_stop_words': DefaultStopWords.in_config,
+                             'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': DefaultStopWords.in_config}}
+                          'selected_stop_words': DefaultStopWords.in_config,
+                          'space_delimited_language': True}}
 
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
@@ -139,17 +143,20 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': DefaultStopWords.in_config},
+                             'selected_stop_words': DefaultStopWords.in_config,
+                             'space_delimited_language': True},
                    'Cloze': {'selected_destination_fields': [],
                              'selected_format': bold_format,
                              'selected_note_type': cloze_note_type_details,
                              'selected_source_field': 'Text',
-                             'selected_stop_words': DefaultStopWords.in_config}},
+                             'selected_stop_words': DefaultStopWords.in_config,
+                             'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': cloze_note_type_details,
                           'selected_source_field': DefaultFields.cloze_text,
-                          'selected_stop_words': DefaultStopWords.in_config}}
+                          'selected_stop_words': DefaultStopWords.in_config,
+                          'space_delimited_language': True}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -199,7 +206,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
-                                       'stop_words': 'to the'}]}},
+                                       'stop_words': 'to the',
+                                       'space_delimited_language': True}]}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
@@ -212,12 +220,14 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'to the'}},
+                             'selected_stop_words': 'to the',
+                             'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': 'to the'}}
+                          'selected_stop_words': 'to the',
+                          'space_delimited_language': True}}
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -235,7 +245,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                        'format': 'BOLD',
                                        'note_type': 'Basic',
                                        'source_field': 'Front',
-                                       'stop_words': 'to the'}]}},
+                                       'stop_words': 'to the',
+                                       'space_delimited_language': True}]}},
             'Erase': {'States': {}}}}}
     assert model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
@@ -248,12 +259,14 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                              'selected_format': bold_format,
                              'selected_note_type': basic_note_type_details,
                              'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'to the'}},
+                             'selected_stop_words': 'to the',
+                             'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': 'to the'}}
+                          'selected_stop_words': 'to the',
+                          'space_delimited_language': True}}
 
 
 def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
@@ -306,3 +319,25 @@ def test_remember_stop_words_on_cancel(adhoc_highlight_dialog_controller: AdhocH
     # Show dialog again
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert_stop_words(adhoc_highlight_dialog_view, exp_stop_words)
+
+
+def test_remember_space_delimited_language_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                                     adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                                     adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                                     all_note_type_details: list[NoteTypeDetails],
+                                                     adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                                     visual_qtbot: VisualQtBot):
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
+    adhoc_highlight_dialog_model.add_listener(FakeModelListener())
+    # Show dialog
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    assert_space_delimited_language(adhoc_highlight_dialog_view, True)
+    # Uncheck space-delimited language combobox
+    adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()
+    assert_space_delimited_language(adhoc_highlight_dialog_view, False)
+    # Click Cancel button
+    adhoc_highlight_dialog_view_scaffold.click_cancel_button()
+    # Show dialog again
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    assert_space_delimited_language(adhoc_highlight_dialog_view, False)

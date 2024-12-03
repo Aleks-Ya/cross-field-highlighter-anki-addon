@@ -1,7 +1,8 @@
 import logging
 from logging import Logger
 
-from ..token.token_highlighter import TokenHighlighter
+from ..token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
+from ..token.start_with_token_highlighter import StartWithTokenHighlighter
 from ...highlighter.formatter.formatter_facade import FormatterFacade
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.text.text_highlighter import TextHighlighter
@@ -15,16 +16,18 @@ log: Logger = logging.getLogger(__name__)
 class StartWithTextHighlighter(TextHighlighter):
     __space: Word = Word(" ")
 
-    def __init__(self, token_highlighter: TokenHighlighter, formatter_facade: FormatterFacade, tokenizer: Tokenizer,
-                 stop_words_tokenizer: StopWordsTokenizer):
-        self.__token_highlighter: TokenHighlighter = token_highlighter
+    def __init__(self, start_with_token_highlighter: StartWithTokenHighlighter,
+                 find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter, formatter_facade: FormatterFacade,
+                 tokenizer: Tokenizer, stop_words_tokenizer: StopWordsTokenizer):
+        self.__start_with_token_highlighter: StartWithTokenHighlighter = start_with_token_highlighter
+        self.__find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter = find_and_replace_token_highlighter
         self.__formatter_facade: FormatterFacade = formatter_facade
         self.__tokenizer: Tokenizer = tokenizer
         self.__stop_words_tokenizer: StopWordsTokenizer = stop_words_tokenizer
 
-    def highlight(self, collocation: Text, text: Text, stop_words: Text,
+    def highlight(self, collocation: Text, text: Text, stop_words: Text, space_delimited_language: bool,
                   highlight_format: HighlightFormat) -> Text:
-        super().highlight(collocation, text, stop_words, highlight_format)
+        super().highlight(collocation, text, stop_words, space_delimited_language, highlight_format)
         collocation_tokens: Tokens = self.__tokenizer.tokenize_distinct(collocation)
         collocation_tokens.delete_word(self.__space)
         stop_words_tokenized: Tokens = self.__stop_words_tokenizer.tokenize(stop_words)
@@ -34,8 +37,12 @@ class StartWithTextHighlighter(TextHighlighter):
         clean_text: Text = self.erase(text)
         text_tokens: Tokens = self.__tokenizer.tokenize(clean_text)
         for text_token in text_tokens:
-            highlighted_text_word: Word = self.__token_highlighter.highlight(text_token, collocation_tokens,
-                                                                             highlight_format)
+            if space_delimited_language:
+                highlighted_text_word: Word = self.__start_with_token_highlighter.highlight(
+                    text_token, collocation_tokens, highlight_format)
+            else:
+                highlighted_text_word: Word = self.__find_and_replace_token_highlighter.highlight(
+                    text_token, collocation_tokens, highlight_format)
             highlighted_words.append(highlighted_text_word)
         return Text("".join(highlighted_words))
 

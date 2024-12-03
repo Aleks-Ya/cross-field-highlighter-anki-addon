@@ -27,7 +27,8 @@ class NotesHighlighter:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def highlight(self, notes: Notes, source_field: FieldName, destination_fields: FieldNames,
-                  stop_words: Text, highlight_format: HighlightFormat) -> NotesHighlighterResult:
+                  stop_words: Text, space_delimited_language: bool,
+                  highlight_format: HighlightFormat) -> NotesHighlighterResult:
         modified_notes: int = 0
         modified_fields: int = 0
         updated_notes: Notes = Notes([])
@@ -36,7 +37,8 @@ class NotesHighlighter:
             note_was_modified: bool = False
             for destination_field in destination_fields:
                 result: NoteFieldHighlightResult = self.__note_field_highlighter.highlight(
-                    updated_note, source_field, destination_field, stop_words, highlight_format)
+                    updated_note, source_field, destination_field, stop_words, space_delimited_language,
+                    highlight_format)
                 if result.was_modified():
                     note_was_modified = True
                     modified_fields += 1

@@ -14,7 +14,8 @@ def test_as_dict_empty(basic_note_type_details: NoteTypeDetails):
         'selected_format': None,
         'selected_note_type': basic_note_type_details,
         'selected_source_field': None,
-        'selected_stop_words': None
+        'selected_stop_words': None,
+        'space_delimited_language': True
     }
 
 
@@ -29,7 +30,8 @@ def test_as_dict_full(basic_note_type_details: NoteTypeDetails, bold_format: Hig
         'selected_format': bold_format,
         'selected_note_type': basic_note_type_details,
         'selected_source_field': DefaultFields.basic_front,
-        'selected_stop_words': Text("a an")
+        'selected_stop_words': Text("a an"),
+        'space_delimited_language': True
     }
 
 

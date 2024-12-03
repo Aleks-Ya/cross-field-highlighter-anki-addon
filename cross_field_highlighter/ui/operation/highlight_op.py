@@ -39,6 +39,7 @@ class HighlightOp(QueryOp):
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         self.__parent: QWidget = params.parent
         self.__source_field: FieldName = params.source_field
+        self.__space_delimited_language: bool = params.space_delimited_language
         self.__destination_fields: FieldNames = params.destination_fields
         self.__stop_words: Text = params.stop_words
         self.__highlight_format: HighlightFormat = params.highlight_format
@@ -65,7 +66,7 @@ class HighlightOp(QueryOp):
             log.debug(f"Notes with note type {self.__note_type_id}: {len(notes_with_note_type)}")
             result: NotesHighlighterResult = self.__notes_highlighter.highlight(
                 notes_with_note_type, self.__source_field, self.__destination_fields, self.__stop_words,
-                self.__highlight_format)
+                self.__space_delimited_language, self.__highlight_format)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, result.total_notes)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_PROCESSED, result.total_fields)

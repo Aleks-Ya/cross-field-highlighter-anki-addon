@@ -33,7 +33,8 @@ class NoteFieldEraseResult:
 class NoteFieldHighlighter(ABC):
     @abstractmethod
     def highlight(self, note: Note, source_field: FieldName, destination_field: FieldName,
-                  stop_words: Text, highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
+                  stop_words: Text, space_delimited_language: bool,
+                  highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
         ...
 
     @abstractmethod
