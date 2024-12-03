@@ -20,6 +20,12 @@ class AdhocHighlightDialogModelListener:
 
 
 class AdhocHighlightDialogModel:
+    __source_field: str = "source_field"
+    __space_delimited_language: str = "space_delimited_language"
+    __format: str = "format"
+    __stop_words: str = "stop_words"
+    __destination_fields: str = "destination_fields"
+
     def __init__(self):
         self.__note_types: list[NoteTypeDetails] = []
         self.__note_ids: list[NoteId] = []
@@ -113,11 +119,11 @@ class AdhocHighlightDialogModel:
     def serialize_states(self) -> dict[str, any]:
         states: list[dict[str, any]] = [{
             "note_type": state.get_selected_note_type().name,
-            "source_field": state.get_selected_source_filed(),
-            "space_delimited_language": state.get_space_delimited_language(),
-            "format": state.get_selected_format().code.value,
-            "stop_words": state.get_selected_stop_words(),
-            "destination_fields": state.get_selected_destination_fields()
+            self.__source_field: state.get_selected_source_filed(),
+            self.__space_delimited_language: state.get_space_delimited_language(),
+            self.__format: state.get_selected_format().code.value,
+            self.__stop_words: state.get_selected_stop_words(),
+            self.__destination_fields: state.get_selected_destination_fields()
         } for state in self.__states.values()]
         result: dict[str, any] = {
             "current_state": self.__current_state.get_selected_note_type().name if self.__current_state else None,
@@ -134,17 +140,22 @@ class AdhocHighlightDialogModel:
                 if saved_note_type_name in note_type_dict:
                     saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_name]
                     self.switch_state(saved_note_type_details)
-                    saved_source_field: FieldName = FieldName(state_obj["source_field"])
-                    self.get_current_state().select_source_field(saved_source_field)
-                    space_delimited_language: bool = state_obj["space_delimited_language"]
-                    self.get_current_state().set_space_delimited_language(space_delimited_language)
-                    saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(state_obj["format"])
-                    saved_highlight_format: HighlightFormat = highlight_formats[saved_highlight_format_code]
-                    self.get_current_state().select_format(saved_highlight_format)
-                    saved_stop_words: Text = Text(state_obj["stop_words"])
-                    self.get_current_state().set_stop_words(saved_stop_words)
-                    saved_stop_words: FieldNames = FieldNames(state_obj["destination_fields"])
-                    self.get_current_state().select_destination_fields(saved_stop_words)
+                    if self.__source_field in state_obj:
+                        saved_source_field: FieldName = FieldName(state_obj[self.__source_field])
+                        self.get_current_state().select_source_field(saved_source_field)
+                    if self.__space_delimited_language in state_obj:
+                        space_delimited_language: bool = state_obj[self.__space_delimited_language]
+                        self.get_current_state().set_space_delimited_language(space_delimited_language)
+                    if self.__format in state_obj:
+                        saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(state_obj[self.__format])
+                        saved_highlight_format: HighlightFormat = highlight_formats[saved_highlight_format_code]
+                        self.get_current_state().select_format(saved_highlight_format)
+                    if self.__stop_words in state_obj:
+                        saved_stop_words: Text = Text(state_obj[self.__stop_words])
+                        self.get_current_state().set_stop_words(saved_stop_words)
+                    if self.__destination_fields in state_obj:
+                        saved_destination_fields: FieldNames = FieldNames(state_obj[self.__destination_fields])
+                        self.get_current_state().select_destination_fields(saved_destination_fields)
         if json and "current_state" in json:
             current_state_name: NoteTypeName = json["current_state"]
             if current_state_name in note_type_dict:

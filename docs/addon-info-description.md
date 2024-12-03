@@ -14,7 +14,7 @@ Browser menu:
 "Highlight" dialog:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-highlight.png)
 
-Supported formats:
+Supported formats:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/formats.png)
 
 "Erase" dialog (removes previously added highlighting):  

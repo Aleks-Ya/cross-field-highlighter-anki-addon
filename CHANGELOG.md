@@ -17,3 +17,7 @@
 ## [v0.2.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.2.0) - 2024-12-03
 
 1. __[FEATURE]__ Support non-space-delimited languages
+
+## [v0.2.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.2.1) - 2024-12-03
+
+1. __[BUG]__ Reading config of previous version

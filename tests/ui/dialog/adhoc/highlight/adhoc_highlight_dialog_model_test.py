@@ -27,6 +27,32 @@ def test_serialize_empty_model():
                                 'states': {}}
 
 
+def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,
+                                 bold_format: HighlightFormat, all_highlight_formats: HighlightFormats):
+    model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
+    model.fill(all_note_type_details, [NoteId(1), NoteId(2)], all_highlight_formats, lambda: None, lambda: None)
+    data: dict[str, Any] = {'current_state': 'Cloze', 'states': [{'note_type': 'Cloze'}]}
+    model.deserialize_states(data)
+    assert model.as_dict() == {'accept_callback_None': False,
+                               'current_state': {'selected_destination_fields': [],
+                                                 'selected_format': bold_format,
+                                                 'selected_note_type': cloze_note_type_details,
+                                                 'selected_source_field': 'Text',
+                                                 'selected_stop_words': None,
+                                                 'space_delimited_language': True},
+                               'default_stop_words': None,
+                               'formats': all_highlight_formats,
+                               'note_ids': [1, 2],
+                               'note_types': all_note_type_details,
+                               'reject_callback_None': False,
+                               'states': {'Cloze': {'selected_destination_fields': [],
+                                                    'selected_format': bold_format,
+                                                    'selected_note_type': cloze_note_type_details,
+                                                    'selected_source_field': 'Text',
+                                                    'selected_stop_words': None,
+                                                    'space_delimited_language': True}}}
+
+
 def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,
                          all_highlight_formats: HighlightFormats, mark_format: HighlightFormat):
     model1: AdhocHighlightDialogModel = AdhocHighlightDialogModel()

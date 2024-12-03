@@ -17,6 +17,8 @@ class AdhocEraseDialogModelListener:
 
 
 class AdhocEraseDialogModel:
+    __fields: str = "fields"
+
     def __init__(self):
         self.__note_types: list[NoteTypeDetails] = []
         self.__current_state: Optional[AdhocEraseDialogState] = None
@@ -85,7 +87,7 @@ class AdhocEraseDialogModel:
     def serialize_states(self) -> dict[str, any]:
         states: list[dict[str, any]] = [{
             "note_type": state.get_selected_note_type().name,
-            "fields": state.get_selected_fields()
+            self.__fields: state.get_selected_fields()
         } for state in self.__states.values()]
         result: dict[str, any] = {
             "current_state": self.__current_state.get_selected_note_type().name if self.__current_state else None,
@@ -100,8 +102,9 @@ class AdhocEraseDialogModel:
                 if saved_note_type_name in note_type_dict:
                     saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_name]
                     self.switch_state(saved_note_type_details)
-                    saved_fields: FieldNames = FieldNames(state_obj["fields"])
-                    self.get_current_state().select_fields(saved_fields)
+                    if self.__fields in state_obj:
+                        saved_fields: FieldNames = FieldNames(state_obj[self.__fields])
+                        self.get_current_state().select_fields(saved_fields)
         if "current_state" in json:
             current_state_name: NoteTypeName = json["current_state"]
             if current_state_name in note_type_dict:

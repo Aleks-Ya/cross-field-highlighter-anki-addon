@@ -21,6 +21,21 @@ def test_serialize_empty_model():
                                 'states': {}}
 
 
+def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails],
+                                 cloze_note_type_details: NoteTypeDetails):
+    model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+    model.fill(all_note_type_details, lambda: None, lambda: None)
+    data: dict[str, Any] = {'current_state': 'Cloze', 'states': [{'note_type': 'Cloze'}]}
+    model.deserialize_states(data)
+    assert model.as_dict() == {'accept_callback_None': False,
+                               'current_state': {'selected_fields': [],
+                                                 'selected_note_type': cloze_note_type_details},
+                               'note_types': all_note_type_details,
+                               'reject_callback_None': False,
+                               'states': {'Cloze': {'selected_fields': [],
+                                                    'selected_note_type': cloze_note_type_details}}}
+
+
 def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails):
     model1: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model1.fill(all_note_type_details, None, None)

@@ -52,7 +52,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Release
 
-1. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_note-size-anki-addon
+1. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon
 2. Update `CHANGELOG.md` manually
 3. Update documentation: `./docs_render.sh`
 4. Increment version:
