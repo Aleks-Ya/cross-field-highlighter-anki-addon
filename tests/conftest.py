@@ -26,6 +26,7 @@ from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
 from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
 from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
@@ -75,9 +76,16 @@ def col(profile_manager: ProfileManager) -> Collection:
 
 
 @pytest.fixture
-def start_with_text_highlighter(formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
+def start_with_token_highlighter(formatter_facade: FormatterFacade) -> StartWithTokenHighlighter:
+    return StartWithTokenHighlighter(formatter_facade)
+
+
+@pytest.fixture
+def start_with_text_highlighter(start_with_token_highlighter: StartWithTokenHighlighter,
+                                formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
                                 stop_words_tokenizer: StopWordsTokenizer) -> StartWithTextHighlighter:
-    return StartWithTextHighlighter(formatter_facade, regex_tokenizer, stop_words_tokenizer)
+    return StartWithTextHighlighter(start_with_token_highlighter, formatter_facade, regex_tokenizer,
+                                    stop_words_tokenizer)
 
 
 @pytest.fixture
