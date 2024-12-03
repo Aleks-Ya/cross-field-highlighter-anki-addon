@@ -2,6 +2,7 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
+from .adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .adhoc_highlight_dialog_state import AdhocHighlightDialogState
 from .....config.config import Config
 from .....config.config_loader import ConfigLoader
@@ -20,12 +21,14 @@ log: Logger = logging.getLogger(__name__)
 class AdhocHighlightDialogController:
 
     def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView,
-                 note_type_details_factory: NoteTypeDetailsFactory, formatter_facade: FormatterFacade, config: Config,
+                 note_type_details_factory: NoteTypeDetailsFactory, formatter_facade: FormatterFacade,
+                 model_serde: AdhocHighlightDialogModelSerDe, config: Config,
                  config_loader: ConfigLoader):
         self.__model: AdhocHighlightDialogModel = model
         self.__view: AdhocHighlightDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__formatter_facade: FormatterFacade = formatter_facade
+        self.__model_serde: AdhocHighlightDialogModelSerDe = model_serde
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__fill_model_from_config()
@@ -43,12 +46,12 @@ class AdhocHighlightDialogController:
 
     def __save_model_to_config(self) -> None:
         log.debug("Update config from model")
-        self.__config.set_dialog_adhoc_highlight_states(self.__model.serialize_states())
+        self.__config.set_dialog_adhoc_highlight_states(self.__model_serde.serialize_states(self.__model))
         self.__config_loader.write_config(self.__config)
 
     def __fill_model_from_config(self) -> None:
         data: dict[str, any] = self.__config.get_dialog_adhoc_highlight_states()
-        self.__model.deserialize_states(data)
+        self.__model_serde.deserialize_states(self.__model, data)
         default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
             self.__model.set_default_stop_words(default_stop_words)

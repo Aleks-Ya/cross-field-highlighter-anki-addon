@@ -7,6 +7,7 @@ from cross_field_highlighter.highlighter.note_type_details_factory import NoteTy
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, basic_note_type_details
@@ -101,7 +102,8 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                            basic_note_type_details: NoteTypeDetails,
                                            cloze_note_type_details: NoteTypeDetails,
                                            note_type_details_factory: NoteTypeDetailsFactory,
-                                           all_note_type_details: list[NoteTypeDetails]):
+                                           all_note_type_details: list[NoteTypeDetails],
+                                           adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe):
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
@@ -159,7 +161,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     view: AdhocEraseDialogView = AdhocEraseDialogView(model)
     _: AdhocEraseDialogController = AdhocEraseDialogController(
-        model, view, note_type_details_factory, config, config_loader)
+        model, view, note_type_details_factory, adhoc_erase_dialog_model_serde, config, config_loader)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Erase': {'States': {'current_state': 'Cloze',

@@ -34,10 +34,13 @@ from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExT
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import \
+    AdhocHighlightDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
@@ -289,6 +292,11 @@ def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
 
 
 @pytest.fixture
+def adhoc_highlight_dialog_model_serde() -> AdhocHighlightDialogModelSerDe:
+    return AdhocHighlightDialogModelSerDe()
+
+
+@pytest.fixture
 def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, visual_qtbot: VisualQtBot,
                                 theme_manager: ThemeManager, mw: AnkiQt) -> AdhocHighlightDialogView:
     assert mw is not None  # initialize aqt.mw
@@ -301,11 +309,13 @@ def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDial
 @pytest.fixture
 def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
                                       adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                      adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
                                       note_type_details_factory: NoteTypeDetailsFactory,
                                       formatter_facade: FormatterFacade, config: Config,
                                       config_loader: ConfigLoader) -> AdhocHighlightDialogController:
     return AdhocHighlightDialogController(adhoc_highlight_dialog_model, adhoc_highlight_dialog_view,
-                                          note_type_details_factory, formatter_facade, config, config_loader)
+                                          note_type_details_factory, formatter_facade,
+                                          adhoc_highlight_dialog_model_serde, config, config_loader)
 
 
 @pytest.fixture
@@ -317,6 +327,11 @@ def adhoc_highlight_dialog_view_scaffold(adhoc_highlight_dialog_view: AdhocHighl
 @pytest.fixture
 def adhoc_erase_dialog_model() -> AdhocEraseDialogModel:
     return AdhocEraseDialogModel()
+
+
+@pytest.fixture
+def adhoc_erase_dialog_model_serde() -> AdhocEraseDialogModelSerDe:
+    return AdhocEraseDialogModelSerDe()
 
 
 @pytest.fixture
@@ -332,10 +347,11 @@ def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, the
 @pytest.fixture
 def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel,
                                   adhoc_erase_dialog_view: AdhocEraseDialogView,
+                                  adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
                                   note_type_details_factory: NoteTypeDetailsFactory, config: Config,
                                   config_loader: ConfigLoader) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory,
-                                      config, config_loader)
+                                      adhoc_erase_dialog_model_serde, config, config_loader)
 
 
 @pytest.fixture

@@ -25,10 +25,12 @@ from .ui.browser_hooks import BrowserHooks
 from .log.logs import Logs
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from .ui.menu.dialog_params_factory import DialogParamsFactory
 from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
@@ -60,13 +62,16 @@ def __initialize(col: Collection):
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
     adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
+    adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-        adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade, config,
-        config_loader)
+        adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade,
+        adhoc_highlight_dialog_model_serde, config, config_loader)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
-        adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, config, config_loader)
+        adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,
+        config, config_loader)
     op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)

@@ -2,6 +2,7 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
+from .adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from .....config.config import Config
 from .....config.config_loader import ConfigLoader
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -16,10 +17,12 @@ log: Logger = logging.getLogger(__name__)
 class AdhocEraseDialogController:
 
     def __init__(self, model: AdhocEraseDialogModel, view: AdhocEraseDialogView,
-                 note_type_details_factory: NoteTypeDetailsFactory, config: Config, config_loader: ConfigLoader):
+                 note_type_details_factory: NoteTypeDetailsFactory, model_serde: AdhocEraseDialogModelSerDe,
+                 config: Config, config_loader: ConfigLoader):
         self.__model: AdhocEraseDialogModel = model
         self.__view: AdhocEraseDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
+        self.__model_serde: AdhocEraseDialogModelSerDe = model_serde
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
         self.__run_op_callback: Optional[Callable[[EraseOpParams], None]] = None
@@ -35,11 +38,11 @@ class AdhocEraseDialogController:
 
     def __fill_model_from_config(self):
         data: dict[str, any] = self.__config.get_dialog_adhoc_erase_states()
-        self.__model.deserialize_states(data)
+        self.__model_serde.deserialize_states(self.__model, data)
 
     def __save_model_to_config(self):
         log.debug("Save model to config")
-        data: dict[str, any] = self.__model.serialize_states()
+        data: dict[str, any] = self.__model_serde.serialize_states(self.__model)
         self.__config.set_dialog_adhoc_erase_states(data)
         self.__config_loader.write_config(self.__config)
 

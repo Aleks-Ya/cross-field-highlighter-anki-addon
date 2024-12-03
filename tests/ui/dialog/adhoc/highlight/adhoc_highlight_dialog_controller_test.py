@@ -12,6 +12,8 @@ from cross_field_highlighter.highlighter.types import FieldNames, Text
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import \
+    AdhocHighlightDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
@@ -162,6 +164,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                            adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                           adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
                                            note_type_details_factory: NoteTypeDetailsFactory,
                                            config_loader: ConfigLoader,
                                            basic_note_type_details: NoteTypeDetails,
@@ -235,7 +238,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-        model, view, note_type_details_factory, formatter_facade, config, config_loader)
+        model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
+        config_loader)
     controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
