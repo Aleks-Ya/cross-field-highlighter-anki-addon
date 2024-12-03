@@ -49,4 +49,4 @@ def __show_dialog(controller: AdhocEraseDialogController, view: AdhocEraseDialog
     note_ids: list[NoteId] = [note_1.id, note_2.id, note_3.id]
     params: DialogParams = dialog_params_factory.create_from_note_ids(note_ids)
     controller.show_dialog(params, lambda erase_op_params: None)
-    visual_qtbot.waitUntil(lambda: view.isHidden(), timeout=sys.maxsize)
+    visual_qtbot.wait_until(lambda: view.isHidden(), timeout=sys.maxsize)

@@ -26,7 +26,7 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def model_changed(self, source: object) -> None:
         if source != self:
-            log.debug(f"Model changed")
+            log.debug("Model changed")
             self.__destination_fields_vbox.set_items(self.__model.get_current_state().get_selected_note_type().fields)
             disabled_fields: FieldNames = FieldNames([self.__model.get_current_state().get_selected_source_filed()]) \
                 if self.__model.get_current_state().get_selected_source_filed() is not None else []

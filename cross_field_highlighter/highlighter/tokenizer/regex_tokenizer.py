@@ -31,7 +31,7 @@ class RegExTokenizer(Tokenizer):
         return Tokens([token for token in tokens if token.word != ''])
 
     def __split_by_tags(self, tokens: Tokens) -> Tokens:
-        pattern: Pattern[str] = compile(f"(<[^>]+>)")
+        pattern: Pattern[str] = compile("(<[^>]+>)")
         tokens_list: list[Tokens] = []
         for token in tokens:
             word_tokens: Tokens = Tokens([])

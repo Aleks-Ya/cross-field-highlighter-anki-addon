@@ -82,7 +82,7 @@ class AdhocHighlightDialogModel:
 
     def switch_to_first_state(self) -> None:
         if len(self.__note_types) < 1:
-            raise Exception("At least one note type should exist")
+            raise ValueError("At least one note type should exist")
         note_type_details: NoteTypeDetails = self.__note_types[0]
         self.switch_state(note_type_details)
 

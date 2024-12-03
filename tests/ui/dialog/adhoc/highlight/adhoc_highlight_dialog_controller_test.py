@@ -82,7 +82,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -104,7 +104,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': [],
                                        'format': 'BOLD',
@@ -177,7 +177,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -204,7 +204,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
                                        'format': 'BOLD',
@@ -244,7 +244,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {'current_state': 'Basic',
                            'states': [{'destination_fields': ['Back'],
                                        'format': 'BOLD',
@@ -287,7 +287,7 @@ def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighl
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
     # Choose "Italic" format
     adhoc_highlight_dialog_view_scaffold.select_format(Qt.Key.Key_Down)
@@ -312,7 +312,7 @@ def test_remember_stop_words_on_cancel(adhoc_highlight_dialog_controller: AdhocH
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_stop_words(adhoc_highlight_dialog_view, DefaultStopWords.in_config)
     # Modify stop words
     appended_stop_words: str = " the"
@@ -336,7 +336,7 @@ def test_remember_space_delimited_language_on_cancel(adhoc_highlight_dialog_cont
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_space_delimited_language(adhoc_highlight_dialog_view, True)
     # Uncheck space-delimited language combobox
     adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()

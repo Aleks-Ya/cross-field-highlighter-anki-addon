@@ -23,6 +23,7 @@ class DefaultFields:
 
 class DefaultStopWords:
     in_config: str = "a an to"
+    config: dict[str, str] = {"Default Stop Words": in_config}
 
 
 class Case:

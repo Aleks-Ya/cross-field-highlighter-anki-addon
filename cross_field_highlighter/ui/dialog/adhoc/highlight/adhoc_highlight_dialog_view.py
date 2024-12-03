@@ -37,7 +37,7 @@ class AdhocHighlightDialogView(QDialog):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_view(self) -> None:
-        log.debug(f"Show view")
+        log.debug("Show view")
         self.__model.get_current_state()  # select 1st if not chosen
         self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences

@@ -14,7 +14,7 @@ from tests.data import DefaultFields
 
 
 def test_serialize_empty_model(adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
-    with raises(Exception, match="At least one note type should exist"):
+    with raises(ValueError, match="At least one note type should exist"):
         model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
         adhoc_highlight_dialog_model_serde.serialize_states(model)
 

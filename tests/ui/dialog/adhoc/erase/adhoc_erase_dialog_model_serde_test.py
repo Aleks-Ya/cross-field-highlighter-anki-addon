@@ -11,7 +11,7 @@ from tests.data import DefaultFields
 
 
 def test_serialize_empty_model(adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe):
-    with raises(Exception, match="At least one note type should exist"):
+    with raises(ValueError, match="At least one note type should exist"):
         model: AdhocEraseDialogModel = AdhocEraseDialogModel()
         adhoc_erase_dialog_model_serde.serialize_states(model)
 
@@ -40,15 +40,15 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model1.get_current_state().select_fields(FieldNames([DefaultFields.cloze_extra]))
     data: dict[str, Any] = adhoc_erase_dialog_model_serde.serialize_states(model1)
     assert data == {'current_state': 'Cloze',
-                    'states': [{'fields': ['Back Extra'], 'note_type': 'Cloze'}]}
+                    'states': [{'fields': [DefaultFields.cloze_extra], 'note_type': 'Cloze'}]}
     model2: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model2.fill(all_note_type_details, None, None)
     adhoc_erase_dialog_model_serde.deserialize_states(model2, data)
     assert model1 == model2
     assert model2.as_dict() == {'accept_callback_None': True,
-                                'current_state': {'selected_fields': ['Back Extra'],
+                                'current_state': {'selected_fields': [DefaultFields.cloze_extra],
                                                   'selected_note_type': cloze_note_type_details},
                                 'note_types': all_note_type_details,
                                 'reject_callback_None': True,
-                                'states': {'Cloze': {'selected_fields': ['Back Extra'],
+                                'states': {'Cloze': {'selected_fields': [DefaultFields.cloze_extra],
                                                      'selected_note_type': cloze_note_type_details}}}

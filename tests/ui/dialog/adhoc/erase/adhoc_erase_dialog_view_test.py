@@ -19,7 +19,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     adhoc_erase_dialog_model.add_listener(listener)
     # noinspection PyUnresolvedReferences
     adhoc_erase_dialog_view.show()
-    visual_qtbot.waitExposed(adhoc_erase_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_erase_dialog_view)
     # Initial state
     assert_view(adhoc_erase_dialog_view, check_box_texts=[], selected_fields=[])
     assert len(listener.history) == 0
@@ -115,7 +115,7 @@ def test_remember_selected_fields_when_changing_note_type(
     adhoc_erase_dialog_model.add_listener(listener)
     # noinspection PyUnresolvedReferences
     adhoc_erase_dialog_view.show()
-    visual_qtbot.waitExposed(adhoc_erase_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_erase_dialog_view)
     # Initial state
     adhoc_erase_dialog_model.fill(all_note_type_details, callback.call, None)
     adhoc_erase_dialog_view.show_view()

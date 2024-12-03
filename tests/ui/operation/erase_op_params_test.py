@@ -12,7 +12,7 @@ from tests.visual_qtbot import VisualQtBot
 @pytest.fixture
 def parent(visual_qtbot: VisualQtBot) -> QWidget:
     parent: QWidget = QWidget()
-    visual_qtbot.addWidget(parent)
+    visual_qtbot.add_widget(parent)
     return parent
 
 

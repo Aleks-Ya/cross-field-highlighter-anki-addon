@@ -56,7 +56,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
@@ -71,7 +71,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {'current_state': 'Basic',
                                  'states': [{'fields': [], 'note_type': 'Basic'}]}}}}}
@@ -109,7 +109,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
@@ -123,7 +123,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             'Erase': {'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {'accept_callback_None': False,
@@ -144,7 +144,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
             'Erase': {'States': {'current_state': 'Cloze',
                                  'states': [{'fields': [], 'note_type': 'Basic'},
                                             {'fields': ['Back Extra'], 'note_type': 'Cloze'}]}},
-            'Highlight': {'Default Stop Words': DefaultStopWords.in_config, 'States': {}}}}}
+            'Highlight': {**DefaultStopWords.config, 'States': {}}}}}
     assert adhoc_erase_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_fields': [DefaultFields.cloze_extra],
@@ -167,7 +167,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
             'Erase': {'States': {'current_state': 'Cloze',
                                  'states': [{'fields': [], 'note_type': 'Basic'},
                                             {'fields': ['Back Extra'], 'note_type': 'Cloze'}]}},
-            'Highlight': {'Default Stop Words': DefaultStopWords.in_config, 'States': {}}}}}
+            'Highlight': {**DefaultStopWords.config, 'States': {}}}}}
     assert model.as_dict() == {'note_types': [],
                                'accept_callback_None': True,
                                'reject_callback_None': True,

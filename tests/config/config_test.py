@@ -20,7 +20,7 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_as_dict() == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
@@ -61,14 +61,14 @@ def test_join(td: Data):
     base: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             "Erase": {'States': {}}}}}
 
     actual: dict[str, Any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}}},
             'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
 
@@ -76,7 +76,7 @@ def test_join(td: Data):
     assert joined == {
         "Dialog": {"Adhoc": {
             "Highlight": {
-                "Default Stop Words": DefaultStopWords.in_config,
+                **DefaultStopWords.config,
                 'States': {}},
             "Erase": {  # Get dict from base
                 'States': {}}}}}

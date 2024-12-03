@@ -20,38 +20,38 @@ class AdhocHighlightDialogViewScaffold:
     def select_note_type(self, *keys: Qt.Key) -> None:
         note_type_combo_box: QComboBox = self.__get_note_type_combo_box()
         for key in keys:
-            self.__visual_qtbot.keyClick(note_type_combo_box, key)
-        self.__visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+            self.__visual_qtbot.key_click(note_type_combo_box, key)
+        self.__visual_qtbot.key_click(note_type_combo_box.view(), Qt.Key.Key_Enter)
 
     def select_source_field(self, *keys: Qt.Key) -> None:
         source_field_combo_box: QComboBox = self.__get_source_field_combo_box()
         for key in keys:
-            self.__visual_qtbot.keyClick(source_field_combo_box, key)
-        self.__visual_qtbot.keyClick(source_field_combo_box.view(), Qt.Key.Key_Enter)
+            self.__visual_qtbot.key_click(source_field_combo_box, key)
+        self.__visual_qtbot.key_click(source_field_combo_box.view(), Qt.Key.Key_Enter)
 
     def select_format(self, *keys: Qt.Key) -> None:
         format_combo_box: QComboBox = self.__get_format_combo_box()
         for key in keys:
-            self.__visual_qtbot.keyClick(format_combo_box, key)
-        self.__visual_qtbot.keyClick(format_combo_box.view(), Qt.Key.Key_Enter)
+            self.__visual_qtbot.key_click(format_combo_box, key)
+        self.__visual_qtbot.key_click(format_combo_box.view(), Qt.Key.Key_Enter)
 
     def mark_destination_field(self, field_name: FieldName) -> None:
         checkboxes: list[QCheckBox] = path(self.__view).child(FieldsLayout).children(QCheckBox)
         for check_box in checkboxes:
             if check_box.text() == field_name:
-                self.__visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
+                self.__visual_qtbot.mouse_click(check_box, Qt.MouseButton.LeftButton)
                 # Mouse click just focus on check_box, but doesn't select it
-                self.__visual_qtbot.keyClick(check_box, Qt.Key.Key_Space)
+                self.__visual_qtbot.key_click(check_box, Qt.Key.Key_Space)
                 return
         raise AssertionError(f"Field '{field_name}' not found")
 
     def print_to_stop_words(self, stop_words: str) -> None:
         stop_words_line_edit: QLineEdit = self.__get_stop_words_line_edit()
-        self.__visual_qtbot.keyClicks(stop_words_line_edit, stop_words)
+        self.__visual_qtbot.key_clicks(stop_words_line_edit, stop_words)
 
     def click_space_delimited_language(self) -> None:
         checkbox: QCheckBox = self.__get_space_delimited_language_checkbox()
-        self.__visual_qtbot.mouseClick(checkbox, Qt.MouseButton.LeftButton)
+        self.__visual_qtbot.mouse_click(checkbox, Qt.MouseButton.LeftButton)
 
     def click_start_button(self) -> None:
         self.__click_button(self.__get_start_button())
@@ -75,7 +75,7 @@ class AdhocHighlightDialogViewScaffold:
         return path(self.__view).child(FormatGroupBox).child(TitledComboBoxLayout).combobox().get()
 
     def __click_button(self, button: QPushButton) -> None:
-        self.__visual_qtbot.mouseClick(button, Qt.MouseButton.LeftButton)
+        self.__visual_qtbot.mouse_click(button, Qt.MouseButton.LeftButton)
 
     def __get_start_button(self) -> QPushButton:
         return self.__get_button(QDialogButtonBox.StandardButton.Ok)

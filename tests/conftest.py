@@ -302,7 +302,7 @@ def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDial
     assert mw is not None  # initialize aqt.mw
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     theme_manager.apply_style()
-    visual_qtbot.addWidget(view)
+    visual_qtbot.add_widget(view)
     return view
 
 
@@ -340,7 +340,7 @@ def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, the
     assert mw is not None  # initialize aqt.mw
     view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     theme_manager.apply_style()
-    visual_qtbot.addWidget(view)
+    visual_qtbot.add_widget(view)
     return view
 
 

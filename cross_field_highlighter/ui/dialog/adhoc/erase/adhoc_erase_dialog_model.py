@@ -17,8 +17,6 @@ class AdhocEraseDialogModelListener:
 
 
 class AdhocEraseDialogModel:
-    __fields: str = "fields"
-
     def __init__(self):
         self.__note_types: list[NoteTypeDetails] = []
         self.__current_state: Optional[AdhocEraseDialogState] = None
@@ -53,7 +51,7 @@ class AdhocEraseDialogModel:
 
     def switch_to_first_state(self) -> None:
         if len(self.__note_types) < 1:
-            raise Exception("At least one note type should exist")
+            raise ValueError("At least one note type should exist")
         note_type_details: NoteTypeDetails = self.__note_types[0]
         self.switch_state(note_type_details)
 

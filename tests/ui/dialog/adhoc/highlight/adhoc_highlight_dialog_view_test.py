@@ -77,7 +77,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                              'space_delimited_language': True}}}
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert len(listener.history) == 2
     assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
                 current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
@@ -295,7 +295,7 @@ def test_remember_selected_source_when_changing_note_type(
     adhoc_highlight_dialog_model.fill(all_note_type_details, [], all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_front, DefaultFields.all_basic)
     # Choose "Back" field in "Basic" note type
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
@@ -372,7 +372,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
     adhoc_highlight_dialog_model.fill(all_note_type_details, [], all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
-    visual_qtbot.waitExposed(adhoc_highlight_dialog_view)
+    visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_space_delimited_language(adhoc_highlight_dialog_view, True)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],

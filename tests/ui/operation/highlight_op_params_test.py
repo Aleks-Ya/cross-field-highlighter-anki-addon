@@ -18,7 +18,7 @@ def note_ids(td: Data) -> set[NoteId]:
 @pytest.fixture
 def parent(visual_qtbot: VisualQtBot) -> QWidget:
     parent: QWidget = QWidget()
-    visual_qtbot.addWidget(parent)
+    visual_qtbot.add_widget(parent)
     return parent
 
 

@@ -15,18 +15,18 @@ class AdhocEraseDialogViewScaffold:
 
     def select_note_type(self, *keys: Qt.Key) -> None:
         note_type_combo_box: QComboBox = self.__get_note_type_combo_box()
-        self.__visual_qtbot.mouseClick(note_type_combo_box, Qt.MouseButton.LeftButton)
+        self.__visual_qtbot.mouse_click(note_type_combo_box, Qt.MouseButton.LeftButton)
         for key in keys:
-            self.__visual_qtbot.keyClick(note_type_combo_box, key)
-        self.__visual_qtbot.keyClick(note_type_combo_box.view(), Qt.Key.Key_Enter)
+            self.__visual_qtbot.key_click(note_type_combo_box, key)
+        self.__visual_qtbot.key_click(note_type_combo_box.view(), Qt.Key.Key_Enter)
 
     def mark_destination_field(self, field_name: FieldName) -> None:
         checkboxes: list[QCheckBox] = path(self.__view).child(FieldsLayout).children(QCheckBox)
         for check_box in checkboxes:
             if check_box.text() == field_name:
-                self.__visual_qtbot.mouseClick(check_box, Qt.MouseButton.LeftButton)
+                self.__visual_qtbot.mouse_click(check_box, Qt.MouseButton.LeftButton)
                 # Mouse click just focus on check_box, but doesn't select it
-                self.__visual_qtbot.keyClick(check_box, Qt.Key.Key_Space)
+                self.__visual_qtbot.key_click(check_box, Qt.Key.Key_Space)
                 return
         raise AssertionError(f"Field '{field_name}' not found")
 
@@ -52,7 +52,7 @@ class AdhocEraseDialogViewScaffold:
         return self.__get_button(QDialogButtonBox.StandardButton.RestoreDefaults)
 
     def __click_button(self, button: QPushButton) -> None:
-        self.__visual_qtbot.mouseClick(button, Qt.MouseButton.LeftButton)
+        self.__visual_qtbot.mouse_click(button, Qt.MouseButton.LeftButton)
 
     def __get_button(self, button: QDialogButtonBox.StandardButton) -> QPushButton:
         button_box: QDialogButtonBox = path(self.__view).child(QDialogButtonBox).get()
