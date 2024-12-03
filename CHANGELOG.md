@@ -13,3 +13,7 @@
 ## [v0.1.4](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.1.4) - 2024-12-01
 
 1. __[BUG]__ Do not highlight collocation within HTML tags
+
+## [v0.2.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.2.0) - 2024-12-03
+
+1. __[FEATURE]__ Support non-space-delimited languages

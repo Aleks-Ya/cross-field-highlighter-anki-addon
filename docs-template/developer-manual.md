@@ -52,16 +52,17 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Release
 
-1. Update `CHANGELOG.md` manually
-2. Update documentation: `./docs_render.sh`
-3. Increment version:
+1. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_note-size-anki-addon
+2. Update `CHANGELOG.md` manually
+3. Update documentation: `./docs_render.sh`
+4. Increment version:
     1. Major: `bump-my-version bump major`
     2. Minor: `bump-my-version bump minor`
     3. Patch: `bump-my-version bump patch`
-4. Build ZIP: `python setup.py dist`
-5. Upload ZIP to the Addon page:
+5. Build ZIP: `python setup.py dist`
+6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
     2. Update `Description` from `docs-template/addon-info-description.md`
     3. Attach the distribution file
-6. Push Git branch and tags: `git push --follow-tags`
-7. Create a GitHub release from tag
+7. Push Git branch and tags: `git push --follow-tags`
+8. Create a GitHub release from tag
