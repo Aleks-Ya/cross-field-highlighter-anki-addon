@@ -8,8 +8,11 @@ def test_cases(start_with_text_highlighter: StartWithTextHighlighter, td: Data, 
     for case in td.cases():
         print(f"Case: {case.name}")
         stop_words: Text = td.stop_words()
-        assert start_with_text_highlighter.highlight(case.phrase, case.original_text, stop_words,
-                                                     bold_format) == case.highlighted_text
-        assert start_with_text_highlighter.highlight(case.phrase, case.highlighted_text, stop_words,
-                                                     bold_format) == case.highlighted_text
-        assert case.original_text == start_with_text_highlighter.erase(case.highlighted_text)
+        highlighted_text_1: Text = start_with_text_highlighter.highlight(
+            case.phrase, case.original_text, stop_words, bold_format)
+        highlighted_text_2: Text = start_with_text_highlighter.highlight(
+            case.phrase, case.highlighted_text, stop_words, bold_format)
+        erased_text: Text = start_with_text_highlighter.erase(case.highlighted_text)
+        assert highlighted_text_1 == case.highlighted_text
+        assert highlighted_text_2 == case.highlighted_text
+        assert erased_text == case.original_text

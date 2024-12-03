@@ -17,17 +17,17 @@ def test_cases(start_with_note_field_highlighter: StartWithNoteFieldHighlighter,
         stop_words: Text = td.stop_words()
 
         # Highlight 1st time
-        result: NoteFieldHighlightResult = start_with_note_field_highlighter.highlight(
+        highlight_result_1: NoteFieldHighlightResult = start_with_note_field_highlighter.highlight(
             note, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
-        note_act: Note = result.note
+        note_act: Note = highlight_result_1.note
         assert note_act[DefaultFields.basic_back] == case.highlighted_text
 
         # Highlight again
-        result: NoteFieldHighlightResult = start_with_note_field_highlighter.highlight(
+        highlight_result_2: NoteFieldHighlightResult = start_with_note_field_highlighter.highlight(
             note, DefaultFields.basic_front, DefaultFields.basic_back, stop_words, bold_format)
-        note_act: Note = result.note
+        note_act: Note = highlight_result_2.note
         assert note_act[DefaultFields.basic_back] == case.highlighted_text
 
         # Erase
-        result: NoteFieldEraseResult = start_with_note_field_highlighter.erase(note, DefaultFields.basic_back)
-        assert result.note[DefaultFields.basic_back] == case.original_text
+        erase_result: NoteFieldEraseResult = start_with_note_field_highlighter.erase(note, DefaultFields.basic_back)
+        assert erase_result.note[DefaultFields.basic_back] == case.original_text
