@@ -65,6 +65,9 @@ class AdhocHighlightDialogModel:
             self.switch_to_first_state()
         return self.__current_state
 
+    def get_states(self) -> list[AdhocHighlightDialogState]:
+        return list(self.__states.values())
+
     def get_note_ids(self) -> list[NoteId]:
         return self.__note_ids
 
@@ -124,16 +127,17 @@ class AdhocHighlightDialogModel:
             self.__format: state.get_selected_format().code.value,
             self.__stop_words: state.get_selected_stop_words(),
             self.__destination_fields: state.get_selected_destination_fields()
-        } for state in self.__states.values()]
+        } for state in self.get_states()]
         result: dict[str, any] = {
-            "current_state": self.__current_state.get_selected_note_type().name if self.__current_state else None,
+            "current_state": self.get_current_state().get_selected_note_type().name,
             "states": states}
         return result
 
     def deserialize_states(self, json: dict[str, any]) -> None:
-        note_type_dict: [NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in self.__note_types}
+        note_type_dict: [NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
+                                                           self.get_note_types()}
         highlight_formats: [HighlightFormatCode, HighlightFormat] = {highlight_format.code: highlight_format for
-                                                                     highlight_format in self.__formats}
+                                                                     highlight_format in self.get_formats()}
         if json and "states" in json:
             for state_obj in json["states"]:
                 saved_note_type_name: NoteTypeName = state_obj["note_type"]

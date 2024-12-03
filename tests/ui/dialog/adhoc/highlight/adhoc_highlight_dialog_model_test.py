@@ -1,6 +1,7 @@
 from typing import Any
 
 from anki.notes import NoteId
+from pytest import raises
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats, HighlightFormat
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
@@ -11,20 +12,9 @@ from tests.data import DefaultFields
 
 
 def test_serialize_empty_model():
-    model1: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    data: dict[str, Any] = model1.serialize_states()
-    assert data == {'current_state': None, 'states': []}
-    model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    model2.deserialize_states(data)
-    assert model1 == model2
-    assert model2.as_dict() == {'accept_callback_None': True,
-                                'current_state': None,
-                                'default_stop_words': None,
-                                'formats': [],
-                                'note_ids': [],
-                                'note_types': [],
-                                'reject_callback_None': True,
-                                'states': {}}
+    with raises(Exception, match="At least one note type should exist"):
+        model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
+        model.serialize_states()
 
 
 def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,

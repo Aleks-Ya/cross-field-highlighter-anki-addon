@@ -1,5 +1,7 @@
 from typing import Any
 
+from pytest import raises
+
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.types import FieldNames
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -8,17 +10,9 @@ from tests.data import DefaultFields
 
 
 def test_serialize_empty_model():
-    model1: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    data: dict[str, Any] = model1.serialize_states()
-    assert data == {'current_state': None, 'states': []}
-    model2: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    model2.deserialize_states(data)
-    assert model1 == model2
-    assert model2.as_dict() == {'accept_callback_None': True,
-                                'current_state': None,
-                                'note_types': [],
-                                'reject_callback_None': True,
-                                'states': {}}
+    with raises(Exception, match="At least one note type should exist"):
+        model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+        model.serialize_states()
 
 
 def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails],
