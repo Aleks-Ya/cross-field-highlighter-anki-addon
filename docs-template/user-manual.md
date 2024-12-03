@@ -14,8 +14,9 @@ fields:
        highlighted.
     5. Stop words: given stop words will be excluded from the source field (e.g. stop words `a` from `a cat` will be
        treated as `cat`).
-    6. Non-space-delimited languages (Japanese, Chinese, Thai, etc.) are supported.
-    7. Repeating highlighting the same notes doesn't duplicate highlighting.
+    6. Case-insensitive: the source word can be in any case.
+    7. Non-space-delimited languages (Japanese, Chinese, Thai, etc.) are supported.
+    8. Repeating highlighting the same notes doesn't duplicate highlighting.
 2. Erase:
     1. CHF removes previously added highlightings from fields.
     2. CFH marks its own formatting, so it can erase exactly only its formatting.
