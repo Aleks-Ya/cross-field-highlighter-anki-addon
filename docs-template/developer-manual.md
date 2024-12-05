@@ -42,6 +42,11 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 1. Build ZIP: `python setup.py dist` (includes unit-tests)
 2. Output: `./dist/note-size-X.X-X.zip`
 
+## Execute GitHub Actions locally
+
+1. Install `act`: `brew install act`
+2. Run: `act`
+
 ## Render documentation
 
 1. Install: `pip install md-toc`
