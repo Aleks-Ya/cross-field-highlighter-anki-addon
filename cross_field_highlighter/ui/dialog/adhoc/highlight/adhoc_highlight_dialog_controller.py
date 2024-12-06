@@ -38,8 +38,8 @@ class AdhocHighlightDialogController:
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__run_op_callback = run_op_callback
-        self.__model.fill(params.note_types, list(set(params.note_ids)), self.__formatter_facade.get_all_formats(),
-                          self.__accept_callback, self.__reject_callback)
+        self.__model.fill(params.note_types, self.__formatter_facade.get_all_formats(), self.__accept_callback,
+                          self.__reject_callback)
         self.__fill_model_from_config()
         self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
@@ -62,7 +62,7 @@ class AdhocHighlightDialogController:
         stop_words: Text = Text(state.get_selected_stop_words())
         note_type_details: NoteTypeDetails = state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type_details.note_type_id, self.__model.get_note_ids(), None, source_filed,
+            note_type_details.note_type_id, None, source_filed,
             state.get_space_delimited_language(), state.get_selected_destination_fields(), stop_words,
             state.get_selected_format())
         return highlight_op_params

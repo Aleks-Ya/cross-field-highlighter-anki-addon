@@ -1,4 +1,3 @@
-from anki.notes import Note, NoteId
 from aqt import Qt
 
 from cross_field_highlighter.config.config import Config
@@ -33,15 +32,13 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
 
-    note_1: Note = td.create_basic_note_1()
-    note_ids: list[NoteId] = [note_1.id]
-    params: DialogParams = DialogParams(all_note_type_details, note_ids)
+    td.create_basic_note_1()
+    params: DialogParams = DialogParams(all_note_type_details)
     assert callback.history == []
     assert listener.history == []
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
-        'note_ids': [],
         'note_types': [],
         'accept_callback_None': True,
         'reject_callback_None': True,
@@ -54,7 +51,6 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
-        'note_ids': note_ids,
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
@@ -88,7 +84,6 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
-        'note_ids': [],
         'note_types': [],
         'accept_callback_None': True,
         'reject_callback_None': True,
@@ -96,7 +91,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'current_state': None}
 
     # Update config from model
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.fire_model_changed(None)
@@ -116,7 +111,6 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
-        'note_ids': [],
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
@@ -138,7 +132,6 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
-        'note_ids': [],
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
@@ -183,7 +176,6 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
-        'note_ids': [],
         'note_types': [],
         'accept_callback_None': True,
         'reject_callback_None': True,
@@ -191,7 +183,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'current_state': None}
 
     # Update config from model
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.get_current_state().select_format(formatter_facade.get_format_by_code(
@@ -216,7 +208,6 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
-        'note_ids': [],
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
@@ -240,7 +231,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
         config_loader)
-    controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {
@@ -256,7 +247,6 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,
-        'note_ids': [],
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
@@ -286,7 +276,7 @@ def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighl
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_format_group_box(adhoc_highlight_dialog_view, bold_format, all_highlight_formats)
     # Choose "Italic" format
@@ -295,7 +285,7 @@ def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighl
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     # Show dialog again
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     assert_format_group_box(adhoc_highlight_dialog_view, italic_format, all_highlight_formats)
 
 
@@ -311,7 +301,7 @@ def test_remember_stop_words_on_cancel(adhoc_highlight_dialog_controller: AdhocH
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_stop_words(adhoc_highlight_dialog_view, DefaultStopWords.in_config)
     # Modify stop words
@@ -322,7 +312,7 @@ def test_remember_stop_words_on_cancel(adhoc_highlight_dialog_controller: AdhocH
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     # Show dialog again
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     assert_stop_words(adhoc_highlight_dialog_view, exp_stop_words)
 
 
@@ -335,7 +325,7 @@ def test_remember_space_delimited_language_on_cancel(adhoc_highlight_dialog_cont
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     adhoc_highlight_dialog_model.add_listener(FakeModelListener())
     # Show dialog
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert_space_delimited_language(adhoc_highlight_dialog_view, True)
     # Uncheck space-delimited language combobox
@@ -344,5 +334,5 @@ def test_remember_space_delimited_language_on_cancel(adhoc_highlight_dialog_cont
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     # Show dialog again
-    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, []), callback.call)
+    adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
     assert_space_delimited_language(adhoc_highlight_dialog_view, False)

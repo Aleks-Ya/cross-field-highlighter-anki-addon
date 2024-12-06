@@ -1,8 +1,5 @@
 import logging
 from logging import Logger
-from typing import Sequence
-
-from anki.notes import NoteId
 
 from ...highlighter.note_type_details import NoteTypeDetails
 
@@ -10,9 +7,8 @@ log: Logger = logging.getLogger(__name__)
 
 
 class DialogParams:
-    def __init__(self, note_types: list[NoteTypeDetails], note_ids: Sequence[NoteId]):
+    def __init__(self, note_types: list[NoteTypeDetails]):
         self.note_types: list[NoteTypeDetails] = note_types
-        self.note_ids: Sequence[NoteId] = note_ids
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __str__(self):

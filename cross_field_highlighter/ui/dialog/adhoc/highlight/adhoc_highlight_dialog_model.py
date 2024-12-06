@@ -3,8 +3,6 @@ from logging import Logger
 from abc import abstractmethod
 from typing import Optional, Callable
 
-from anki.notes import NoteId
-
 from .....highlighter.formatter.highlight_format import HighlightFormats
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import NoteTypeName, FieldNames, Text
@@ -22,7 +20,6 @@ class AdhocHighlightDialogModelListener:
 class AdhocHighlightDialogModel:
     def __init__(self):
         self.__note_types: list[NoteTypeDetails] = []
-        self.__note_ids: list[NoteId] = []
         self.__formats: HighlightFormats = HighlightFormats([])
         self.__default_stop_words: Optional[str] = None
         self.__accept_callback: Optional[Callable[[], None]] = None
@@ -32,10 +29,9 @@ class AdhocHighlightDialogModel:
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def fill(self, note_types: list[NoteTypeDetails], note_ids: list[NoteId], formats: HighlightFormats,
+    def fill(self, note_types: list[NoteTypeDetails], formats: HighlightFormats,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
         self.__note_types = note_types
-        self.__note_ids = note_ids
         self.__formats = formats
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
@@ -61,9 +57,6 @@ class AdhocHighlightDialogModel:
 
     def get_states(self) -> list[AdhocHighlightDialogState]:
         return list(self.__states.values())
-
-    def get_note_ids(self) -> list[NoteId]:
-        return self.__note_ids
 
     def set_default_stop_words(self, default_stop_words: Optional[str]) -> None:
         self.__default_stop_words = default_stop_words
@@ -104,7 +97,6 @@ class AdhocHighlightDialogModel:
     def as_dict(self) -> dict[str, any]:
         return {
             "note_types": self.__note_types,
-            "note_ids": self.__note_ids,
             "formats": self.__formats,
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.__current_state.as_dict() if self.__current_state else None,

@@ -28,10 +28,11 @@ class OpFactory:
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def create_highlight_op(self, highlight_op_params: HighlightOpParams, callback: Callable[[], None]) -> HighlightOp:
+    def create_highlight_op(self, note_ids: set[NoteId], highlight_op_params: HighlightOpParams,
+                            callback: Callable[[], None]) -> HighlightOp:
         log.debug(f"Creating HighlightOp: params={highlight_op_params}")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           highlight_op_params, self.__op_statistics_formatter, callback)
+                           note_ids, highlight_op_params, self.__op_statistics_formatter, callback)
 
     def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
                         callback: Callable[[], None]) -> EraseOp:
