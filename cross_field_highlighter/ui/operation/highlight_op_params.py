@@ -1,9 +1,7 @@
 import logging
 from logging import Logger
-from typing import Optional
 
 from anki.models import NotetypeId
-from aqt import QWidget
 
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.types import FieldName, FieldNames, Text
@@ -12,11 +10,10 @@ log: Logger = logging.getLogger(__name__)
 
 
 class HighlightOpParams:
-    def __init__(self, note_type_id: NotetypeId, parent: Optional[QWidget],
+    def __init__(self, note_type_id: NotetypeId,
                  source_field: FieldName, space_delimited_language: bool, destination_fields: FieldNames,
                  stop_words: Text, highlight_format: HighlightFormat):
         self.note_type_id: NotetypeId = note_type_id
-        self.parent: Optional[QWidget] = parent
         self.source_field: FieldName = source_field
         self.space_delimited_language: bool = space_delimited_language
         self.destination_fields: FieldNames = destination_fields
@@ -37,7 +34,6 @@ class HighlightOpParams:
         if not isinstance(other, HighlightOpParams):
             return False
         return (self.note_type_id == other.note_type_id and
-                self.parent == other.parent and
                 self.source_field == other.source_field and
                 self.space_delimited_language == other.space_delimited_language and
                 self.destination_fields == other.destination_fields and

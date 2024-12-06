@@ -27,15 +27,15 @@ class HighlightOp(QueryOp):
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
                  op_statistics_formatter: OpStatisticsFormatter, callback: Callable[[], None],
-                 params: HighlightOpParams):
-        super().__init__(parent=params.parent, op=self.__background_op, success=self.__on_success)
+                 parent: Optional[QWidget], params: HighlightOpParams):
+        super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
         self.__col: Collection = col
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
-        self.__parent: QWidget = params.parent
+        self.__parent: QWidget = parent
         self.__note_type_id: NotetypeId = params.note_type_id
         self.__note_ids: set[NoteId] = note_ids
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter

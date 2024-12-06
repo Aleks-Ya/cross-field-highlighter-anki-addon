@@ -51,7 +51,7 @@ class AdhocEraseDialogController:
         self.__save_model_to_config()
         erase_op_params: EraseOpParams = EraseOpParams(
             self.__model.get_current_state().get_selected_note_type().note_type_id,
-            None, self.__model.get_current_state().get_selected_fields())
+            self.__model.get_current_state().get_selected_fields())
         self.__run_op_callback(erase_op_params)
 
     def __reject_callback(self):

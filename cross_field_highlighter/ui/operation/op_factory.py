@@ -1,7 +1,8 @@
 import logging
 from logging import Logger
-from typing import Callable
+from typing import Callable, Optional
 
+from PyQt6.QtWidgets import QWidget
 from anki.collection import Collection
 from anki.notes import NoteId
 from aqt.progress import ProgressManager
@@ -29,16 +30,16 @@ class OpFactory:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def create_highlight_op(self, note_ids: set[NoteId], highlight_op_params: HighlightOpParams,
-                            callback: Callable[[], None]) -> HighlightOp:
+                            callback: Callable[[], None], parent: Optional[QWidget]) -> HighlightOp:
         log.debug(f"Creating HighlightOp: params={highlight_op_params}")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           note_ids, self.__op_statistics_formatter, callback, highlight_op_params)
+                           note_ids, self.__op_statistics_formatter, callback, parent, highlight_op_params)
 
     def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
-                        callback: Callable[[], None]) -> EraseOp:
+                        callback: Callable[[], None], parent: Optional[QWidget]) -> EraseOp:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, params={erase_op_params}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       note_ids, self.__op_statistics_formatter, callback, erase_op_params)
+                       note_ids, self.__op_statistics_formatter, callback, parent, erase_op_params)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

@@ -62,7 +62,7 @@ class AdhocHighlightDialogController:
         stop_words: Text = Text(state.get_selected_stop_words())
         note_type_details: NoteTypeDetails = state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type_details.note_type_id, None, source_filed,
+            note_type_details.note_type_id, source_filed,
             state.get_space_delimited_language(), state.get_selected_destination_fields(), stop_words,
             state.get_selected_format())
         return highlight_op_params
