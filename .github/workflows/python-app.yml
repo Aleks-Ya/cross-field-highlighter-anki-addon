@@ -25,3 +25,7 @@ jobs:
           pip install --root-user-action=ignore --upgrade pip tox
       - name: Tox
         run: tox
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
