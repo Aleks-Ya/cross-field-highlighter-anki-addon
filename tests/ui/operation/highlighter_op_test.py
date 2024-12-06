@@ -36,7 +36,7 @@ def test_highlight(col: Collection, notes_highlighter: NotesHighlighter, task_ma
                                                                space_delimited_language, destination_fields, stop_words,
                                                                bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            highlight_op_params, op_statistics_formatter, lambda: None)
+                                            op_statistics_formatter, lambda: None, highlight_op_params)
     highlight_op.run_in_background()
     time.sleep(1)
     td.assert_highlighted_case_notes(case_notes, space_delimited_language)
@@ -71,7 +71,7 @@ def test_highlight_different_note_types(col: Collection, notes_highlighter: Note
                                                                source_field, space_delimited_language,
                                                                destination_fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            highlight_op_params, op_statistics_formatter, lambda: None)
+                                            op_statistics_formatter, lambda: None, highlight_op_params)
     highlight_op.run_in_background()
     time.sleep(1)
     assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'

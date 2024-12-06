@@ -32,13 +32,13 @@ class OpFactory:
                             callback: Callable[[], None]) -> HighlightOp:
         log.debug(f"Creating HighlightOp: params={highlight_op_params}")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           note_ids, highlight_op_params, self.__op_statistics_formatter, callback)
+                           note_ids, self.__op_statistics_formatter, callback, highlight_op_params)
 
     def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
                         callback: Callable[[], None]) -> EraseOp:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, params={erase_op_params}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       note_ids, self.__op_statistics_formatter, erase_op_params, callback)
+                       note_ids, self.__op_statistics_formatter, callback, erase_op_params)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

@@ -19,7 +19,7 @@ class EraseOpParams:
 
     def __str__(self):
         fields: str = ", ".join([str(field) for field in self.fields])
-        return (f"EraseOpParams(note_type_id={self.note_type_id}, fields={fields})")
+        return f"EraseOpParams(note_type_id={self.note_type_id}, fields={fields})"
 
     def __repr__(self):
         return self.__str__()

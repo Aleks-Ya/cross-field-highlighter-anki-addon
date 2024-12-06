@@ -42,7 +42,7 @@ def test_erase(col: Collection, notes_highlighter: NotesHighlighter, task_manage
 
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, parent, fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                op_statistics_formatter, erase_op_params, lambda: None)
+                                op_statistics_formatter, lambda: None, erase_op_params)
     erase_op.run_in_background()
     time.sleep(1)
     td.assert_original_case_notes(case_notes)
@@ -77,7 +77,7 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
                                                                space_delimited_language, destination_fields, stop_words,
                                                                bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            highlight_op_params, op_statistics_formatter, lambda: None)
+                                            op_statistics_formatter, lambda: None, highlight_op_params)
     highlight_op.run_in_background()
     time.sleep(1)
     assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
@@ -90,7 +90,7 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
 
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, parent, destination_fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, set(note_ids),
-                                op_statistics_formatter, erase_op_params, lambda: None)
+                                op_statistics_formatter, lambda: None, erase_op_params)
     erase_op.run_in_background()
     time.sleep(1)
     assert col.get_note(note_1.id)[DefaultFields.basic_back] == note_1[DefaultFields.basic_back]
