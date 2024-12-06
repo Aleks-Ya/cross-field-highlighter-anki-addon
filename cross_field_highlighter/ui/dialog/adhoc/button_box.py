@@ -15,11 +15,17 @@ class ButtonBox(QDialogButtonBox):
                          QDialogButtonBox.StandardButton.Cancel |
                          QDialogButtonBox.StandardButton.RestoreDefaults)
         start_button: QPushButton = self.button(QDialogButtonBox.StandardButton.Ok)
-        start_button.setText("Start")
+        start_button.setText("&Start")
+        cancel_button: QPushButton = self.button(QDialogButtonBox.StandardButton.Cancel)
+        cancel_button.setText("&Cancel")
+        # noinspection PyUnresolvedReferences
         self.accepted.connect(start_callback)
+        # noinspection PyUnresolvedReferences
         self.rejected.connect(cancel_callback)
         restore_defaults_button: QPushButton = self.button(QDialogButtonBox.StandardButton.RestoreDefaults)
+        # noinspection PyUnresolvedReferences
         restore_defaults_button.setToolTip('Reset settings in this dialog to defaults')
+        # noinspection PyUnresolvedReferences
         restore_defaults_button.clicked.connect(restore_defaults_callback)
         log.debug(f"{self.__class__.__name__} was instantiated")
 

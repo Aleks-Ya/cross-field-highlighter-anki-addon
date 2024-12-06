@@ -50,8 +50,10 @@ def assert_destination_group_box(view: AdhocEraseDialogView, check_box_texts: li
 
 def assert_buttons(view: AdhocEraseDialogView):
     start_button: QPushButton = path(view).child(QDialogButtonBox).button(0).get()
-    assert start_button.text() == "Start"
+    assert start_button.text() == "&Start"
     cancel_button: QPushButton = path(view).child(QDialogButtonBox).button(1).get()
-    assert cancel_button.text() == "&Cancel"
+    act_cancel_button_text: str = cancel_button.text()
+    exp_cancel_button_text: str = "&Cancel"
+    assert act_cancel_button_text == exp_cancel_button_text, f"'{act_cancel_button_text}' != '{exp_cancel_button_text}'"
     restore_defaults_button: QPushButton = path(view).child(QDialogButtonBox).button(2).get()
     assert restore_defaults_button.text() == "Restore Defaults"

@@ -79,6 +79,7 @@ def assert_space_delimited_language(view: AdhocHighlightDialogView, space_delimi
     group_box: PyQtPath = path(view).group(0)
     check_box: QCheckBox = group_box.checkbox().get()
     assert check_box.text() == "Space-delimited language"
+    # noinspection PyUnresolvedReferences
     assert check_box.toolTip() == "Yes for English, French, Spanish, etc.\nNo for Chinese, Japanese, Thai, etc."
     is_checked: bool = check_box.isChecked()
     assert is_checked == space_delimited_language, f"'{is_checked}' != '{space_delimited_language}'"
@@ -114,8 +115,10 @@ def assert_destination_group_box(view: AdhocHighlightDialogView, check_box_texts
 
 def assert_buttons(view: AdhocHighlightDialogView):
     start_button: QPushButton = path(view).child(QDialogButtonBox).button(0).get()
-    assert start_button.text() == "Start"
+    assert start_button.text() == "&Start"
     cancel_button: QPushButton = path(view).child(QDialogButtonBox).button(1).get()
-    assert cancel_button.text() == "&Cancel"
+    act_cancel_button_text: str = cancel_button.text()
+    exp_cancel_button_text: str = "&Cancel"
+    assert act_cancel_button_text == exp_cancel_button_text, f"'{act_cancel_button_text}' != '{exp_cancel_button_text}'"
     restore_defaults_button: QPushButton = path(view).child(QDialogButtonBox).button(2).get()
     assert restore_defaults_button.text() == "Restore Defaults"
