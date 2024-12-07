@@ -35,7 +35,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     td.create_basic_note_1()
     params: DialogParams = DialogParams(all_note_type_details)
     assert callback.history == []
-    assert listener.history == []
+    assert listener.counter == 0
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': [],
@@ -47,7 +47,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
-    assert len(listener.history) == 2
+    assert listener.counter == 2
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'formats': all_highlight_formats,

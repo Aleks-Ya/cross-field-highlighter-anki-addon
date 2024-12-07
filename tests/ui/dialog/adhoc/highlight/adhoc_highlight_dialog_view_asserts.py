@@ -26,10 +26,10 @@ class FakeCallback:
 
 class FakeModelListener(AdhocHighlightDialogModelListener):
     def __init__(self):
-        self.history: list[object] = []
+        self.counter: int = 0
 
     def model_changed(self, source: object):
-        self.history.append(source)
+        self.counter += 1
 
 
 class FakeHighlightControllerCallback:
