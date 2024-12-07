@@ -82,3 +82,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     3. Attach the distribution file
 7. Push Git branch and tags: `git push --follow-tags`
 8. Create a GitHub release from tag
+
+## Icons
+Highlight Editor button: https://icon-icons.com/icon/highlight/96729
+Erase Editor button: https://icon-icons.com/icon/rubber/96712

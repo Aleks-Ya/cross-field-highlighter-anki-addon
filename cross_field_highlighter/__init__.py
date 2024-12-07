@@ -2,6 +2,7 @@ from pathlib import Path
 
 from anki.collection import Collection
 from aqt import mw, gui_hooks
+from aqt.addons import AddonManager
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 
@@ -32,6 +33,8 @@ from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from .ui.editor.editor_button_creator import EditorButtonCreator
+from .ui.editor.editor_button_hooks import EditorButtonHooks
 from .ui.menu.dialog_params_factory import DialogParamsFactory
 from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from .ui.operation.op_factory import OpFactory
@@ -40,7 +43,8 @@ from .ui.operation.op_factory import OpFactory
 def __initialize(col: Collection):
     module_dir: Path = Path(__file__).parent
     module_name: str = module_dir.stem
-    log_dir: Path = mw.addonManager.logs_folder(module_name)
+    addon_manager: AddonManager = mw.addonManager
+    log_dir: Path = addon_manager.logs_folder(module_name)
     logs: Logs = Logs(log_dir)
     logs.set_level("DEBUG")
     tokenizer: RegExTokenizer = RegExTokenizer()
@@ -56,8 +60,8 @@ def __initialize(col: Collection):
     notes_highlighter: NotesHighlighter = NotesHighlighter(note_field_highlighter)
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
-    settings: Settings = Settings(module_dir, module_name, mw.addonManager.logs_folder(module_name))
-    config_loader: ConfigLoader = ConfigLoader(mw.addonManager, settings)
+    settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name))
+    config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
     config: Config = config_loader.load_config()
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
@@ -78,6 +82,11 @@ def __initialize(col: Collection):
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
                                                adhoc_erase_dialog_controller, dialog_params_factory)
     browser_hooks.setup_hooks()
+    editor_button_creator: EditorButtonCreator = EditorButtonCreator(
+        adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
+        note_field_highlighter, settings)
+    editor_button_hooks: EditorButtonHooks = EditorButtonHooks(editor_button_creator)
+    editor_button_hooks.setup_hooks()
 
 
 gui_hooks.collection_did_load.append(__initialize)

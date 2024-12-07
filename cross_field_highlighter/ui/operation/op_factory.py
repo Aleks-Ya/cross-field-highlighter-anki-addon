@@ -2,11 +2,11 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
-from PyQt6.QtWidgets import QWidget
 from anki.collection import Collection
 from anki.notes import NoteId
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
+from aqt import QWidget
 
 from .erase_op import EraseOp
 from .erase_op_params import EraseOpParams

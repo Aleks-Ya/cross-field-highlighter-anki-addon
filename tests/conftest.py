@@ -7,8 +7,9 @@ import aqt
 import pytest
 from anki.collection import Collection
 from anki.models import NoteType, NotetypeId, FieldDict
-from aqt import ProfileManager, AnkiQt, QApplication
+from aqt import ProfileManager, AnkiQt, QApplication, QWidget
 from aqt.addons import AddonManager
+from aqt.editor import Editor
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.theme import ThemeManager
@@ -42,7 +43,9 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import \
     AdhocHighlightDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+from cross_field_highlighter.ui.editor.editor_button_creator import EditorButtonCreator
 from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFactory
+from cross_field_highlighter.ui.operation.op_factory import OpFactory
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
@@ -378,3 +381,35 @@ def op_statistics_formatter(col: Collection) -> OpStatisticsFormatter:
 @pytest.fixture
 def visual_qtbot(qtbot: QtBot) -> VisualQtBot:
     return VisualQtBot(qtbot, 0)
+
+
+def __editor(mw: AnkiQt, add_mode: bool) -> Editor:
+    widget: QWidget = QWidget()
+    parent_widget: QWidget = QWidget()
+    return Editor(mw, widget, parent_widget, add_mode)
+
+
+@pytest.fixture
+def editor_add_mode(mw: AnkiQt) -> Editor:
+    return __editor(mw, True)
+
+
+@pytest.fixture
+def editor_edit_mode(mw: AnkiQt) -> Editor:
+    return __editor(mw, False)
+
+
+@pytest.fixture
+def op_factory(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
+               progress_manager: ProgressManager, op_statistics_formatter: OpStatisticsFormatter) -> OpFactory:
+    return OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
+
+
+@pytest.fixture
+def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                          adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                          note_type_details_factory: NoteTypeDetailsFactory,
+                          start_with_note_field_highlighter: StartWithNoteFieldHighlighter,
+                          settings: Settings) -> EditorButtonCreator:
+    return EditorButtonCreator(adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller,
+                               note_type_details_factory, start_with_note_field_highlighter, settings)

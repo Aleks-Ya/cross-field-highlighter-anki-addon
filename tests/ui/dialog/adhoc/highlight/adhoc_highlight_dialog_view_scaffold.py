@@ -1,6 +1,5 @@
-from PyQt6.QtWidgets import QLineEdit
 from PyQtPath.path_chain_pyqt6 import path
-from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox
+from aqt import QComboBox, QDialogButtonBox, QPushButton, Qt, QCheckBox, QLineEdit
 
 from cross_field_highlighter.highlighter.types import FieldName
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
