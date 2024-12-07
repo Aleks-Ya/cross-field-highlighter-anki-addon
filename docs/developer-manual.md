@@ -42,7 +42,18 @@ Run automated tests:
 
 ## SonarQube
 
-Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_note-size-anki-addon)
+Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)
+
+Scan locally:
+
+1. Prepare once
+    1. Install Sonar Scanner: `brew install sonar-scanner`
+    2. Find config file `sonar-scanner.properties`: `sonar-scanner -v`
+    3. Add token to `sonar-scanner.properties`: `sonar.token=XXX`
+2. Execute
+    1. Generate coverage report: `tox`
+    2. Run Scanner: `sonar-scanner`
+    3. See report at https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon
 
 ## Local deploy
 

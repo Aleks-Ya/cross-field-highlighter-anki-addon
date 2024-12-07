@@ -21,3 +21,9 @@
 ## [v0.2.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.2.1) - 2024-12-03
 
 1. __[BUG]__ Reading config of previous version
+
+## [v0.3.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.3.0) - 2024-12-07
+
+1. __[BUG]__ Misspelling
+2. __[MISC]__ Setup GitHub Actions build
+3. __[MISC]__ Fix Sonar warnings

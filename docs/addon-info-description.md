@@ -29,3 +29,4 @@ Highlight operation statistics:
 - [Support forum topic](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 - [GitHub](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon)
 - [Changelog](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md)
+- [SonarQube](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)
