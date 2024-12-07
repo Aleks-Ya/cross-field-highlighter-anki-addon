@@ -3,14 +3,15 @@ from logging import Logger
 
 from anki.models import NotetypeId
 
+from .op_params import OpParams
 from ...highlighter.types import FieldNames
 
 log: Logger = logging.getLogger(__name__)
 
 
-class EraseOpParams:
+class EraseOpParams(OpParams):
     def __init__(self, note_type_id: NotetypeId, fields: FieldNames):
-        self.note_type_id: NotetypeId = note_type_id
+        super().__init__(note_type_id)
         self.fields: FieldNames = fields
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -18,17 +19,10 @@ class EraseOpParams:
         fields: str = ", ".join([str(field) for field in self.fields])
         return f"EraseOpParams(note_type_id={self.note_type_id}, fields={fields})"
 
-    def __repr__(self):
-        return self.__str__()
-
     def __eq__(self, other):
         if not isinstance(other, EraseOpParams):
             return False
-        return (self.note_type_id == other.note_type_id and
-                self.fields == other.fields)
+        return self.note_type_id == other.note_type_id and self.fields == other.fields
 
     def __hash__(self):
         return hash((self.note_type_id, tuple(self.fields)))
-
-    def __del__(self):
-        log.debug(f"{self.__class__.__name__} was deleted")

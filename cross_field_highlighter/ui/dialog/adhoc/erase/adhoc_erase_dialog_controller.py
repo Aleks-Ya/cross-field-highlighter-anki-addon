@@ -25,12 +25,12 @@ class AdhocEraseDialogController:
         self.__model_serde: AdhocEraseDialogModelSerDe = model_serde
         self.__config: Config = config
         self.__config_loader: ConfigLoader = config_loader
-        self.__run_op_callback: Optional[Callable[[EraseOpParams], None]] = None
+        self.__start_callback: Optional[Callable[[EraseOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def show_dialog(self, params: DialogParams, run_op_callback: Callable[[EraseOpParams], None]) -> None:
+    def show_dialog(self, params: DialogParams, start_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
-        self.__run_op_callback = run_op_callback
+        self.__start_callback = start_callback
         self.__model.fill(params.note_types, self.__accept_callback, self.__reject_callback)
         self.__model.reset_states()
         self.__fill_model_from_config()
@@ -52,7 +52,7 @@ class AdhocEraseDialogController:
         erase_op_params: EraseOpParams = EraseOpParams(
             self.__model.get_current_state().get_selected_note_type().note_type_id,
             self.__model.get_current_state().get_selected_fields())
-        self.__run_op_callback(erase_op_params)
+        self.__start_callback(erase_op_params)
 
     def __reject_callback(self):
         log.debug("Reject callback")

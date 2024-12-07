@@ -32,7 +32,7 @@ class BrowserMenuAction(QAction):
         log.debug(f"Created DialogParams: {dialog_params}")
         return dialog_params
 
-    def _reload_current_note(self):
+    def _reload_current_note(self) -> None:
         log.debug("Reload current note in Editor")
         if self._browser.editor and self._browser.editor.note:
             note_id: NoteId = self._browser.editor.note.id

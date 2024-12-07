@@ -10,10 +10,10 @@ from aqt.taskman import TaskManager
 
 from .erase_op import EraseOp
 from .erase_op_params import EraseOpParams
-from .op_statistics_formatter import OpStatisticsFormatter
 from .highlight_op import HighlightOp
-from ...highlighter.notes.notes_highlighter import NotesHighlighter
 from .highlight_op_params import HighlightOpParams
+from .op_statistics_formatter import OpStatisticsFormatter
+from ...highlighter.notes.notes_highlighter import NotesHighlighter
 
 log: Logger = logging.getLogger(__name__)
 
@@ -29,15 +29,15 @@ class OpFactory:
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def create_highlight_op(self, note_ids: set[NoteId], highlight_op_params: HighlightOpParams,
-                            callback: Callable[[], None], parent: Optional[QWidget]) -> HighlightOp:
-        log.debug(f"Creating HighlightOp: params={highlight_op_params}")
+    def create_highlight_op(self, note_ids: set[NoteId], callback: Callable[[], None],
+                            parent: Optional[QWidget], highlight_op_params: HighlightOpParams) -> HighlightOp:
+        log.debug("Creating HighlightOp")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                            note_ids, self.__op_statistics_formatter, callback, parent, highlight_op_params)
 
-    def create_erase_op(self, note_ids: set[NoteId], erase_op_params: EraseOpParams,
-                        callback: Callable[[], None], parent: Optional[QWidget]) -> EraseOp:
-        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}, params={erase_op_params}")
+    def create_erase_op(self, note_ids: set[NoteId], callback: Callable[[], None], parent: Optional[QWidget],
+                        erase_op_params: EraseOpParams) -> EraseOp:
+        log.debug(f"Creating EraseOp: note_ids={len(note_ids)}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
                        note_ids, self.__op_statistics_formatter, callback, parent, erase_op_params)
 

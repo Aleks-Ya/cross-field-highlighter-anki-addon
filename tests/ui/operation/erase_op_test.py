@@ -73,11 +73,11 @@ def test_erase_different_note_types(col: Collection, notes_highlighter: NotesHig
     progress_manager: ProgressManager = Mock()
     space_delimited_language: bool = True
 
-    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, source_field,
-                                                               space_delimited_language, destination_fields, stop_words,
-                                                               bold_format)
+    highlight_op_params: HighlightOpParams = HighlightOpParams(
+        basic_note_type_id, source_field, space_delimited_language, destination_fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            op_statistics_formatter, lambda: None, parent, highlight_op_params)
+                                            op_statistics_formatter,
+                                            lambda: None, parent, highlight_op_params)
     highlight_op.run_in_background()
     time.sleep(1)
     assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
