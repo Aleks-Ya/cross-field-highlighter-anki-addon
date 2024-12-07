@@ -57,7 +57,7 @@ class AdhocHighlightDialogState:
 
     def select_first_source_field(self) -> None:
         if len(self.__selected_note_type.fields) < 1:
-            raise Exception("Note type must have at least one field")
+            raise ValueError("Note type must have at least one field")
         self.__selected_source_field = self.__selected_note_type.fields[0]
 
     def as_dict(self) -> dict[str, any]:
