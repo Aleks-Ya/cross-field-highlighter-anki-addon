@@ -18,7 +18,9 @@ fields:
     7. Non-space-delimited languages (Japanese, Chinese, Thai, etc.) are supported.
     8. Idempotence: repeating highlighting the same notes doesn't duplicate highlighting.
     9. HTML tags are skipped from highlighting.
+    10. Highlighting notes selected in Browser or current note in Editor.
 2. Erase:
     1. CFH removes previously added highlightings from fields.
     2. CFH marks its own formatting, so it can erase exactly only its formatting and preserve other formatting.
+    3. Erasing notes selected in Browser or current note in Editor.
 3. Find: search for highlighted notes in Browser

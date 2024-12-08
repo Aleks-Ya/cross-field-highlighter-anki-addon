@@ -24,3 +24,6 @@ Highlight operation statistics:
 
 "Erase" dialog (removes previously added highlighting):  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-erase.png)
+
+Highlight and erase buttons in Editor:  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)

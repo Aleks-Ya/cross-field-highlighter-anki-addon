@@ -78,11 +78,13 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 5. Build ZIP: `python setup.py dist`
 6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
-    2. Update `Description` from `docs-template/addon-info-description.md`
+    2. Title: `🎨 Cross-Field Highlighter - spotlight word in text`
     3. Attach the distribution file
+    4. Update `Description` from `docs-template/addon-info-description.md`
 7. Push Git branch and tags: `git push --follow-tags`
 8. Create a GitHub release from tag
 
 ## Icons
+
 Highlight Editor button: https://icon-icons.com/icon/highlight/96729
 Erase Editor button: https://icon-icons.com/icon/rubber/96712

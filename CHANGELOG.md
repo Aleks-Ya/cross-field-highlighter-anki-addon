@@ -27,3 +27,7 @@
 1. __[BUG]__ Misspelling
 2. __[MISC]__ Setup GitHub Actions build
 3. __[MISC]__ Fix Sonar warnings
+
+## [v0.4.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.4.0) - 2024-12-08
+
+1. __[FEATURE]__ Add "Highlight" and "Erase" buttons to Editor
