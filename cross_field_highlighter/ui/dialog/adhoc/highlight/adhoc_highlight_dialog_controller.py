@@ -38,8 +38,8 @@ class AdhocHighlightDialogController:
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
         self.__run_op_callback = run_op_callback
-        self.__model.fill(params.note_types, self.__formatter_facade.get_all_formats(), self.__accept_callback,
-                          self.__reject_callback)
+        self.__model.fill(params.note_types, params.note_number, self.__formatter_facade.get_all_formats(),
+                          self.__accept_callback, self.__reject_callback)
         self.__fill_model_from_config()
         self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()

@@ -22,7 +22,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                  bold_format: HighlightFormat, all_highlight_formats: HighlightFormats,
                                  adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    model.fill(all_note_type_details, all_highlight_formats, lambda: None, lambda: None)
+    model.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
     data: dict[str, Any] = {'current_state': 'Cloze', 'states': [{'note_type': 'Cloze'}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'accept_callback_None': False,
@@ -33,6 +33,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                                  'selected_stop_words': None,
                                                  'space_delimited_language': True},
                                'default_stop_words': None,
+                               'note_number': 3,
                                'formats': all_highlight_formats,
                                'note_types': all_note_type_details,
                                'reject_callback_None': False,
@@ -48,7 +49,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                          all_highlight_formats: HighlightFormats, mark_format: HighlightFormat,
                          adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
     model1: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    model1.fill(all_note_type_details, all_highlight_formats, lambda: None, lambda: None)
+    model1.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
     model1.switch_state(cloze_note_type_details)
     model1.get_current_state().select_source_field(DefaultFields.cloze_extra)
     model1.get_current_state().select_format(mark_format)
@@ -64,7 +65,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                 'stop_words': 'the',
                                 'space_delimited_language': True}]}
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    model2.fill(all_note_type_details, all_highlight_formats, lambda: None, lambda: None)
+    model2.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
     model2.switch_state(cloze_note_type_details)
     model2.get_current_state().select_source_field(DefaultFields.cloze_extra)
     model2.get_current_state().select_format(mark_format)
@@ -81,6 +82,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                                   'selected_stop_words': 'the',
                                                   'space_delimited_language': True},
                                 'default_stop_words': None,
+                                'note_number': 3,
                                 'formats': all_highlight_formats,
                                 'note_types': all_note_type_details,
                                 'reject_callback_None': False,

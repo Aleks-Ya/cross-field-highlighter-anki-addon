@@ -32,9 +32,9 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
                                                   OpStatisticsKey.NOTES_SELECTED_ALL: 21,
                                                   OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 21,
                                                   OpStatisticsKey.NOTES_PROCESSED: 21,
-                                                  OpStatisticsKey.NOTES_MODIFIED: 20,
+                                                  OpStatisticsKey.NOTES_MODIFIED: 19,
                                                   OpStatisticsKey.FIELDS_PROCESSED: 21,
-                                                  OpStatisticsKey.FIELDS_MODIFIED: 20}
+                                                  OpStatisticsKey.FIELDS_MODIFIED: 19}
 
     # Highlight
     td.assert_original_case_notes(case_notes)

@@ -75,7 +75,7 @@ class EditorButtonCreator:
         note_type_dict: NotetypeDict = note.note_type()
         note_type_id: NotetypeId = note_type_dict['id']
         note_type: NoteTypeDetails = self.__note_type_details_factory.by_note_type_id(note_type_id)
-        return DialogParams([note_type])
+        return DialogParams([note_type], 1)
 
     def __on_highlight_op(self, highlight_op_params: HighlightOpParams) -> None:
         for destination_field in highlight_op_params.destination_fields:

@@ -23,14 +23,15 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
     exp_default_stop_words: str = "a an"
-    adhoc_highlight_dialog_model.fill(all_note_type_details, all_highlight_formats, callback.call, None)
+    adhoc_highlight_dialog_model.fill(all_note_type_details, 3, all_highlight_formats, callback.call, None)
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     # Initial state
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
-                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
-                stop_words=DefaultStopWords.in_config, space_delimited_language=False)
+    assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
+                current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+                selected_fields=[], disabled_fields=[], stop_words=DefaultStopWords.in_config,
+                space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
@@ -39,6 +40,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_stop_words': 'a an',
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': False,
@@ -52,9 +54,10 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, current_note_type="", note_types=[], current_field="", source_fields=[],
-                selected_format=None, formats=[], check_box_texts=[], selected_fields=[], disabled_fields=[],
-                stop_words=DefaultStopWords.in_config, space_delimited_language=False)
+    assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
+                current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+                selected_fields=[], disabled_fields=[], stop_words=DefaultStopWords.in_config,
+                space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [],
@@ -64,6 +67,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_stop_words': 'a an',
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
@@ -77,9 +81,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert listener.counter == 2
-    assert_view(adhoc_highlight_dialog_view, current_note_type="Basic", note_types=['Basic', 'Cloze'],
-                current_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=bold_format, formats=all_highlight_formats,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Basic",
+                note_types=['Basic', 'Cloze'], current_field=DefaultFields.basic_front,
+                source_fields=DefaultFields.all_basic, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
                 disabled_fields=[DefaultFields.basic_front], stop_words=exp_default_stop_words,
                 space_delimited_language=True)
@@ -92,6 +96,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_stop_words': exp_default_stop_words,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
@@ -104,9 +109,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert listener.counter == 3
-    assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
-                current_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
-                selected_format=bold_format, formats=all_highlight_formats,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Cloze",
+                note_types=['Basic', 'Cloze'], current_field=DefaultFields.cloze_text,
+                source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -119,6 +124,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,
+        'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
         'states': {'Basic': {'selected_destination_fields': [],
@@ -136,9 +142,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert listener.counter == 4
-    assert_view(adhoc_highlight_dialog_view, current_note_type="Cloze", note_types=['Basic', 'Cloze'],
-                current_field=DefaultFields.cloze_extra, source_fields=DefaultFields.all_cloze,
-                selected_format=bold_format, formats=all_highlight_formats,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Cloze",
+                note_types=['Basic', 'Cloze'], current_field=DefaultFields.cloze_extra,
+                source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -151,6 +157,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,
+        'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
         'states': {'Basic': {'selected_destination_fields': [],
@@ -181,6 +188,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
         'formats': all_highlight_formats,
+        'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
         'states': {'Basic': {'selected_destination_fields': [],
@@ -208,6 +216,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_stop_words': exp_default_stop_words,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
@@ -236,6 +245,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                           'selected_stop_words': exp_default_stop_words,
                           'space_delimited_language': True},
         'default_stop_words': 'a an',
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
@@ -260,7 +270,7 @@ def test_bug_duplicate_formats_after_reopening(all_note_type_details: list[NoteT
                                                bold_format: HighlightFormat):
     # Init model
     assert adhoc_highlight_dialog_model.get_formats() == []
-    adhoc_highlight_dialog_model.fill(all_note_type_details, all_highlight_formats, None, None)
+    adhoc_highlight_dialog_model.fill(all_note_type_details, 3, all_highlight_formats, None, None)
     assert adhoc_highlight_dialog_model.get_formats() == all_highlight_formats
     assert_format_group_box(adhoc_highlight_dialog_view, None, [])
 
@@ -283,7 +293,7 @@ def test_remember_selected_source_when_changing_note_type(
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
     # Fill model
-    adhoc_highlight_dialog_model.fill(all_note_type_details, all_highlight_formats, None, None)
+    adhoc_highlight_dialog_model.fill(all_note_type_details, 3, all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
@@ -305,6 +315,7 @@ def test_remember_selected_source_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': True},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,
@@ -332,6 +343,7 @@ def test_remember_selected_source_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': True},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,
@@ -358,7 +370,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
     # Fill model
-    adhoc_highlight_dialog_model.fill(all_note_type_details, all_highlight_formats, None, None)
+    adhoc_highlight_dialog_model.fill(all_note_type_details, 3, all_highlight_formats, None, None)
     # Show dialog
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
@@ -371,6 +383,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': True},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,
@@ -392,6 +405,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': False},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,
@@ -413,6 +427,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': True},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,
@@ -440,6 +455,7 @@ def test_remember_space_delimited_language_when_changing_note_type(
                           'selected_stop_words': None,
                           'space_delimited_language': False},
         'default_stop_words': None,
+        'note_number': 3,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'accept_callback_None': True,

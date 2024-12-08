@@ -21,7 +21,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     listener: FakeModelListener = FakeModelListener()
     adhoc_erase_dialog_model.add_listener(listener)
 
-    params: DialogParams = DialogParams(all_note_type_details)
+    params: DialogParams = DialogParams(all_note_type_details, 0)
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     assert callback.history == []
     assert listener.history == []
@@ -62,7 +62,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                                                   'states': {}}
 
     # Update config from model
-    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
@@ -115,7 +115,7 @@ def test_fill_model_from_config_on_startup(adhoc_erase_dialog_controller: AdhocE
                                                   'states': {}}
 
     # Show dialog
-    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {
             'Highlight': {

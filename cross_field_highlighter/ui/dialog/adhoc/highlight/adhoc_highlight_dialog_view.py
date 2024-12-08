@@ -18,8 +18,6 @@ class AdhocHighlightDialogView(QDialog):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.setVisible(False)
-        # noinspection PyUnresolvedReferences
-        self.setWindowTitle('Highlight')
 
         source_group_box: SourceGroupBox = SourceGroupBox(model)
         format_group_box: FormatGroupBox = FormatGroupBox(model)
@@ -38,11 +36,17 @@ class AdhocHighlightDialogView(QDialog):
 
     def show_view(self) -> None:
         log.debug("Show view")
+        # noinspection PyUnresolvedReferences
+        self.setWindowTitle(self.__get_window_title())
         self.__model.get_current_state()  # select 1st if not chosen
         self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
+
+    def __get_window_title(self) -> str:
+        noun: str = "note" if self.__model.get_note_number() == 1 else "notes"
+        return f'Highlight {self.__model.get_note_number()} {noun}'
 
     def __accept(self) -> None:
         log.info("Starting")

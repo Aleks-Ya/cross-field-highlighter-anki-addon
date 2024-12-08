@@ -20,6 +20,7 @@ class AdhocHighlightDialogModelListener:
 class AdhocHighlightDialogModel:
     def __init__(self):
         self.__note_types: list[NoteTypeDetails] = []
+        self.__note_number: int = 0
         self.__formats: HighlightFormats = HighlightFormats([])
         self.__default_stop_words: Optional[str] = None
         self.__accept_callback: Optional[Callable[[], None]] = None
@@ -29,9 +30,10 @@ class AdhocHighlightDialogModel:
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def fill(self, note_types: list[NoteTypeDetails], formats: HighlightFormats,
+    def fill(self, note_types: list[NoteTypeDetails], note_number: int, formats: HighlightFormats,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
         self.__note_types = note_types
+        self.__note_number = note_number
         self.__formats = formats
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
@@ -46,6 +48,9 @@ class AdhocHighlightDialogModel:
 
     def get_note_types(self) -> list[NoteTypeDetails]:
         return self.__note_types
+
+    def get_note_number(self) -> int:
+        return self.__note_number
 
     def get_formats(self) -> HighlightFormats:
         return self.__formats
@@ -97,6 +102,7 @@ class AdhocHighlightDialogModel:
     def as_dict(self) -> dict[str, any]:
         return {
             "note_types": self.__note_types,
+            "note_number": self.__note_number,
             "formats": self.__formats,
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.__current_state.as_dict() if self.__current_state else None,
