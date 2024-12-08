@@ -203,7 +203,12 @@ class Data:
                  'study',
                  'He {{c2:also studies hard}} every day.',
                  'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.',
-                 'He {{c2:also studies hard}} every day.')
+                 'He {{c2:also studies hard}} every day.'),
+            Case("empty phrase",
+                 '',
+                 'Hello, beautiful world!',
+                 'Hello, beautiful world!',
+                 'Hello, beautiful world!'),
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
