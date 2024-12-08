@@ -188,7 +188,12 @@ class Data:
                  'hello',
                  '<p class="hello">Hello, beautiful world!</p>',
                  '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>',
-                 '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>')
+                 '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'),
+            Case("non-breakable space",
+                 'beautiful',
+                 'Hello,&nbsp;beautiful&nbsp;world!',
+                 'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!',
+                 'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!'),
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
