@@ -53,6 +53,7 @@ class Op(QueryOp):
         note_ids_slices: list[list[NoteId]] = [note_ids_list[i:i + slice_size] for i in
                                                range(0, len(note_ids_list), slice_size)]
         updated_notes_counter: int = 0
+        total_note_number: int = len(self.__note_ids)
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"All notes: {len(notes)}")
@@ -66,9 +67,10 @@ class Op(QueryOp):
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_PROCESSED, result.total_fields)
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_MODIFIED, result.modified_fields)
             self.__col.update_notes(result.notes)
-            log.debug(f"Process notes: {result.notes}")
+            log.debug(f"Processed slice: {len(result.notes)}")
             updated_notes_counter += len(result.notes)
-            self.__update_progress(updated_notes_counter, len(self.__note_ids))
+            log.debug(f"Updated notes: {updated_notes_counter} of {total_note_number}")
+            self.__update_progress(updated_notes_counter, total_note_number)
             if self.__progress_manager.want_cancel():
                 return updated_notes_counter
         return updated_notes_counter
@@ -82,7 +84,8 @@ class Op(QueryOp):
 
     def __update_progress_in_main(self, value: Optional[int], max_value: Optional[int]) -> None:
         self.__progress_manager.set_title(self.__progress_dialog_title)
-        self.__progress_manager.update(label=self.__operation_title, value=value, max=max_value)
+        label: str = f"{self.__operation_title} : {value} of {max_value} notes"
+        self.__progress_manager.update(label=label, value=value, max=max_value)
 
     def __on_success(self, count: int) -> None:
         log.info(f"Operation finished: {count}")
