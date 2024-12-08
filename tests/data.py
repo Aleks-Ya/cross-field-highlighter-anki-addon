@@ -194,6 +194,16 @@ class Data:
                  'Hello,&nbsp;beautiful&nbsp;world!',
                  'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!',
                  'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!'),
+            Case("cloze note (entire)",
+                 'study',
+                 'I {{c1:study}} every day.',
+                 'I {{c1:<b class="cross-field-highlighter">study</b>}} every day.',
+                 'I {{c1:<b class="cross-field-highlighter">study</b>}} every day.'),
+            Case("cloze note (sub-word)",
+                 'study',
+                 'He {{c2:also studies hard}} every day.',
+                 'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.',
+                 'He {{c2:also studies hard}} every day.')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
