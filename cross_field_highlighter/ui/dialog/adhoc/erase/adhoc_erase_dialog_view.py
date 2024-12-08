@@ -17,7 +17,6 @@ class AdhocEraseDialogView(QDialog):
         self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
-        self.setWindowTitle('Erase')
 
         fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model)
         button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
@@ -33,9 +32,15 @@ class AdhocEraseDialogView(QDialog):
     def show_view(self) -> None:
         log.debug("Show view")
         # noinspection PyUnresolvedReferences
+        self.setWindowTitle(self.__get_window_title())
+        # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
         self.__model.fire_model_changed(self)
+
+    def __get_window_title(self) -> str:
+        noun: str = "note" if self.__model.get_note_number() == 1 else "notes"
+        return f'Erase {self.__model.get_note_number()} {noun}'
 
     def __accept(self) -> None:
         log.info("Starting")

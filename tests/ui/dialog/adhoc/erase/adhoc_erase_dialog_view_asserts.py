@@ -31,9 +31,9 @@ class FakeEraseControllerCallback:
         self.history.append(params)
 
 
-def assert_view(view: AdhocEraseDialogView, check_box_texts: list[str], selected_fields: list[str]):
+def assert_view(view: AdhocEraseDialogView, window_title: str, check_box_texts: list[str], selected_fields: list[str]):
     # noinspection PyUnresolvedReferences
-    assert view.windowTitle() == "Erase"
+    assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     assert_buttons(view)
     assert_destination_group_box(view, check_box_texts, selected_fields)
 
