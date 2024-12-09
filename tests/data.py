@@ -209,6 +209,16 @@ class Data:
                  'Hello, beautiful world!',
                  'Hello, beautiful world!',
                  'Hello, beautiful world!'),
+            Case("HTML tags in phrase",
+                 '<i>beautiful</i>',
+                 'Hello, beautiful world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> world!'),
+            Case("HTML tags in collocation",
+                 '<i>beautiful</i> <b>world</b>',
+                 'Hello, beautiful world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> <b class="cross-field-highlighter">world</b>!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> <b class="cross-field-highlighter">world</b>!')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
