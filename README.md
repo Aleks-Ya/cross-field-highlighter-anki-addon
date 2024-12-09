@@ -27,3 +27,7 @@ Highlight operation statistics:
 
 Highlight and Erase buttons in Editor:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
+
+[![Unit-tests](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/actions/workflows/python-app.yml/badge.svg)](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/actions/workflows/python-app.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Aleks-Ya_cross-field-highlighter-anki-addon&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Aleks-Ya_cross-field-highlighter-anki-addon)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Aleks-Ya_cross-field-highlighter-anki-addon&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Aleks-Ya_cross-field-highlighter-anki-addon)

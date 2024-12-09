@@ -32,8 +32,12 @@
 
 1. __[FEATURE]__ Add "Highlight" and "Erase" buttons to Editor
 
-## [v0.5.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.4.0) - 2024-12-09
+## [v0.5.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.5.0) - 2024-12-09
 
 1. __[FEATURE]__ Support of furigana
 2. __[FEATURE]__ Show number of selected notes in Highlight and Erase dialog
 3. __[FEATURE]__ Show number of processed notes in progress dialog
+
+## [v0.6.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.6.0) - 2024-12-10
+
+1. __[BUG]__ Correct processing of punctuation marks

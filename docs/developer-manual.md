@@ -80,9 +80,9 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Release
 
-1. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon
-2. Update `CHANGELOG.md` manually
-3. Update documentation: `./docs_render.sh`
+1. Update `CHANGELOG.md` manually
+2. Update documentation: `./docs_render.sh`
+3. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon
 4. Increment version:
     1. Major: `bump-my-version bump major`
     2. Minor: `bump-my-version bump minor`
@@ -91,8 +91,9 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
     2. Title: `🎨 Cross-Field Highlighter - spotlight word in text`
-    3. Attach the distribution file
-    4. Update `Description` from `docs-template/addon-info-description.md`
+    3. Support page: https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-thread
+    4. Attach the distribution file
+    5. Update `Description` from `docs-template/addon-info-description.md`
 7. Push Git branch and tags: `git push --follow-tags`
 8. Create a GitHub release from tag
 
