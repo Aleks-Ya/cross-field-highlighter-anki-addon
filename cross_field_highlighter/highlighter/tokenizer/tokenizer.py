@@ -40,4 +40,4 @@ class Tokenizer(ABC):
         ...
 
     def tokenize_distinct(self, text: Text) -> Tokens:
-        return Tokens(list(set(self.tokenize(text))))
+        return Tokens(list(dict.fromkeys(self.tokenize(text))))
