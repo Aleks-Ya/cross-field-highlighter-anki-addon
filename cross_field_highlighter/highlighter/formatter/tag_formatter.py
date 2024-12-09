@@ -16,5 +16,11 @@ class TagFormatter(Formatter):
 
     def erase(self, text: Text) -> Text:
         super().erase(text)
-        clean_text: str = re.sub(fr'{self.__prefix}(\w*){self.__suffix}', r'\1', text, flags=re.IGNORECASE)
+        pattern: str = fr'{self.__prefix}(\w*){self.__suffix}'
+        unclear_text: str = text
+        while True:
+            clean_text: str = re.sub(pattern, r'\1', unclear_text, flags=re.IGNORECASE)
+            if clean_text == unclear_text:
+                break
+            unclear_text = clean_text
         return Text(clean_text)
