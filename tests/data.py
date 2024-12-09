@@ -218,7 +218,17 @@ class Data:
                  '<i>beautiful</i> <b>world</b>',
                  'Hello, <i>beautiful</i> world!',
                  'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!',
-                 'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!')
+                 'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!'),
+            Case("furigana ruby",
+                 '<ruby>東京<rt>とうきょう</rt></ruby>',
+                 '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>',
+                 '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>',
+                 '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'),
+            Case("furigana brackets",
+                 '<ruby>東京<rt>とうきょう</rt></ruby>',
+                 '<p>東京[とうきょう]は首都です。</p>',
+                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>',
+                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
