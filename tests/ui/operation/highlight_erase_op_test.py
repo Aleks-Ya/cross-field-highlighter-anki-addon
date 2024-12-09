@@ -29,12 +29,12 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
     note_ids: set[NoteId] = {case_note.note.id for case_note in case_notes}
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
-                                                  OpStatisticsKey.NOTES_SELECTED_ALL: 25,
-                                                  OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 25,
-                                                  OpStatisticsKey.NOTES_PROCESSED: 25,
-                                                  OpStatisticsKey.NOTES_MODIFIED: 23,
-                                                  OpStatisticsKey.FIELDS_PROCESSED: 25,
-                                                  OpStatisticsKey.FIELDS_MODIFIED: 23}
+                                                  OpStatisticsKey.NOTES_SELECTED_ALL: 27,
+                                                  OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 27,
+                                                  OpStatisticsKey.NOTES_PROCESSED: 27,
+                                                  OpStatisticsKey.NOTES_MODIFIED: 25,
+                                                  OpStatisticsKey.FIELDS_PROCESSED: 27,
+                                                  OpStatisticsKey.FIELDS_MODIFIED: 25}
 
     # Highlight
     td.assert_original_case_notes(case_notes)

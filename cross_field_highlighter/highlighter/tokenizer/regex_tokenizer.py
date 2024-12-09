@@ -21,7 +21,7 @@ class RegExTokenizer(Tokenizer):
 
     @staticmethod
     def __create_punctuation_pattern() -> Pattern[str]:
-        punctuation: str = string.punctuation.replace("/", "").replace("<", "").replace(">", "")
+        punctuation: str = string.punctuation.replace("<", "").replace(">", "")
         punctuation_escaped: str = escape(punctuation)
         punctuation_pattern: Pattern[str] = compile(f"([{punctuation_escaped}])")
         return punctuation_pattern

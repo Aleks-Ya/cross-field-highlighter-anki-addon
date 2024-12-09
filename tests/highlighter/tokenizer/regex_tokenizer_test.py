@@ -69,3 +69,19 @@ def test_tokenize_japanese(tokenize: Callable[[str], Words]):
         Token(Word('中にあるテキスト'), TokenType.WORD),
         Token(Word('</li>'), TokenType.TAG)
     ]
+
+
+def test_tokenize_slash(tokenize: Callable[[str], Words]):
+    assert tokenize('Hello, beautiful/nice world\\universe!') == Tokens([
+        Token(Word('Hello'), TokenType.WORD),
+        Token(Word(','), TokenType.WORD),
+        Token(Word(' '), TokenType.WORD),
+        Token(Word('beautiful'), TokenType.WORD),
+        Token(Word('/'), TokenType.WORD),
+        Token(Word('nice'), TokenType.WORD),
+        Token(Word(' '), TokenType.WORD),
+        Token(Word('world'), TokenType.WORD),
+        Token(Word('\\'), TokenType.WORD),
+        Token(Word('universe'), TokenType.WORD),
+        Token(Word('!'), TokenType.WORD)
+    ])

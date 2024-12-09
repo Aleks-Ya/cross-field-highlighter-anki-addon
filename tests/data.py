@@ -228,7 +228,17 @@ class Data:
                  '<ruby>東京<rt>とうきょう</rt></ruby>',
                  '<p>東京[とうきょう]は首都です。</p>',
                  '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>',
-                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>')
+                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>'),
+            Case("forward slash in collocation",
+                 'beautiful/nice',
+                 'Hello, beautiful and nice world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!'),
+            Case("back slash in collocation",
+                 'beautiful\\nice',
+                 'Hello, beautiful and nice world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!',
+                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:

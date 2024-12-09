@@ -22,7 +22,7 @@ class StartWithTokenHighlighter(TokenHighlighter):
         for collocation_token in collocation_tokens:
             if collocation_token.token_type == TokenType.TAG:
                 continue
-            collocation_word: Word = collocation_token.word
+            collocation_word: Word = re.escape(collocation_token.word)
             collocation_word_length: int = len(collocation_word)
             word_regexp: str = fr"{collocation_word[:collocation_word_length - 1]}\w*" if collocation_word_length > 2 else collocation_word
             if re.match(word_regexp, text_token.word, RegexFlag.IGNORECASE | RegexFlag.UNICODE):
