@@ -80,7 +80,7 @@ def assert_space_delimited_language(view: AdhocHighlightDialogView, space_delimi
     check_box: QCheckBox = group_box.checkbox().get()
     assert check_box.text() == "Space-delimited language"
     # noinspection PyUnresolvedReferences
-    assert check_box.toolTip() == "Yes for English, French, Spanish, etc.\nNo for Chinese, Japanese, Thai, etc."
+    assert check_box.toolTip() == "Checked for English, Spanish, French, etc.\nUnchecked for Japanese, Chinese, Thai, etc."
     is_checked: bool = check_box.isChecked()
     assert is_checked == space_delimited_language, f"'{is_checked}' != '{space_delimited_language}'"
 

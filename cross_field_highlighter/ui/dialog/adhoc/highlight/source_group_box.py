@@ -31,8 +31,8 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__space_delimited_language_check_box: QCheckBox = QCheckBox("Space-delimited language")
         # noinspection PyUnresolvedReferences
         self.__space_delimited_language_check_box.setToolTip(textwrap.dedent("""\
-                Yes for English, French, Spanish, etc.
-                No for Chinese, Japanese, Thai, etc."""))
+                Checked for English, Spanish, French, etc.
+                Unchecked for Japanese, Chinese, Thai, etc."""))
         # noinspection PyUnresolvedReferences
         self.__space_delimited_language_check_box.stateChanged.connect(self.__on_space_delimited_language_changed)
         group_layout: QVBoxLayout = QVBoxLayout()
