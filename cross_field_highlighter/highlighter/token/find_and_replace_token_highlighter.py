@@ -19,14 +19,14 @@ class FindAndReplaceTokenHighlighter(TokenHighlighter):
     def highlight(self, text_token: Token, collocation_tokens: Tokens, highlight_format: HighlightFormat) -> Word:
         if text_token.token_type == TokenType.TAG:
             return text_token.word
-        highlighted_text_word: Word = text_token.word
         for collocation_token in collocation_tokens:
-            collocation_word: Word = collocation_token.word
+            pattern: str = f"({re.escape(collocation_token.word)})"
             highlighted_collocation_word: Word = self.__formatter_facade.format(Word("\\1"), highlight_format)
-            pattern: str = f"({re.escape(collocation_word)})"
-            highlighted_text_word = Word(re.sub(pattern, highlighted_collocation_word, highlighted_text_word,
-                                                flags=re.IGNORECASE))
-        return highlighted_text_word
+            highlighted_text_word: Word = Word(re.sub(pattern, highlighted_collocation_word, text_token.word,
+                                                      flags=re.IGNORECASE))
+            if highlighted_text_word != text_token.word:
+                return highlighted_text_word
+        return text_token.word
 
     def erase(self, text_token: Token) -> Word:
         super().erase(text_token)

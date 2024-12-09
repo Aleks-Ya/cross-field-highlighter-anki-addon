@@ -22,3 +22,14 @@ def test_highlight_japanese(find_and_replace_token_highlighter: FindAndReplaceTo
         'これは大きな日本語のテキストです。'
         '<b class="cross-field-highlighter">中にあるテキスト</b>をラップします。'
         '<b class="cross-field-highlighter">中にあるテキスト</b>')
+
+
+def test_highlight_2nd_collocation_matches(find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter,
+                                           bold_format: HighlightFormat):
+    text_token: Token = Token(Word("beautiful"), TokenType.WORD)
+    collocation_tokens: Tokens = Tokens([
+        Token(Word("beautiful"), TokenType.WORD),
+        Token(Word("</b>"), TokenType.TAG)
+    ])
+    highlighted_word: Word = find_and_replace_token_highlighter.highlight(text_token, collocation_tokens, bold_format)
+    assert highlighted_word == Word('<b class="cross-field-highlighter">beautiful</b>')
