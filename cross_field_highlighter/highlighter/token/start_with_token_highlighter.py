@@ -4,6 +4,7 @@ from logging import Logger
 from re import RegexFlag
 
 from .token_highlighter import TokenHighlighter
+from ..tokenizer.tokenizer import TokenType
 from ...highlighter.formatter.formatter_facade import FormatterFacade
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.tokenizer.tokenizer import Tokens, Token
@@ -19,6 +20,8 @@ class StartWithTokenHighlighter(TokenHighlighter):
     def highlight(self, text_token: Token, collocation_tokens: Tokens, highlight_format: HighlightFormat) -> Word:
         highlighted_text_word: Word = text_token.word
         for collocation_token in collocation_tokens:
+            if collocation_token.token_type == TokenType.TAG:
+                continue
             collocation_word: Word = collocation_token.word
             collocation_word_length: int = len(collocation_word)
             word_regexp: str = fr"{collocation_word[:collocation_word_length - 1]}\w*" if collocation_word_length > 2 else collocation_word
