@@ -28,6 +28,7 @@ class StartWithTextHighlighter(TextHighlighter):
         super().highlight(collocation, text, stop_words, space_delimited_language, highlight_format)
         collocation_tokens: Tokens = self.__tokenizer.tokenize_distinct(collocation)
         collocation_tokens.delete_by_token_type(TokenType.SPACE)
+        collocation_tokens.delete_by_token_type(TokenType.PUNCTUATION)
         stop_words_tokenized: Tokens = self.__stop_words_tokenizer.tokenize(stop_words)
         for stop_token in stop_words_tokenized:
             collocation_tokens.delete_word(stop_token.word)

@@ -250,10 +250,10 @@ class Data:
                  'Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!'),
             Case("square brackets",
-                 'beautiful',
-                 'Hello, [beautiful] [world]!',
-                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] [world]!',
-                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] [world]!')
+                 'beautiful[nice]',
+                 'Hello, [beautiful] and nice [world]!',
+                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!',
+                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
