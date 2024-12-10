@@ -83,7 +83,7 @@ class Op(QueryOp):
 
     def __update_progress_in_main(self, value: Optional[int], max_value: Optional[int]) -> None:
         self.__progress_manager.set_title(self.__progress_dialog_title)
-        label: str = f"{self.__operation_title} : {value} of {max_value} notes"
+        label: str = f"{self.__operation_title}: {value} of {max_value} notes"
         self.__progress_manager.update(label=label, value=value, max=max_value)
 
     def __on_success(self, count: int) -> None:
