@@ -84,6 +84,8 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     5. Update `Description` from `docs-template/addon-info-description.md`
 7. Push Git branch and tags: `git push --follow-tags`
 8. Create a GitHub release from tag
+9. Notify support
+   thread: https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread/52592
 
 ## Icons
 

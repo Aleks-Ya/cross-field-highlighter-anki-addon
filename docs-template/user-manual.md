@@ -19,7 +19,7 @@ fields:
     8. Idempotence: repeating highlighting the same notes doesn't duplicate highlighting.
     9. HTML tags are skipped from highlighting.
     10. Highlighting notes selected in Browser or current note in Editor.
-    11. Support furigana.
+    11. Support of furigana.
 2. Erase:
     1. CFH removes previously added highlightings from fields.
     2. CFH marks its own formatting, so it can erase exactly only its formatting and preserve other formatting.

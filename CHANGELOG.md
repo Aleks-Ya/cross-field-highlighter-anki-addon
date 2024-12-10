@@ -41,3 +41,7 @@
 ## [v0.6.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.6.0) - 2024-12-10
 
 1. __[BUG]__ Correct processing of punctuation marks
+
+## [v0.7.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.7.0) - 2024-12-11
+
+1. __[FEATURE]__ Highlight entire collocation
