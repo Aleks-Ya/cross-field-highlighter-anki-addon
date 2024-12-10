@@ -29,7 +29,7 @@ def test_erase(tag_formatter: TagFormatter):
     assert clean_word == "I see an ocean."
 
 
-def test_erase_skip(tag_formatter: TagFormatter):
+def test_erase_skip_alien_formatting(tag_formatter: TagFormatter):
     highlighted_text: Text = Text('I <b class="cross-field-highlighter">see</b> an <b>ocean</b>.')
     clean_text: Text = tag_formatter.erase(highlighted_text)
     assert clean_text == 'I see an <b>ocean</b>.'
@@ -53,3 +53,10 @@ def test_erase_slash(tag_formatter: TagFormatter):
     highlighted_text: Text = Text('I see an <b class="cross-field-highlighter">ocean/sea</b>.')
     clean_word: Text = tag_formatter.erase(highlighted_text)
     assert clean_word == "I see an ocean/sea."
+
+
+def test_different_separators_within_tag(tag_formatter: TagFormatter):
+    assert tag_formatter.erase(Text('<b class="cross-field-highlighter">space</b>')) == 'space'
+    assert tag_formatter.erase(Text('<b\nclass="cross-field-highlighter">linebreak</b>')) == 'linebreak'
+    assert tag_formatter.erase(Text('<b\tclass="cross-field-highlighter">tab</b>')) == 'tab'
+    assert tag_formatter.erase(Text('<b \n\tclass="cross-field-highlighter">several</b>')) == 'several'
