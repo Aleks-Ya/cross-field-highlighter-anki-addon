@@ -16,9 +16,9 @@ def test_tokenize_by_space(tokenize: Callable[[str], Words]):
     assert tokenize('Hello, beautiful world!') == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('beautiful'), TokenType.WORD),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION)
     ])
@@ -28,9 +28,9 @@ def test_tokenize_by_line_break(tokenize: Callable[[str], Words]):
     assert tokenize('Hello, beautiful\nworld!') == [
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('beautiful'), TokenType.WORD),
-        Token(Word('\n'), TokenType.WORD),
+        Token(Word('\n'), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION)
     ]
@@ -40,11 +40,11 @@ def test_tokenize_tag(tokenize: Callable[[str], Words]):
     assert tokenize('Hello, <b>beautiful</b>\nworld!') == [
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('<b>'), TokenType.TAG),
         Token(Word('beautiful'), TokenType.WORD),
         Token(Word('</b>'), TokenType.TAG),
-        Token(Word('\n'), TokenType.WORD),
+        Token(Word('\n'), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION)
     ]
@@ -55,7 +55,7 @@ def test_tokenize_html_tags(tokenize: Callable[[str], Words]):
         Token(Word('<li>'), TokenType.TAG),
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION),
         Token(Word('</li>'), TokenType.TAG)
@@ -75,11 +75,11 @@ def test_tokenize_slash(tokenize: Callable[[str], Words]):
     assert tokenize('Hello, beautiful/nice world\\universe!') == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('beautiful'), TokenType.WORD),
         Token(Word('/'), TokenType.PUNCTUATION),
         Token(Word('nice'), TokenType.WORD),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('\\'), TokenType.PUNCTUATION),
         Token(Word('universe'), TokenType.WORD),
@@ -91,14 +91,14 @@ def test_tokenize_square_brackets(tokenize: Callable[[str], Words]):
     assert tokenize('Hello, [beautiful][nice] world!') == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('['), TokenType.PUNCTUATION),
         Token(Word('beautiful'), TokenType.WORD),
         Token(Word(']'), TokenType.PUNCTUATION),
         Token(Word('['), TokenType.PUNCTUATION),
         Token(Word('nice'), TokenType.WORD),
         Token(Word(']'), TokenType.PUNCTUATION),
-        Token(Word(' '), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION)
     ])

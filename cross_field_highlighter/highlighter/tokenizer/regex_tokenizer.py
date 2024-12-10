@@ -10,6 +10,7 @@ from ...highlighter.types import Text, Word, Words
 class RegExTokenizer(Tokenizer):
     def __init__(self):
         self.__punctuation_pattern: Pattern[str] = self.__create_punctuation_pattern()
+        self.__space_pattern: Pattern[str] = re.compile(r'(\s)')
 
     def tokenize(self, text: Text) -> Tokens:
         super().tokenize(text)
@@ -48,8 +49,13 @@ class RegExTokenizer(Tokenizer):
         tokens_list: list[Tokens] = []
         for token in tokens:
             if token.token_type == TokenType.UNDEFINED:
-                words: Words = Words(split(r'(\s)', token.word))
-                word_tokens: Tokens = Tokens([Token(word, TokenType.UNDEFINED) for word in words])
+                words: Words = Words(split(self.__space_pattern, token.word))
+                word_tokens: Tokens = Tokens([])
+                for word in words:
+                    if re.match(self.__space_pattern, word):
+                        word_tokens.append(Token(word, TokenType.SPACE))
+                    else:
+                        word_tokens.append(Token(word, TokenType.UNDEFINED))
                 tokens_list.append(word_tokens)
             else:
                 tokens_list.append(Tokens([token]))

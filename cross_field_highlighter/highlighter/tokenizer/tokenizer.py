@@ -7,6 +7,7 @@ from ...highlighter.types import Text, Word
 class TokenType(Enum):
     WORD = "WORD"
     PUNCTUATION = "PUNCTUATION"
+    SPACE = "SPACE"
     TAG = "TAG"
     UNDEFINED = "UNDEFINED"
 
