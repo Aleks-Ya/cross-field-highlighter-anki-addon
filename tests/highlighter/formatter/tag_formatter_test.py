@@ -40,3 +40,10 @@ def test_erase_double_highlighted(tag_formatter: TagFormatter):
         'I see an <b class="cross-field-highlighter"><b class="cross-field-highlighter">ocean</b></b>.')
     clean_word: Text = tag_formatter.erase(highlighted_text)
     assert clean_word == "I see an ocean."
+
+
+def test_erase_square_brackets(tag_formatter: TagFormatter):
+    highlighted_text: Text = Text(
+        'I see an <b class="cross-field-highlighter">[</b>ocean<b class="cross-field-highlighter">]</b>.')
+    clean_word: Text = tag_formatter.erase(highlighted_text)
+    assert clean_word == "I see an [ocean]."

@@ -1,4 +1,5 @@
-import re
+from re import Pattern, compile, escape, sub, IGNORECASE
+import string
 
 from ...highlighter.formatter.formatter import Formatter
 from ...highlighter.types import Word, Text
@@ -16,10 +17,18 @@ class TagFormatter(Formatter):
 
     def erase(self, text: Text) -> Text:
         super().erase(text)
-        pattern: str = fr'{self.__prefix}(\w*){self.__suffix}'
+        word_pattern: Pattern = compile(fr'{self.__prefix}(\w*){self.__suffix}', flags=IGNORECASE)
+        clean_text: Text = self.__erase_by_pattern(text, word_pattern)
+        punctuation_pattern: Pattern[str] = compile(
+            fr"{self.__prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
+        clean_text = self.__erase_by_pattern(clean_text, punctuation_pattern)
+        return clean_text
+
+    @staticmethod
+    def __erase_by_pattern(text: Text, pattern: Pattern) -> Text:
         unclear_text: str = text
         while True:
-            clean_text: str = re.sub(pattern, r'\1', unclear_text, flags=re.IGNORECASE)
+            clean_text: str = sub(pattern, r'\1', unclear_text)
             if clean_text == unclear_text:
                 break
             unclear_text = clean_text
