@@ -85,3 +85,20 @@ def test_tokenize_slash(tokenize: Callable[[str], Words]):
         Token(Word('universe'), TokenType.WORD),
         Token(Word('!'), TokenType.WORD)
     ])
+
+
+def test_tokenize_square_brackets(tokenize: Callable[[str], Words]):
+    assert tokenize('Hello, [beautiful][nice] world!') == Tokens([
+        Token(Word('Hello'), TokenType.WORD),
+        Token(Word(','), TokenType.WORD),
+        Token(Word(' '), TokenType.WORD),
+        Token(Word('['), TokenType.WORD),
+        Token(Word('beautiful'), TokenType.WORD),
+        Token(Word(']'), TokenType.WORD),
+        Token(Word('['), TokenType.WORD),
+        Token(Word('nice'), TokenType.WORD),
+        Token(Word(']'), TokenType.WORD),
+        Token(Word(' '), TokenType.WORD),
+        Token(Word('world'), TokenType.WORD),
+        Token(Word('!'), TokenType.WORD)
+    ])
