@@ -22,6 +22,8 @@ class TagFormatter(Formatter):
         punctuation_pattern: Pattern[str] = compile(
             fr"{self.__prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
         clean_text = self.__erase_by_pattern(clean_text, punctuation_pattern)
+        any_pattern: Pattern = compile(fr'{self.__prefix}(.*){self.__suffix}', flags=IGNORECASE)
+        clean_text = self.__erase_by_pattern(clean_text, any_pattern)
         return clean_text
 
     @staticmethod
