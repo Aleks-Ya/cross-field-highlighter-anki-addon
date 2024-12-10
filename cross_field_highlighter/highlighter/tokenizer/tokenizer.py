@@ -29,10 +29,10 @@ class Token:
 
 class Tokens(list):
     def delete_word(self, word: Word) -> None:
-        for token in self:
-            if token.word == word:
-                self.remove(token)
-                return
+        self[:] = [token for token in self if token.word != word]
+
+    def delete_by_token_type(self, token_type: TokenType) -> None:
+        self[:] = [token for token in self if token.token_type != token_type]
 
 
 class Tokenizer(ABC):

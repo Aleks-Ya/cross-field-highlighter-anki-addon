@@ -7,15 +7,13 @@ from ...highlighter.formatter.formatter_facade import FormatterFacade
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.text.text_highlighter import TextHighlighter
 from ...highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from ...highlighter.tokenizer.tokenizer import Tokenizer, Tokens
+from ...highlighter.tokenizer.tokenizer import Tokenizer, Tokens, TokenType
 from ...highlighter.types import Text, Word, Words
 
 log: Logger = logging.getLogger(__name__)
 
 
 class StartWithTextHighlighter(TextHighlighter):
-    __space: Word = Word(" ")
-
     def __init__(self, start_with_token_highlighter: StartWithTokenHighlighter,
                  find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter, formatter_facade: FormatterFacade,
                  tokenizer: Tokenizer, stop_words_tokenizer: StopWordsTokenizer):
@@ -29,7 +27,7 @@ class StartWithTextHighlighter(TextHighlighter):
                   highlight_format: HighlightFormat) -> Text:
         super().highlight(collocation, text, stop_words, space_delimited_language, highlight_format)
         collocation_tokens: Tokens = self.__tokenizer.tokenize_distinct(collocation)
-        collocation_tokens.delete_word(self.__space)
+        collocation_tokens.delete_by_token_type(TokenType.SPACE)
         stop_words_tokenized: Tokens = self.__stop_words_tokenizer.tokenize(stop_words)
         for stop_token in stop_words_tokenized:
             collocation_tokens.delete_word(stop_token.word)
