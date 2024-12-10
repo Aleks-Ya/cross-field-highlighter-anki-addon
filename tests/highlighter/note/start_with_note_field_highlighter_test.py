@@ -24,7 +24,7 @@ def __highlight_erase(bold_format, space_delimited_language: bool, start_with_no
     for case in td.cases():
         print(f"Case: {case.name}")
 
-        note: Note = td.create_basic_note_1(FieldContent(case.phrase), FieldContent(case.original_text))
+        note: Note = td.create_basic_note_1(FieldContent(case.collocation), FieldContent(case.original_text))
         stop_words: Text = td.stop_words()
         case_highlighted_text: Text = case.highlighted_text_space_delimited if space_delimited_language else case.highlighted_text_non_space_delimited
 

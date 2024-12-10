@@ -27,10 +27,10 @@ class DefaultStopWords:
 
 
 class Case:
-    def __init__(self, name: str, phrase: str, original_text: str, highlighted_text_space_delimited: str,
+    def __init__(self, name: str, collocation: str, original_text: str, highlighted_text_space_delimited: str,
                  highlighted_text_non_space_delimited: str):
         self.name: str = name
-        self.phrase: Text = Text(phrase)
+        self.collocation: Text = Text(collocation)
         self.original_text: Text = Text(original_text)
         self.highlighted_text_space_delimited: Text = Text(highlighted_text_space_delimited)
         self.highlighted_text_non_space_delimited: Text = Text(highlighted_text_non_space_delimited)
@@ -174,7 +174,7 @@ class Data:
                  'Hello beautiful world!',
                  '<b class="cross-field-highlighter">Hello</b> beautiful world!',
                  '<b class="cross-field-highlighter">Hello</b> beautiful world!'),
-            Case("phrase touches tag",
+            Case("collocation touches tag",
                  'hello',
                  '<li>Hello, beautiful world!</li>',
                  '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>',
@@ -204,12 +204,12 @@ class Data:
                  'He {{c2:also studies hard}} every day.',
                  'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.',
                  'He {{c2:also studies hard}} every day.'),
-            Case("empty phrase",
+            Case("empty collocation",
                  '',
                  'Hello, beautiful world!',
                  'Hello, beautiful world!',
                  'Hello, beautiful world!'),
-            Case("HTML tags in phrase",
+            Case("HTML tags in collocation",
                  '<i>beautiful</i>',
                  'Hello, beautiful world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world!',
@@ -250,12 +250,12 @@ class Data:
     def create_case_notes(self) -> list[CaseNote]:
         res: list[(NoteId, FieldContent, FieldContent)] = []
         for case in self.cases():
-            phrase_content: FieldContent = FieldContent(case.phrase)
+            collocation_content: FieldContent = FieldContent(case.collocation)
             original_content: FieldContent = FieldContent(case.original_text)
             highlighted_content_space_delimited: FieldContent = FieldContent(case.highlighted_text_space_delimited)
             highlighted_content_non_space_delimited: FieldContent = FieldContent(
                 case.highlighted_text_non_space_delimited)
-            note: Note = self.create_basic_note_1(FieldContent(phrase_content),
+            note: Note = self.create_basic_note_1(FieldContent(collocation_content),
                                                   FieldContent(original_content))
             res.append(CaseNote(note, original_content, highlighted_content_space_delimited,
                                 highlighted_content_non_space_delimited))
