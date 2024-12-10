@@ -1,3 +1,4 @@
+import re
 from re import Pattern, split, compile, escape
 import string
 
@@ -59,7 +60,12 @@ class RegExTokenizer(Tokenizer):
         for token in tokens:
             if token.token_type == TokenType.UNDEFINED:
                 words: Words = Words(split(self.__punctuation_pattern, token.word))
-                word_tokens: Tokens = Tokens([Token(word, TokenType.WORD) for word in words])
+                word_tokens: Tokens = Tokens([])
+                for word in words:
+                    if re.match(self.__punctuation_pattern, word):
+                        word_tokens.append(Token(word, TokenType.PUNCTUATION))
+                    else:
+                        word_tokens.append(Token(word, TokenType.WORD))
                 tokens_list.append(word_tokens)
             else:
                 tokens_list.append(Tokens([token]))
