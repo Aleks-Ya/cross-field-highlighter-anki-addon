@@ -253,7 +253,12 @@ class Data:
                  'beautiful[nice]',
                  'Hello, [beautiful] and nice [world]!',
                  'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!',
-                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!')
+                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!'),
+            Case("entire collocation as token",
+                 'to hurry up',
+                 'Need to hurry up. He hurries everyone up.',
+                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
+                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:

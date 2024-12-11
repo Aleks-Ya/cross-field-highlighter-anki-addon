@@ -24,6 +24,7 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
                              td: Data, bold_format: HighlightFormat, basic_note_type_id: NotetypeId,
                              op_statistics_formatter: OpStatisticsFormatter):
     progress_manager: ProgressManager = Mock()
+    progress_manager.want_cancel = Mock(return_value=False)
     parent: QWidget = QWidget()
     case_notes: list[CaseNote] = td.create_case_notes()
     note_ids: set[NoteId] = {case_note.note.id for case_note in case_notes}
