@@ -17,6 +17,9 @@ Browser menu:
 Supported formats:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/formats.png)
 
+Languages without spaces (Japanese, Chinese, Thai, etc.):  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)
+
 Highlighting progress:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/progress-highlight.png)
 
@@ -28,6 +31,9 @@ Highlighting statistics:
 
 Highlight and Erase buttons in Editor:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
+
+Addon configuration:  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/addon-configuration.png)
 
 ## Links
 

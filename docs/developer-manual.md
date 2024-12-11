@@ -91,13 +91,14 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
     2. Title: `🎨 Cross-Field Highlighter - spotlight word in text`
-    3. Support page: https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-thread
-    4. Attach the distribution file
-    5. Update `Description` from `docs-template/addon-info-description.md`
+    3. Tags: -
+    4. Support page: https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-thread
+    5. Attach the distribution file
+    6. Update `Description` from `docs-template/addon-info-description.md`
 7. Push Git branch and tags: `git push --follow-tags`
 8. Create a GitHub release from tag
-9. Notify support
-   thread: https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread/52592
+9. Notify support thread:
+   https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread/52592
 
 ## Icons
 

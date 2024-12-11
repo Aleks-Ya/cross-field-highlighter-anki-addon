@@ -45,3 +45,10 @@
 ## [v0.7.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.7.0) - 2024-12-11
 
 1. __[FEATURE]__ Highlight entire collocation
+
+## [v0.8.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.8.0) - 2024-12-14
+
+1. __[FEATURE]__ Show notes modified by the latest run in Browser
+2. __[BUG]__ "Restore defaults" button does not reset "Space-separated language" checkbox
+3. __[BUG]__ Erase highlights with line breaks and multiple tags
+4. __[MISC]__ Store UI model in user folder

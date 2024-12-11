@@ -24,4 +24,6 @@ fields:
     1. CFH removes previously added highlightings from fields.
     2. CFH marks its own formatting, so it can erase exactly only its formatting and preserve other formatting.
     3. Erasing notes selected in Browser or current note in Editor.
-3. Find: search for highlighted notes in Browser
+3. Show in Browser:
+    1. Show all highlighted notes
+    2. Show notes modified by the latest run
