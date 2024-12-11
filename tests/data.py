@@ -234,6 +234,11 @@ class Data:
                  '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>',
                  '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>',
                  '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'),
+            Case("furigana (brackets collocation, brackets text)",
+                 '東京[とうきょう]',
+                 '<p>東京[とうきょう]は首都です。</p>',
+                 '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>',
+                 '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>'),
             Case("forward slash in collocation",
                  'beautiful/nice',
                  'Hello, beautiful and nice world!',
@@ -257,8 +262,8 @@ class Data:
             Case("entire collocation as token",
                  'to hurry up',
                  'Need to hurry up. He hurries everyone up.',
-                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
-                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.')
+                 'Need <b class="cross-field-highlighter">to hurry up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
+                 'Need <b class="cross-field-highlighter">to hurry up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:

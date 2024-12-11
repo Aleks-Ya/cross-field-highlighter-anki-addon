@@ -16,7 +16,8 @@ class RegExTokenizer(Tokenizer):
         super().tokenize(text)
         tokens: Tokens = Tokens([Token(Word(text), TokenType.UNDEFINED)])
         by_tags: Tokens = self.__split_by_tags(tokens)
-        by_space: Tokens = self.__split_by_spaces(by_tags)
+        by_special_tokens: Tokens = self.__split_by_special_tokens(by_tags, special_tokens)
+        by_space: Tokens = self.__split_by_spaces(by_special_tokens)
         by_punctuation: Tokens = self.__split_by_punctuation(by_space)
         non_empty: Tokens = self.__remove_empty_tokens(by_punctuation)
         return non_empty
@@ -30,6 +31,29 @@ class RegExTokenizer(Tokenizer):
     @staticmethod
     def __remove_empty_tokens(tokens: Tokens) -> Tokens:
         return Tokens([token for token in tokens if token.word != ''])
+
+    def __split_by_special_tokens(self, tokens: Tokens, special_tokens: Tokens) -> Tokens:
+        if not special_tokens:
+            return tokens
+        for special_token in special_tokens:
+            tokens = self.__split_by_special_token(tokens, special_token)
+        return tokens
+
+    def __split_by_special_token(self, tokens: Tokens, special_token: Token) -> Tokens:
+        tokens_list: list[Tokens] = []
+        for token in tokens:
+            if token.token_type == TokenType.UNDEFINED:
+                words: Words = Words(split(f'({escape(special_token.word)})', token.word))
+                word_tokens: Tokens = Tokens([])
+                for word in words:
+                    if word == special_token.word:
+                        word_tokens.append(Token(word, TokenType.WORD))
+                    else:
+                        word_tokens.append(Token(word, token.token_type))
+                tokens_list.append(word_tokens)
+            else:
+                tokens_list.append(Tokens([token]))
+        return self.__flatten(tokens_list)
 
     def __split_by_tags(self, tokens: Tokens) -> Tokens:
         pattern: Pattern[str] = compile("(<[^>]+>)")
