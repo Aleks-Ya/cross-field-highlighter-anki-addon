@@ -1,4 +1,3 @@
-import time
 from unittest.mock import Mock
 
 from anki.models import NotetypeId
@@ -7,6 +6,7 @@ from anki.collection import Collection
 from anki.notes import NoteId, Note
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -48,8 +48,8 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
                                             op_statistics_formatter, lambda: None, parent, highlight_op_params)
     highlight_op.run_in_background()
-    time.sleep(1)
-    td.assert_highlighted_case_notes(case_notes, space_delimited_language)
+    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(
+        lambda: td.assert_highlighted_case_notes(case_notes, space_delimited_language))()
     highlight_statistics: OpStatistics = highlight_op.get_statistics()
     assert highlight_statistics.as_dict() == exp_statistics
 
@@ -58,7 +58,7 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
                                 op_statistics_formatter, lambda: None, parent, erase_op_params)
     erase_op.run_in_background()
-    time.sleep(1)
+    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(lambda: td.assert_original_case_notes(case_notes))()
     td.assert_original_case_notes(case_notes)
     erase_statistics: OpStatistics = erase_op.get_statistics()
     assert erase_statistics.as_dict() == exp_statistics
@@ -91,27 +91,35 @@ def test_highlight_and_erase_different_note_types(
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
                                             op_statistics_formatter, lambda: None, parent, highlight_op_params)
     highlight_op.run_in_background()
-    time.sleep(1)
-    assert col.get_note(note_1.id)[DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
-    assert col.get_note(note_1.id)[DefaultFields.basic_extra] == 'Extra <b class="cross-field-highlighter">content</b>'
-    assert col.get_note(note_2.id)[DefaultFields.basic_back] == \
-           'Back <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
-    assert col.get_note(note_2.id)[DefaultFields.basic_extra] == \
-           'Extra <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
-    assert col.get_note(note_3.id).fields == note_3.fields
-    highlight_statistics: OpStatistics = highlight_op.get_statistics()
-    assert highlight_statistics.as_dict() == exp_statistics
+
+    def assert_function_highlight():
+        assert col.get_note(note_1.id)[
+                   DefaultFields.basic_back] == 'Text <b class="cross-field-highlighter">content</b>'
+        assert col.get_note(note_1.id)[
+                   DefaultFields.basic_extra] == 'Extra <b class="cross-field-highlighter">content</b>'
+        assert col.get_note(note_2.id)[DefaultFields.basic_back] == \
+               'Back <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
+        assert col.get_note(note_2.id)[DefaultFields.basic_extra] == \
+               'Extra <b class="cross-field-highlighter">content</b> <b class="cross-field-highlighter">2</b>'
+        assert col.get_note(note_3.id).fields == note_3.fields
+        highlight_statistics: OpStatistics = highlight_op.get_statistics()
+        assert highlight_statistics.as_dict() == exp_statistics
+
+    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(assert_function_highlight)()
 
     # Erase
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, destination_fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, set(note_ids),
                                 op_statistics_formatter, lambda: None, parent, erase_op_params)
     erase_op.run_in_background()
-    time.sleep(1)
-    assert col.get_note(note_1.id)[DefaultFields.basic_back] == note_1[DefaultFields.basic_back]
-    assert col.get_note(note_1.id)[DefaultFields.basic_extra] == note_1[DefaultFields.basic_extra]
-    assert col.get_note(note_2.id)[DefaultFields.basic_back] == note_2[DefaultFields.basic_back]
-    assert col.get_note(note_2.id)[DefaultFields.basic_extra] == note_2[DefaultFields.basic_extra]
-    assert col.get_note(note_3.id).fields == note_3.fields
-    erase_statistics: OpStatistics = erase_op.get_statistics()
-    assert erase_statistics.as_dict() == exp_statistics
+
+    def assert_function_erase():
+        assert col.get_note(note_1.id)[DefaultFields.basic_back] == note_1[DefaultFields.basic_back]
+        assert col.get_note(note_1.id)[DefaultFields.basic_extra] == note_1[DefaultFields.basic_extra]
+        assert col.get_note(note_2.id)[DefaultFields.basic_back] == note_2[DefaultFields.basic_back]
+        assert col.get_note(note_2.id)[DefaultFields.basic_extra] == note_2[DefaultFields.basic_extra]
+        assert col.get_note(note_3.id).fields == note_3.fields
+        erase_statistics: OpStatistics = erase_op.get_statistics()
+        assert erase_statistics.as_dict() == exp_statistics
+
+    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(assert_function_erase)()
