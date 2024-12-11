@@ -41,7 +41,7 @@ class RegExTokenizer(Tokenizer):
                 if pattern.match(word):
                     word_tokens.append(Token(Word(word), TokenType.TAG))
                 else:
-                    word_tokens.append(Token(Word(word), TokenType.UNDEFINED))
+                    word_tokens.append(Token(Word(word), token.token_type))
             tokens_list.append(word_tokens)
         return self.__flatten(tokens_list)
 
@@ -55,7 +55,7 @@ class RegExTokenizer(Tokenizer):
                     if match(self.__space_pattern, word):
                         word_tokens.append(Token(word, TokenType.SPACE))
                     else:
-                        word_tokens.append(Token(word, TokenType.UNDEFINED))
+                        word_tokens.append(Token(word, token.token_type))
                 tokens_list.append(word_tokens)
             else:
                 tokens_list.append(Tokens([token]))
