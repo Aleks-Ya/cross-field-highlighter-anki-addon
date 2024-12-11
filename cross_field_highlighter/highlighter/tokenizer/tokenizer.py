@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Optional
 
 from ...highlighter.types import Text, Word
 
@@ -38,8 +39,8 @@ class Tokens(list):
 class Tokenizer(ABC):
 
     @abstractmethod
-    def tokenize(self, text: Text) -> Tokens:
+    def tokenize(self, text: Text, special_tokens: Optional[Tokens] = None) -> Tokens:
         ...
 
-    def tokenize_distinct(self, text: Text) -> Tokens:
-        return Tokens(list(dict.fromkeys(self.tokenize(text))))
+    def tokenize_distinct(self, text: Text, special_tokens: Optional[Tokens] = None) -> Tokens:
+        return Tokens(list(dict.fromkeys(self.tokenize(text, special_tokens))))

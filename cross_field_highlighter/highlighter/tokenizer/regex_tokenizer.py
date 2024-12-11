@@ -1,5 +1,6 @@
 from re import Pattern, split, compile, escape, match
 import string
+from typing import Optional
 
 from .tokenizer import TokenType
 from ...highlighter.tokenizer.tokenizer import Tokenizer, Tokens, Token
@@ -11,7 +12,7 @@ class RegExTokenizer(Tokenizer):
         self.__punctuation_pattern: Pattern[str] = self.__create_punctuation_pattern()
         self.__space_pattern: Pattern[str] = compile(r'(\s)')
 
-    def tokenize(self, text: Text) -> Tokens:
+    def tokenize(self, text: Text, special_tokens: Optional[Tokens] = None) -> Tokens:
         super().tokenize(text)
         tokens: Tokens = Tokens([Token(Word(text), TokenType.UNDEFINED)])
         by_tags: Tokens = self.__split_by_tags(tokens)
