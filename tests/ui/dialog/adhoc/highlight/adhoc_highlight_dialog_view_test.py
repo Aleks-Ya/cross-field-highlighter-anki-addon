@@ -45,12 +45,12 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'a an',
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': 'a an',
+                                                  'space_delimited_language': True}}}
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     assert listener.counter == 0
@@ -71,18 +71,20 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': 'a an',
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': 'a an',
+                                                  'space_delimited_language': True}}}
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert listener.counter == 2
-    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Basic",
-                note_types=['Basic', 'Cloze'], current_field=DefaultFields.basic_front,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
+                current_note_type=basic_note_type_details.name,
+                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                current_field=DefaultFields.basic_front,
                 source_fields=DefaultFields.all_basic, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
                 disabled_fields=[DefaultFields.basic_front], stop_words=exp_default_stop_words,
@@ -100,17 +102,19 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True}}}
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert listener.counter == 3
-    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Cloze",
-                note_types=['Basic', 'Cloze'], current_field=DefaultFields.cloze_text,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
+                current_note_type=cloze_note_type_details.name,
+                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                current_field=DefaultFields.cloze_text,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
@@ -127,25 +131,28 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_text,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_text,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True}}}
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert listener.counter == 4
-    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Cloze",
-                note_types=['Basic', 'Cloze'], current_field=DefaultFields.cloze_back_extra,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
+                current_note_type=cloze_note_type_details.name,
+                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                current_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_back_extra],
+                check_box_texts=['Text', 'Back Extra'], selected_fields=[],
+                disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -160,26 +167,29 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True}}}
 
     # Uncheck "Space-delimited language"
     adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()
     assert listener.counter == 5
-    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes", current_note_type="Cloze",
-                note_types=['Basic', 'Cloze'], current_field=DefaultFields.cloze_back_extra,
+    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
+                current_note_type=cloze_note_type_details.name,
+                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                current_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_back_extra],
+                check_box_texts=['Text', 'Back Extra'], selected_fields=[],
+                disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -194,18 +204,18 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': False}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': False}}}
 
     # Click Start button
     assert callback.counter == 0
@@ -226,18 +236,18 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'note_number': 3,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [DefaultFields.cloze_text],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': False}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [DefaultFields.cloze_text],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': False}}}
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
@@ -255,18 +265,18 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [DefaultFields.cloze_text],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': False}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [DefaultFields.cloze_text],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': False}}}
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
@@ -284,18 +294,18 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
         'formats': all_highlight_formats,
         'note_types': all_note_type_details,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_text,
-                             'selected_stop_words': exp_default_stop_words,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_text,
+                                                  'selected_stop_words': exp_default_stop_words,
+                                                  'space_delimited_language': True}}}
 
 
 def test_bug_duplicate_formats_after_reopening(all_note_type_details: list[NoteTypeDetails],
@@ -355,18 +365,18 @@ def test_remember_selected_source_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_back,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_back,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True}}}
     # Choose "Basic" note type again
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back, DefaultFields.all_basic)
@@ -383,18 +393,18 @@ def test_remember_selected_source_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_back,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_back_extra,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_back,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True}}}
 
 
 def test_remember_space_delimited_language_when_changing_note_type(
@@ -423,12 +433,12 @@ def test_remember_space_delimited_language_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True}}}
     # Uncheck space-delimited language checkbox
     adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()
     assert_space_delimited_language(adhoc_highlight_dialog_view, False)
@@ -445,12 +455,12 @@ def test_remember_space_delimited_language_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None,
-                             'space_delimited_language': False}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': False}}}
     # Choose "Cloze" note type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert_space_delimited_language(adhoc_highlight_dialog_view, True)
@@ -467,18 +477,18 @@ def test_remember_space_delimited_language_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None,
-                             'space_delimited_language': False},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_text,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True}}}
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': False},
+                   cloze_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': cloze_note_type_details,
+                                                  'selected_source_field': DefaultFields.cloze_text,
+                                                  'selected_stop_words': None,
+                                                  'space_delimited_language': True}}}
     # Choose "Basic" note type again
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
     assert_space_delimited_language(adhoc_highlight_dialog_view, False)
@@ -495,18 +505,21 @@ def test_remember_space_delimited_language_when_changing_note_type(
         'note_types': all_note_type_details,
         'accept_callback_None': True,
         'reject_callback_None': True,
-        'states': {'Basic': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': basic_note_type_details,
-                             'selected_source_field': DefaultFields.basic_front,
-                             'selected_stop_words': None,
-                             'space_delimited_language': False},
-                   'Cloze': {'selected_destination_fields': [],
-                             'selected_format': bold_format,
-                             'selected_note_type': cloze_note_type_details,
-                             'selected_source_field': DefaultFields.cloze_text,
-                             'selected_stop_words': None,
-                             'space_delimited_language': True}}}
+        'states': {
+            basic_note_type_details.name: {
+                'selected_destination_fields': [],
+                'selected_format': bold_format,
+                'selected_note_type': basic_note_type_details,
+                'selected_source_field': DefaultFields.basic_front,
+                'selected_stop_words': None,
+                'space_delimited_language': False},
+            cloze_note_type_details.name: {
+                'selected_destination_fields': [],
+                'selected_format': bold_format,
+                'selected_note_type': cloze_note_type_details,
+                'selected_source_field': DefaultFields.cloze_text,
+                'selected_stop_words': None,
+                'space_delimited_language': True}}}
 
 
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):

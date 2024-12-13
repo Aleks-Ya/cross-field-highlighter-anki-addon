@@ -23,7 +23,8 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                  adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
-    data: dict[str, Any] = {'current_state': 'Cloze', 'states': [{'note_type': 'Cloze'}]}
+    data: dict[str, Any] = {'current_state': cloze_note_type_details.name,
+                            'states': [{'note_type': cloze_note_type_details.name}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'accept_callback_None': False,
                                'current_state': {'selected_destination_fields': [],
@@ -37,12 +38,13 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                'formats': all_highlight_formats,
                                'note_types': all_note_type_details,
                                'reject_callback_None': False,
-                               'states': {'Cloze': {'selected_destination_fields': [],
-                                                    'selected_format': bold_format,
-                                                    'selected_note_type': cloze_note_type_details,
-                                                    'selected_source_field': 'Text',
-                                                    'selected_stop_words': None,
-                                                    'space_delimited_language': True}}}
+                               'states': {cloze_note_type_details.name:
+                                              {'selected_destination_fields': [],
+                                               'selected_format': bold_format,
+                                               'selected_note_type': cloze_note_type_details,
+                                               'selected_source_field': 'Text',
+                                               'selected_stop_words': None,
+                                               'space_delimited_language': True}}}
 
 
 def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,
@@ -57,10 +59,10 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model1.get_current_state().set_stop_words(Text("the"))
 
     data: dict[str, Any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
-    assert data == {'current_state': 'Cloze',
+    assert data == {'current_state': cloze_note_type_details.name,
                     'states': [{'destination_fields': ['Text'],
                                 'format': 'MARK',
-                                'note_type': 'Cloze',
+                                'note_type': cloze_note_type_details.name,
                                 'source_field': 'Back Extra',
                                 'stop_words': 'the',
                                 'space_delimited_language': True}]}
@@ -75,20 +77,22 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     adhoc_highlight_dialog_model_serde.deserialize_states(model2, data)
     assert model1 == model2
     assert model2.as_dict() == {'accept_callback_None': False,
-                                'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
-                                                  'selected_format': mark_format,
-                                                  'selected_note_type': cloze_note_type_details,
-                                                  'selected_source_field': DefaultFields.cloze_back_extra,
-                                                  'selected_stop_words': 'the',
-                                                  'space_delimited_language': True},
+                                'current_state': {
+                                    'selected_destination_fields': [DefaultFields.cloze_text],
+                                    'selected_format': mark_format,
+                                    'selected_note_type': cloze_note_type_details,
+                                    'selected_source_field': DefaultFields.cloze_back_extra,
+                                    'selected_stop_words': 'the',
+                                    'space_delimited_language': True},
                                 'default_stop_words': None,
                                 'note_number': 3,
                                 'formats': all_highlight_formats,
                                 'note_types': all_note_type_details,
                                 'reject_callback_None': False,
-                                'states': {'Cloze': {'selected_destination_fields': [DefaultFields.cloze_text],
-                                                     'selected_format': mark_format,
-                                                     'selected_note_type': cloze_note_type_details,
-                                                     'selected_source_field': DefaultFields.cloze_back_extra,
-                                                     'selected_stop_words': 'the',
-                                                     'space_delimited_language': True}}}
+                                'states': {cloze_note_type_details.name: {
+                                    'selected_destination_fields': [DefaultFields.cloze_text],
+                                    'selected_format': mark_format,
+                                    'selected_note_type': cloze_note_type_details,
+                                    'selected_source_field': DefaultFields.cloze_back_extra,
+                                    'selected_stop_words': 'the',
+                                    'space_delimited_language': True}}}

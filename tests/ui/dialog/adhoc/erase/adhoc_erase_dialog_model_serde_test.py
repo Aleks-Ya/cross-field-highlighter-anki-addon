@@ -21,7 +21,8 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails],
                                  adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe):
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model.fill(all_note_type_details, 3, lambda: None, lambda: None)
-    data: dict[str, Any] = {'current_state': 'Cloze', 'states': [{'note_type': 'Cloze'}]}
+    data: dict[str, Any] = {'current_state': cloze_note_type_details.name,
+                            'states': [{'note_type': cloze_note_type_details.name}]}
     adhoc_erase_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'accept_callback_None': False,
                                'current_state': {'selected_fields': [],
@@ -29,8 +30,9 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails],
                                'note_types': all_note_type_details,
                                'note_number': 3,
                                'reject_callback_None': False,
-                               'states': {'Cloze': {'selected_fields': [],
-                                                    'selected_note_type': cloze_note_type_details}}}
+                               'states': {cloze_note_type_details.name:
+                                              {'selected_fields': [],
+                                               'selected_note_type': cloze_note_type_details}}}
 
 
 def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_note_type_details: NoteTypeDetails,
@@ -40,8 +42,8 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model1.switch_state(cloze_note_type_details)
     model1.get_current_state().select_fields(FieldNames([DefaultFields.cloze_back_extra]))
     data: dict[str, Any] = adhoc_erase_dialog_model_serde.serialize_states(model1)
-    assert data == {'current_state': 'Cloze',
-                    'states': [{'fields': [DefaultFields.cloze_back_extra], 'note_type': 'Cloze'}]}
+    assert data == {'current_state': cloze_note_type_details.name,
+                    'states': [{'fields': [DefaultFields.cloze_back_extra], 'note_type': cloze_note_type_details.name}]}
     model2: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model2.fill(all_note_type_details, 3, None, None)
     adhoc_erase_dialog_model_serde.deserialize_states(model2, data)
@@ -52,5 +54,6 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                 'note_types': all_note_type_details,
                                 'note_number': 3,
                                 'reject_callback_None': True,
-                                'states': {'Cloze': {'selected_fields': [DefaultFields.cloze_back_extra],
-                                                     'selected_note_type': cloze_note_type_details}}}
+                                'states': {cloze_note_type_details.name:
+                                               {'selected_fields': [DefaultFields.cloze_back_extra],
+                                                'selected_note_type': cloze_note_type_details}}}

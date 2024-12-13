@@ -36,14 +36,15 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
     assert callback.history == []
     assert len(listener.history) == 1
-    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
-                                                  'note_number': 0,
-                                                  'accept_callback_None': False,
-                                                  'reject_callback_None': False,
-                                                  'current_state': {'selected_fields': [],
-                                                                    'selected_note_type': basic_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [],
-                                                                       'selected_note_type': basic_note_type_details}}}
+    assert adhoc_erase_dialog_model.as_dict() == {
+        'note_types': all_note_type_details,
+        'note_number': 0,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': basic_note_type_details},
+        'states': {basic_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details}}}
     assert user_folder_storage.read_all() == {}
 
 
@@ -68,17 +69,18 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
-    assert adhoc_erase_dialog_model.as_dict() == {'note_types': all_note_type_details,
-                                                  'note_number': 0,
-                                                  'accept_callback_None': False,
-                                                  'reject_callback_None': False,
-                                                  'current_state': {'selected_fields': [],
-                                                                    'selected_note_type': basic_note_type_details},
-                                                  'states': {'Basic': {'selected_fields': [],
-                                                                       'selected_note_type': basic_note_type_details}}}
+    assert adhoc_erase_dialog_model.as_dict() == {
+        'note_types': all_note_type_details,
+        'note_number': 0,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': basic_note_type_details},
+        'states': {basic_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details}}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
-        'current_state': 'Basic',
-        'states': [{'note_type': 'Basic', 'fields': []}]}}
+        'current_state': basic_note_type_details.name,
+        'states': [{'note_type': basic_note_type_details.name, 'fields': []}]}}
 
     # Update again
     adhoc_erase_dialog_model.switch_state(cloze_note_type_details)
@@ -90,13 +92,13 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
         'reject_callback_None': False,
         'current_state': {'selected_fields': [],
                           'selected_note_type': cloze_note_type_details},
-        'states': {'Basic': {'selected_fields': [],
-                             'selected_note_type': basic_note_type_details},
-                   'Cloze': {'selected_fields': [],
-                             'selected_note_type': cloze_note_type_details}}}
+        'states': {basic_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details},
+                   cloze_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': cloze_note_type_details}}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
-        'current_state': 'Basic',
-        'states': [{'note_type': 'Basic', 'fields': []}]}}
+        'current_state': basic_note_type_details.name,
+        'states': [{'note_type': basic_note_type_details.name, 'fields': []}]}}
 
 
 def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: AdhocEraseDialogController,
@@ -131,8 +133,8 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
         'note_types': all_note_type_details,
         'note_number': 0,
         'reject_callback_None': False,
-        'states': {'Basic': {'selected_fields': [],
-                             'selected_note_type': basic_note_type_details}}}
+        'states': {basic_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details}}}
     assert user_folder_storage.read_all() == {}
 
     # Update config from model
@@ -149,14 +151,14 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
         'note_types': all_note_type_details,
         'note_number': 0,
         'reject_callback_None': False,
-        'states': {'Basic': {'selected_fields': [],
-                             'selected_note_type': basic_note_type_details},
-                   'Cloze': {'selected_fields': [DefaultFields.cloze_back_extra],
-                             'selected_note_type': cloze_note_type_details}}}
+        'states': {basic_note_type_details.name: {'selected_fields': [],
+                                                  'selected_note_type': basic_note_type_details},
+                   cloze_note_type_details.name: {'selected_fields': [DefaultFields.cloze_back_extra],
+                                                  'selected_note_type': cloze_note_type_details}}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
-        'current_state': 'Cloze',
-        'states': [{'note_type': 'Basic', 'fields': []},
-                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_back_extra]}]}}
+        'current_state': cloze_note_type_details.name,
+        'states': [{'note_type': basic_note_type_details.name, 'fields': []},
+                   {'note_type': cloze_note_type_details.name, 'fields': [DefaultFields.cloze_back_extra]}]}}
 
     # Initialize controller using saved config
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
@@ -172,6 +174,6 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                                'current_state': None,
                                'states': {}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
-        'current_state': 'Cloze',
-        'states': [{'note_type': 'Basic', 'fields': []},
-                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_back_extra]}]}}
+        'current_state': cloze_note_type_details.name,
+        'states': [{'note_type': basic_note_type_details.name, 'fields': []},
+                   {'note_type': cloze_note_type_details.name, 'fields': [DefaultFields.cloze_back_extra]}]}}
