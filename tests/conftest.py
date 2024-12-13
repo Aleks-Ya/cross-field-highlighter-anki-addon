@@ -20,6 +20,7 @@ from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
+from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
     HighlightFormats
@@ -413,3 +414,8 @@ def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialo
                           settings: Settings) -> EditorButtonCreator:
     return EditorButtonCreator(adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller,
                                note_type_details_factory, start_with_note_field_highlighter, settings)
+
+
+@pytest.fixture
+def user_folder_storage(settings: Settings) -> UserFolderStorage:
+    return UserFolderStorage(settings)

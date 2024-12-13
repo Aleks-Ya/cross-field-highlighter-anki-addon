@@ -11,6 +11,7 @@ class Settings:
         self.module_dir: Path = module_dir
         self.module_name: str = module_name
         self.logs_folder: Path = logs_folder
+        self.user_folder: Path = self.module_dir / "user_folder"
         log.debug(f"{self.__class__.__name__} was instantiated: {self}")
 
     def __str__(self) -> str:
