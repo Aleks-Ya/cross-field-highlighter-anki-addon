@@ -16,9 +16,9 @@ class DefaultFields:
     basic_back: FieldName = FieldName('Back')
     basic_extra: FieldName = FieldName('Extra')
     cloze_text: FieldName = FieldName('Text')
-    cloze_extra: FieldName = FieldName('Back Extra')
+    cloze_back_extra: FieldName = FieldName('Back Extra')
     all_basic: list[FieldName] = [basic_front, basic_back, basic_extra]
-    all_cloze: list[FieldName] = [cloze_text, cloze_extra]
+    all_cloze: list[FieldName] = [cloze_text, cloze_back_extra]
 
 
 class DefaultStopWords:
@@ -84,7 +84,7 @@ class Data:
                           new_note: bool = False) -> Note:
         note: Note = self.col.new_note(self.cloze_note_type)
         note[DefaultFields.cloze_text] = text_field_content
-        note[DefaultFields.cloze_extra] = extra_field_content
+        note[DefaultFields.cloze_back_extra] = extra_field_content
         if not new_note:
             self.col.add_note(note, self.deck_id)
         gui_hooks.add_cards_did_add_note(note)

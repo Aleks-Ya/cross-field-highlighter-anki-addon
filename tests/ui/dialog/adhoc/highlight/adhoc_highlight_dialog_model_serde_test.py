@@ -51,7 +51,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model1: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model1.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
     model1.switch_state(cloze_note_type_details)
-    model1.get_current_state().select_source_field(DefaultFields.cloze_extra)
+    model1.get_current_state().select_source_field(DefaultFields.cloze_back_extra)
     model1.get_current_state().select_format(mark_format)
     model1.get_current_state().select_destination_fields(FieldNames([DefaultFields.cloze_text]))
     model1.get_current_state().set_stop_words(Text("the"))
@@ -67,7 +67,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model2.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
     model2.switch_state(cloze_note_type_details)
-    model2.get_current_state().select_source_field(DefaultFields.cloze_extra)
+    model2.get_current_state().select_source_field(DefaultFields.cloze_back_extra)
     model2.get_current_state().select_format(mark_format)
     model2.get_current_state().select_destination_fields(FieldNames([DefaultFields.cloze_text]))
     model2.get_current_state().set_stop_words(Text("the"))
@@ -78,7 +78,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                 'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
                                                   'selected_format': mark_format,
                                                   'selected_note_type': cloze_note_type_details,
-                                                  'selected_source_field': DefaultFields.cloze_extra,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
                                                   'selected_stop_words': 'the',
                                                   'space_delimited_language': True},
                                 'default_stop_words': None,
@@ -89,6 +89,6 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
                                 'states': {'Cloze': {'selected_destination_fields': [DefaultFields.cloze_text],
                                                      'selected_format': mark_format,
                                                      'selected_note_type': cloze_note_type_details,
-                                                     'selected_source_field': DefaultFields.cloze_extra,
+                                                     'selected_source_field': DefaultFields.cloze_back_extra,
                                                      'selected_stop_words': 'the',
                                                      'space_delimited_language': True}}}

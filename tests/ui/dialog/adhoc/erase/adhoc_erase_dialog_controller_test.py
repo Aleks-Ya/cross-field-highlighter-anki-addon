@@ -137,26 +137,26 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
 
     # Update config from model
     adhoc_erase_dialog_model.switch_state(cloze_note_type_details)
-    adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.cloze_extra]))
+    adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.cloze_back_extra]))
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
         'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_erase_dialog_model.as_dict() == {
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [DefaultFields.cloze_extra],
+        'current_state': {'selected_fields': [DefaultFields.cloze_back_extra],
                           'selected_note_type': cloze_note_type_details},
         'note_types': all_note_type_details,
         'note_number': 0,
         'reject_callback_None': False,
         'states': {'Basic': {'selected_fields': [],
                              'selected_note_type': basic_note_type_details},
-                   'Cloze': {'selected_fields': [DefaultFields.cloze_extra],
+                   'Cloze': {'selected_fields': [DefaultFields.cloze_back_extra],
                              'selected_note_type': cloze_note_type_details}}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
         'current_state': 'Cloze',
         'states': [{'note_type': 'Basic', 'fields': []},
-                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_extra]}]}}
+                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_back_extra]}]}}
 
     # Initialize controller using saved config
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
@@ -174,4 +174,4 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
         'current_state': 'Cloze',
         'states': [{'note_type': 'Basic', 'fields': []},
-                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_extra]}]}}
+                   {'note_type': 'Cloze', 'fields': [DefaultFields.cloze_back_extra]}]}}
