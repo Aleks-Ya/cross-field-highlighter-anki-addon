@@ -18,7 +18,8 @@ def test_highlight_erase_non_space_delimited(notes_highlighter: NotesHighlighter
     __highlight_erase(bold_format, col, notes_highlighter, space_delimited_language, td)
 
 
-def __highlight_erase(bold_format, col, notes_highlighter, space_delimited_language, td):
+def __highlight_erase(bold_format: HighlightFormat, col: Collection, notes_highlighter: NotesHighlighter,
+                      space_delimited_language: bool, td: Data) -> None:
     case_notes: list[CaseNote] = td.create_case_notes()
     notes: Notes = Notes([case_note.note for case_note in case_notes])
     stop_words: Text = td.stop_words()

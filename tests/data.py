@@ -26,6 +26,10 @@ class DefaultStopWords:
     config: dict[str, str] = {"Default Stop Words": in_config}
 
 
+class DefaultTags:
+    latest_modified: str = "cross-field-highlighter::modified-by-latest-run"
+
+
 class Case:
     def __init__(self, name: str, collocation: str, original_text: str, highlighted_text_space_delimited: str,
                  highlighted_text_non_space_delimited: str):
@@ -300,3 +304,7 @@ class Data:
             else:
                 exp_content: FieldContent = case_note.highlighted_content_non_space_delimited
             assert act_content == exp_content, f"Field content: '{act_content}' != '{exp_content}'"
+            act_tags: list[str] = act_note.tags
+            was_modified: bool = act_content != case_note.original_content
+            exp_tags: list[str] = [DefaultTags.latest_modified] if was_modified else []
+            assert act_tags == exp_tags, f"Tags: '{act_tags}' != '{exp_tags}'"

@@ -7,10 +7,10 @@ from aqt.browser import Browser
 log: Logger = logging.getLogger(__name__)
 
 
-class BrowserMenuSearchHighlightedNotesAction(QAction):
+class BrowserMenuShowHighlightedNotesAction(QAction):
 
     def __init__(self, browser: Browser) -> None:
-        super().__init__("Show highlighted notes in Browser", browser)
+        super().__init__("Show all highlighted notes", browser)
         self.__browser: Browser = browser
         qconnect(self.triggered, self.__on_click)
         log.debug(f"{self.__class__.__name__} was instantiated")

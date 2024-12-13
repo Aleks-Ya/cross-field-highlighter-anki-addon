@@ -33,7 +33,7 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
 
     def __run_op(self, highlight_op_params: HighlightOpParams) -> None:
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
-        op: HighlightOp = self.__op_factory.create_highlight_op(note_ids, self._reload_current_note, self._browser,
+        op: HighlightOp = self.__op_factory.create_highlight_op(note_ids, self._refresh_browser, self._browser,
                                                                 highlight_op_params)
         op.run_in_background()
 

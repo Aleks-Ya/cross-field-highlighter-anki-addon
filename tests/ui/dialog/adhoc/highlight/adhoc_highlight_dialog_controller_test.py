@@ -17,7 +17,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
-from tests.data import Data, DefaultFields, DefaultStopWords
+from tests.data import Data, DefaultFields, DefaultStopWords, DefaultTags
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
     FakeModelListener, FakeHighlightControllerCallback, assert_stop_words, assert_space_delimited_language
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
@@ -82,7 +82,8 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -101,7 +102,8 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -134,7 +136,8 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -184,7 +187,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -208,7 +212,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -247,7 +252,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         user_folder_storage)
     controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,

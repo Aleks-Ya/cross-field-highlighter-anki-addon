@@ -48,6 +48,11 @@ def __initialize(col: Collection):
     log_dir: Path = addon_manager.logs_folder(module_name)
     logs: Logs = Logs(log_dir)
     logs.set_level("DEBUG")
+    task_manager: TaskManager = mw.taskman
+    progress_manager: ProgressManager = mw.progress
+    settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name))
+    config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
+    config: Config = config_loader.load_config()
     tokenizer: RegExTokenizer = RegExTokenizer()
     formatter_facade: FormatterFacade = FormatterFacade()
     stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
@@ -58,12 +63,7 @@ def __initialize(col: Collection):
         start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade, tokenizer,
         stop_words_tokenizer)
     note_field_highlighter: NoteFieldHighlighter = StartWithNoteFieldHighlighter(text_highlighter)
-    notes_highlighter: NotesHighlighter = NotesHighlighter(note_field_highlighter)
-    task_manager: TaskManager = mw.taskman
-    progress_manager: ProgressManager = mw.progress
-    settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name))
-    config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
-    config: Config = config_loader.load_config()
+    notes_highlighter: NotesHighlighter = NotesHighlighter(note_field_highlighter, config)
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
     user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
@@ -79,10 +79,11 @@ def __initialize(col: Collection):
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,
         user_folder_storage)
     op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
-    op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
+    op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter,
+                                      config)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
     browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
-                                               adhoc_erase_dialog_controller, dialog_params_factory)
+                                               adhoc_erase_dialog_controller, dialog_params_factory, config)
     browser_hooks.setup_hooks()
     editor_button_creator: EditorButtonCreator = EditorButtonCreator(
         adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,

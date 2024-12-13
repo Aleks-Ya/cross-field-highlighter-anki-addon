@@ -3,6 +3,7 @@ from logging import Logger
 
 from anki.notes import Note
 
+from ...config.config import Config
 from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.note.note_field_highlighter import NoteFieldHighlighter, NoteFieldHighlightResult, \
     NoteFieldEraseResult
@@ -22,8 +23,9 @@ class NotesHighlighterResult:
 
 
 class NotesHighlighter:
-    def __init__(self, note_field_highlighter: NoteFieldHighlighter):
+    def __init__(self, note_field_highlighter: NoteFieldHighlighter, config: Config):
         self.__note_field_highlighter: NoteFieldHighlighter = note_field_highlighter
+        self.__config: Config = config
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def highlight(self, notes: Notes, source_field: FieldName, destination_fields: FieldNames,
@@ -40,6 +42,7 @@ class NotesHighlighter:
                     updated_note, source_field, destination_field, stop_words, space_delimited_language,
                     highlight_format)
                 if result.was_modified():
+                    self.__add_latest_modified_tag(updated_note)
                     note_was_modified = True
                     modified_fields += 1
                 updated_note = result.note
@@ -59,6 +62,7 @@ class NotesHighlighter:
             for field in fields:
                 result: NoteFieldEraseResult = self.__note_field_highlighter.erase(updated_note, field)
                 if result.was_modified():
+                    self.__add_latest_modified_tag(updated_note)
                     note_was_modified = True
                     modified_fields += 1
                 updated_note = result.note
@@ -67,6 +71,10 @@ class NotesHighlighter:
                 modified_notes += 1
         total_fields: int = len(fields) * len(notes)
         return NotesHighlighterResult(updated_notes, len(notes), total_fields, modified_notes, modified_fields)
+
+    def __add_latest_modified_tag(self, note: Note) -> None:
+        if self.__config.get_latest_modified_notes_enabled():
+            note.tags.append(self.__config.get_latest_modified_notes_tag())
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

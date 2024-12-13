@@ -109,8 +109,9 @@ def start_with_note_field_highlighter(
 
 
 @pytest.fixture
-def notes_highlighter(start_with_note_field_highlighter: StartWithNoteFieldHighlighter) -> NotesHighlighter:
-    return NotesHighlighter(start_with_note_field_highlighter)
+def notes_highlighter(start_with_note_field_highlighter: StartWithNoteFieldHighlighter,
+                      config: Config) -> NotesHighlighter:
+    return NotesHighlighter(start_with_note_field_highlighter, config)
 
 
 @pytest.fixture
@@ -402,8 +403,9 @@ def editor_edit_mode(mw: AnkiQt) -> Editor:
 
 @pytest.fixture
 def op_factory(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-               progress_manager: ProgressManager, op_statistics_formatter: OpStatisticsFormatter) -> OpFactory:
-    return OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
+               progress_manager: ProgressManager, op_statistics_formatter: OpStatisticsFormatter,
+               config: Config) -> OpFactory:
+    return OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter, config)
 
 
 @pytest.fixture

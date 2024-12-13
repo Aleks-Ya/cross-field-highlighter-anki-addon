@@ -14,6 +14,9 @@ class Config:
     __key_2_dialog_adhoc: str = 'Adhoc'
     __key_3_dialog_highlight: str = 'Highlight'
     __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
+    __key_1_latest_modified_notes: str = 'Latest Modified Notes'
+    __key_2_latest_modified_notes_enabled: str = 'Enabled'
+    __key_2_latest_modified_notes_tag: str = 'Tag'
 
     def __init__(self, config: dict[str, Any]):
         self.__config: dict[str, Any] = config
@@ -53,6 +56,20 @@ class Config:
     def set_dialog_adhoc_highlight_default_stop_words(self, last_stop_words: Optional[str]) -> None:
         self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
+
+    def get_latest_modified_notes_enabled(self) -> Optional[bool]:
+        return self.__get(self.__key_1_latest_modified_notes, self.__key_2_latest_modified_notes_enabled)
+
+    def set_latest_modified_notes_enabled(self, latest_modified_notes_enabled: Optional[bool]) -> None:
+        self.__set(latest_modified_notes_enabled, self.__key_1_latest_modified_notes,
+                   self.__key_2_latest_modified_notes_enabled)
+
+    def get_latest_modified_notes_tag(self) -> Optional[str]:
+        return self.__get(self.__key_1_latest_modified_notes, self.__key_2_latest_modified_notes_tag)
+
+    def set_latest_modified_notes_tag(self, latest_modified_notes_tag: Optional[str]) -> None:
+        self.__set(latest_modified_notes_tag, self.__key_1_latest_modified_notes,
+                   self.__key_2_latest_modified_notes_tag)
 
     def get_as_dict(self) -> dict[str, Any]:
         return self.__config

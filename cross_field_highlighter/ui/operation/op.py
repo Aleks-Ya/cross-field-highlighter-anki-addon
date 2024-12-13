@@ -1,7 +1,7 @@
 import logging
 from abc import abstractmethod
 from logging import Logger
-from typing import Optional, Callable
+from typing import Optional, Callable, Sequence
 
 from anki.collection import Collection
 from anki.models import NotetypeId
@@ -12,6 +12,7 @@ from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
+from ...config.config import Config
 from ...highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from ...highlighter.types import Notes
 from ...ui.operation.op_statistics import OpStatistics, OpStatisticsKey
@@ -24,7 +25,8 @@ class Op(QueryOp):
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
                  op_statistics_formatter: OpStatisticsFormatter, finished_callback: Callable[[], None],
-                 parent: Optional[QWidget], progress_dialog_title: str, operation_title: str, note_type_id: NotetypeId):
+                 parent: Optional[QWidget], progress_dialog_title: str, operation_title: str, note_type_id: NotetypeId,
+                 config: Config):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Note Size cache initializing")
         self.failure(self.__on_failure)
@@ -40,6 +42,7 @@ class Op(QueryOp):
         self.__note_type_id: NotetypeId = note_type_id
         self.__progress_dialog_title: str = progress_dialog_title
         self.__operation_title: str = operation_title
+        self.__config: Config = config
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def get_statistics(self) -> OpStatistics:
@@ -54,6 +57,12 @@ class Op(QueryOp):
                                                range(0, len(note_ids_list), slice_size)]
         updated_notes_counter: int = 0
         total_note_number: int = len(self.__note_ids)
+        if self.__config.get_latest_modified_notes_enabled():
+            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{self.__config.get_latest_modified_notes_tag()}")
+            self.__col.tags.bulk_remove(note_ids, self.__config.get_latest_modified_notes_tag())
+        else:
+            log.debug("Deleting latest modified notes tag because it is disabled")
+            self.__col.tags.remove(self.__config.get_latest_modified_notes_tag())
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
             log.debug(f"Total notes in slice: {len(notes)}")

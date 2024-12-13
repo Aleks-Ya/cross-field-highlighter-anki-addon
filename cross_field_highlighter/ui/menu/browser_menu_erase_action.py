@@ -33,7 +33,7 @@ class BrowserMenuEraseAction(BrowserMenuAction):
 
     def __run_op(self, erase_op_params: EraseOpParams) -> None:
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
-        op: EraseOp = self.__op_factory.create_erase_op(note_ids, self._reload_current_note, self._browser,
+        op: EraseOp = self.__op_factory.create_erase_op(note_ids, self._refresh_browser, self._browser,
                                                         erase_op_params)
         op.run_in_background()
 

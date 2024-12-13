@@ -5,5 +5,9 @@
         "Default Stop Words": "a an to"
       }
     }
+  },
+  "Latest Modified Notes": {
+    "Enabled": true,
+    "Tag": "cross-field-highlighter::modified-by-latest-run"
   }
 }

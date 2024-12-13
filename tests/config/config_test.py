@@ -3,7 +3,7 @@ from typing import Any
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.types import NoteTypeName
-from tests.data import Data, DefaultStopWords
+from tests.data import Data, DefaultStopWords, DefaultTags
 
 
 class CountConfigListener(ConfigListener):
@@ -17,11 +17,18 @@ class CountConfigListener(ConfigListener):
 
 def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     config: Config = td.read_config()
-    assert config.get_as_dict() == {"Dialog": {"Adhoc": {"Highlight": {**DefaultStopWords.config}}}}
+    original_config: dict[str, any] = {
+        "Dialog": {"Adhoc": {"Highlight": {**DefaultStopWords.config}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config.get_as_dict() == original_config
     assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultStopWords.in_config
     config.set_dialog_adhoc_highlight_default_stop_words("the")
+    config.set_latest_modified_notes_enabled(False)
+    config.set_latest_modified_notes_tag("latest-notes")
     assert config.get_dialog_adhoc_highlight_default_stop_words() == "the"
-    assert config.get_as_dict() == {"Dialog": {"Adhoc": {"Highlight": {"Default Stop Words": "the"}}}}
+    assert config.get_as_dict() == {
+        "Dialog": {"Adhoc": {"Highlight": {"Default Stop Words": "the"}}},
+        "Latest Modified Notes": {"Enabled": False, "Tag": "latest-notes"}}
 
 
 def test_fire_config_changed(td: Data):
