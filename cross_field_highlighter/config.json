@@ -2,11 +2,7 @@
   "Dialog": {
     "Adhoc": {
       "Highlight": {
-        "Default Stop Words": "a an to",
-        "States": {}
-      },
-      "Erase": {
-        "States": {}
+        "Default Stop Words": "a an to"
       }
     }
   }

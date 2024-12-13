@@ -2,6 +2,7 @@ from aqt import Qt
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
     HighlightFormats
@@ -27,7 +28,8 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                      adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
                      all_note_type_details: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
-                     bold_format: HighlightFormat, basic_note_type_details: NoteTypeDetails):
+                     bold_format: HighlightFormat, basic_note_type_details: NoteTypeDetails,
+                     user_folder_storage: UserFolderStorage):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     listener: FakeModelListener = FakeModelListener()
     adhoc_highlight_dialog_model.add_listener(listener)
@@ -45,6 +47,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'reject_callback_None': True,
         'states': {},
         'current_state': None}
+    assert user_folder_storage.read_all() == {}
 
     adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
     assert callback.history == []
@@ -68,21 +71,18 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultStopWords.in_config,
                           'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {}
 
 
-def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
-                       adhoc_highlight_dialog_model: AdhocHighlightDialogModel, config_loader: ConfigLoader,
-                       basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails,
-                       all_note_type_details: list[NoteTypeDetails], bold_format: HighlightFormat,
-                       all_highlight_formats: HighlightFormats, ):
+def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                         adhoc_highlight_dialog_model: AdhocHighlightDialogModel, config_loader: ConfigLoader,
+                         basic_note_type_details: NoteTypeDetails, cloze_note_type_details: NoteTypeDetails,
+                         all_note_type_details: list[NoteTypeDetails], bold_format: HighlightFormat,
+                         all_highlight_formats: HighlightFormats, user_folder_storage: UserFolderStorage):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {
-            'Highlight': {
-                **DefaultStopWords.config,
-                'States': {}},
-            'Erase': {'States': {}}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -92,6 +92,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
         'reject_callback_None': True,
         'states': {},
         'current_state': None}
+    assert user_folder_storage.read_all() == {}
 
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
@@ -100,17 +101,7 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {
-            'Highlight': {
-                **DefaultStopWords.config,
-                'States': {'current_state': 'Basic',
-                           'states': [{'destination_fields': [],
-                                       'format': 'BOLD',
-                                       'note_type': 'Basic',
-                                       'source_field': 'Front',
-                                       'stop_words': 'a an to',
-                                       'space_delimited_language': True}]}},
-            'Erase': {'States': {}}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -130,9 +121,20 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultStopWords.in_config,
                           'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {
+        'highlight_dialog_states':
+            {'current_state': 'Basic',
+             'states': [{'note_type': 'Basic',
+                         'destination_fields': [],
+                         'format': bold_format.code.name,
+                         'source_field': DefaultFields.basic_front,
+                         'stop_words': 'a an to',
+                         'space_delimited_language': True}]}}
 
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
+    assert config_loader.load_config().get_as_dict() == {
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -158,13 +160,22 @@ def test_update_config(adhoc_highlight_dialog_controller: AdhocHighlightDialogCo
                           'selected_source_field': DefaultFields.cloze_text,
                           'selected_stop_words': DefaultStopWords.in_config,
                           'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {
+        'highlight_dialog_states':
+            {'current_state': 'Basic',
+             'states': [{'note_type': 'Basic',
+                         'destination_fields': [],
+                         'format': bold_format.code.name,
+                         'source_field': DefaultFields.basic_front,
+                         'stop_words': 'a an to',
+                         'space_delimited_language': True}]}}
 
 
 def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                            adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
                                            adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
                                            note_type_details_factory: NoteTypeDetailsFactory,
-                                           config_loader: ConfigLoader,
+                                           config_loader: ConfigLoader, user_folder_storage: UserFolderStorage,
                                            basic_note_type_details: NoteTypeDetails,
                                            cloze_note_type_details: NoteTypeDetails,
                                            formatter_facade: FormatterFacade,
@@ -173,11 +184,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {
-            'Highlight': {
-                **DefaultStopWords.config,
-                'States': {}},
-            'Erase': {'States': {}}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -187,6 +194,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'reject_callback_None': True,
         'states': {},
         'current_state': None}
+    assert user_folder_storage.read_all() == {}
 
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
@@ -200,17 +208,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {
-            'Highlight': {
-                **DefaultStopWords.config,
-                'States': {'current_state': 'Basic',
-                           'states': [{'destination_fields': ['Back'],
-                                       'format': 'BOLD',
-                                       'note_type': 'Basic',
-                                       'source_field': 'Front',
-                                       'stop_words': 'to the',
-                                       'space_delimited_language': True}]}},
-            'Erase': {'States': {}}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -230,6 +228,15 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': 'to the',
                           'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {
+        'highlight_dialog_states':
+            {'current_state': 'Basic',
+             'states': [{'note_type': 'Basic',
+                         'destination_fields': [DefaultFields.basic_back],
+                         'format': bold_format.code.name,
+                         'source_field': DefaultFields.basic_front,
+                         'stop_words': 'to the',
+                         'space_delimited_language': True}]}}
 
     # Initialize controller using saved config
     config: Config = config_loader.load_config()
@@ -237,20 +244,10 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
-        config_loader)
+        user_folder_storage)
     controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {
-            'Highlight': {
-                **DefaultStopWords.config,
-                'States': {'current_state': 'Basic',
-                           'states': [{'destination_fields': ['Back'],
-                                       'format': 'BOLD',
-                                       'note_type': 'Basic',
-                                       'source_field': 'Front',
-                                       'stop_words': 'to the',
-                                       'space_delimited_language': True}]}},
-            'Erase': {'States': {}}}}}
+        'Dialog': {'Adhoc': {'Highlight': {**DefaultStopWords.config}}}}
     assert model.as_dict() == {
         'default_stop_words': DefaultStopWords.in_config,
         'note_number': 0,
@@ -270,6 +267,15 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': 'to the',
                           'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {
+        'highlight_dialog_states':
+            {'current_state': 'Basic',
+             'states': [{'note_type': 'Basic',
+                         'destination_fields': [DefaultFields.basic_back],
+                         'format': bold_format.code.name,
+                         'source_field': DefaultFields.basic_front,
+                         'stop_words': 'to the',
+                         'space_delimited_language': True}]}}
 
 
 def test_remember_format_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,

@@ -9,6 +9,7 @@ from aqt.taskman import TaskManager
 from .config.config import Config
 from .config.config_loader import ConfigLoader
 from .config.settings import Settings
+from .config.user_folder_storage import UserFolderStorage
 from .highlighter.formatter.formatter_facade import FormatterFacade
 from .highlighter.note.note_field_highlighter import NoteFieldHighlighter
 from .highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
@@ -65,17 +66,18 @@ def __initialize(col: Collection):
     config: Config = config_loader.load_config()
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
+    user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
     adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
     adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade,
-        adhoc_highlight_dialog_model_serde, config, config_loader)
+        adhoc_highlight_dialog_model_serde, config, user_folder_storage)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
     adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,
-        config, config_loader)
+        user_folder_storage)
     op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)

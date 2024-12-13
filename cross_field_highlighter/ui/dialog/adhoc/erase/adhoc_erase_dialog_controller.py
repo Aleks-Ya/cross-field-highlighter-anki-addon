@@ -3,8 +3,7 @@ from logging import Logger
 from typing import Callable, Optional
 
 from .adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
-from .....config.config import Config
-from .....config.config_loader import ConfigLoader
+from .....config.user_folder_storage import UserFolderStorage
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
@@ -15,16 +14,16 @@ log: Logger = logging.getLogger(__name__)
 
 
 class AdhocEraseDialogController:
+    __state_key: str = "erase_dialog_states"
 
     def __init__(self, model: AdhocEraseDialogModel, view: AdhocEraseDialogView,
                  note_type_details_factory: NoteTypeDetailsFactory, model_serde: AdhocEraseDialogModelSerDe,
-                 config: Config, config_loader: ConfigLoader):
+                 user_folder_storage: UserFolderStorage):
         self.__model: AdhocEraseDialogModel = model
         self.__view: AdhocEraseDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__model_serde: AdhocEraseDialogModelSerDe = model_serde
-        self.__config: Config = config
-        self.__config_loader: ConfigLoader = config_loader
+        self.__user_folder_storage: UserFolderStorage = user_folder_storage
         self.__start_callback: Optional[Callable[[EraseOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -37,14 +36,13 @@ class AdhocEraseDialogController:
         self.__view.show_view()
 
     def __fill_model_from_config(self):
-        data: dict[str, any] = self.__config.get_dialog_adhoc_erase_states()
+        data: dict[str, any] = self.__user_folder_storage.read(self.__state_key)
         self.__model_serde.deserialize_states(self.__model, data)
 
     def __save_model_to_config(self):
-        log.debug("Save model to config")
-        data: dict[str, any] = self.__model_serde.serialize_states(self.__model)
-        self.__config.set_dialog_adhoc_erase_states(data)
-        self.__config_loader.write_config(self.__config)
+        log.debug("Save model to storage")
+        serialized_state: dict[str, any] = self.__model_serde.serialize_states(self.__model)
+        self.__user_folder_storage.write(self.__state_key, serialized_state)
 
     def __accept_callback(self):
         log.debug("Accept callback")

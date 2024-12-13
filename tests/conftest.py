@@ -316,10 +316,10 @@ def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlig
                                       adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
                                       note_type_details_factory: NoteTypeDetailsFactory,
                                       formatter_facade: FormatterFacade, config: Config,
-                                      config_loader: ConfigLoader) -> AdhocHighlightDialogController:
+                                      user_folder_storage: UserFolderStorage) -> AdhocHighlightDialogController:
     return AdhocHighlightDialogController(adhoc_highlight_dialog_model, adhoc_highlight_dialog_view,
                                           note_type_details_factory, formatter_facade,
-                                          adhoc_highlight_dialog_model_serde, config, config_loader)
+                                          adhoc_highlight_dialog_model_serde, config, user_folder_storage)
 
 
 @pytest.fixture
@@ -352,10 +352,10 @@ def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, the
 def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogModel,
                                   adhoc_erase_dialog_view: AdhocEraseDialogView,
                                   adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
-                                  note_type_details_factory: NoteTypeDetailsFactory, config: Config,
-                                  config_loader: ConfigLoader) -> AdhocEraseDialogController:
+                                  note_type_details_factory: NoteTypeDetailsFactory,
+                                  user_folder_storage: UserFolderStorage) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory,
-                                      adhoc_erase_dialog_model_serde, config, config_loader)
+                                      adhoc_erase_dialog_model_serde, user_folder_storage)
 
 
 @pytest.fixture

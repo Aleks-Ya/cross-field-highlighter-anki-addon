@@ -5,7 +5,7 @@ from typing import Callable, Optional
 from .adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .adhoc_highlight_dialog_state import AdhocHighlightDialogState
 from .....config.config import Config
-from .....config.config_loader import ConfigLoader
+from .....config.user_folder_storage import UserFolderStorage
 from .....highlighter.formatter.formatter_facade import FormatterFacade
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -19,19 +19,19 @@ log: Logger = logging.getLogger(__name__)
 
 
 class AdhocHighlightDialogController:
+    __state_key: str = "highlight_dialog_states"
 
     def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView,
                  note_type_details_factory: NoteTypeDetailsFactory, formatter_facade: FormatterFacade,
-                 model_serde: AdhocHighlightDialogModelSerDe, config: Config,
-                 config_loader: ConfigLoader):
+                 model_serde: AdhocHighlightDialogModelSerDe, config: Config, user_folder_storage: UserFolderStorage):
         self.__model: AdhocHighlightDialogModel = model
         self.__view: AdhocHighlightDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__formatter_facade: FormatterFacade = formatter_facade
         self.__model_serde: AdhocHighlightDialogModelSerDe = model_serde
         self.__config: Config = config
-        self.__config_loader: ConfigLoader = config_loader
-        self.__fill_model_from_config()
+        self.__user_folder_storage: UserFolderStorage = user_folder_storage
+        self.__fill_model_from_storage()
         self.__run_op_callback: Optional[Callable[[HighlightOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -40,17 +40,17 @@ class AdhocHighlightDialogController:
         self.__run_op_callback = run_op_callback
         self.__model.fill(params.note_types, params.note_number, self.__formatter_facade.get_all_formats(),
                           self.__accept_callback, self.__reject_callback)
-        self.__fill_model_from_config()
+        self.__fill_model_from_storage()
         self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
 
-    def __save_model_to_config(self) -> None:
-        log.debug("Update config from model")
-        self.__config.set_dialog_adhoc_highlight_states(self.__model_serde.serialize_states(self.__model))
-        self.__config_loader.write_config(self.__config)
+    def __save_model_to_storage(self) -> None:
+        log.debug("Save model to storage")
+        serialized_state: dict[str, any] = self.__model_serde.serialize_states(self.__model)
+        self.__user_folder_storage.write(self.__state_key, serialized_state)
 
-    def __fill_model_from_config(self) -> None:
-        data: dict[str, any] = self.__config.get_dialog_adhoc_highlight_states()
+    def __fill_model_from_storage(self) -> None:
+        data: dict[str, any] = self.__user_folder_storage.read(self.__state_key)
         self.__model_serde.deserialize_states(self.__model, data)
         default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
@@ -69,13 +69,13 @@ class AdhocHighlightDialogController:
 
     def __accept_callback(self) -> None:
         log.debug("Accept callback")
-        self.__save_model_to_config()
+        self.__save_model_to_storage()
         highlight_op_params: HighlightOpParams = self.__prepare_op_params()
         self.__run_op_callback(highlight_op_params)
 
     def __reject_callback(self) -> None:
         log.debug("Reject callback")
-        self.__save_model_to_config()
+        self.__save_model_to_storage()
 
     def __repr__(self):
         return self.__class__.__name__
