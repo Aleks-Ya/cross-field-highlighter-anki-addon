@@ -86,7 +86,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
                 current_field=DefaultFields.basic_front,
                 source_fields=DefaultFields.all_basic, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Front', 'Back', 'Extra'], selected_fields=[],
+                check_box_texts=[DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra],
+                selected_fields=[],
                 disabled_fields=[DefaultFields.basic_front], stop_words=exp_default_stop_words,
                 space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -116,7 +117,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
                 current_field=DefaultFields.cloze_text,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[], disabled_fields=[DefaultFields.cloze_text],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
+                disabled_fields=[DefaultFields.cloze_text],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -151,7 +153,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
                 current_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -188,7 +190,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
                 current_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=['Text', 'Back Extra'], selected_fields=[],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {

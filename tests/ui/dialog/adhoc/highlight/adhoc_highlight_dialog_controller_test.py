@@ -151,7 +151,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                    cloze_note_type_details.name: {'selected_destination_fields': [],
                                                   'selected_format': bold_format,
                                                   'selected_note_type': cloze_note_type_details,
-                                                  'selected_source_field': 'Text',
+                                                  'selected_source_field': DefaultFields.cloze_text,
                                                   'selected_stop_words': DefaultStopWords.in_config,
                                                   'space_delimited_language': True}},
         'current_state': {'selected_destination_fields': [],

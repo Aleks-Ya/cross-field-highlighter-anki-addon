@@ -30,7 +30,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                'current_state': {'selected_destination_fields': [],
                                                  'selected_format': bold_format,
                                                  'selected_note_type': cloze_note_type_details,
-                                                 'selected_source_field': 'Text',
+                                                 'selected_source_field': DefaultFields.cloze_text,
                                                  'selected_stop_words': None,
                                                  'space_delimited_language': True},
                                'default_stop_words': None,
@@ -42,7 +42,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                               {'selected_destination_fields': [],
                                                'selected_format': bold_format,
                                                'selected_note_type': cloze_note_type_details,
-                                               'selected_source_field': 'Text',
+                                               'selected_source_field': DefaultFields.cloze_text,
                                                'selected_stop_words': None,
                                                'space_delimited_language': True}}}
 
@@ -60,10 +60,10 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
 
     data: dict[str, Any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
     assert data == {'current_state': cloze_note_type_details.name,
-                    'states': [{'destination_fields': ['Text'],
+                    'states': [{'destination_fields': [DefaultFields.cloze_text],
                                 'format': 'MARK',
                                 'note_type': cloze_note_type_details.name,
-                                'source_field': 'Back Extra',
+                                'source_field': DefaultFields.cloze_back_extra,
                                 'stop_words': 'the',
                                 'space_delimited_language': True}]}
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()

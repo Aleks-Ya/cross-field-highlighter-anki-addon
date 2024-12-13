@@ -1,31 +1,36 @@
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from tests.data import DefaultFields
 
 
 def test_write_read(user_folder_storage: UserFolderStorage, basic_note_type_details: NoteTypeDetails):
     key: str = "state"
     # Write new key
     exp_value_1: dict[str, any] = {"item": "about",
-                                   "nested": {"note_type": basic_note_type_details.name, "field": "Front"}}
+                                   "nested": {"note_type": basic_note_type_details.name,
+                                              "field": DefaultFields.basic_front}}
     user_folder_storage.write(key, exp_value_1)
     act_value_1: dict[str, any] = user_folder_storage.read(key)
     assert act_value_1 == exp_value_1
     assert user_folder_storage.read_all() == {
-        'state': {'item': 'about', 'nested': {'field': 'Front', 'note_type': basic_note_type_details.name}}}
+        'state': {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
+                                              'field': DefaultFields.basic_front}}}
     # Update existing key
-    exp_value_2: dict[str, any] = {"status": "done", "nested": {"field": "Back"}}
+    exp_value_2: dict[str, any] = {"status": "done", "nested": {"field": DefaultFields.basic_back}}
     user_folder_storage.write(key, exp_value_2)
     act_value_2: dict[str, any] = user_folder_storage.read(key)
     assert act_value_2 == exp_value_2
-    assert user_folder_storage.read_all() == {'state': {'nested': {'field': 'Back'}, 'status': 'done'}}
+    assert user_folder_storage.read_all() == {'state': {'nested': {'field': DefaultFields.basic_back},
+                                                        'status': 'done'}}
 
 
 def test_write_read_several_keys(user_folder_storage: UserFolderStorage, basic_note_type_details: NoteTypeDetails):
     key_1: str = "state"
     key_2: str = "data"
     exp_value_1: dict[str, any] = {"item": "about",
-                                   "nested": {"note_type": basic_note_type_details.name, "field": "Front"}}
-    exp_value_2: dict[str, any] = {"status": "done", "nested": {"field": "Back"}}
+                                   "nested": {"note_type": basic_note_type_details.name,
+                                              "field": DefaultFields.basic_front}}
+    exp_value_2: dict[str, any] = {"status": "done", "nested": {"field": DefaultFields.basic_back}}
     user_folder_storage.write(key_1, exp_value_1)
     user_folder_storage.write(key_2, exp_value_2)
     act_value_1: dict[str, any] = user_folder_storage.read(key_1)
@@ -33,8 +38,9 @@ def test_write_read_several_keys(user_folder_storage: UserFolderStorage, basic_n
     assert act_value_1 == exp_value_1
     assert act_value_2 == exp_value_2
     assert user_folder_storage.read_all() == {
-        'data': {'nested': {'field': 'Back'}, 'status': 'done'},
-        'state': {'item': 'about', 'nested': {'field': 'Front', 'note_type': basic_note_type_details.name}}}
+        'data': {'nested': {'field': DefaultFields.basic_back}, 'status': 'done'},
+        'state': {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
+                                              'field': DefaultFields.basic_front}}}
 
 
 def test_read_absent_key(user_folder_storage: UserFolderStorage):
