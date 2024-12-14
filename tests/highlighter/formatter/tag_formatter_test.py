@@ -60,3 +60,10 @@ def test_different_separators_within_tag(tag_formatter: TagFormatter):
     assert tag_formatter.erase(Text('<b\nclass="cross-field-highlighter">linebreak</b>')) == 'linebreak'
     assert tag_formatter.erase(Text('<b\tclass="cross-field-highlighter">tab</b>')) == 'tab'
     assert tag_formatter.erase(Text('<b \n\tclass="cross-field-highlighter">several</b>')) == 'several'
+
+
+def test_erase_several_tags(tag_formatter: TagFormatter):
+    highlighted_text: Text = Text(
+        'Immediately <b class="cross-field-highlighter">hang up</b>. Before you <b class="cross-field-highlighter">hang up</b>.')
+    clean_word: Text = tag_formatter.erase(highlighted_text)
+    assert clean_word == 'Immediately hang up. Before you hang up.'

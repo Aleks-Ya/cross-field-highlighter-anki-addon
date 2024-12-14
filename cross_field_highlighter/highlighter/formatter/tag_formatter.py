@@ -13,7 +13,7 @@ class TagFormatter(Formatter):
         self.__word_pattern: Pattern = compile(fr'{self.__erase_prefix}(\w*){self.__suffix}', flags=IGNORECASE)
         self.__punctuation_pattern: Pattern[str] = compile(
             fr"{self.__erase_prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
-        self.__any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*){self.__suffix}', flags=IGNORECASE)
+        self.__any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*?){self.__suffix}', flags=IGNORECASE)
 
     def highlight(self, word: Word) -> Word:
         super().highlight(word)
