@@ -10,6 +10,10 @@ class TagFormatter(Formatter):
         self.__highlight_prefix: str = f'<{tag} class="cross-field-highlighter">'
         self.__erase_prefix: str = f'<{tag}\\s+class="cross-field-highlighter">'
         self.__suffix: str = f'</{tag}>'
+        self.__word_pattern: Pattern = compile(fr'{self.__erase_prefix}(\w*){self.__suffix}', flags=IGNORECASE)
+        self.__punctuation_pattern: Pattern[str] = compile(
+            fr"{self.__erase_prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
+        self.__any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*){self.__suffix}', flags=IGNORECASE)
 
     def highlight(self, word: Word) -> Word:
         super().highlight(word)
@@ -18,13 +22,9 @@ class TagFormatter(Formatter):
 
     def erase(self, text: Text) -> Text:
         super().erase(text)
-        word_pattern: Pattern = compile(fr'{self.__erase_prefix}(\w*){self.__suffix}', flags=IGNORECASE)
-        clean_text: Text = self.__erase_by_pattern(text, word_pattern)
-        punctuation_pattern: Pattern[str] = compile(
-            fr"{self.__erase_prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
-        clean_text = self.__erase_by_pattern(clean_text, punctuation_pattern)
-        any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*){self.__suffix}', flags=IGNORECASE)
-        clean_text = self.__erase_by_pattern(clean_text, any_pattern)
+        clean_text: Text = self.__erase_by_pattern(text, self.__word_pattern)
+        clean_text = self.__erase_by_pattern(clean_text, self.__punctuation_pattern)
+        clean_text = self.__erase_by_pattern(clean_text, self.__any_pattern)
         return clean_text
 
     @staticmethod
