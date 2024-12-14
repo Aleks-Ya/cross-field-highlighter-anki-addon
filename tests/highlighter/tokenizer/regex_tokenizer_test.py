@@ -8,12 +8,12 @@ from cross_field_highlighter.highlighter.types import Text, Words, Word
 
 
 @pytest.fixture
-def tokenize(regex_tokenizer: RegExTokenizer) -> Callable[[str], Tokens]:
-    return lambda s: regex_tokenizer.tokenize(Text(s))
+def tokenize(regex_tokenizer: RegExTokenizer) -> Callable[[str, list[Token]], Tokens]:
+    return lambda text, special_tokens: regex_tokenizer.tokenize(Text(text), special_tokens)
 
 
-def test_tokenize_by_space(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, beautiful world!') == Tokens([
+def test_tokenize_by_space(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Hello, beautiful world!', []) == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
         Token(Word(' '), TokenType.SPACE),
@@ -24,8 +24,8 @@ def test_tokenize_by_space(tokenize: Callable[[str], Words]):
     ])
 
 
-def test_tokenize_by_line_break(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, beautiful\nworld!') == [
+def test_tokenize_by_line_break(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Hello, beautiful\nworld!', []) == [
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
         Token(Word(' '), TokenType.SPACE),
@@ -36,8 +36,8 @@ def test_tokenize_by_line_break(tokenize: Callable[[str], Words]):
     ]
 
 
-def test_tokenize_tag(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, <b>beautiful</b>\nworld!') == [
+def test_tokenize_tag(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Hello, <b>beautiful</b>\nworld!', []) == [
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
         Token(Word(' '), TokenType.SPACE),
@@ -50,8 +50,8 @@ def test_tokenize_tag(tokenize: Callable[[str], Words]):
     ]
 
 
-def test_tokenize_html_tags(tokenize: Callable[[str], Words]):
-    assert tokenize('<li>Hello, world!</li>') == [
+def test_tokenize_html_tags(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('<li>Hello, world!</li>', []) == [
         Token(Word('<li>'), TokenType.TAG),
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
@@ -62,17 +62,17 @@ def test_tokenize_html_tags(tokenize: Callable[[str], Words]):
     ]
 
 
-def test_tokenize_japanese(tokenize: Callable[[str], Words]):
-    assert tokenize('中にあるテキスト') == [Token(Word('中にあるテキスト'), TokenType.WORD)]
-    assert tokenize('<li>中にあるテキスト</li>') == [
+def test_tokenize_japanese(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('中にあるテキスト', []) == [Token(Word('中にあるテキスト'), TokenType.WORD)]
+    assert tokenize('<li>中にあるテキスト</li>', []) == [
         Token(Word('<li>'), TokenType.TAG),
         Token(Word('中にあるテキスト'), TokenType.WORD),
         Token(Word('</li>'), TokenType.TAG)
     ]
 
 
-def test_tokenize_slash(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, beautiful/nice world\\universe!') == Tokens([
+def test_tokenize_slash(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Hello, beautiful/nice world\\universe!', []) == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
         Token(Word(' '), TokenType.SPACE),
@@ -87,8 +87,8 @@ def test_tokenize_slash(tokenize: Callable[[str], Words]):
     ])
 
 
-def test_tokenize_square_brackets(tokenize: Callable[[str], Words]):
-    assert tokenize('Hello, [beautiful][nice] world!') == Tokens([
+def test_tokenize_square_brackets(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Hello, [beautiful][nice] world!', []) == Tokens([
         Token(Word('Hello'), TokenType.WORD),
         Token(Word(','), TokenType.PUNCTUATION),
         Token(Word(' '), TokenType.SPACE),
@@ -101,4 +101,16 @@ def test_tokenize_square_brackets(tokenize: Callable[[str], Words]):
         Token(Word(' '), TokenType.SPACE),
         Token(Word('world'), TokenType.WORD),
         Token(Word('!'), TokenType.PUNCTUATION)
+    ])
+
+
+def test_tokenize_by_special_token(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Resistant to intrusions.', [Token(Word("intrusion"), TokenType.WORD)]) == Tokens([
+        Token(Word('Resistant'), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
+        Token(Word('to'), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
+        Token(Word('intrusion'), TokenType.WORD),
+        Token(Word('s'), TokenType.WORD),
+        Token(Word('.'), TokenType.PUNCTUATION)
     ])
