@@ -34,10 +34,12 @@ class NoteTypeDetailsFactory:
         return self.__cache_name[note_type_name]
 
     def by_note_ids(self, note_ids: Sequence[NoteId]) -> list[NoteTypeDetails]:
+        log.debug(f"Collecting note types for note ids: {len(note_ids)}")
         note_type_ids: set[NotetypeId] = {self.__col.get_note(note_id).mid for note_id in note_ids}
         note_types: list[NoteTypeDetails] = []
         for note_type_id in note_type_ids:
             note_type_details: NoteTypeDetails = self.by_note_type_id(note_type_id)
             note_types.append(note_type_details)
         sorted_notes_type: list[NoteTypeDetails] = sorted(note_types, key=lambda n_type: n_type.name)
+        log.debug(f"Collected note types: {sorted_notes_type}")
         return sorted_notes_type

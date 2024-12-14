@@ -49,6 +49,7 @@ class Op(QueryOp):
         return self.__statistics
 
     def __background_op(self, _: Collection) -> int:
+        log.debug("Stringing background operation")
         self.__statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, self.__note_type_id)
         slice_size: int = 30
         note_ids_list: list[NoteId] = list(self.__note_ids)
@@ -57,19 +58,12 @@ class Op(QueryOp):
                                                range(0, len(note_ids_list), slice_size)]
         updated_notes_counter: int = 0
         total_note_number: int = len(self.__note_ids)
-        if self.__config.get_latest_modified_notes_enabled():
-            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{self.__config.get_latest_modified_notes_tag()}")
-            self.__col.tags.bulk_remove(note_ids, self.__config.get_latest_modified_notes_tag())
-        else:
-            log.debug("Deleting latest modified notes tag because it is disabled")
-            self.__col.tags.remove(self.__config.get_latest_modified_notes_tag())
+        self.__remove_tag(note_ids_list)
         for note_ids_slice in note_ids_slices:
             notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
-            log.debug(f"Total notes in slice: {len(notes)}")
             notes_with_note_type: Notes = Notes(
                 [note for note in notes if note.mid == self.__note_type_id])
             self.__statistics.increment_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, len(notes_with_note_type))
-            log.debug(f"Notes in slice with note type {self.__note_type_id}: {len(notes_with_note_type)}")
             result: NotesHighlighterResult = self._process_slice(notes_with_note_type)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, result.total_notes)
             self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
@@ -80,8 +74,21 @@ class Op(QueryOp):
             log.debug(f"Updated notes: {updated_notes_counter} of {total_note_number}")
             self.__update_progress(updated_notes_counter, total_note_number)
             if self.__progress_manager.want_cancel():
+                log.info(f"Progress dialog was cancelled: updated_notes_counter={updated_notes_counter}")
                 return updated_notes_counter
+        log.debug("Finished background operation")
         return updated_notes_counter
+
+    def __remove_tag(self, note_ids_list: list[NoteId]):
+        if self.__config.get_latest_modified_notes_enabled():
+            log.debug(f"Removing tag from {len(note_ids_list)} notes")
+            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{self.__config.get_latest_modified_notes_tag()}")
+            self.__col.tags.bulk_remove(note_ids, self.__config.get_latest_modified_notes_tag())
+            log.debug(f"Removing tag from {len(note_ids_list)} notes finished")
+        else:
+            log.debug("Deleting latest modified notes tag because it is disabled")
+            self.__col.tags.remove(self.__config.get_latest_modified_notes_tag())
+            log.debug("Deleting latest modified notes tag finished")
 
     @abstractmethod
     def _process_slice(self, notes_with_note_type: Notes) -> NotesHighlighterResult:
