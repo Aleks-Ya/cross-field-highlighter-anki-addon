@@ -67,3 +67,9 @@ def test_erase_several_tags(tag_formatter: TagFormatter):
         'Immediately <b class="cross-field-highlighter">hang up</b>. Before you <b class="cross-field-highlighter">hang up</b>.')
     clean_word: Text = tag_formatter.erase(highlighted_text)
     assert clean_word == 'Immediately hang up. Before you hang up.'
+
+
+def test_erase_line_breaks(tag_formatter: TagFormatter):
+    highlighted_text: Text = Text('<b class="cross-field-highlighter">Hello,\nWorld!</b>')
+    clean_word: Text = tag_formatter.erase(highlighted_text)
+    assert clean_word == 'Hello,\nWorld!'

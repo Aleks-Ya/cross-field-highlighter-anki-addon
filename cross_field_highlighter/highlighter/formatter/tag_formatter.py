@@ -1,4 +1,4 @@
-from re import Pattern, compile, escape, sub, IGNORECASE
+from re import Pattern, compile, escape, sub, IGNORECASE, DOTALL
 import string
 
 from ...highlighter.formatter.formatter import Formatter
@@ -13,7 +13,7 @@ class TagFormatter(Formatter):
         self.__word_pattern: Pattern = compile(fr'{self.__erase_prefix}(\w*){self.__suffix}', flags=IGNORECASE)
         self.__punctuation_pattern: Pattern[str] = compile(
             fr"{self.__erase_prefix}([{escape(string.punctuation)}]){self.__suffix}", flags=IGNORECASE)
-        self.__any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*?){self.__suffix}', flags=IGNORECASE)
+        self.__any_pattern: Pattern = compile(fr'{self.__erase_prefix}(.*?){self.__suffix}', flags=IGNORECASE | DOTALL)
 
     def highlight(self, word: Word) -> Word:
         super().highlight(word)
@@ -22,7 +22,8 @@ class TagFormatter(Formatter):
 
     def erase(self, text: Text) -> Text:
         super().erase(text)
-        clean_text: Text = self.__erase_by_pattern(text, self.__word_pattern)
+        clean_text: Text = text
+        clean_text = self.__erase_by_pattern(clean_text, self.__word_pattern)
         clean_text = self.__erase_by_pattern(clean_text, self.__punctuation_pattern)
         clean_text = self.__erase_by_pattern(clean_text, self.__any_pattern)
         return clean_text
