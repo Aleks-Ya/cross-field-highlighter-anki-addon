@@ -13,7 +13,7 @@ from ...highlighter.types import Text, Word, Words
 log: Logger = logging.getLogger(__name__)
 
 
-class StartWithTextHighlighter(TextHighlighter):
+class RegexTextHighlighter(TextHighlighter):
     def __init__(self, start_with_token_highlighter: StartWithTokenHighlighter,
                  find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter, formatter_facade: FormatterFacade,
                  tokenizer: Tokenizer, stop_words_tokenizer: StopWordsTokenizer):

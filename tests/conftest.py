@@ -31,7 +31,7 @@ from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHig
 from cross_field_highlighter.highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
 from cross_field_highlighter.highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
 from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.text.start_with_text_highlighter import StartWithTextHighlighter
+from cross_field_highlighter.highlighter.text.regex_text_highlighter import RegexTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
@@ -94,18 +94,17 @@ def find_and_replace_token_highlighter(formatter_facade: FormatterFacade) -> Fin
 
 
 @pytest.fixture
-def start_with_text_highlighter(start_with_token_highlighter: StartWithTokenHighlighter,
-                                find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter,
-                                formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
-                                stop_words_tokenizer: StopWordsTokenizer) -> StartWithTextHighlighter:
-    return StartWithTextHighlighter(start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade,
-                                    regex_tokenizer, stop_words_tokenizer)
+def regex_text_highlighter(start_with_token_highlighter: StartWithTokenHighlighter,
+                           find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter,
+                           formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
+                           stop_words_tokenizer: StopWordsTokenizer) -> RegexTextHighlighter:
+    return RegexTextHighlighter(start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade,
+                                regex_tokenizer, stop_words_tokenizer)
 
 
 @pytest.fixture
-def start_with_note_field_highlighter(
-        start_with_text_highlighter: StartWithTextHighlighter) -> StartWithNoteFieldHighlighter:
-    return StartWithNoteFieldHighlighter(start_with_text_highlighter)
+def start_with_note_field_highlighter(regex_text_highlighter: RegexTextHighlighter) -> StartWithNoteFieldHighlighter:
+    return StartWithNoteFieldHighlighter(regex_text_highlighter)
 
 
 @pytest.fixture
