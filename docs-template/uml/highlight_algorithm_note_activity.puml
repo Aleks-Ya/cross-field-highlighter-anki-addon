@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+title Highlight note
+
+start
+:Tokenize StopWords to StopWordTokens;
+:Tokenize Collocation to CollocationTokens;
+:Exclude StopWordTokens from CollocationTokens;
+while (For each field)
+:Erase field to ErasedText;
+:Tokenize ErasedText to TextTokens;
+partition Highlight #lightgreen {
+    while (For each TextToken)
+        while (For each CollocationToken)
+            if (TextToken == CollocationToken)
+                :Highlight text token with formatter to HighlightedTextToken;
+            end if
+        end while
+    end while
+    :Join HighlightedTextTokens to OutputText;
+}
+end while
+:Update note in Collection;
+stop
+
+@enduml

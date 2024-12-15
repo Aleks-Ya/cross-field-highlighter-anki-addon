@@ -52,3 +52,7 @@
 2. __[BUG]__ "Restore defaults" button does not reset "Space-separated language" checkbox
 3. __[BUG]__ Erase highlights with line breaks and multiple tags
 4. __[MISC]__ Store UI model in user folder
+
+## [v0.9.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.9.0) - 2024-12-16
+
+1. __[FEATURE]__ Add shortcuts for Editor buttons

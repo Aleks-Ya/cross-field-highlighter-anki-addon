@@ -1,19 +1,37 @@
 @startuml
 'https://plantuml.com/activity-diagram-beta
 
+title Highlight note
 
 start
+partition Tokenize Collocation {
+    :Tokenize by tags;
+    :Tokenize by spaces;
+    :Tokenize by punctuation;
+}
+partition Tokenize Stop Words {
+    :Tokenize by spaces;
+}
+while (For each field)
 partition Erase {
     :Erase field;
 }
-partition Tokenize {
+partition Tokenize Text {
     :Tokenize by tags;
     :Tokenize by spaces;
     :Tokenize by punctuation;
 }
 partition Highlight {
-    :Highlight field;
+    while (For each text token)
+        while (For each collocation token)
+            if (text token == collocation token)
+                :Highlight text token with formatter;
+            end if
+        end while
+    end while
+    :Join highlighted text tokens to text;
 }
+end while
 stop
 
 @enduml

@@ -5,13 +5,13 @@
 - [Introduction](#introduction)
 - [Screenshots](#screenshots)
   - [Browser menu](#browser-menu)
+  - [Highlight and Erase buttons in Editor](#highlight-and-erase-buttons-in-editor)
   - [Highlight dialog](#highlight-dialog)
   - [Supported formats](#supported-formats)
   - [Languages without spaces (Japanese, Chinese, Thai, etc.)](#languages-without-spaces-japanese-chinese-thai-etc)
   - [Highlighting progress](#highlighting-progress)
   - [Highlighting statistics](#highlighting-statistics)
   - [Erase dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
-  - [Highlight and Erase buttons in Editor](#highlight-and-erase-buttons-in-editor)
   - [Addon configuration](#addon-configuration)
 - [Links](#links)
 - [Quality metrics](#quality-metrics)
@@ -29,6 +29,10 @@ and highlights it in the destination fields:
 ### Browser menu
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/browser-menu.png)
+
+### Highlight and Erase buttons in Editor
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
 ### Highlight dialog
 
@@ -53,10 +57,6 @@ and highlights it in the destination fields:
 ### Erase dialog (removes previously added highlighting)
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-erase.png)
-
-### Highlight and Erase buttons in Editor
-
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
 ### Addon configuration
 
