@@ -271,7 +271,13 @@ class Data:
                  'to hurry up',
                  'Need to hurry up. He hurries everyone up.',
                  'Need <b class="cross-field-highlighter">to hurry up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
-                 'Need <b class="cross-field-highlighter">to hurry up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.')
+                 'Need <b class="cross-field-highlighter">to hurry up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.'),
+            Case("entire collocation as token (case insensitive)",
+                 'to hurry up',
+                 'Need to Hurry up. He Hurries everyone up.',
+                 'Need to <b class="cross-field-highlighter">Hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">Hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
+                 'Need to <b class="cross-field-highlighter">Hurry</b> <b class="cross-field-highlighter">up</b>. He Hurries everyone <b class="cross-field-highlighter">up</b>.')
+
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
