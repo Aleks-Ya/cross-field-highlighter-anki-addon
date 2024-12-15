@@ -1,4 +1,4 @@
-from re import Pattern, split, compile, escape, match
+from re import Pattern, split, compile, escape, match, IGNORECASE
 import string
 from typing import Optional
 
@@ -43,10 +43,10 @@ class RegExTokenizer(Tokenizer):
         tokens_list: list[Tokens] = []
         for token in tokens:
             if token.token_type == TokenType.UNDEFINED:
-                words: Words = Words(split(f'({escape(special_token.word)})', token.word))
+                words: Words = Words(split(f'({escape(special_token.word)})', token.word, flags=IGNORECASE))
                 word_tokens: Tokens = Tokens([])
                 for word in words:
-                    if word == special_token.word:
+                    if word.casefold() == special_token.word.casefold():
                         word_tokens.append(Token(word, TokenType.WORD))
                     else:
                         word_tokens.append(Token(word, token.token_type))

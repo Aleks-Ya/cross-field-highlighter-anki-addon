@@ -38,7 +38,7 @@ class RegexTextHighlighter(TextHighlighter):
         collocation_tokens.insert(0, collocation_token)
         highlighted_words: Words = Words([])
         clean_text: Text = self.erase(text)
-        special_tokens: Tokens = Tokens([collocation_token])
+        special_tokens: Tokens = Tokens([]) if space_delimited_language else Tokens([collocation_token])
         text_tokens: Tokens = self.__tokenizer.tokenize(clean_text, special_tokens)
         for text_token in text_tokens:
             if space_delimited_language:

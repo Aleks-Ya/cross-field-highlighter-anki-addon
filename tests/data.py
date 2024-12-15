@@ -131,9 +131,13 @@ class Data:
                  'Hello, <b class="cross-field-highlighter">Beautiful</b> world!'),
             Case("s-end", 'intrusion',
                  'Resistant to intrusions.',
-                 'Resistant to <b class="cross-field-highlighter">intrusion</b>s.',
+                 'Resistant to <b class="cross-field-highlighter">intrusions</b>.',
                  'Resistant to <b class="cross-field-highlighter">intrusion</b>s.'),
-            Case("ing base", 'abstain',
+            Case("ing base", 'drown',
+                 'Protection against drowning.',
+                 'Protection against <b class="cross-field-highlighter">drowning</b>.',
+                 'Protection against <b class="cross-field-highlighter">drown</b>ing.'),
+            Case("ing base (case insensitive)", 'abstain',
                  'Abstaining from chocolate',
                  '<b class="cross-field-highlighter">Abstaining</b> from chocolate',
                  '<b class="cross-field-highlighter">Abstain</b>ing from chocolate'),
@@ -245,7 +249,7 @@ class Data:
             Case("furigana (brackets collocation, brackets text)",
                  '東京[とうきょう]',
                  '<p>東京[とうきょう]は首都です。</p>',
-                 '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>',
+                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>',
                  '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>'),
             Case("forward slash in collocation",
                  'beautiful/nice',
@@ -270,14 +274,13 @@ class Data:
             Case("entire collocation as token",
                  'to hurry up',
                  'Need to hurry up. He hurries everyone up.',
-                 'Need <b class="cross-field-highlighter">to hurry up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
+                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
                  'Need <b class="cross-field-highlighter">to hurry up</b>. He hurries everyone <b class="cross-field-highlighter">up</b>.'),
             Case("entire collocation as token (case insensitive)",
                  'to hurry up',
                  'Need to Hurry up. He Hurries everyone up.',
                  'Need to <b class="cross-field-highlighter">Hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">Hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
-                 'Need to <b class="cross-field-highlighter">Hurry</b> <b class="cross-field-highlighter">up</b>. He Hurries everyone <b class="cross-field-highlighter">up</b>.')
-
+                 'Need <b class="cross-field-highlighter">to Hurry up</b>. He Hurries everyone <b class="cross-field-highlighter">up</b>.')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
