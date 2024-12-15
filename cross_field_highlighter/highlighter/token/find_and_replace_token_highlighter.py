@@ -1,6 +1,6 @@
 import logging
-import re
 from logging import Logger
+from re import escape, sub, IGNORECASE
 
 from .token_highlighter import TokenHighlighter
 from ..tokenizer.tokenizer import TokenType
@@ -20,10 +20,10 @@ class FindAndReplaceTokenHighlighter(TokenHighlighter):
         if text_token.token_type == TokenType.TAG:
             return text_token.word
         for collocation_token in collocation_tokens:
-            pattern: str = f"({re.escape(collocation_token.word)})"
+            pattern: str = f"({escape(collocation_token.word)})"
             highlighted_collocation_word: Word = self.__formatter_facade.format(Word("\\1"), highlight_format)
-            highlighted_text_word: Word = Word(re.sub(pattern, highlighted_collocation_word, text_token.word,
-                                                      flags=re.IGNORECASE))
+            highlighted_text_word: Word = Word(
+                sub(pattern, highlighted_collocation_word, text_token.word, flags=IGNORECASE))
             if highlighted_text_word != text_token.word:
                 return highlighted_text_word
         return text_token.word
