@@ -12,7 +12,7 @@ from .config.settings import Settings
 from .config.user_folder_storage import UserFolderStorage
 from .highlighter.formatter.formatter_facade import FormatterFacade
 from .highlighter.note.field_highlighter import FieldHighlighter
-from .highlighter.note.start_with_field_highlighter import StartWithFieldHighlighter
+from .highlighter.note.regex_field_highlighter import RegexFieldHighlighter
 from .highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from .highlighter.notes.notes_highlighter import NotesHighlighter
 from .highlighter.text.regex_text_highlighter import RegexTextHighlighter
@@ -62,8 +62,8 @@ def __initialize(col: Collection):
     text_highlighter: TextHighlighter = RegexTextHighlighter(
         start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade, tokenizer,
         stop_words_tokenizer)
-    field_highlighter: FieldHighlighter = StartWithFieldHighlighter(text_highlighter)
-    notes_highlighter: NotesHighlighter = NotesHighlighter(field_highlighter, config)
+    regex_field_highlighter: FieldHighlighter = RegexFieldHighlighter(text_highlighter)
+    notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
     user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
@@ -87,7 +87,7 @@ def __initialize(col: Collection):
     browser_hooks.setup_hooks()
     editor_button_creator: EditorButtonCreator = EditorButtonCreator(
         adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
-        field_highlighter, settings)
+        regex_field_highlighter, settings)
     editor_button_hooks: EditorButtonHooks = EditorButtonHooks(editor_button_creator)
     editor_button_hooks.setup_hooks()
 

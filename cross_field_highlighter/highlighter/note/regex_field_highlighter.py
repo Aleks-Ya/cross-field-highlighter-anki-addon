@@ -7,7 +7,7 @@ from ...highlighter.text.text_highlighter import TextHighlighter
 from ...highlighter.types import FieldName, Text
 
 
-class StartWithFieldHighlighter(FieldHighlighter):
+class RegexFieldHighlighter(FieldHighlighter):
     def __init__(self, text_highlighter: TextHighlighter):
         self.__text_highlighter: TextHighlighter = text_highlighter
 
