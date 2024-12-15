@@ -6,7 +6,7 @@ from ...highlighter.formatter.highlight_format import HighlightFormat
 from ...highlighter.types import FieldName, Text
 
 
-class NoteFieldHighlightResult:
+class FieldHighlightResult:
     def __init__(self, note: Note, source_field: FieldName, destination_field: FieldName, original_text: Text,
                  highlighted_text: Text):
         self.note: Note = note
@@ -30,11 +30,11 @@ class NoteFieldEraseResult:
         return self.original_text != self.erased_text
 
 
-class NoteFieldHighlighter(ABC):
+class FieldHighlighter(ABC):
     @abstractmethod
     def highlight(self, note: Note, source_field: FieldName, destination_field: FieldName,
                   stop_words: Text, space_delimited_language: bool,
-                  highlight_format: HighlightFormat) -> NoteFieldHighlightResult:
+                  highlight_format: HighlightFormat) -> FieldHighlightResult:
         ...
 
     @abstractmethod

@@ -7,7 +7,7 @@ from anki.notes import Note
 from aqt.editor import Editor
 
 from ...config.settings import Settings
-from ...highlighter.note.note_field_highlighter import NoteFieldHighlighter, NoteFieldHighlightResult, \
+from ...highlighter.note.field_highlighter import FieldHighlighter, FieldHighlightResult, \
     NoteFieldEraseResult
 from ...highlighter.note_type_details import NoteTypeDetails
 from ...highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -25,12 +25,12 @@ class EditorButtonCreator:
                  adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                  adhoc_erase_dialog_controller: AdhocEraseDialogController,
                  note_type_details_factory: NoteTypeDetailsFactory,
-                 note_field_highlighter: NoteFieldHighlighter,
+                 field_highlighter: FieldHighlighter,
                  settings: Settings) -> None:
         self.__highlight_controller: AdhocHighlightDialogController = adhoc_highlight_dialog_controller
         self.__erase_controller: AdhocEraseDialogController = adhoc_erase_dialog_controller
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
-        self.__note_field_highlighter: NoteFieldHighlighter = note_field_highlighter
+        self.__field_highlighter: FieldHighlighter = field_highlighter
         self.__settings: Settings = settings
         self.__editor: Optional[Editor] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -79,7 +79,7 @@ class EditorButtonCreator:
 
     def __on_highlight_op(self, highlight_op_params: HighlightOpParams) -> None:
         for destination_field in highlight_op_params.destination_fields:
-            result: NoteFieldHighlightResult = self.__note_field_highlighter.highlight(
+            result: FieldHighlightResult = self.__field_highlighter.highlight(
                 self.__editor.note, highlight_op_params.source_field, destination_field, highlight_op_params.stop_words,
                 highlight_op_params.space_delimited_language, highlight_op_params.highlight_format)
             self.__editor.note[destination_field] = result.highlighted_text
@@ -87,7 +87,7 @@ class EditorButtonCreator:
 
     def __on_erase_op(self, erase_op_params: EraseOpParams) -> None:
         for field in erase_op_params.fields:
-            result: NoteFieldEraseResult = self.__note_field_highlighter.erase(self.__editor.note, field)
+            result: NoteFieldEraseResult = self.__field_highlighter.erase(self.__editor.note, field)
             self.__editor.note[field] = result.erased_text
             self.__editor.loadNoteKeepingFocus()
 

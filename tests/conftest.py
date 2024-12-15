@@ -24,7 +24,7 @@ from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
     HighlightFormats
-from cross_field_highlighter.highlighter.note.start_with_note_field_highlighter import StartWithNoteFieldHighlighter
+from cross_field_highlighter.highlighter.note.start_with_field_highlighter import StartWithFieldHighlighter
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
@@ -103,14 +103,13 @@ def regex_text_highlighter(start_with_token_highlighter: StartWithTokenHighlight
 
 
 @pytest.fixture
-def start_with_note_field_highlighter(regex_text_highlighter: RegexTextHighlighter) -> StartWithNoteFieldHighlighter:
-    return StartWithNoteFieldHighlighter(regex_text_highlighter)
+def start_with_field_highlighter(regex_text_highlighter: RegexTextHighlighter) -> StartWithFieldHighlighter:
+    return StartWithFieldHighlighter(regex_text_highlighter)
 
 
 @pytest.fixture
-def notes_highlighter(start_with_note_field_highlighter: StartWithNoteFieldHighlighter,
-                      config: Config) -> NotesHighlighter:
-    return NotesHighlighter(start_with_note_field_highlighter, config)
+def notes_highlighter(start_with_field_highlighter: StartWithFieldHighlighter, config: Config) -> NotesHighlighter:
+    return NotesHighlighter(start_with_field_highlighter, config)
 
 
 @pytest.fixture
@@ -411,10 +410,10 @@ def op_factory(col: Collection, notes_highlighter: NotesHighlighter, task_manage
 def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                           adhoc_erase_dialog_controller: AdhocEraseDialogController,
                           note_type_details_factory: NoteTypeDetailsFactory,
-                          start_with_note_field_highlighter: StartWithNoteFieldHighlighter,
+                          start_with_field_highlighter: StartWithFieldHighlighter,
                           settings: Settings) -> EditorButtonCreator:
     return EditorButtonCreator(adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller,
-                               note_type_details_factory, start_with_note_field_highlighter, settings)
+                               note_type_details_factory, start_with_field_highlighter, settings)
 
 
 @pytest.fixture
