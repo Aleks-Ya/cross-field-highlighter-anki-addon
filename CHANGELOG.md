@@ -56,3 +56,9 @@
 ## [v0.9.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.9.0) - 2024-12-16
 
 1. __[FEATURE]__ Add shortcuts for Editor buttons
+
+## [v0.10.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.10.0) - 2024-12-22
+
+1. __[FEATURE]__ Add Configuration menu item
+2. __[BUG]__ Source field included in destination fields if was checked before
+3. __[BUG]__ Adjust highlighting algorithm
