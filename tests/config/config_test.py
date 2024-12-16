@@ -25,7 +25,8 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_as_dict() == original_config
     assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultConfig.in_config
     assert config.get_dialog_adhoc_highlight_editor_shortcut() == DefaultConfig.highlight_shortcut
-    assert config.get_dialog_adhoc_erase_editor_shortcut() == DefaultConfig.erase_shortcut
+    assert config.get_dialog_adhoc_erase_editor_shortcut() == (
+        None if DefaultConfig.erase_shortcut == "" else DefaultConfig.erase_shortcut)
     assert config.get_latest_modified_notes_enabled() == True
     assert config.get_latest_modified_notes_tag() == DefaultTags.latest_modified
 

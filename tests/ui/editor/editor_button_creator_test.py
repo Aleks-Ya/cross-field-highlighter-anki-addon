@@ -26,7 +26,7 @@ def test_create_erase_button(editor_button_creator: EditorButtonCreator, editor_
                         
                         class="linkb"
                         type="button"
-                        title="Open Erase dialog for current note...\n(Cross-Field Highlighter)\nCtrl+Shift+E"
+                        title="Open Erase dialog for current note...\n(Cross-Field Highlighter)"
                         onclick="pycmd('erase_button_cmd');return false;"
                         onmousedown="window.event.preventDefault();"
                 >
