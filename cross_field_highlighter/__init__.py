@@ -29,8 +29,7 @@ from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialo
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from .ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
-from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
-    AdhocHighlightDialogController
+from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
@@ -87,7 +86,7 @@ def __initialize(col: Collection):
     browser_hooks.setup_hooks()
     editor_button_creator: EditorButtonCreator = EditorButtonCreator(
         adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
-        regex_field_highlighter, settings)
+        regex_field_highlighter, config, settings)
     editor_button_hooks: EditorButtonHooks = EditorButtonHooks(editor_button_creator)
     editor_button_hooks.setup_hooks()
 

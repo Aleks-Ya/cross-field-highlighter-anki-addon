@@ -410,10 +410,10 @@ def op_factory(col: Collection, notes_highlighter: NotesHighlighter, task_manage
 def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                           adhoc_erase_dialog_controller: AdhocEraseDialogController,
                           note_type_details_factory: NoteTypeDetailsFactory,
-                          regex_field_highlighter: RegexFieldHighlighter,
+                          regex_field_highlighter: RegexFieldHighlighter, config: Config,
                           settings: Settings) -> EditorButtonCreator:
     return EditorButtonCreator(adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller,
-                               note_type_details_factory, regex_field_highlighter, settings)
+                               note_type_details_factory, regex_field_highlighter, config, settings)
 
 
 @pytest.fixture

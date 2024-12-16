@@ -6,9 +6,9 @@ from anki.models import NotetypeDict, NotetypeId
 from anki.notes import Note
 from aqt.editor import Editor
 
+from ...config.config import Config
 from ...config.settings import Settings
-from ...highlighter.note.field_highlighter import FieldHighlighter, FieldHighlightResult, \
-    NoteFieldEraseResult
+from ...highlighter.note.field_highlighter import FieldHighlighter, FieldHighlightResult, NoteFieldEraseResult
 from ...highlighter.note_type_details import NoteTypeDetails
 from ...highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from ...ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
@@ -25,12 +25,13 @@ class EditorButtonCreator:
                  adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                  adhoc_erase_dialog_controller: AdhocEraseDialogController,
                  note_type_details_factory: NoteTypeDetailsFactory,
-                 field_highlighter: FieldHighlighter,
+                 field_highlighter: FieldHighlighter, config: Config,
                  settings: Settings) -> None:
         self.__highlight_controller: AdhocHighlightDialogController = adhoc_highlight_dialog_controller
         self.__erase_controller: AdhocEraseDialogController = adhoc_erase_dialog_controller
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__field_highlighter: FieldHighlighter = field_highlighter
+        self.__config: Config = config
         self.__settings: Settings = settings
         self.__editor: Optional[Editor] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -38,21 +39,21 @@ class EditorButtonCreator:
     def create_highlight_button(self, editor: Editor) -> str:
         icon_path: str = self.__get_icon_path("highlight")
         log.debug(f"Highlight icon path: {icon_path}")
-        button: str = editor.addButton(
-            tip="Open Highlight dialog for current note...\n(Cross-Field Highlighter)",
-            icon=icon_path,
-            cmd="highlight_button_cmd",
-            func=self.__on_highlight_button_click)
+        shortcut: Optional[str] = self.__config.get_dialog_adhoc_highlight_editor_shortcut()
+        shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
+        tip: str = f"Open Highlight dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
+        button: str = editor.addButton(tip=tip, icon=icon_path, cmd="highlight_button_cmd",
+                                       func=self.__on_highlight_button_click, keys=shortcut)
         return button
 
     def create_erase_button(self, editor: Editor) -> str:
         icon_path: str = self.__get_icon_path("rubber")
         log.debug(f"Erase icon path: {icon_path}")
-        button: str = editor.addButton(
-            tip="Open Erase dialog for current note...\n(Cross-Field Highlighter)",
-            icon=icon_path,
-            cmd="erase_button_cmd",
-            func=self.__on_erase_button_click)
+        shortcut: Optional[str] = self.__config.get_dialog_adhoc_erase_editor_shortcut()
+        shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
+        tip: str = f"Open Erase dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
+        button: str = editor.addButton(tip=tip, icon=icon_path, cmd="erase_button_cmd",
+                                       func=self.__on_erase_button_click, keys=shortcut)
         return button
 
     def __on_highlight_button_click(self, editor: Editor) -> None:

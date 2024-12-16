@@ -9,7 +9,7 @@ def test_create_highlight_button(editor_button_creator: EditorButtonCreator, edi
                         
                         class="linkb"
                         type="button"
-                        title="Open Highlight dialog for current note...\n(Cross-Field Highlighter)"
+                        title="Open Highlight dialog for current note...\n(Cross-Field Highlighter)\nCtrl+Shift+H"
                         onclick="pycmd('highlight_button_cmd');return false;"
                         onmousedown="window.event.preventDefault();"
                 >
@@ -26,7 +26,7 @@ def test_create_erase_button(editor_button_creator: EditorButtonCreator, editor_
                         
                         class="linkb"
                         type="button"
-                        title="Open Erase dialog for current note...\n(Cross-Field Highlighter)"
+                        title="Open Erase dialog for current note...\n(Cross-Field Highlighter)\nCtrl+Shift+E"
                         onclick="pycmd('erase_button_cmd');return false;"
                         onmousedown="window.event.preventDefault();"
                 >
