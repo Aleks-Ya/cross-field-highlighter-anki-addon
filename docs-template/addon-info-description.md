@@ -4,7 +4,7 @@ or [GitHub issues](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addo
 
 "Cross-Field Highlighter" takes word or collocation from the source field and highlights it in the destination
 fields:  
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/short-description-2.png)
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/short-description-3.png)
 
 ## Screenshots
 
