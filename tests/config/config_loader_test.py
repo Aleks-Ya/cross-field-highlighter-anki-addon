@@ -20,13 +20,17 @@ def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
 def test_default_values(config_loader: ConfigLoader, module_dir: Path):
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
 
 
 def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
     exp_meta_json_config: dict[str, any] = {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     __write_meta_json_config(exp_meta_json_config, module_dir)
     config: Config = config_loader.load_config()
@@ -35,7 +39,9 @@ def test_actual_values_all(config_loader: ConfigLoader, module_dir: Path):
 
 def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
     exp_config: dict[str, any] = {
-        'Dialog': {'Adhoc': {'Highlight': {'Default Stop Words': 'the'}}},
+        'Dialog': {'Adhoc': {
+            'Highlight': {'Default Stop Words': 'the', "Editor Shortcut": DefaultConfig.highlight_shortcut},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     __write_meta_json_config(exp_config, module_dir)
     config: Config = config_loader.load_config()
@@ -44,19 +50,25 @@ def test_actual_values_partial(module_dir: Path, config_loader: ConfigLoader):
 
 def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader):
     __write_meta_json_config({
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
         , module_dir)
     config: Config = config_loader.load_config()
     assert config.get_as_dict() == {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
 
 
 def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLoader, module_name: str,
                             module_dir: Path):
     exp_config: dict[str, any] = {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     __write_meta_json_config(exp_config, module_dir)
     config_origin: Optional[dict[str, any]] = addon_manager.getConfig(module_name)
@@ -70,7 +82,9 @@ def test_save_loaded_config(addon_manager: AddonManager, config_loader: ConfigLo
 def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_type_name: NoteTypeName) -> None:
     config: Config = config_loader.load_config()
     exp_config: dict[str, any] = {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert config.get_as_dict() == exp_config
     config_loader.write_config(config)

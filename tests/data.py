@@ -23,7 +23,10 @@ class DefaultFields:
 
 class DefaultConfig:
     in_config: str = "a an to"
-    highlight: dict[str, str] = {"Default Stop Words": in_config}
+    highlight_shortcut: str = "Ctrl+Shift+H"
+    erase_shortcut: str = "Ctrl+Shift+E"
+    highlight: dict[str, str] = {"Default Stop Words": in_config, "Editor Shortcut": highlight_shortcut}
+    erase: dict[str, str] = {"Editor Shortcut": erase_shortcut}
 
 
 class DefaultTags:

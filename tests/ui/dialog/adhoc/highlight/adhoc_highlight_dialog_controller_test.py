@@ -82,7 +82,9 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,
@@ -102,7 +104,9 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,
@@ -136,7 +140,9 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,
@@ -187,7 +193,9 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,
@@ -212,7 +220,9 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,
@@ -252,7 +262,9 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         user_folder_storage)
     controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert model.as_dict() == {
         'default_stop_words': DefaultConfig.in_config,

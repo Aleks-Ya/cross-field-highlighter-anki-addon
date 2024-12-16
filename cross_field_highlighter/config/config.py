@@ -14,6 +14,9 @@ class Config:
     __key_2_dialog_adhoc: str = 'Adhoc'
     __key_3_dialog_adhoc_highlight: str = 'Highlight'
     __key_4_dialog_adhoc_highlight_default_stop_words: str = 'Default Stop Words'
+    __key_4_dialog_adhoc_highlight_editor_shortcut: str = 'Editor Shortcut'
+    __key_3_dialog_adhoc_erase: str = 'Erase'
+    __key_4_dialog_adhoc_erase_editor_shortcut: str = 'Editor Shortcut'
     __key_1_latest_modified_notes: str = 'Latest Modified Notes'
     __key_2_latest_modified_notes_enabled: str = 'Enabled'
     __key_2_latest_modified_notes_tag: str = 'Tag'
@@ -57,6 +60,23 @@ class Config:
         self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
                    self.__key_3_dialog_adhoc_highlight, self.__key_4_dialog_adhoc_highlight_default_stop_words)
 
+    def get_dialog_adhoc_highlight_editor_shortcut(self) -> Optional[str]:
+        return self.__get_shortcut(self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                                   self.__key_3_dialog_adhoc_highlight,
+                                   self.__key_4_dialog_adhoc_highlight_editor_shortcut)
+
+    def set_dialog_adhoc_highlight_editor_shortcut(self, editor_shortcut: Optional[str]) -> None:
+        self.__set(editor_shortcut, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_adhoc_highlight, self.__key_4_dialog_adhoc_highlight_editor_shortcut)
+
+    def get_dialog_adhoc_erase_editor_shortcut(self) -> Optional[str]:
+        return self.__get_shortcut(self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                                   self.__key_3_dialog_adhoc_erase, self.__key_4_dialog_adhoc_erase_editor_shortcut)
+
+    def set_dialog_adhoc_erase_editor_shortcut(self, editor_shortcut: Optional[str]) -> None:
+        self.__set(editor_shortcut, self.__key_1_dialog, self.__key_2_dialog_adhoc,
+                   self.__key_3_dialog_adhoc_erase, self.__key_4_dialog_adhoc_erase_editor_shortcut)
+
     def get_latest_modified_notes_enabled(self) -> Optional[bool]:
         return self.__get(self.__key_1_latest_modified_notes, self.__key_2_latest_modified_notes_enabled)
 
@@ -82,6 +102,10 @@ class Config:
         log.debug("Fire config changed")
         for listener in self.__listeners:
             listener.on_config_changed()
+
+    def __get_shortcut(self, *keys: str) -> Optional[str]:
+        shortcut: Optional[str] = self.__get(*keys)
+        return shortcut if shortcut is not None and shortcut.strip() != "" else None
 
     def __set(self, value: Any, *keys: str) -> None:
         sub_dict: dict[str, Any] = self.__config

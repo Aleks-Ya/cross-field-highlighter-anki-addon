@@ -2,7 +2,11 @@
   "Dialog": {
     "Adhoc": {
       "Highlight": {
-        "Default Stop Words": "a an to"
+        "Default Stop Words": "a an to",
+        "Editor Shortcut": "Ctrl+Shift+H"
+      },
+      "Erase": {
+        "Editor Shortcut": "Ctrl+Shift+E"
       }
     }
   },

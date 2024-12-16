@@ -55,7 +55,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'note_number': 0,
@@ -69,7 +71,9 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
         'note_types': all_note_type_details,
@@ -115,7 +119,9 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {'note_types': [],
                                                   'note_number': 0,
@@ -128,7 +134,9 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     # Show dialog
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -147,7 +155,9 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -171,7 +181,9 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     _: AdhocEraseDialogController = AdhocEraseDialogController(
         model, view, note_type_details_factory, adhoc_erase_dialog_model_serde, user_folder_storage)
     assert config_loader.load_config().get_as_dict() == {
-        'Dialog': {'Adhoc': {'Highlight': {**DefaultConfig.highlight}}},
+        'Dialog': {'Adhoc': {
+            "Highlight": {**DefaultConfig.highlight},
+            "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert model.as_dict() == {'note_types': [],
                                'note_number': 0,
