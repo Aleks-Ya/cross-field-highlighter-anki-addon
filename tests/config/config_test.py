@@ -3,7 +3,7 @@ from typing import Any
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.types import NoteTypeName
-from tests.data import Data, DefaultStopWords, DefaultTags
+from tests.data import Data, DefaultConfig, DefaultTags
 
 
 class CountConfigListener(ConfigListener):
@@ -18,10 +18,10 @@ class CountConfigListener(ConfigListener):
 def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     config: Config = td.read_config()
     original_config: dict[str, any] = {
-        "Dialog": {"Adhoc": {"Highlight": {**DefaultStopWords.config}}},
+        "Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert config.get_as_dict() == original_config
-    assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultStopWords.in_config
+    assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultConfig.in_config
     config.set_dialog_adhoc_highlight_default_stop_words("the")
     config.set_latest_modified_notes_enabled(False)
     config.set_latest_modified_notes_tag("latest-notes")
@@ -43,15 +43,15 @@ def test_fire_config_changed(td: Data):
 
 
 def test_join(td: Data):
-    base: dict[str, Any] = {"Dialog": {"Adhoc": {"Highlight": {**DefaultStopWords.config}}}}
+    base: dict[str, Any] = {"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}}
 
     actual: dict[str, Any] = {
         "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultStopWords.config}},
+            "Highlight": {**DefaultConfig.highlight}},
             'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
 
     joined: dict[str, Any] = Config.join(base, actual)
     assert joined == {
         "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultStopWords.config}  # Get dict from base
+            "Highlight": {**DefaultConfig.highlight}  # Get dict from base
         }}}

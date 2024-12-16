@@ -2,14 +2,14 @@ from PyQtPath.path_chain_pyqt6 import path
 from aqt import QLabel, QLineEdit
 
 from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
-from tests.data import DefaultStopWords
+from tests.data import DefaultConfig
 from tests.visual_qtbot import VisualQtBot
 
 exp_title: str = "Exclude words:"
 
 
 def test_initial_state(visual_qtbot: VisualQtBot):
-    exp_text: str = DefaultStopWords.in_config
+    exp_text: str = DefaultConfig.in_config
     layout: TitledLineEditLayout = TitledLineEditLayout(exp_title, text=exp_text, clear_button_enabled=True)
     label: QLabel = path(layout).label().get()
     line_edit: QLineEdit = path(layout).child(QLineEdit).get()
@@ -19,7 +19,7 @@ def test_initial_state(visual_qtbot: VisualQtBot):
 
 def test_set_text(visual_qtbot: VisualQtBot):
     callback: __FakeCallback = __FakeCallback()
-    original_text: str = DefaultStopWords.in_config
+    original_text: str = DefaultConfig.in_config
     layout: TitledLineEditLayout = TitledLineEditLayout(exp_title, text=original_text, clear_button_enabled=True)
     layout.set_on_text_changed_callback(callback.call)
     line_edit: QLineEdit = path(layout).child(QLineEdit).get()

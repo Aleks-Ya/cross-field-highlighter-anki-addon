@@ -6,7 +6,7 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from tests.conftest import basic_note_type_details, cloze_note_type_details
-from tests.data import DefaultFields, DefaultStopWords
+from tests.data import DefaultFields, DefaultConfig
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
     assert_source_combo_box, assert_view, FakeModelListener, FakeCallback, assert_space_delimited_language
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
@@ -30,7 +30,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
                 current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultStopWords.in_config,
+                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],
@@ -56,7 +56,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
                 current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultStopWords.in_config,
+                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,

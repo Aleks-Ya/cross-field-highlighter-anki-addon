@@ -21,9 +21,9 @@ class DefaultFields:
     all_cloze: list[FieldName] = [cloze_text, cloze_back_extra]
 
 
-class DefaultStopWords:
+class DefaultConfig:
     in_config: str = "a an to"
-    config: dict[str, str] = {"Default Stop Words": in_config}
+    highlight: dict[str, str] = {"Default Stop Words": in_config}
 
 
 class DefaultTags:
