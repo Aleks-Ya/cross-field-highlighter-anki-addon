@@ -12,8 +12,8 @@ log: Logger = logging.getLogger(__name__)
 class Config:
     __key_1_dialog: str = 'Dialog'
     __key_2_dialog_adhoc: str = 'Adhoc'
-    __key_3_dialog_highlight: str = 'Highlight'
-    __key_4_dialog_adhoc_default_stop_words: str = 'Default Stop Words'
+    __key_3_dialog_adhoc_highlight: str = 'Highlight'
+    __key_4_dialog_adhoc_highlight_default_stop_words: str = 'Default Stop Words'
     __key_1_latest_modified_notes: str = 'Latest Modified Notes'
     __key_2_latest_modified_notes_enabled: str = 'Enabled'
     __key_2_latest_modified_notes_tag: str = 'Tag'
@@ -51,11 +51,11 @@ class Config:
 
     def get_dialog_adhoc_highlight_default_stop_words(self) -> Optional[str]:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                          self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
+                          self.__key_3_dialog_adhoc_highlight, self.__key_4_dialog_adhoc_highlight_default_stop_words)
 
     def set_dialog_adhoc_highlight_default_stop_words(self, last_stop_words: Optional[str]) -> None:
         self.__set(last_stop_words, self.__key_1_dialog, self.__key_2_dialog_adhoc,
-                   self.__key_3_dialog_highlight, self.__key_4_dialog_adhoc_default_stop_words)
+                   self.__key_3_dialog_adhoc_highlight, self.__key_4_dialog_adhoc_highlight_default_stop_words)
 
     def get_latest_modified_notes_enabled(self) -> Optional[bool]:
         return self.__get(self.__key_1_latest_modified_notes, self.__key_2_latest_modified_notes_enabled)
