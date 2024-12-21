@@ -25,6 +25,7 @@ class FieldsLayout(QVBoxLayout):
         self.__field_name_checkboxes.clear()
         for field_name in field_names:
             check_box: QCheckBox = QCheckBox(field_name)
+            # noinspection PyUnresolvedReferences
             check_box.stateChanged.connect(self.__on_state_changed)
             self.addWidget(check_box)
             self.__field_name_checkboxes[field_name] = check_box

@@ -22,7 +22,7 @@ class AdhocHighlightDialogState:
     def get_selected_note_type(self) -> NoteTypeDetails:
         return self.__selected_note_type
 
-    def get_selected_source_filed(self) -> FieldName:
+    def get_selected_source_field(self) -> FieldName:
         if not self.__selected_source_field:
             self.select_first_source_field()
         return self.__selected_source_field

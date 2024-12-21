@@ -53,7 +53,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def __update_source_field_from_model(self):
         self.__source_field_combo_box.set_items(self.__model.get_current_state().get_selected_note_type().fields)
-        selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_filed()
+        selected_source_field: FieldName = self.__model.get_current_state().get_selected_source_field()
         self.__source_field_combo_box.set_current_text(selected_source_field)
         self.__space_delimited_language_check_box.setChecked(
             self.__model.get_current_state().get_space_delimited_language())
@@ -67,7 +67,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def __on_source_field_changed(self, item: str):
         log.debug(f"On source field selected: {item}")
         field_name: FieldName = FieldName(item)
-        if self.__model.get_current_state().get_selected_source_filed() != field_name:
+        if self.__model.get_current_state().get_selected_source_field() != field_name:
             self.__model.get_current_state().select_source_field(field_name)
             self.__model.fire_model_changed(self)
 

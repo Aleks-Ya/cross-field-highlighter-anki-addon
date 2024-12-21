@@ -58,7 +58,7 @@ class AdhocHighlightDialogController:
 
     def __prepare_op_params(self) -> HighlightOpParams:
         state: AdhocHighlightDialogState = self.__model.get_current_state()
-        source_filed: FieldName = state.get_selected_source_filed()
+        source_filed: FieldName = state.get_selected_source_field()
         stop_words: Text = Text(state.get_selected_stop_words())
         note_type_details: NoteTypeDetails = state.get_selected_note_type()
         highlight_op_params: HighlightOpParams = HighlightOpParams(

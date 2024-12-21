@@ -25,7 +25,7 @@ class AdhocHighlightDialogModelSerDe:
     def serialize_states(self, model: AdhocHighlightDialogModel) -> dict[str, any]:
         states: list[dict[str, any]] = [{
             "note_type": state.get_selected_note_type().name,
-            self.__source_field: state.get_selected_source_filed(),
+            self.__source_field: state.get_selected_source_field(),
             self.__space_delimited_language: state.get_space_delimited_language(),
             self.__format: state.get_selected_format().code.value,
             self.__stop_words: state.get_selected_stop_words(),
