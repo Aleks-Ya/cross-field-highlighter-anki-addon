@@ -43,6 +43,7 @@ class AdhocHighlightDialogState:
         self.__space_delimited_language = space_delimited_language
 
     def select_destination_fields(self, field_names: FieldNames) -> None:
+        log.debug(f"Select destination fields: {field_names}")
         self.__selected_destination_fields = field_names
 
     def set_stop_words(self, stop_words: Text) -> None:

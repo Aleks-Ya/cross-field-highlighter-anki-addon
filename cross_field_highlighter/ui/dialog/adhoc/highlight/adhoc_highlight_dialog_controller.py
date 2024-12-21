@@ -9,7 +9,7 @@ from .....config.user_folder_storage import UserFolderStorage
 from .....highlighter.formatter.formatter_facade import FormatterFacade
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from .....highlighter.types import FieldName, Text
+from .....highlighter.types import FieldName, Text, FieldNames
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from .....ui.dialog.dialog_params import DialogParams
@@ -58,13 +58,13 @@ class AdhocHighlightDialogController:
 
     def __prepare_op_params(self) -> HighlightOpParams:
         state: AdhocHighlightDialogState = self.__model.get_current_state()
-        source_filed: FieldName = state.get_selected_source_field()
+        source_field: FieldName = state.get_selected_source_field()
         stop_words: Text = Text(state.get_selected_stop_words())
-        note_type_details: NoteTypeDetails = state.get_selected_note_type()
+        note_type: NoteTypeDetails = state.get_selected_note_type()
+        destination_fields: FieldNames = state.get_selected_destination_fields()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
-            note_type_details.note_type_id, source_filed,
-            state.get_space_delimited_language(), state.get_selected_destination_fields(), stop_words,
-            state.get_selected_format())
+            note_type.note_type_id, source_field, state.get_space_delimited_language(), destination_fields,
+            stop_words, state.get_selected_format())
         return highlight_op_params
 
     def __accept_callback(self) -> None:

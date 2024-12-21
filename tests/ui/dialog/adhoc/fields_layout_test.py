@@ -43,10 +43,17 @@ def test_set_on_field_selected_callback(fields_layout: FieldsLayout, visual_qtbo
     callback: __FakeCallback = __FakeCallback()
     fields_layout.set_on_field_selected_callback(callback.call)
     assert callback.selected_field_names is None
-    # Select fields
+    assert_fields_layout(fields_layout, exp_names=[], exp_marked_names=[], exp_disabled_names=[])
+    # Select one field
     fields_layout.set_items(FieldNames(DefaultFields.all_basic))
     __mark_field_check_box(fields_layout, DefaultFields.basic_front)
     assert callback.selected_field_names == FieldNames([DefaultFields.basic_front])
+    assert_fields_layout(fields_layout, exp_names=DefaultFields.all_basic, exp_marked_names=[DefaultFields.basic_front],
+                         exp_disabled_names=[])
+    # Select second field
+    __mark_field_check_box(fields_layout, DefaultFields.basic_extra)
+    fields_layout.set_disabled_fields(FieldNames([DefaultFields.basic_front]))
+    assert callback.selected_field_names == FieldNames([DefaultFields.basic_front, DefaultFields.basic_extra])
 
 
 class __FakeCallback:

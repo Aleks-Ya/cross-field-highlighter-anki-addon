@@ -19,7 +19,7 @@ def assert_field_check_box_names(fields_layout: FieldsLayout, exp_names: list[st
 def assert_marked_field_check_box_names(fields_layout: FieldsLayout, exp_marked_names: list[str]) -> None:
     checked_field_check_box_names: list[str] = [check_box.text() for check_box in get_field_checkboxes(fields_layout)
                                                 if check_box.isChecked()]
-    assert checked_field_check_box_names == exp_marked_names
+    assert checked_field_check_box_names == exp_marked_names, f"checked_field_check_box_names: '{checked_field_check_box_names}' != '{exp_marked_names}'"
 
 
 def assert_disabled_field_check_box_names(fields_layout: FieldsLayout, exp_disabled_names: list[str]) -> None:

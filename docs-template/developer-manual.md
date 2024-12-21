@@ -29,6 +29,9 @@ Run automated tests:
 2. Activate virtual environment: `pyenv cross-field-highlighter-anki-addon`
 3. Run unit-tests: `tox`
 
+Make UI visible during tests:  
+File `conftest.py`, fixture `visual_qtbot`, set positive delay: `VisualQtBot(qtbot, 1000)`
+
 ## SonarQube
 
 Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)

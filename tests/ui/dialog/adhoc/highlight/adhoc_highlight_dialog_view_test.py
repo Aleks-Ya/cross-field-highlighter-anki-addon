@@ -1,11 +1,11 @@
 from aqt import Qt
 
+from tests.conftest import basic_note_type_details, cloze_note_type_details
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, \
     HighlightFormats
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from tests.conftest import basic_note_type_details, cloze_note_type_details
 from tests.data import DefaultFields, DefaultConfig
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
     assert_source_combo_box, assert_view, FakeModelListener, FakeCallback, assert_space_delimited_language
@@ -28,8 +28,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     # Initial state
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
-                current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
+                selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
                 selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -54,8 +54,8 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, window_title="", current_note_type="", note_types=[],
-                current_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
+                selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
                 selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -82,9 +82,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert listener.counter == 2
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                current_note_type=basic_note_type_details.name,
+                selected_note_type=basic_note_type_details.name,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
-                current_field=DefaultFields.basic_front,
+                selected_source_field=DefaultFields.basic_front,
                 source_fields=DefaultFields.all_basic, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=[DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra],
                 selected_fields=[],
@@ -113,9 +113,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert listener.counter == 3
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                current_note_type=cloze_note_type_details.name,
+                selected_note_type=cloze_note_type_details.name,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
-                current_field=DefaultFields.cloze_text,
+                selected_source_field=DefaultFields.cloze_text,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
                 disabled_fields=[DefaultFields.cloze_text],
@@ -149,9 +149,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert listener.counter == 4
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                current_note_type=cloze_note_type_details.name,
+                selected_note_type=cloze_note_type_details.name,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
-                current_field=DefaultFields.cloze_back_extra,
+                selected_source_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],
@@ -186,9 +186,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()
     assert listener.counter == 5
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                current_note_type=cloze_note_type_details.name,
+                selected_note_type=cloze_note_type_details.name,
                 note_types=[basic_note_type_details.name, cloze_note_type_details.name],
-                current_field=DefaultFields.cloze_back_extra,
+                selected_source_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],

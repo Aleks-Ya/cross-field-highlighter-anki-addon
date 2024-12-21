@@ -40,31 +40,31 @@ class FakeHighlightControllerCallback:
         self.history.append(params)
 
 
-def assert_view(view: AdhocHighlightDialogView, window_title: str, current_note_type: str, note_types: list[str],
-                current_field: str, source_fields: list[str], selected_format: Optional[HighlightFormat],
+def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note_type: str, note_types: list[str],
+                selected_source_field: str, source_fields: list[str], selected_format: Optional[HighlightFormat],
                 formats: list[HighlightFormat], check_box_texts: list[str], selected_fields: list[str],
                 disabled_fields: list[str], stop_words: str, space_delimited_language: bool):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     assert_buttons(view)
-    assert_source_group_box(view, current_note_type, note_types, current_field, source_fields, stop_words,
+    assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words,
                             space_delimited_language)
     assert_format_group_box(view, selected_format, formats)
     assert_destination_group_box(view, check_box_texts, selected_fields, disabled_fields)
 
 
-def assert_source_group_box(view: AdhocHighlightDialogView, current_note_type: str, note_types: list[str],
-                            current_source_field: str, source_fields: list[str], stop_words: str,
+def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: str, note_types: list[str],
+                            selected_source_field: str, source_fields: list[str], stop_words: str,
                             space_delimited_language: bool):
     group_box: PyQtPath = path(view).group(0)
 
     note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
     assert note_type.label().get().text() == "Note Type"
     note_type_combo_box: QComboBox = note_type.combobox().get()
-    assert note_type_combo_box.currentText() == current_note_type
+    assert note_type_combo_box.currentText() == selected_note_type
     assert get_items(note_type_combo_box) == note_types
 
-    assert_source_combo_box(view, current_source_field, source_fields)
+    assert_source_combo_box(view, selected_source_field, source_fields)
     assert_stop_words(view, stop_words)
     assert_space_delimited_language(view, space_delimited_language)
 
@@ -85,22 +85,23 @@ def assert_space_delimited_language(view: AdhocHighlightDialogView, space_delimi
     assert is_checked == space_delimited_language, f"'{is_checked}' != '{space_delimited_language}'"
 
 
-def assert_source_combo_box(view: AdhocHighlightDialogView, current_source_field: str, source_fields: list[str]):
+def assert_source_combo_box(view: AdhocHighlightDialogView, selected_source_field: str, source_fields: list[str]):
     group_box: PyQtPath = path(view).group(0)
     field_path: PyQtPath = group_box.child(TitledComboBoxLayout)
     assert field_path.label().get().text() == "Field"
     field_combo_box: QComboBox = field_path.combobox().get()
-    assert field_combo_box.currentText() == current_source_field, f"current_source_field: '{current_source_field}' != '{field_combo_box.currentText()}'"
+    assert field_combo_box.currentText() == selected_source_field, \
+        f"current_source_field: '{selected_source_field}' != '{field_combo_box.currentText()}'"
     assert get_items(
         field_combo_box) == source_fields, f"all source fields: '{get_items(field_combo_box)}' != '{source_fields}'"
 
 
-def assert_format_group_box(view: AdhocHighlightDialogView, current_format: Optional[HighlightFormat],
+def assert_format_group_box(view: AdhocHighlightDialogView, selected_format: Optional[HighlightFormat],
                             formats: list[HighlightFormat]):
     combo_box: PyQtPath = path(view).group(1).child(TitledComboBoxLayout)
     assert combo_box.label().get().text() == "Format"
     format_combo_box: QComboBox = combo_box.combobox().get()
-    assert format_combo_box.currentText() == (current_format.name if current_format else "")
+    assert format_combo_box.currentText() == (selected_format.name if selected_format else "")
     format_names: list[str] = [highlight_format.name for highlight_format in formats]
     assert get_items(format_combo_box) == format_names
 

@@ -49,7 +49,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'current_state': None}
     assert user_folder_storage.read_all() == {}
 
-    adhoc_highlight_dialog_controller.show_dialog(params, FakeHighlightControllerCallback.call)
+    adhoc_highlight_dialog_controller.show_dialog(params, callback.call)
     assert callback.history == []
     assert listener.counter == 2
     assert adhoc_highlight_dialog_model.as_dict() == {

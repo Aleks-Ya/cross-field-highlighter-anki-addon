@@ -38,9 +38,11 @@ class AdhocHighlightDialogViewScaffold:
         checkboxes: list[QCheckBox] = path(self.__view).child(FieldsLayout).children(QCheckBox)
         for check_box in checkboxes:
             if check_box.text() == field_name:
+                old: bool = check_box.isChecked()
                 self.__visual_qtbot.mouse_click(check_box, Qt.MouseButton.LeftButton)
-                # Mouse click just focus on check_box, but doesn't select it
-                self.__visual_qtbot.key_click(check_box, Qt.Key.Key_Space)
+                if check_box.isChecked() == old:
+                    # Mouse click just focus on check_box, but doesn't select it
+                    self.__visual_qtbot.key_click(check_box, Qt.Key.Key_Space)
                 return
         raise AssertionError(f"Field '{field_name}' not found")
 
