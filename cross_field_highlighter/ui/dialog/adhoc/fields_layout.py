@@ -42,8 +42,6 @@ class FieldsLayout(QVBoxLayout):
             check_box.blockSignals(True)
             disabled: bool = field_name in field_names
             check_box.setDisabled(disabled)
-            if disabled:
-                check_box.setChecked(False)
             check_box.blockSignals(False)
 
     def set_on_field_selected_callback(self, callback: Callable[[FieldNames], None]):
