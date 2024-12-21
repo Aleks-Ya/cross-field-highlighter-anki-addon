@@ -16,6 +16,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_mo
     AdhocHighlightDialogModelSerDe
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
+from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import cloze_note_type_details, bold_format, all_highlight_formats, basic_note_type_details
 from tests.data import Data, DefaultFields, DefaultConfig, DefaultTags
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
@@ -368,3 +369,171 @@ def test_remember_space_delimited_language_on_cancel(adhoc_highlight_dialog_cont
     # Show dialog again
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     assert_space_delimited_language(adhoc_highlight_dialog_view, False)
+
+
+def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                                      adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                                      adhoc_highlight_dialog_model: AdhocHighlightDialogModel, td: Data,
+                                                      adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                                      all_note_type_details: list[NoteTypeDetails],
+                                                      all_highlight_formats: HighlightFormats,
+                                                      bold_format: HighlightFormat,
+                                                      basic_note_type_details: NoteTypeDetails,
+                                                      user_folder_storage: UserFolderStorage):
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
+    listener: FakeModelListener = FakeModelListener()
+    adhoc_highlight_dialog_model.add_listener(listener)
+
+    # Initial state
+    td.create_basic_note_1()
+    params: DialogParams = DialogParams(all_note_type_details, 1)
+    assert callback.history == []
+    assert listener.counter == 0
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 0,
+        'formats': [],
+        'note_types': [],
+        'accept_callback_None': True,
+        'reject_callback_None': True,
+        'states': {},
+        'current_state': None}
+    assert user_folder_storage.read_all() == {}
+
+    # Show dialog
+    adhoc_highlight_dialog_controller.show_dialog(params, callback.call)
+    assert callback.history == []
+    assert listener.counter == 2
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 1,
+        'formats': all_highlight_formats,
+        'note_types': all_note_type_details,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': DefaultConfig.in_config,
+                                                  'space_delimited_language': True}},
+        'current_state': {'selected_destination_fields': [],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': DefaultConfig.in_config,
+                          'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {}
+
+    # Mark destination field
+    adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_back)
+    assert callback.history == []
+    assert listener.counter == 2
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 1,
+        'formats': all_highlight_formats,
+        'note_types': all_note_type_details,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_front,
+                                                  'selected_stop_words': DefaultConfig.in_config,
+                                                  'space_delimited_language': True}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_front,
+                          'selected_stop_words': DefaultConfig.in_config,
+                          'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {}
+
+    # Select marked destination field as source field (should be excluded from HighlightOpParams)
+    adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
+    assert callback.history == []
+    assert listener.counter == 3
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 1,
+        'formats': all_highlight_formats,
+        'note_types': all_note_type_details,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                  'selected_format': bold_format,
+                                                  'selected_note_type': basic_note_type_details,
+                                                  'selected_source_field': DefaultFields.basic_back,
+                                                  'selected_stop_words': DefaultConfig.in_config,
+                                                  'space_delimited_language': True}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_back,
+                          'selected_stop_words': DefaultConfig.in_config,
+                          'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {}
+
+    # Mark another destination field
+    adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_extra)
+    assert callback.history == []
+    assert listener.counter == 3
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 1,
+        'formats': all_highlight_formats,
+        'note_types': all_note_type_details,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'states': {basic_note_type_details.name: {
+            'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
+            'selected_format': bold_format,
+            'selected_note_type': basic_note_type_details,
+            'selected_source_field': DefaultFields.basic_back,
+            'selected_stop_words': DefaultConfig.in_config,
+            'space_delimited_language': True}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_back,
+                          'selected_stop_words': DefaultConfig.in_config,
+                          'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {}
+
+    # Click Start
+    adhoc_highlight_dialog_view_scaffold.click_start_button()
+    assert callback.history == [HighlightOpParams(
+        basic_note_type_details.note_type_id, DefaultFields.basic_back, True,
+        FieldNames([DefaultFields.basic_extra]), Text(DefaultConfig.in_config), bold_format
+    )]
+    assert listener.counter == 3
+    assert adhoc_highlight_dialog_model.as_dict() == {
+        'default_stop_words': DefaultConfig.in_config,
+        'note_number': 1,
+        'formats': all_highlight_formats,
+        'note_types': all_note_type_details,
+        'accept_callback_None': False,
+        'reject_callback_None': False,
+        'states': {basic_note_type_details.name: {
+            'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
+            'selected_format': bold_format,
+            'selected_note_type': basic_note_type_details,
+            'selected_source_field': DefaultFields.basic_back,
+            'selected_stop_words': DefaultConfig.in_config,
+            'space_delimited_language': True}},
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
+                          'selected_format': bold_format,
+                          'selected_note_type': basic_note_type_details,
+                          'selected_source_field': DefaultFields.basic_back,
+                          'selected_stop_words': DefaultConfig.in_config,
+                          'space_delimited_language': True}}
+    assert user_folder_storage.read_all() == {
+        'highlight_dialog_states':
+            {'current_state': basic_note_type_details.name,
+             'states': [{'note_type': basic_note_type_details.name,
+                         'destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
+                         'format': bold_format.code.name,
+                         'source_field': DefaultFields.basic_back,
+                         'stop_words': DefaultConfig.in_config,
+                         'space_delimited_language': True}]}}
