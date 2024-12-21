@@ -23,7 +23,7 @@ class StartWithTokenHighlighter(TokenHighlighter):
                 continue
             collocation_word: Word = escape(collocation_token.word)
             collocation_word_length: int = len(collocation_word)
-            word_regexp: str = fr"{collocation_word[:collocation_word_length - 1]}\w*" if collocation_word_length > 2 else collocation_word
+            word_regexp: str = fr"{collocation_word[:collocation_word_length - 1]}\w*" if collocation_word_length > 3 else collocation_word
             if match(word_regexp, text_token.word, IGNORECASE | UNICODE):
                 highlighted_text_word = self.__formatter_facade.format(text_token.word, highlight_format)
                 break
