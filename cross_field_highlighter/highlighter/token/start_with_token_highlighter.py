@@ -1,6 +1,7 @@
 import logging
 from logging import Logger
-from re import match, escape, IGNORECASE, UNICODE
+from re import match, escape, IGNORECASE, UNICODE, Match
+from typing import Optional
 
 from .token_highlighter import TokenHighlighter
 from ..tokenizer.tokenizer import TokenType
@@ -23,8 +24,11 @@ class StartWithTokenHighlighter(TokenHighlighter):
                 continue
             collocation_word: Word = escape(collocation_token.word)
             collocation_word_length: int = len(collocation_word)
+            text_word_length: int = len(text_token.word)
             word_regexp: str = fr"{collocation_word[:collocation_word_length - 2]}\w*" if collocation_word_length > 3 else collocation_word
-            if match(word_regexp, text_token.word, IGNORECASE | UNICODE):
+            too_long: bool = text_word_length > collocation_word_length + 3
+            match_regex: Optional[Match[str]] = match(word_regexp, text_token.word, IGNORECASE | UNICODE)
+            if match_regex and not too_long:
                 highlighted_text_word = self.__formatter_facade.format(text_token.word, highlight_format)
                 break
         return highlighted_text_word
