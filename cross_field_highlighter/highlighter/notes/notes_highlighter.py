@@ -25,7 +25,8 @@ class NotesHighlighterResult:
 class NotesHighlighter:
     def __init__(self, field_highlighter: FieldHighlighter, config: Config):
         self.__field_highlighter: FieldHighlighter = field_highlighter
-        self.__config: Config = config
+        self.__latest_modified_notes_enabled: bool = config.get_latest_modified_notes_enabled()
+        self.__latest_modified_notes_tag: str = config.get_latest_modified_notes_tag()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def highlight(self, notes: Notes, source_field: FieldName, destination_fields: FieldNames,
@@ -73,8 +74,8 @@ class NotesHighlighter:
         return NotesHighlighterResult(updated_notes, len(notes), total_fields, modified_notes, modified_fields)
 
     def __add_latest_modified_tag(self, note: Note) -> None:
-        if self.__config.get_latest_modified_notes_enabled():
-            note.tags.append(self.__config.get_latest_modified_notes_tag())
+        if self.__latest_modified_notes_enabled:
+            note.tags.append(self.__latest_modified_notes_tag)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

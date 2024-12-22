@@ -80,14 +80,15 @@ class Op(QueryOp):
         return updated_notes_counter
 
     def __remove_tag(self, note_ids_list: list[NoteId]):
+        latest_modified_notes_tag: str = self.__config.get_latest_modified_notes_tag()
         if self.__config.get_latest_modified_notes_enabled():
             log.debug(f"Removing tag from {len(note_ids_list)} notes")
-            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{self.__config.get_latest_modified_notes_tag()}")
-            self.__col.tags.bulk_remove(note_ids, self.__config.get_latest_modified_notes_tag())
+            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{latest_modified_notes_tag}")
+            self.__col.tags.bulk_remove(note_ids, latest_modified_notes_tag)
             log.debug(f"Removing tag from {len(note_ids_list)} notes finished")
         else:
             log.debug("Deleting latest modified notes tag because it is disabled")
-            self.__col.tags.remove(self.__config.get_latest_modified_notes_tag())
+            self.__col.tags.remove(latest_modified_notes_tag)
             log.debug("Deleting latest modified notes tag finished")
 
     @abstractmethod

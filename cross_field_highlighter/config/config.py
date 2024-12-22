@@ -81,6 +81,7 @@ class Config:
         return shortcut if shortcut is not None and shortcut.strip() != "" else None
 
     def __set(self, value: any, *keys: str) -> None:
+        log.debug(f"Set config value: {value} for keys: {keys}")
         config_data: ConfigData = self.__config_loader.load_config()
         sub_dict: ConfigData = config_data
         for index, key in enumerate(keys):
@@ -94,6 +95,7 @@ class Config:
         self.__config_loader.write_config(config_data)
 
     def __get(self, *keys: str) -> Optional[any]:
+        log.debug(f"Get config value for keys: {keys}")
         sub_dict: ConfigData = self.__config_loader.load_config()
         for index, key in enumerate(keys):
             is_last: bool = index == len(keys) - 1
