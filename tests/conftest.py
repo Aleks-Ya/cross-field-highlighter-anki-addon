@@ -286,7 +286,7 @@ def theme_manager() -> ThemeManager:
 
 @pytest.fixture
 def config(config_loader: ConfigLoader) -> Config:
-    return config_loader.load_config()
+    return Config(config_loader.load_config())
 
 
 @pytest.fixture

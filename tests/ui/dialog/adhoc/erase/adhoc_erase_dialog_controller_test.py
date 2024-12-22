@@ -54,7 +54,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                        all_note_type_details: list[NoteTypeDetails], user_folder_storage: UserFolderStorage):
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -70,7 +70,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     # Update config from model
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
     adhoc_erase_dialog_model.call_accept_callback()
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -118,7 +118,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                                             user_folder_storage: UserFolderStorage):
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -133,7 +133,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
 
     # Show dialog
     adhoc_erase_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -154,7 +154,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.cloze_back_extra]))
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.call_accept_callback()
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -180,7 +180,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     view: AdhocEraseDialogView = AdhocEraseDialogView(model)
     _: AdhocEraseDialogController = AdhocEraseDialogController(
         model, view, note_type_details_factory, adhoc_erase_dialog_model_serde, user_folder_storage)
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},

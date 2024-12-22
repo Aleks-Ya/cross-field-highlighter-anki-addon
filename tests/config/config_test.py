@@ -1,4 +1,4 @@
-from cross_field_highlighter.config.config import Config
+from cross_field_highlighter.config.config import Config, ConfigData
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.types import NoteTypeName
 from tests.data import Data, DefaultConfig, DefaultTags
@@ -15,12 +15,12 @@ class CountConfigListener(ConfigListener):
 
 def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     config: Config = td.read_config()
-    original_config: dict[str, any] = {
+    original_config: ConfigData = ConfigData({
         "Dialog": {"Adhoc": {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
-    assert config.get_as_dict() == original_config
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}})
+    assert config.get_config_data() == original_config
     assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultConfig.in_config
     assert config.get_dialog_adhoc_highlight_editor_shortcut() == DefaultConfig.highlight_shortcut
     assert config.get_dialog_adhoc_erase_editor_shortcut() == (
@@ -39,7 +39,7 @@ def test_setters(td: Data, basic_note_type_name: NoteTypeName):
     assert config.get_dialog_adhoc_erase_editor_shortcut() == "Alt+E"
     assert config.get_latest_modified_notes_enabled() == False
     assert config.get_latest_modified_notes_tag() == "latest-notes"
-    assert config.get_as_dict() == {
+    assert config.get_config_data() == {
         "Dialog": {"Adhoc": {
             "Highlight": {"Default Stop Words": "the", "Editor Shortcut": "Alt+H"},
             "Erase": {"Editor Shortcut": "Alt+E"}}},
@@ -58,14 +58,14 @@ def test_fire_config_changed(td: Data):
 
 
 def test_join(td: Data):
-    base: dict[str, any] = {"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}}
+    base: ConfigData = ConfigData({"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}})
 
-    actual: dict[str, any] = {
+    actual: ConfigData = ConfigData({
         "Dialog": {"Adhoc": {
             "Highlight": {**DefaultConfig.highlight}},
-            'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
+            'Unused Top': {'Property 1': 'Value 1'}}})  # Unused property will be deleted
 
-    joined: dict[str, any] = Config.join(base, actual)
+    joined: ConfigData = Config.join(base, actual)
     assert joined == {
         "Dialog": {"Adhoc": {
             "Highlight": {**DefaultConfig.highlight}  # Get dict from base

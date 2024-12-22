@@ -1,6 +1,6 @@
 from aqt import Qt
 
-from cross_field_highlighter.config.config import Config
+from cross_field_highlighter.config.config import Config, ConfigData
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
@@ -82,7 +82,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                          all_highlight_formats: HighlightFormats, user_folder_storage: UserFolderStorage):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -104,7 +104,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -140,7 +140,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
 
     # Update again
     adhoc_highlight_dialog_model.switch_state(cloze_note_type_details)
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -193,7 +193,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                            all_highlight_formats: HighlightFormats, bold_format: HighlightFormat):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -220,7 +220,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         [DefaultFields.basic_back]))
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
@@ -255,14 +255,15 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                          'space_delimited_language': True}]}}
 
     # Initialize controller using saved config
-    config: Config = config_loader.load_config()
+    config_data: ConfigData = config_loader.load_config()
+    config: Config = Config(config_data)
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
         user_folder_storage)
     controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
-    assert config_loader.load_config().get_as_dict() == {
+    assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},

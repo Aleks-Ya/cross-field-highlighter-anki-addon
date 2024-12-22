@@ -3,6 +3,8 @@ from pathlib import Path
 from anki.collection import Collection
 from aqt import gui_hooks
 
+from cross_field_highlighter.config.config import ConfigData
+
 
 def __initialize(col: Collection):
     from aqt.addons import AddonManager
@@ -53,7 +55,8 @@ def __initialize(col: Collection):
     progress_manager: ProgressManager = mw.progress
     settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name))
     config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
-    config: Config = config_loader.load_config()
+    config_data: ConfigData = config_loader.load_config()
+    config: Config = Config(config_data)
     tokenizer: RegExTokenizer = RegExTokenizer()
     formatter_facade: FormatterFacade = FormatterFacade()
     stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()

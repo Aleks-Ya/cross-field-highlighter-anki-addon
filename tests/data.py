@@ -322,9 +322,6 @@ class Data:
     def read_config(self) -> Config:
         return Config.from_path(self.config_json)
 
-    def read_config_updated(self, overwrites: dict[str, any]) -> Config:
-        return Config.from_path_updated(self.config_json, overwrites)
-
     def assert_original_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:
             act_note: Note = self.col.get_note(case_note.note.id)
