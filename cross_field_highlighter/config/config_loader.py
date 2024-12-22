@@ -22,7 +22,7 @@ class ConfigLoader:
         log.debug(f"Loading config for module {self.__module_name}")
         defaults_opts: Optional[ConfigData] = self.__get_defaults()
         actual_opt: Optional[ConfigData] = self.__addon_manager.getConfig(self.__module_name)
-        joined: ConfigData = self.join(defaults_opts, actual_opt)
+        joined: ConfigData = self.__join(defaults_opts, actual_opt)
         self.__addon_manager.writeConfig(self.__module_name, joined)
         return joined
 
@@ -35,15 +35,13 @@ class ConfigLoader:
         log.debug(f"Getting defaults for module {self.__module_name}: {defaults}")
         return defaults
 
-    @staticmethod
-    def join(base: Optional[ConfigData], actual: Optional[ConfigData]) \
-            -> ConfigData:
+    def __join(self, base: Optional[ConfigData], actual: Optional[ConfigData]) -> ConfigData:
         base: ConfigData = ConfigData(dict(base if base else {}))
         actual: ConfigData = actual if actual else {}
         for k, v in actual.items():
             if isinstance(v, dict):
                 if k in base:
-                    base[k] = ConfigLoader.join(base.get(k, {}), ConfigData(v))
+                    base[k] = self.__join(base.get(k, {}), ConfigData(v))
             else:
                 base[k] = v
         return base

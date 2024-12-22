@@ -30,7 +30,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
+                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],
@@ -56,7 +56,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     assert listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.in_config,
+                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
