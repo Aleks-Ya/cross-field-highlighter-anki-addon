@@ -1,49 +1,51 @@
 from pathlib import Path
 
 from anki.collection import Collection
-from aqt import mw, gui_hooks
-from aqt.addons import AddonManager
-from aqt.progress import ProgressManager
-from aqt.taskman import TaskManager
-
-from .config.config import Config
-from .config.config_loader import ConfigLoader
-from .config.settings import Settings
-from .config.user_folder_storage import UserFolderStorage
-from .highlighter.formatter.formatter_facade import FormatterFacade
-from .highlighter.note.field_highlighter import FieldHighlighter
-from .highlighter.note.regex_field_highlighter import RegexFieldHighlighter
-from .highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from .highlighter.notes.notes_highlighter import NotesHighlighter
-from .highlighter.text.regex_text_highlighter import RegexTextHighlighter
-from .highlighter.text.text_highlighter import TextHighlighter
-from .highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
-from .highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
-from .highlighter.token.token_highlighter import TokenHighlighter
-from .highlighter.tokenizer.regex_tokenizer import RegExTokenizer
-from .highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from .highlighter.tokenizer.tokenizer import Tokenizer
-from .ui.browser_hooks import BrowserHooks
-from .log.logs import Logs
-from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
-from .ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
-from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
-from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
-from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
-from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-from .ui.editor.editor_button_creator import EditorButtonCreator
-from .ui.editor.editor_button_hooks import EditorButtonHooks
-from .ui.menu.dialog_params_factory import DialogParamsFactory
-from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
-from .ui.operation.op_factory import OpFactory
+from aqt import gui_hooks
 
 
 def __initialize(col: Collection):
+    from aqt.addons import AddonManager
+    from aqt.progress import ProgressManager
+    from aqt.taskman import TaskManager
+    from aqt import mw, DialogManager, dialogs
+    from .config.config import Config
+    from .config.config_loader import ConfigLoader
+    from .config.settings import Settings
+    from .config.user_folder_storage import UserFolderStorage
+    from .highlighter.formatter.formatter_facade import FormatterFacade
+    from .highlighter.note.field_highlighter import FieldHighlighter
+    from .highlighter.note.regex_field_highlighter import RegexFieldHighlighter
+    from .highlighter.note_type_details_factory import NoteTypeDetailsFactory
+    from .highlighter.notes.notes_highlighter import NotesHighlighter
+    from .highlighter.text.regex_text_highlighter import RegexTextHighlighter
+    from .highlighter.text.text_highlighter import TextHighlighter
+    from .highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
+    from .highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
+    from .highlighter.token.token_highlighter import TokenHighlighter
+    from .highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+    from .highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
+    from .highlighter.tokenizer.tokenizer import Tokenizer
+    from .ui.browser_hooks import BrowserHooks
+    from .log.logs import Logs
+    from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+    from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+    from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
+    from .ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
+    from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
+    from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+    from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
+    from .ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+    from .ui.editor.editor_button_creator import EditorButtonCreator
+    from .ui.editor.editor_button_hooks import EditorButtonHooks
+    from .ui.menu.dialog_params_factory import DialogParamsFactory
+    from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
+    from .ui.operation.op_factory import OpFactory
+
     module_dir: Path = Path(__file__).parent
     module_name: str = module_dir.stem
     addon_manager: AddonManager = mw.addonManager
+    dialog_manager: DialogManager = dialogs
     log_dir: Path = addon_manager.logs_folder(module_name)
     logs: Logs = Logs(log_dir)
     logs.set_level("DEBUG")
@@ -81,8 +83,9 @@ def __initialize(col: Collection):
     op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter,
                                       config)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
-    browser_hooks: BrowserHooks = BrowserHooks(op_factory, adhoc_highlight_dialog_controller,
-                                               adhoc_erase_dialog_controller, dialog_params_factory, config)
+    browser_hooks: BrowserHooks = BrowserHooks(
+        op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory,
+        addon_manager, dialog_manager, config, settings)
     browser_hooks.setup_hooks()
     editor_button_creator: EditorButtonCreator = EditorButtonCreator(
         adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
