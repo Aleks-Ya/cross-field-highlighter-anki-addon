@@ -7,6 +7,7 @@ from anki.notes import Note, NoteId
 from aqt import gui_hooks
 
 from cross_field_highlighter.config.config import Config
+from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.highlighter.types import FieldContent, FieldName, Text
 
 
@@ -53,10 +54,12 @@ class CaseNote:
 
 class Data:
 
-    def __init__(self, col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType):
+    def __init__(self, col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType,
+                 config_loader: ConfigLoader):
         self.col: Collection = col
         self.basic_note_type: NoteType = basic_note_type
         self.cloze_note_type: NoteType = cloze_note_type
+        self.config_loader: ConfigLoader = config_loader
         self.deck_id: DeckId = self.col.decks.get_current_id()
         self.config_json: Path = module_dir.joinpath("config.json")
 
@@ -320,7 +323,7 @@ class Data:
         return res
 
     def read_config(self) -> Config:
-        return Config.from_path(self.config_json)
+        return Config(self.config_loader)
 
     def assert_original_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:

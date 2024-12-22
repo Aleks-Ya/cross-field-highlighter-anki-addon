@@ -1,6 +1,6 @@
 from aqt import Qt
 
-from cross_field_highlighter.config.config import Config, ConfigData
+from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
@@ -255,8 +255,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                          'space_delimited_language': True}]}}
 
     # Initialize controller using saved config
-    config_data: ConfigData = config_loader.load_config()
-    config: Config = Config(config_data)
+    config: Config = Config(config_loader)
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(

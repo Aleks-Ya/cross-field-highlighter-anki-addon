@@ -1,5 +1,6 @@
-from cross_field_highlighter.config.config import Config, ConfigData
+from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
+from cross_field_highlighter.config.config_loader import ConfigData
 from cross_field_highlighter.highlighter.types import NoteTypeName
 from tests.data import Data, DefaultConfig, DefaultTags
 
@@ -55,18 +56,3 @@ def test_fire_config_changed(td: Data):
     assert listener.counter == 1
     config.fire_config_changed()
     assert listener.counter == 2
-
-
-def test_join(td: Data):
-    base: ConfigData = ConfigData({"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}})
-
-    actual: ConfigData = ConfigData({
-        "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultConfig.highlight}},
-            'Unused Top': {'Property 1': 'Value 1'}}})  # Unused property will be deleted
-
-    joined: ConfigData = Config.join(base, actual)
-    assert joined == {
-        "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultConfig.highlight}  # Get dict from base
-        }}}

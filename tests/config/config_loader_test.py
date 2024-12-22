@@ -7,7 +7,7 @@ from aqt.addons import AddonManager
 
 from cross_field_highlighter.config.config_loader import ConfigLoader, ConfigData
 from cross_field_highlighter.highlighter.types import NoteTypeName
-from tests.data import DefaultConfig, DefaultTags
+from tests.data import DefaultConfig, DefaultTags, Data
 
 
 def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
@@ -98,3 +98,18 @@ def __write_meta_json_config(meta_json_config: ConfigData, module_dir: Path) -> 
     with open(meta_json, 'w') as fp:
         # noinspection PyTypeChecker
         json.dump(meta_json_content, fp, indent=2)
+
+
+def test_join(td: Data):
+    base: ConfigData = ConfigData({"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}})
+
+    actual: ConfigData = ConfigData({
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight}},
+            'Unused Top': {'Property 1': 'Value 1'}}})  # Unused property will be deleted
+
+    joined: ConfigData = ConfigLoader.join(base, actual)
+    assert joined == {
+        "Dialog": {"Adhoc": {
+            "Highlight": {**DefaultConfig.highlight}  # Get dict from base
+        }}}

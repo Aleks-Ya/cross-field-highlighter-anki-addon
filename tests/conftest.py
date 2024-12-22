@@ -152,8 +152,9 @@ def module_dir(addons_dir: Path, module_name: str, project_dir: Path) -> Path:
 
 
 @pytest.fixture
-def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType) -> Data:
-    return Data(col, module_dir, basic_note_type, cloze_note_type)
+def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType,
+       config_loader: ConfigLoader) -> Data:
+    return Data(col, module_dir, basic_note_type, cloze_note_type, config_loader)
 
 
 @pytest.fixture
@@ -286,7 +287,7 @@ def theme_manager() -> ThemeManager:
 
 @pytest.fixture
 def config(config_loader: ConfigLoader) -> Config:
-    return Config(config_loader.load_config())
+    return Config(config_loader)
 
 
 @pytest.fixture

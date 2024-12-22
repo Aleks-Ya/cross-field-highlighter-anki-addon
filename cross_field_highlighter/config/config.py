@@ -1,14 +1,11 @@
-import json
 import logging
 from logging import Logger
-from pathlib import Path
-from typing import Optional, NewType
+from typing import Optional
 
 from .config_listener import ConfigListener
+from .config_loader import ConfigLoader, ConfigData
 
 log: Logger = logging.getLogger(__name__)
-
-ConfigData = NewType("ConfigData", dict[str, any])
 
 
 class Config:
@@ -23,36 +20,10 @@ class Config:
     __key_2_latest_modified_notes_enabled: str = 'Enabled'
     __key_2_latest_modified_notes_tag: str = 'Tag'
 
-    def __init__(self, config_data: ConfigData):
-        self.__config_data: ConfigData = config_data
+    def __init__(self, config_loader: ConfigLoader):
+        self.__config_loader: ConfigLoader = config_loader
         self.__listeners: set[ConfigListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
-
-    def __str__(self):
-        return str(self.__config_data)
-
-    @classmethod
-    def from_path(cls, path: Path) -> 'Config':
-        return cls.from_path_updated(path, ConfigData({}))
-
-    @classmethod
-    def from_path_updated(cls, path: Path, overwrites: ConfigData) -> 'Config':
-        with Path(path).open() as config_file:
-            config_data: ConfigData = json.load(config_file)
-        return cls(Config.join(config_data, overwrites))
-
-    @staticmethod
-    def join(base: Optional[ConfigData], actual: Optional[ConfigData]) \
-            -> ConfigData:
-        base: ConfigData = ConfigData(dict(base if base else {}))
-        actual: ConfigData = actual if actual else {}
-        for k, v in actual.items():
-            if isinstance(v, dict):
-                if k in base:
-                    base[k] = Config.join(base.get(k, {}), ConfigData(v))
-            else:
-                base[k] = v
-        return base
 
     def get_dialog_adhoc_highlight_default_stop_words(self) -> Optional[str]:
         return self.__get(self.__key_1_dialog, self.__key_2_dialog_adhoc,
@@ -94,7 +65,7 @@ class Config:
                    self.__key_2_latest_modified_notes_tag)
 
     def get_config_data(self) -> ConfigData:
-        return self.__config_data
+        return self.__config_loader.load_config()
 
     def add_listener(self, listener: ConfigListener) -> None:
         log.debug(f"Add config listener: {listener}")
@@ -110,7 +81,8 @@ class Config:
         return shortcut if shortcut is not None and shortcut.strip() != "" else None
 
     def __set(self, value: any, *keys: str) -> None:
-        sub_dict: ConfigData = self.__config_data
+        config_data: ConfigData = self.__config_loader.load_config()
+        sub_dict: ConfigData = config_data
         for index, key in enumerate(keys):
             is_last: bool = index == len(keys) - 1
             if is_last:
@@ -119,9 +91,10 @@ class Config:
                 if key not in sub_dict:
                     sub_dict[key] = {}
                 sub_dict = sub_dict[key]
+        self.__config_loader.write_config(config_data)
 
     def __get(self, *keys: str) -> Optional[any]:
-        sub_dict: ConfigData = self.__config_data
+        sub_dict: ConfigData = self.__config_loader.load_config()
         for index, key in enumerate(keys):
             is_last: bool = index == len(keys) - 1
             if is_last:
