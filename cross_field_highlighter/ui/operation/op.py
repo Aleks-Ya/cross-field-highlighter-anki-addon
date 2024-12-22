@@ -28,7 +28,7 @@ class Op(QueryOp):
                  parent: Optional[QWidget], progress_dialog_title: str, operation_title: str, note_type_id: NotetypeId,
                  config: Config):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
-        self.with_progress("Note Size cache initializing")
+        self.with_progress("Initializing")
         self.failure(self.__on_failure)
         self.__col: Collection = col
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
