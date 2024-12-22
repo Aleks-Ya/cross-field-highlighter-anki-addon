@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional, Any
+from typing import Optional
 
 from aqt.addons import AddonManager
 
@@ -19,16 +19,16 @@ class ConfigLoader:
 
     def load_config(self) -> Config:
         log.debug(f"Loading config for module {self.__module_name}")
-        defaults_opts: Optional[dict[str, Any]] = self.get_defaults()
-        actual_opt: Optional[dict[str, Any]] = self.__addon_manager.getConfig(self.__module_name)
-        joined: dict[str, Any] = Config.join(defaults_opts, actual_opt)
+        defaults_opts: Optional[dict[str, any]] = self.get_defaults()
+        actual_opt: Optional[dict[str, any]] = self.__addon_manager.getConfig(self.__module_name)
+        joined: dict[str, any] = Config.join(defaults_opts, actual_opt)
         self.__addon_manager.writeConfig(self.__module_name, joined)
         config: Config = Config(joined)
         log.info(f"Config was loaded: {config}")
         return config
 
-    def get_defaults(self) -> Optional[dict[str, Any]]:
-        defaults: Optional[dict[str, Any]] = self.__addon_manager.addonConfigDefaults(self.__module_name)
+    def get_defaults(self) -> Optional[dict[str, any]]:
+        defaults: Optional[dict[str, any]] = self.__addon_manager.addonConfigDefaults(self.__module_name)
         log.debug(f"Getting defaults for module {self.__module_name}: {defaults}")
         return defaults
 

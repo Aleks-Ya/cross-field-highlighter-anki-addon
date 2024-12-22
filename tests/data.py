@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 
 from anki.collection import Collection
 from anki.decks import DeckId
@@ -323,7 +322,7 @@ class Data:
     def read_config(self) -> Config:
         return Config.from_path(self.config_json)
 
-    def read_config_updated(self, overwrites: dict[str, Any]) -> Config:
+    def read_config_updated(self, overwrites: dict[str, any]) -> Config:
         return Config.from_path_updated(self.config_json, overwrites)
 
     def assert_original_case_notes(self, case_notes: list[CaseNote]):

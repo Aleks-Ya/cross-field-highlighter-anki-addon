@@ -1,5 +1,3 @@
-from typing import Any
-
 from pytest import raises
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormats, HighlightFormat
@@ -23,7 +21,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                  adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model.fill(all_note_type_details, 3, all_highlight_formats, lambda: None, lambda: None)
-    data: dict[str, Any] = {'current_state': cloze_note_type_details.name,
+    data: dict[str, any] = {'current_state': cloze_note_type_details.name,
                             'states': [{'note_type': cloze_note_type_details.name}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'accept_callback_None': False,
@@ -58,7 +56,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     model1.get_current_state().select_destination_fields(FieldNames([DefaultFields.cloze_text]))
     model1.get_current_state().set_stop_words(Text("the"))
 
-    data: dict[str, Any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
+    data: dict[str, any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
     assert data == {'current_state': cloze_note_type_details.name,
                     'states': [{'destination_fields': [DefaultFields.cloze_text],
                                 'format': 'MARK',

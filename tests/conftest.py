@@ -1,7 +1,7 @@
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Callable, Any
+from typing import Callable
 
 import aqt
 import pytest
@@ -146,7 +146,7 @@ def project_dir() -> Path:
 def module_dir(addons_dir: Path, module_name: str, project_dir: Path) -> Path:
     addon_project_dir: Path = project_dir.joinpath("cross_field_highlighter")
     module_dir: Path = addons_dir.joinpath(module_name)
-    ignore_patterns: Callable[[Any, list[str]], set[str]] = shutil.ignore_patterns("__pycache__")
+    ignore_patterns: Callable[[any, list[str]], set[str]] = shutil.ignore_patterns("__pycache__")
     shutil.copytree(addon_project_dir, module_dir, ignore=ignore_patterns)
     return module_dir
 

@@ -1,5 +1,3 @@
-from typing import Any
-
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_listener import ConfigListener
 from cross_field_highlighter.highlighter.types import NoteTypeName
@@ -60,14 +58,14 @@ def test_fire_config_changed(td: Data):
 
 
 def test_join(td: Data):
-    base: dict[str, Any] = {"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}}
+    base: dict[str, any] = {"Dialog": {"Adhoc": {"Highlight": {**DefaultConfig.highlight}}}}
 
-    actual: dict[str, Any] = {
+    actual: dict[str, any] = {
         "Dialog": {"Adhoc": {
             "Highlight": {**DefaultConfig.highlight}},
             'Unused Top': {'Property 1': 'Value 1'}}}  # Unused property will be deleted
 
-    joined: dict[str, Any] = Config.join(base, actual)
+    joined: dict[str, any] = Config.join(base, actual)
     assert joined == {
         "Dialog": {"Adhoc": {
             "Highlight": {**DefaultConfig.highlight}  # Get dict from base
