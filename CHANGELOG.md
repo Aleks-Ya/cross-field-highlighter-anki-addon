@@ -62,3 +62,8 @@
 1. __[FEATURE]__ Add Configuration menu item
 2. __[BUG]__ Source field included in destination fields if was checked before
 3. __[BUG]__ Adjust highlighting algorithm
+
+## [v0.11.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v0.11.0) - 2024-12-24
+
+1. __[FEATURE]__ Read configuration from file each time
+2. __[FEATURE]__ Add About menu item

@@ -5,7 +5,7 @@
 - [Introduction](#introduction)
 - [Screenshots](#screenshots)
   - [Browser menu](#browser-menu)
-  - [Highlight and Erase buttons in Editor](#highlight-and-erase-buttons-in-editor)
+  - [Buttons in Editor](#buttons-in-editor)
   - [Highlight dialog](#highlight-dialog)
   - [Supported formats](#supported-formats)
   - [Languages without spaces (Japanese, Chinese, Thai, etc.)](#languages-without-spaces-japanese-chinese-thai-etc)
@@ -13,6 +13,7 @@
   - [Highlighting statistics](#highlighting-statistics)
   - [Erase dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
   - [Addon configuration](#addon-configuration)
+  - [About addon](#about-addon)
 - [Links](#links)
 - [Quality metrics](#quality-metrics)
 
@@ -30,7 +31,7 @@ and highlights it in the destination fields:
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/browser-menu.png)
 
-### Highlight and Erase buttons in Editor
+### Buttons in Editor
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
@@ -44,7 +45,8 @@ and highlights it in the destination fields:
 
 ### Languages without spaces (Japanese, Chinese, Thai, etc.)
 
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
 
 ### Highlighting progress
 
@@ -61,6 +63,10 @@ and highlights it in the destination fields:
 ### Addon configuration
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/addon-configuration-open.png)
+
+### About addon
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/about-dialog-open.png)
 
 ## Links
 

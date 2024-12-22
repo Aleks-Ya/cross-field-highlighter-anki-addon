@@ -79,11 +79,13 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     2. Minor: `bump-my-version bump minor`
     3. Patch: `bump-my-version bump patch`
 5. Build ZIP: `python setup.py dist`
+    1. Install and test on the earliest Anki version (Qt5)
+    2. Install and test on the current Anki version (Qt6)
 6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
     2. Title: `🎨 Cross-Field Highlighter - spotlight word in text`
     3. Tags: -
-    4. Support page: https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-thread
+    4. Support page: https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread
     5. Attach the distribution file
     6. Update `Description` from `docs-template/addon-info-description.md`
 7. Push Git branch and tags: `git push --follow-tags`

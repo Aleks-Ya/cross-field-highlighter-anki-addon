@@ -2,43 +2,59 @@
 in [Anki Forum](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 or [GitHub issues](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/issues).**
 
+## Introduction
+
 "Cross-Field Highlighter" takes word or collocation from the source field and highlights it in the destination
 fields:  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/short-description-3.png)
 
 ## Screenshots
 
-Browser menu:  
+### Browser menu
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/browser-menu.png)
 
-Highlight and Erase buttons in Editor:  
+### Buttons in Editor
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
-"Highlight" dialog:  
+### "Highlight" dialog
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-highlight.png)
 
-Supported formats:  
+### Supported formats
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/formats.png)
 
-Languages without spaces (Japanese, Chinese, Thai, etc.):  
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)
+### Languages without spaces (Japanese, Chinese, Thai, etc.)
 
-Highlighting progress:  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
+
+### Highlighting progress
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/progress-highlight.png)
 
-Highlighting statistics:  
+### Highlighting statistics
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/statistics-highlight.png)
 
-"Erase" dialog (removes previously added highlighting):  
+### "Erase" dialog (removes previously added highlighting)
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-erase.png)
 
-Addon configuration:  
+### Addon configuration
+
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/addon-configuration-open.png)
+
+### About addon
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/about-dialog-open.png)
 
 ## Links
 
 - [Addon Page](https://ankiweb.net/shared/info/1312127886)
-- [Support forum topic](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
+- [Support forum thread](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 - [GitHub](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon)
 - [Changelog](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md)
 - [SonarQube](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)

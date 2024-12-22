@@ -14,7 +14,7 @@ and highlights it in the destination fields:
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/browser-menu.png)
 
-### Highlight and Erase buttons in Editor
+### Buttons in Editor
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
@@ -28,7 +28,8 @@ and highlights it in the destination fields:
 
 ### Languages without spaces (Japanese, Chinese, Thai, etc.)
 
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
 
 ### Highlighting progress
 
@@ -45,6 +46,10 @@ and highlights it in the destination fields:
 ### Addon configuration
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/addon-configuration-open.png)
+
+### About addon
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/about-dialog-open.png)
 
 ## Links
 
