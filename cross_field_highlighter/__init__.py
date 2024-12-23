@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from anki.collection import Collection
-from aqt import gui_hooks
+from aqt import gui_hooks, QDesktopServices
 
 
 def __initialize(col: Collection):
@@ -41,9 +41,11 @@ def __initialize(col: Collection):
     from .ui.menu.dialog_params_factory import DialogParamsFactory
     from .ui.operation.op_statistics_formatter import OpStatisticsFormatter
     from .ui.operation.op_factory import OpFactory
+    from .config.url_manager import UrlManager
 
     module_dir: Path = Path(__file__).parent
     module_name: str = module_dir.stem
+    version: str = (module_dir / 'version.txt').read_text()
     addon_manager: AddonManager = mw.addonManager
     dialog_manager: DialogManager = dialogs
     log_dir: Path = addon_manager.logs_folder(module_name)
@@ -51,7 +53,7 @@ def __initialize(col: Collection):
     logs.set_level("DEBUG")
     task_manager: TaskManager = mw.taskman
     progress_manager: ProgressManager = mw.progress
-    settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name))
+    settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name), version)
     config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
     config: Config = Config(config_loader)
     tokenizer: RegExTokenizer = RegExTokenizer()
@@ -80,12 +82,14 @@ def __initialize(col: Collection):
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,
         user_folder_storage)
     op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
-    op_factory: OpFactory = OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter,
-                                      config)
+    op_factory: OpFactory = OpFactory(
+        col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter, config)
     dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
+    url_manager: UrlManager = UrlManager()
+    desktop_services: QDesktopServices = QDesktopServices()
     browser_hooks: BrowserHooks = BrowserHooks(
         op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory,
-        addon_manager, dialog_manager, config, settings)
+        addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
     browser_hooks.setup_hooks()
     editor_button_creator: EditorButtonCreator = EditorButtonCreator(
         adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,

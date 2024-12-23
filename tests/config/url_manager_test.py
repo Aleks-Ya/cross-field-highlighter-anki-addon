@@ -11,20 +11,11 @@ from cross_field_highlighter.config.url_manager import UrlManager, UrlType, URL
 def test_get_all_urls(url_manager: UrlManager):
     urls: dict[UrlType, URL] = url_manager.get_all_urls()
     assert urls == {
-        UrlType.CONFIGURATION_BROWSER_SHOW_FOUND_NOTES_SIZE: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#show-size-of-notes-found-in-browser',
-        UrlType.CONFIGURATION_CACHE_WARM_UP_ENABLED: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#enable-cache-warm-up',
-        UrlType.CONFIGURATION_CACHE_STORE_ON_DISK: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#store-cache-in-file-on-exit',
-        UrlType.CONFIGURATION_LOGGING_LEVEL: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#logging',
-        UrlType.CONFIGURATION_EDITOR_SIZE_BUTTON_ENABLED: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#enabled',
-        UrlType.CONFIGURATION_DECK_BROWSER_SHOW_COLLECTION_SIZE: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#show-collection-size',
-        UrlType.CONFIGURATION_EDITOR_SIZE_BUTTON_COLOR_LEVELS: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#color---levels',
-        UrlType.CONFIGURATION_EDITOR_SIZE_BUTTON_COLOR_ENABLED: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/configuration.md#color---enabled',
-        UrlType.INFO_USER_MANUAL: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/docs/user-manual.md',
-        UrlType.INFO_ADDON_PAGE: 'https://ankiweb.net/shared/info/1188705668',
-        UrlType.INFO_FORUM: 'https://forums.ankiweb.net/t/note-size-addon-support/46001',
-        UrlType.INFO_CHANGE_LOG: 'https://github.com/Aleks-Ya/note-size-anki-addon/blob/main/CHANGELOG.md',
-        UrlType.INFO_BUG_TRACKER: 'https://github.com/Aleks-Ya/note-size-anki-addon/issues',
-        UrlType.INFO_GITHUB: 'https://github.com/Aleks-Ya/note-size-anki-addon',
+        UrlType.ADDON_INFO_PAGE: 'https://ankiweb.net/shared/info/1312127886',
+        UrlType.GITHUB: 'https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon',
+        UrlType.SUPPORT_THREAD: 'https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread',
+        UrlType.SONAR_QUBE: 'https://sonarcloud.io/summary/overall?id=Aleks-Ya_cross-field-highlighter-anki-addon&branch=master',
+        UrlType.CHANGELOG: 'https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md'
     }
 
 

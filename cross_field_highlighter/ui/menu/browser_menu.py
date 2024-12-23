@@ -1,14 +1,16 @@
 import logging
 from logging import Logger
 
-from aqt import QMenu, DialogManager
+from aqt import QMenu, DialogManager, QDesktopServices
 from aqt.addons import AddonManager
 from aqt.browser import Browser
 
+from .browser_menu_about_action import BrowserMenuAboutAction
 from .browser_menu_open_config import BrowserMenuOpenConfigAction
 from .browser_menu_show_latest_modified_notes_action import BrowserMenuShowLatestModifiedNotesAction
 from ...config.config import Config
 from ...config.settings import Settings
+from ...config.url_manager import UrlManager
 from ...ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from ...ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
 from ...ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
@@ -25,8 +27,8 @@ class BrowserMenu(QMenu):
     def __init__(self, browser: Browser, op_factory: OpFactory,
                  adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                  adhoc_erase_dialog_controller: AdhocEraseDialogController, dialog_params_factory: DialogParamsFactory,
-                 addon_manager: AddonManager, dialog_manager: DialogManager, config: Config,
-                 settings: Settings) -> None:
+                 addon_manager: AddonManager, dialog_manager: DialogManager, url_manager: UrlManager,
+                 desktop_services: QDesktopServices, config: Config, settings: Settings) -> None:
         super().__init__("Cross-Field Highlighter", browser)
 
         highlight_action: BrowserMenuHighlightAction = BrowserMenuHighlightAction(
@@ -47,6 +49,9 @@ class BrowserMenu(QMenu):
         open_config_action: BrowserMenuOpenConfigAction = BrowserMenuOpenConfigAction(
             browser, addon_manager, dialog_manager, settings)
         self.addAction(open_config_action)
+
+        about_action: BrowserMenuAboutAction = BrowserMenuAboutAction(browser, url_manager, desktop_services, settings)
+        self.addAction(about_action)
 
         log.debug(f"{self.__class__.__name__} was instantiated")
 

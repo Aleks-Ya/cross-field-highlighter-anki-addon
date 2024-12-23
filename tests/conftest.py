@@ -7,7 +7,7 @@ import aqt
 import pytest
 from anki.collection import Collection
 from anki.models import NoteType, NotetypeId, FieldDict
-from aqt import ProfileManager, AnkiQt, QApplication, QWidget
+from aqt import ProfileManager, AnkiQt, QApplication, QWidget, QDesktopServices
 from aqt.addons import AddonManager
 from aqt.editor import Editor
 from aqt.progress import ProgressManager
@@ -34,6 +34,7 @@ from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import S
 from cross_field_highlighter.highlighter.text.regex_text_highlighter import RegexTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
+from cross_field_highlighter.ui.about.about_view import AboutView
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
@@ -184,8 +185,13 @@ def config_loader(addon_manager: AddonManager, settings: Settings) -> ConfigLoad
 
 
 @pytest.fixture
-def settings(module_dir: Path, module_name: str, logs_dir: Path) -> Settings:
-    return Settings(module_dir, module_name, logs_dir)
+def version() -> str:
+    return "0.1.0"
+
+
+@pytest.fixture
+def settings(module_dir: Path, module_name: str, logs_dir: Path, version: str) -> Settings:
+    return Settings(module_dir, module_name, logs_dir, version)
 
 
 @pytest.fixture
@@ -420,3 +426,20 @@ def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialo
 @pytest.fixture
 def user_folder_storage(settings: Settings) -> UserFolderStorage:
     return UserFolderStorage(settings)
+
+
+@pytest.fixture
+def desktop_services() -> QDesktopServices:
+    return QDesktopServices()
+
+
+@pytest.fixture
+def parent() -> QWidget:
+    return QWidget()
+
+
+@pytest.fixture
+def about_view(parent: QWidget, url_manager: UrlManager, desktop_services: QDesktopServices, settings: Settings,
+               visual_qtbot: VisualQtBot, mw: AnkiQt) -> AboutView:
+    assert mw is not None  # initialize aqt.mw
+    return AboutView(parent, url_manager, desktop_services, settings)
