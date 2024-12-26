@@ -14,6 +14,7 @@
   - [Erase dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
   - [Addon configuration](#addon-configuration)
   - [About addon](#about-addon)
+  - [Test cases](#test-cases)
 - [Links](#links)
 - [Quality metrics](#quality-metrics)
 
@@ -67,6 +68,10 @@ and highlights it in the destination fields:
 ### About addon
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/about-dialog-open.png)
+
+### Test cases
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/test-cases-open.png)
 
 ## Links
 

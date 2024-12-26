@@ -51,6 +51,10 @@ and highlights it in the destination fields:
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/about-dialog-open.png)
 
+### Test cases
+
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/test-cases-open.png)
+
 ## Links
 
 - [Addon Page](https://ankiweb.net/shared/info/1312127886)
