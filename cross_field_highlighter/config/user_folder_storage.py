@@ -23,7 +23,7 @@ class UserFolderStorage:
         current_data[key] = value
         with open(self.__storage_file, 'w') as f:
             # noinspection PyTypeChecker
-            json.dump(current_data, f)
+            json.dump(current_data, f, indent=2)
 
     def read_all(self) -> dict[str, any]:
         if self.__storage_file.exists():
