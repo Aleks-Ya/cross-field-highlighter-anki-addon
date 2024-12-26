@@ -1,10 +1,15 @@
+from typing import Optional
+
+from PyQt6.QtWidgets import QComboBox
 from PyQtPath.path_chain_pyqt6 import path
 from aqt import QCheckBox, QDialogButtonBox, QPushButton
 
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
+from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 
 
 class FakeCallback:
@@ -31,15 +36,19 @@ class FakeEraseControllerCallback:
         self.history.append(params)
 
 
-def assert_view(view: AdhocEraseDialogView, window_title: str, check_box_texts: list[str], selected_fields: list[str]):
+def assert_view(view: AdhocEraseDialogView, window_title: str, selected_note_type: Optional[NoteTypeDetails],
+                check_box_texts: list[str], selected_fields: list[str]):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     assert_buttons(view)
-    assert_destination_group_box(view, check_box_texts, selected_fields)
+    assert_destination_group_box(view, selected_note_type, check_box_texts, selected_fields)
 
 
-def assert_destination_group_box(view: AdhocEraseDialogView, check_box_texts: list[str], selected_fields: list[str]):
+def assert_destination_group_box(view: AdhocEraseDialogView, selected_note_type: NoteTypeDetails,
+                                 check_box_texts: list[str], selected_fields: list[str]):
     fields_layout: FieldsLayout = path(view).child(FieldsLayout).get()
+    note_type: QComboBox = path(view).child(NoteTypeComboBoxLayout).combobox().get()
+    assert note_type.currentData() == selected_note_type, f"selected_note_type: '{selected_note_type}' != '{note_type.currentData()}'"
     assert path(fields_layout).label().get().text() == "Fields:"
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     texts: list[str] = [check_box.text() for check_box in check_boxes]
