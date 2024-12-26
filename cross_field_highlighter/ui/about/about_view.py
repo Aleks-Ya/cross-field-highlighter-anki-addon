@@ -38,6 +38,7 @@ class AboutView(QDialog):
         support_thread_label: QLabel = self.__get_link_label(
             UrlType.SUPPORT_THREAD, "Support thread in Anki Forum", " (for questions, suggestions, bugs)")
         changelog_label: QLabel = self.__get_link_label(UrlType.CHANGELOG, "Changelog", "")
+        cases_label: QLabel = self.__get_link_label(UrlType.CASES, "Test cases", "")
         github_label: QLabel = self.__get_link_label(UrlType.GITHUB, "GitHub", "")
         sonar_qube_label: QLabel = self.__get_link_label(UrlType.SONAR_QUBE, "SonarQube", "")
 
@@ -60,6 +61,7 @@ class AboutView(QDialog):
         layout.addWidget(addon_info_page_label)
         layout.addWidget(support_thread_label)
         layout.addWidget(changelog_label)
+        layout.addWidget(cases_label)
         layout.addWidget(github_label)
         layout.addWidget(sonar_qube_label)
         layout.addSpacing(10)

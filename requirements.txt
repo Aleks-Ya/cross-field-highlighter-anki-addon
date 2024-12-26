@@ -16,3 +16,4 @@ PyQtPath
 requests
 md_toc
 tenacity
+mdutils

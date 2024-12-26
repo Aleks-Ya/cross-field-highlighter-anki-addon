@@ -14,6 +14,7 @@ class UrlType(Enum):
     SUPPORT_THREAD = 3
     SONAR_QUBE = 4
     CHANGELOG = 5
+    CASES = 6
 
 
 class UrlManager:
@@ -22,7 +23,8 @@ class UrlManager:
         UrlType.GITHUB: "https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon",
         UrlType.SUPPORT_THREAD: "https://forums.ankiweb.net/t/cross-field-highlighter-addon-spotlight-word-in-text-support-thread",
         UrlType.SONAR_QUBE: "https://sonarcloud.io/summary/overall?id=Aleks-Ya_cross-field-highlighter-anki-addon&branch=master",
-        UrlType.CHANGELOG: "https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md"
+        UrlType.CHANGELOG: "https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md",
+        UrlType.CASES: "https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/docs/cases.md"
     }
 
     def __init__(self) -> None:
