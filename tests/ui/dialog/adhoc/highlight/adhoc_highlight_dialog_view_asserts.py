@@ -63,7 +63,8 @@ def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: 
     note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
     assert note_type.label().get().text() == "Note Type"
     note_type_combo_box: QComboBox = note_type.combobox().get()
-    assert note_type_combo_box.currentData() == selected_note_type
+    act_selected_note_type: NoteTypeDetails = note_type_combo_box.currentData()
+    assert act_selected_note_type == selected_note_type, f"'{act_selected_note_type}' != '{selected_note_type}'"
     act_note_types: list[NoteTypeDetails] = get_item_datas(note_type_combo_box)
     assert act_note_types == note_types, f"all note types: '{act_note_types}' != '{note_types}'"
 

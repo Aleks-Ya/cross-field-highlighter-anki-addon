@@ -31,6 +31,10 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         self.__combo_box.blockSignals(True)
         current_item: NoteTypeDetails = self.__combo_box.currentData()
         if current_item != note_type_details:
+            act_items: list[str] = []
+            for i in range(self.__combo_box.count()):
+                act_items.append(self.__combo_box.itemText(i))
+            log.debug(f"Current combobox items: {act_items}")
             index: int = self.__combo_box.findData(note_type_details)
             log.debug(f"Found current note type index: {note_type_details_name}={index}")
             self.__combo_box.setCurrentIndex(index)

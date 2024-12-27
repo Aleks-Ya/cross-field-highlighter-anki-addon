@@ -57,7 +57,7 @@ class AdhocHighlightDialogModel:
         return self.__formats
 
     def get_current_state(self) -> AdhocHighlightDialogState:
-        if not self.__current_state:
+        if not self.__current_state or self.__current_state.get_selected_note_type() not in self.__note_types:
             self.switch_to_first_state()
         return self.__current_state
 
