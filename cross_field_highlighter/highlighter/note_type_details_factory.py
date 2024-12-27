@@ -41,5 +41,5 @@ class NoteTypeDetailsFactory:
             note_type_details: NoteTypeDetails = self.by_note_type_id(note_type_id)
             note_types.append(note_type_details)
         sorted_notes_type: list[NoteTypeDetails] = sorted(note_types, key=lambda n_type: n_type.name)
-        log.debug(f"Collected note types: {sorted_notes_type}")
+        log.debug(f"Collected note types: {NoteTypeDetails.names(sorted_notes_type)}")
         return sorted_notes_type

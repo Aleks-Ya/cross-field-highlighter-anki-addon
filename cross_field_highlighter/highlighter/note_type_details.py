@@ -20,3 +20,11 @@ class NoteTypeDetails:
         if not isinstance(other, NoteTypeDetails):
             return False
         return self.note_type_id == other.note_type_id and self.name == other.name and self.fields == other.fields
+
+    @staticmethod
+    def name(note_type_details: 'NoteTypeDetails') -> str:
+        return note_type_details.name if note_type_details else 'None'
+
+    @staticmethod
+    def names(note_type_details: list['NoteTypeDetails']) -> str:
+        return str([NoteTypeDetails.name(note_type_details) for note_type_details in note_type_details])
