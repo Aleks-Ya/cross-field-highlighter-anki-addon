@@ -28,9 +28,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
     # Initial state
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'current_state': {'selected_destination_fields': [],
@@ -54,9 +54,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     assert listener.counter == 0
-    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type="", note_types=[],
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
@@ -82,12 +82,12 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
     assert listener.counter == 2
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                selected_note_type=basic_note_type_details.name,
-                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                selected_note_type=basic_note_type_details,
+                note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front,
                 source_fields=DefaultFields.all_basic, selected_format=bold_format, formats=all_highlight_formats,
                 check_box_texts=[DefaultFields.basic_front, DefaultFields.basic_back, DefaultFields.basic_extra],
-                selected_fields=[],
+                selected_desination_fields=[],
                 disabled_fields=[DefaultFields.basic_front], stop_words=exp_default_stop_words,
                 space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -113,11 +113,11 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
     assert listener.counter == 3
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                selected_note_type=cloze_note_type_details.name,
-                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                selected_note_type=cloze_note_type_details,
+                note_types=all_note_type_details,
                 selected_source_field=DefaultFields.cloze_text,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_desination_fields=[],
                 disabled_fields=[DefaultFields.cloze_text],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -149,11 +149,11 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert listener.counter == 4
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                selected_note_type=cloze_note_type_details.name,
-                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                selected_note_type=cloze_note_type_details,
+                note_types=all_note_type_details,
                 selected_source_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_desination_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=True)
     assert adhoc_highlight_dialog_model.as_dict() == {
@@ -186,11 +186,11 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.click_space_delimited_language()
     assert listener.counter == 5
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
-                selected_note_type=cloze_note_type_details.name,
-                note_types=[basic_note_type_details.name, cloze_note_type_details.name],
+                selected_note_type=cloze_note_type_details,
+                note_types=all_note_type_details,
                 selected_source_field=DefaultFields.cloze_back_extra,
                 source_fields=DefaultFields.all_cloze, selected_format=bold_format, formats=all_highlight_formats,
-                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_fields=[],
+                check_box_texts=[DefaultFields.cloze_text, DefaultFields.cloze_back_extra], selected_desination_fields=[],
                 disabled_fields=[DefaultFields.cloze_back_extra],
                 stop_words=exp_default_stop_words, space_delimited_language=False)
     assert adhoc_highlight_dialog_model.as_dict() == {

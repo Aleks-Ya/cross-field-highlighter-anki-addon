@@ -77,6 +77,7 @@ class AdhocEraseDialogModel:
             listener.model_changed(source)
 
     def reset_states(self) -> None:
+        log.debug("Reset states")
         for state in self.__states.values():
             state.select_fields(FieldNames([]))
         self.switch_to_first_state()

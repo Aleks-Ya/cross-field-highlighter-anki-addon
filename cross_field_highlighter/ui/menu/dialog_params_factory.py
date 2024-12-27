@@ -22,9 +22,7 @@ class DialogParamsFactory:
 
     def create_from_note_ids(self, note_ids: Sequence[NoteId]) -> DialogParams:
         notes_type_details: list[NoteTypeDetails] = self.__note_type_details_factory.by_note_ids(note_ids)
-        params: DialogParams = DialogParams(notes_type_details, len(note_ids))
-        log.debug(f"Created DialogParams: {params}")
-        return params
+        return DialogParams(notes_type_details, len(note_ids))
 
     def create_from_card_ids(self, card_ids: Sequence[CardId]) -> DialogParams:
         selected_note_ids: Sequence[NoteId] = [self.__col.get_card(card_id).nid for card_id in card_ids]

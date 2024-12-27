@@ -83,6 +83,7 @@ class AdhocHighlightDialogModel:
         if len(self.__note_types) < 1:
             raise ValueError("At least one note type should exist")
         note_type_details: NoteTypeDetails = self.__note_types[0]
+        log.debug(f"Switch to first state: {note_type_details}")
         self.switch_state(note_type_details)
 
     def call_accept_callback(self) -> None:

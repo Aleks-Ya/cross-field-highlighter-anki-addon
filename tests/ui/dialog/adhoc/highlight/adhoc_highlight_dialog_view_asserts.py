@@ -4,6 +4,7 @@ from PyQtPath.path_chain_pyqt6 import path, PyQtPath
 from aqt import QComboBox, QDialogButtonBox, QPushButton, QLineEdit, QCheckBox
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
+from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
     AdhocHighlightDialogModelListener
@@ -12,7 +13,7 @@ from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOp
 from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_combo_box_layout import TitledComboBoxLayout
 from cross_field_highlighter.ui.widgets.titled_line_edit_layout import TitledLineEditLayout
-from tests.qtget import get_items
+from tests.qtget import get_item_texts, get_item_datas
 from tests.ui.dialog.adhoc.fields_layout_asserts import assert_fields_layout
 
 
@@ -40,29 +41,31 @@ class FakeHighlightControllerCallback:
         self.history.append(params)
 
 
-def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note_type: str, note_types: list[str],
-                selected_source_field: str, source_fields: list[str], selected_format: Optional[HighlightFormat],
-                formats: list[HighlightFormat], check_box_texts: list[str], selected_fields: list[str],
-                disabled_fields: list[str], stop_words: str, space_delimited_language: bool):
+def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note_type: Optional[NoteTypeDetails],
+                note_types: list[NoteTypeDetails], selected_source_field: str, source_fields: list[str],
+                selected_format: Optional[HighlightFormat], formats: list[HighlightFormat], check_box_texts: list[str],
+                selected_desination_fields: list[str], disabled_fields: list[str], stop_words: str,
+                space_delimited_language: bool):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     assert_buttons(view)
     assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words,
                             space_delimited_language)
     assert_format_group_box(view, selected_format, formats)
-    assert_destination_group_box(view, check_box_texts, selected_fields, disabled_fields)
+    assert_destination_group_box(view, check_box_texts, selected_desination_fields, disabled_fields)
 
 
-def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: str, note_types: list[str],
-                            selected_source_field: str, source_fields: list[str], stop_words: str,
-                            space_delimited_language: bool):
+def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: Optional[NoteTypeDetails],
+                            note_types: list[NoteTypeDetails], selected_source_field: str, source_fields: list[str],
+                            stop_words: str, space_delimited_language: bool):
     group_box: PyQtPath = path(view).group(0)
 
     note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
     assert note_type.label().get().text() == "Note Type"
     note_type_combo_box: QComboBox = note_type.combobox().get()
-    assert note_type_combo_box.currentText() == selected_note_type
-    assert get_items(note_type_combo_box) == note_types
+    assert note_type_combo_box.currentData() == selected_note_type
+    act_note_types: list[NoteTypeDetails] = get_item_datas(note_type_combo_box)
+    assert act_note_types == note_types, f"all note types: '{act_note_types}' != '{note_types}'"
 
     assert_source_combo_box(view, selected_source_field, source_fields)
     assert_stop_words(view, stop_words)
@@ -92,8 +95,8 @@ def assert_source_combo_box(view: AdhocHighlightDialogView, selected_source_fiel
     field_combo_box: QComboBox = field_path.combobox().get()
     assert field_combo_box.currentText() == selected_source_field, \
         f"current_source_field: '{selected_source_field}' != '{field_combo_box.currentText()}'"
-    assert get_items(
-        field_combo_box) == source_fields, f"all source fields: '{get_items(field_combo_box)}' != '{source_fields}'"
+    assert get_item_texts(
+        field_combo_box) == source_fields, f"all source fields: '{get_item_texts(field_combo_box)}' != '{source_fields}'"
 
 
 def assert_format_group_box(view: AdhocHighlightDialogView, selected_format: Optional[HighlightFormat],
@@ -101,17 +104,20 @@ def assert_format_group_box(view: AdhocHighlightDialogView, selected_format: Opt
     combo_box: PyQtPath = path(view).group(1).child(TitledComboBoxLayout)
     assert combo_box.label().get().text() == "Format"
     format_combo_box: QComboBox = combo_box.combobox().get()
-    assert format_combo_box.currentText() == (selected_format.name if selected_format else "")
+    act_current_text: str = format_combo_box.currentText()
+    exp_current_text: str = (selected_format.name if selected_format else "")
+    assert act_current_text == exp_current_text, f"'{act_current_text}' != '{exp_current_text}'"
     format_names: list[str] = [highlight_format.name for highlight_format in formats]
-    assert get_items(format_combo_box) == format_names
+    act_format_names: list[str] = get_item_texts(format_combo_box)
+    assert act_format_names == format_names, f"all format names: '{act_format_names}' != '{format_names}'"
 
 
 def assert_destination_group_box(view: AdhocHighlightDialogView, check_box_texts: list[str],
-                                 selected_fields: list[str], disabled_fields: list[str]):
+                                 selected_destination_fields: list[str], disabled_fields: list[str]):
     group_box: PyQtPath = path(view).group(2)
     assert group_box.label().get().text() == "Fields:"
     fields_layout: FieldsLayout = group_box.child(FieldsLayout).get()
-    assert_fields_layout(fields_layout, check_box_texts, selected_fields, disabled_fields)
+    assert_fields_layout(fields_layout, check_box_texts, selected_destination_fields, disabled_fields)
 
 
 def assert_buttons(view: AdhocHighlightDialogView):
