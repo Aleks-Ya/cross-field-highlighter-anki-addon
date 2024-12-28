@@ -15,7 +15,7 @@ def test_highlight_short_words(start_with_token_highlighter: StartWithTokenHighl
     text_token: Token = Token(Word("measure"), TokenType.WORD)
     collocation_tokens: Tokens = Tokens([Token(Word("mesh"), TokenType.WORD)])
     highlighted_token: Word = start_with_token_highlighter.highlight(text_token, collocation_tokens, bold_format)
-    assert highlighted_token == Word('<b class="cross-field-highlighter">measure</b>')  # TODO fix it
+    assert highlighted_token == Word('measure')
 
 
 def test_highlight_short_words_ing(start_with_token_highlighter: StartWithTokenHighlighter,
