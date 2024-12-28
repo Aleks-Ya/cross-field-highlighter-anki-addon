@@ -62,6 +62,7 @@ and highlights it in the destination fields:
 - [GitHub](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon)
 - [Changelog](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/CHANGELOG.md)
 - [SonarQube](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)
+- [Test cases](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/blob/master/docs/cases.md)
 
 ## Quality metrics
 
