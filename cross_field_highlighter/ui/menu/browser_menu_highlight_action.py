@@ -1,16 +1,18 @@
 import logging
 from logging import Logger
+from typing import Optional
 
 from anki.notes import NoteId
-from aqt import qconnect
+from aqt import qconnect, QKeySequence
 from aqt.browser import Browser
 
 from ..operation.highlight_op import HighlightOp
+from ...config.config import Config
 from ...ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
-from ...ui.operation.highlight_op_params import HighlightOpParams
-from ...ui.menu.browser_menu_action import BrowserMenuAction
 from ...ui.dialog.dialog_params import DialogParams
+from ...ui.menu.browser_menu_action import BrowserMenuAction
 from ...ui.menu.dialog_params_factory import DialogParamsFactory
+from ...ui.operation.highlight_op_params import HighlightOpParams
 from ...ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
@@ -19,8 +21,12 @@ log: Logger = logging.getLogger(__name__)
 class BrowserMenuHighlightAction(BrowserMenuAction):
     def __init__(self, browser: Browser, op_factory: OpFactory,
                  adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
-                 dialog_params_factory: DialogParamsFactory) -> None:
+                 dialog_params_factory: DialogParamsFactory, config: Config) -> None:
         super().__init__("Highlight...", browser, dialog_params_factory)
+        shortcut: Optional[str] = config.get_dialog_adhoc_highlight_editor_shortcut()
+        if shortcut:
+            log.debug(f"Set shortcut for {self.__class__.__name__}: {shortcut}")
+            self.setShortcut(QKeySequence(shortcut))
         qconnect(self.triggered, lambda: self.__on_click(browser))
         self.__op_factory: OpFactory = op_factory
         self.__controller: AdhocHighlightDialogController = adhoc_highlight_dialog_controller

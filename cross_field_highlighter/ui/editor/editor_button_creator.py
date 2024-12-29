@@ -43,7 +43,7 @@ class EditorButtonCreator:
         shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
         tip: str = f"Open Highlight dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
         button: str = editor.addButton(tip=tip, icon=icon_path, cmd="highlight_button_cmd",
-                                       func=self.__on_highlight_button_click, keys=shortcut)
+                                       func=self.__on_highlight_button_click)
         return button
 
     def create_erase_button(self, editor: Editor) -> str:
@@ -53,7 +53,7 @@ class EditorButtonCreator:
         shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
         tip: str = f"Open Erase dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
         button: str = editor.addButton(tip=tip, icon=icon_path, cmd="erase_button_cmd",
-                                       func=self.__on_erase_button_click, keys=shortcut)
+                                       func=self.__on_erase_button_click)
         return button
 
     def __on_highlight_button_click(self, editor: Editor) -> None:

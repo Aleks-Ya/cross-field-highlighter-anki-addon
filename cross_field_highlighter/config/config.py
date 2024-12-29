@@ -78,7 +78,7 @@ class Config:
 
     def __get_shortcut(self, *keys: str) -> Optional[str]:
         shortcut: Optional[str] = self.__get(*keys)
-        return shortcut if shortcut is not None and shortcut.strip() != "" else None
+        return shortcut.replace("-", "+") if shortcut is not None and shortcut.strip() != "" else None
 
     def __set(self, value: any, *keys: str) -> None:
         log.debug(f"Set config value: {value} for keys: {keys}")

@@ -1,8 +1,7 @@
 from typing import Optional
 
-from PyQt6.QtWidgets import QComboBox
 from PyQtPath.path_chain_pyqt6 import path
-from aqt import QCheckBox, QDialogButtonBox, QPushButton
+from aqt import QCheckBox, QDialogButtonBox, QPushButton, QComboBox
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener

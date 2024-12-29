@@ -11,32 +11,21 @@ from .browser_menu_show_latest_modified_notes_action import BrowserMenuShowLates
 from ...config.config import Config
 from ...config.settings import Settings
 from ...config.url_manager import UrlManager
-from ...ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from ...ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
 from ...ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
 from ...ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
 from ...ui.menu.browser_menu_show_highlighted_notes_action import BrowserMenuShowHighlightedNotesAction
-from ...ui.menu.dialog_params_factory import DialogParamsFactory
-from ...ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 
 
 class BrowserMenu(QMenu):
 
-    def __init__(self, browser: Browser, op_factory: OpFactory,
-                 adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
-                 adhoc_erase_dialog_controller: AdhocEraseDialogController, dialog_params_factory: DialogParamsFactory,
-                 addon_manager: AddonManager, dialog_manager: DialogManager, url_manager: UrlManager,
-                 desktop_services: QDesktopServices, config: Config, settings: Settings) -> None:
+    def __init__(self, browser: Browser, highlight_action: BrowserMenuHighlightAction,
+                 erase_action: BrowserMenuEraseAction, addon_manager: AddonManager, dialog_manager: DialogManager,
+                 url_manager: UrlManager, desktop_services: QDesktopServices, config: Config,
+                 settings: Settings) -> None:
         super().__init__("Cross-Field Highlighter", browser)
-
-        highlight_action: BrowserMenuHighlightAction = BrowserMenuHighlightAction(
-            browser, op_factory, adhoc_highlight_dialog_controller, dialog_params_factory)
         self.addAction(highlight_action)
-
-        erase_action: BrowserMenuEraseAction = BrowserMenuEraseAction(
-            browser, op_factory, adhoc_erase_dialog_controller, dialog_params_factory)
         self.addAction(erase_action)
 
         search_action: BrowserMenuShowHighlightedNotesAction = BrowserMenuShowHighlightedNotesAction(browser)
