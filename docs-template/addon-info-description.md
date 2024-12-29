@@ -2,6 +2,8 @@
 in [Anki Forum](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 or [GitHub issues](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/issues).**
 
+<!--TOC-->
+
 ## Introduction
 
 "Cross-Field Highlighter" takes word or collocation from the source field and highlights it in the destination
