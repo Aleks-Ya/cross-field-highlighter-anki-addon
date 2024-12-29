@@ -72,4 +72,9 @@
 
 1. __[MISC]__ Publish test cases in MarkDown format
 2. __[BUG]__ Empty note type is selected
-3. __[BUG]__ Adjust highlighting algorithm 
+3. __[BUG]__ Adjust highlighting algorithm
+
+## [v1.0.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.0.0) - 2024-12-29
+
+1. __[MISC]__ Stable release
+2. __[FEATURE]__ Shortcuts work in Browser

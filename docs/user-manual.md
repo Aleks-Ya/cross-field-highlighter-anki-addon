@@ -19,10 +19,12 @@ fields:
     8. Idempotence: repeating highlighting the same notes doesn't duplicate highlighting.
     9. HTML tags are skipped from highlighting.
     10. Highlighting notes selected in Browser or current note in Editor.
+    11. Shortcut support ("Ctrl+Shift+H" by default)
 2. Erase:
     1. CFH removes previously added highlightings from fields.
     2. CFH marks its own formatting, so it can erase exactly only its formatting and preserve other formatting.
     3. Erasing notes selected in Browser or current note in Editor.
+    4. Shortcut support (not set by default)
 3. Show in Browser:
     1. Show all highlighted notes
     2. Show notes modified by the latest run
