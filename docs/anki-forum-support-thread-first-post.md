@@ -1,8 +1,6 @@
-:exclamation: **This addon is in the BETA state. Use it carefully. Try on a few notes first. Please, share your feedback in this topic.**
+Hello all, I'd introduce a new addon for language learners. 
 
-Hello all,
-
-I'd introduce new addon for language learners.
+**Please, share your feedback in this topic.**
 
 ---
 

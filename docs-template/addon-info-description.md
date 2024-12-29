@@ -1,4 +1,4 @@
-**(!) This addon is in the BETA state. Use carefully. Try on a few notes first. Please, share your feedback
+**Please, share your feedback
 in [Anki Forum](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 or [GitHub issues](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/issues).**
 
