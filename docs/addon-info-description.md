@@ -2,25 +2,6 @@
 in [Anki Forum](https://forums.ankiweb.net/t/cross-field-highlighter-addon-support-page/52592)
 or [GitHub issues](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/issues).**
 
-<!--TOC-->
-
-- [Introduction](#introduction)
-- [Screenshots](#screenshots)
-  - [Browser menu](#browser-menu)
-  - [Buttons in Editor](#buttons-in-editor)
-  - ["Highlight" dialog](#highlight-dialog)
-  - [Supported formats](#supported-formats)
-  - [Languages without spaces (Japanese, Chinese, Thai, etc.)](#languages-without-spaces-japanese-chinese-thai-etc)
-  - [Highlighting progress](#highlighting-progress)
-  - [Highlighting statistics](#highlighting-statistics)
-  - ["Erase" dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
-  - [Addon configuration](#addon-configuration)
-  - [About addon](#about-addon)
-  - [Test cases](#test-cases)
-- [Links](#links)
-
-<!--TOC-->
-
 ## Introduction
 
 "Cross-Field Highlighter" takes word or collocation from the source field and highlights it in the destination

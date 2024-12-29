@@ -78,3 +78,7 @@
 
 1. __[MISC]__ Stable release
 2. __[FEATURE]__ Shortcuts work in Browser
+
+## [v1.0.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.0.1) - 2024-12-29
+
+1. __[BUG]__ Fix Editor shortcuts
