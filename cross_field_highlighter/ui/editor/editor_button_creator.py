@@ -4,7 +4,7 @@ from typing import Optional
 
 from anki.models import NotetypeDict, NotetypeId
 from anki.notes import Note
-from aqt.editor import Editor
+from aqt.editor import Editor, EditorMode
 
 from ...config.config import Config
 from ...config.settings import Settings
@@ -42,8 +42,9 @@ class EditorButtonCreator:
         shortcut: Optional[str] = self.__config.get_dialog_adhoc_highlight_editor_shortcut()
         shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
         tip: str = f"Open Highlight dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
+        keys: Optional[str] = shortcut if editor.editorMode != EditorMode.BROWSER else None
         button: str = editor.addButton(tip=tip, icon=icon_path, cmd="highlight_button_cmd",
-                                       func=self.__on_highlight_button_click)
+                                       func=self.__on_highlight_button_click, keys=keys)
         return button
 
     def create_erase_button(self, editor: Editor) -> str:
@@ -52,8 +53,9 @@ class EditorButtonCreator:
         shortcut: Optional[str] = self.__config.get_dialog_adhoc_erase_editor_shortcut()
         shortcut_tip: str = f"\n{shortcut}" if shortcut else ""
         tip: str = f"Open Erase dialog for current note...\n(Cross-Field Highlighter){shortcut_tip}"
+        keys: Optional[str] = shortcut if editor.editorMode != EditorMode.BROWSER else None
         button: str = editor.addButton(tip=tip, icon=icon_path, cmd="erase_button_cmd",
-                                       func=self.__on_erase_button_click)
+                                       func=self.__on_erase_button_click, keys=keys)
         return button
 
     def __on_highlight_button_click(self, editor: Editor) -> None:
