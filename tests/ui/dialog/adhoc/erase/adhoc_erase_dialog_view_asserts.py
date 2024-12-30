@@ -53,7 +53,7 @@ def assert_destination_group_box(view: AdhocEraseDialogView, selected_note_type:
     assert act_selected_note_type_name == exp_selected_note_type_name, f"'{act_selected_note_type_name}' != '{exp_selected_note_type_name}'"
     act_note_type_data: NoteTypeDetails = note_type.currentData()
     assert act_note_type_data == selected_note_type, f"'{act_note_type_data}' != '{selected_note_type}'"
-    assert path(fields_layout).label().get().text() == "Fields:"
+    assert path(fields_layout).layout().label().get().text() == "Fields:"
     check_boxes: list[QCheckBox] = path(fields_layout).children(QCheckBox)
     act_all_fields: list[str] = [check_box.text() for check_box in check_boxes]
     assert act_all_fields == all_fields, f"'{act_all_fields}' != '{all_fields}'"

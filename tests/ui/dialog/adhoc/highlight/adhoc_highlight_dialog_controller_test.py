@@ -2,6 +2,7 @@ from aqt import Qt
 
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
@@ -221,7 +222,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                            cloze_note_type_details: NoteTypeDetails,
                                            formatter_facade: FormatterFacade,
                                            all_note_type_details: list[NoteTypeDetails],
-                                           all_highlight_formats: HighlightFormats, bold_format: HighlightFormat):
+                                           all_highlight_formats: HighlightFormats, bold_format: HighlightFormat,
+                                           settings: Settings):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
     # Default config and model
     assert config_loader.load_config() == {
@@ -298,7 +300,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     # Initialize controller using saved config
     config: Config = Config(config_loader)
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model)
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, settings)
     controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
         user_folder_storage)

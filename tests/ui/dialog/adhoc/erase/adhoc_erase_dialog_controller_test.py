@@ -1,4 +1,5 @@
 from cross_field_highlighter.config.config_loader import ConfigLoader
+from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -128,7 +129,8 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                                             note_type_details_factory: NoteTypeDetailsFactory,
                                             all_note_type_details: list[NoteTypeDetails],
                                             adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
-                                            user_folder_storage: UserFolderStorage):
+                                            user_folder_storage: UserFolderStorage,
+                                            settings: Settings):
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     # Default config and model
     assert config_loader.load_config() == {
@@ -196,7 +198,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
 
     # Initialize controller using saved config
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    view: AdhocEraseDialogView = AdhocEraseDialogView(model)
+    view: AdhocEraseDialogView = AdhocEraseDialogView(model, settings)
     controller: AdhocEraseDialogController = AdhocEraseDialogController(
         model, view, note_type_details_factory, adhoc_erase_dialog_model_serde, user_folder_storage)
     assert config_loader.load_config() == {

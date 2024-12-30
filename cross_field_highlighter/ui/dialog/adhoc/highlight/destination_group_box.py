@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
+from .....config.settings import Settings
 from .....highlighter.types import FieldNames
 from .....ui.dialog.adhoc.fields_layout import FieldsLayout
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModelListener, \
@@ -13,15 +14,17 @@ log: Logger = logging.getLogger(__name__)
 
 class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
-    def __init__(self, model: AdhocHighlightDialogModel):
+    def __init__(self, model: AdhocHighlightDialogModel, settings: Settings):
         super().__init__(title="Destination", parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
-        self.__destination_fields_vbox: FieldsLayout = FieldsLayout()
+        self.__destination_fields_vbox: FieldsLayout = FieldsLayout(settings)
         self.__destination_fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         layout: QVBoxLayout = QVBoxLayout()
         layout.addLayout(self.__destination_fields_vbox)
         self.setLayout(layout)
+        self.setMinimumWidth(150)
+        self.adjustSize()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def highlight_model_changed(self, source: object, _: AdhocHighlightDialogModel) -> None:

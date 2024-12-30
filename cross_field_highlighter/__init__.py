@@ -70,13 +70,14 @@ def __initialize(col: Collection):
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
     user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
-    adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
+    adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(
+        adhoc_highlight_dialog_model, settings)
     adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
     adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
         adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade,
         adhoc_highlight_dialog_model_serde, config, user_folder_storage)
     adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
-    adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model, settings)
     adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,

@@ -1,5 +1,5 @@
 from PyQtPath.path_chain_pyqt6 import path
-from aqt import QCheckBox
+from aqt import QCheckBox, QPushButton
 
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 
@@ -31,3 +31,11 @@ def assert_disabled_destination_field_names(fields_layout: FieldsLayout, exp_dis
 
 def get_field_checkboxes(fields_layout: FieldsLayout) -> list[QCheckBox]:
     return path(fields_layout).children(QCheckBox)
+
+
+def get_select_all_button(fields_layout: FieldsLayout) -> QPushButton:
+    return path(fields_layout).layout().button(0).get()
+
+
+def get_select_none_button(fields_layout: FieldsLayout) -> QPushButton:
+    return path(fields_layout).layout().button(1).get()

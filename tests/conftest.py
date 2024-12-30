@@ -28,11 +28,11 @@ from cross_field_highlighter.highlighter.note.regex_field_highlighter import Reg
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from cross_field_highlighter.highlighter.notes.notes_highlighter import NotesHighlighter
+from cross_field_highlighter.highlighter.text.regex_text_highlighter import RegexTextHighlighter
 from cross_field_highlighter.highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
 from cross_field_highlighter.highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
-from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.text.regex_text_highlighter import RegexTextHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
+from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
 from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
 from cross_field_highlighter.ui.about.about_view import AboutView
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
@@ -308,9 +308,10 @@ def adhoc_highlight_dialog_model_serde() -> AdhocHighlightDialogModelSerDe:
 
 @pytest.fixture
 def adhoc_highlight_dialog_view(adhoc_highlight_dialog_model: AdhocHighlightDialogModel, visual_qtbot: VisualQtBot,
-                                theme_manager: ThemeManager, mw: AnkiQt) -> AdhocHighlightDialogView:
+                                theme_manager: ThemeManager, settings: Settings,
+                                mw: AnkiQt) -> AdhocHighlightDialogView:
     assert mw is not None  # initialize aqt.mw
-    view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model)
+    view: AdhocHighlightDialogView = AdhocHighlightDialogView(adhoc_highlight_dialog_model, settings)
     theme_manager.apply_style()
     visual_qtbot.add_widget(view)
     return view
@@ -346,9 +347,9 @@ def adhoc_erase_dialog_model_serde() -> AdhocEraseDialogModelSerDe:
 
 @pytest.fixture
 def adhoc_erase_dialog_view(adhoc_erase_dialog_model: AdhocEraseDialogModel, theme_manager: ThemeManager,
-                            visual_qtbot: VisualQtBot, mw: AnkiQt) -> AdhocEraseDialogView:
+                            settings: Settings, visual_qtbot: VisualQtBot, mw: AnkiQt) -> AdhocEraseDialogView:
     assert mw is not None  # initialize aqt.mw
-    view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model)
+    view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model, settings)
     theme_manager.apply_style()
     visual_qtbot.add_widget(view)
     return view

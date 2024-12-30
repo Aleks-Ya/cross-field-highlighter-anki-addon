@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, Qt
 
+from .....config.settings import Settings
 from .....ui.dialog.adhoc.button_box import ButtonBox
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
 from .....ui.dialog.adhoc.highlight.destination_group_box import DestinationGroupBox
@@ -14,14 +15,14 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogView(QDialog):
 
-    def __init__(self, model: AdhocHighlightDialogModel):
+    def __init__(self, model: AdhocHighlightDialogModel, settings: Settings):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.setVisible(False)
 
         source_group_box: SourceGroupBox = SourceGroupBox(model)
         format_group_box: FormatGroupBox = FormatGroupBox(model)
-        destination_group_box: DestinationGroupBox = DestinationGroupBox(model)
+        destination_group_box: DestinationGroupBox = DestinationGroupBox(model, settings)
         button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(self)

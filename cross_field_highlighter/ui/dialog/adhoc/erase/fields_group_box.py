@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
+from .....config.settings import Settings
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import FieldNames
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, AdhocEraseDialogModel
@@ -14,13 +15,13 @@ log: Logger = logging.getLogger(__name__)
 
 class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
 
-    def __init__(self, model: AdhocEraseDialogModel):
+    def __init__(self, model: AdhocEraseDialogModel, settings: Settings):
         super().__init__(title=None, parent=None)
         self.__model: AdhocEraseDialogModel = model
         self.__model.add_listener(self)
         self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
         self.__note_type_combo_box.set_note_type_changed_callback(self.__on_note_type_changed)
-        self.__fields_vbox: FieldsLayout = FieldsLayout()
+        self.__fields_vbox: FieldsLayout = FieldsLayout(settings)
         self.__fields_vbox.set_on_field_selected_callback(self.__on_field_selected_callback)
         group_layout: QVBoxLayout = QVBoxLayout()
         group_layout.addLayout(self.__note_type_combo_box)

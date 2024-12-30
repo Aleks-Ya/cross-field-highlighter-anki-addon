@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout
 
+from .....config.settings import Settings
 from .....ui.dialog.adhoc.button_box import ButtonBox
 from .....ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -12,13 +13,13 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogView(QDialog):
 
-    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel):
+    def __init__(self, adhoc_erase_dialog_model: AdhocEraseDialogModel, settings: Settings):
         super().__init__(parent=None)
         self.__model: AdhocEraseDialogModel = adhoc_erase_dialog_model
         self.setVisible(False)
         # noinspection PyUnresolvedReferences
 
-        fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model)
+        fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model, settings)
         button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
 
         layout: QGridLayout = QGridLayout(None)
