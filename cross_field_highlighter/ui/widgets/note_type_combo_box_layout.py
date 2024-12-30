@@ -20,7 +20,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         self.__combo_box.currentIndexChanged.connect(self.__on_current_index_changed)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.addWidget(label)
-        self.addWidget(self.__combo_box)
+        self.addWidget(self.__combo_box, stretch=1)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_note_type_changed_callback(self, callback: Callable[[NoteTypeDetails], None]) -> None:

@@ -19,7 +19,7 @@ class TitledLineEditLayout(QHBoxLayout):
         # noinspection PyUnresolvedReferences
         self.__line_edit.textChanged.connect(self.__on_state_changed)
         self.addWidget(label)
-        self.addWidget(self.__line_edit)
+        self.addWidget(self.__line_edit, stretch=1)
         self.__on_text_changed_callback: Optional[Callable[[Text], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 

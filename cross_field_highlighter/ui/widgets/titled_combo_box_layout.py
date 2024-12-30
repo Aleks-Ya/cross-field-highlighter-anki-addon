@@ -14,7 +14,7 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box: QComboBox = QComboBox(None)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.addWidget(label)
-        self.addWidget(self.__combo_box)
+        self.addWidget(self.__combo_box, stretch=1)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_current_text(self, current_text: str) -> None:
