@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Erase from Editor button
+
+autonumber
+User --> HighlightEditorButton: click
+HighlightEditorButton --> AdhocEraseDialogController: show_dialog(DialogParams)
+AdhocEraseDialogController --> AdhocEraseDialogView: show_view()
+User --> AdhocEraseDialogView: configure parameters
+AdhocEraseDialogController <-- AdhocEraseDialogView: accept/reject callback
+HighlightEditorButton <-- AdhocEraseDialogController: start callback
+HighlightEditorButton --> FieldHighlighter: highlight()
+HighlightEditorButton <-- FieldHighlighter
+HighlightEditorButton --> Editor: update current note
+HighlightEditorButton <-- Editor
+HighlightEditorButton --> Editor: loadNoteKeepingFocus()
+HighlightEditorButton <-- Editor
+@enduml

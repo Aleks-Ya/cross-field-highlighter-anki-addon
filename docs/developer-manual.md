@@ -111,3 +111,5 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 Highlight Editor button: https://icon-icons.com/icon/highlight/96729
 Erase Editor button: https://icon-icons.com/icon/rubber/96712
+Select all: https://icon-icons.com/icon/select-all-on-regular/204978
+Select none: https://icon-icons.com/icon/select-all-off-regular/204236

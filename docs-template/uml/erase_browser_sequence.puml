@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Erase from Browser context menu item
+
+autonumber
+User --> BrowserMenuEraseAction: click
+BrowserMenuEraseAction --> AdhocEraseDialogController: show_dialog(DialogParams)
+AdhocEraseDialogController --> AdhocEraseDialogView: show_view()
+User --> AdhocEraseDialogView: configure parameters
+AdhocEraseDialogController <-- AdhocEraseDialogView: accept/reject callback
+BrowserMenuEraseAction <-- AdhocEraseDialogController: start callback
+BrowserMenuEraseAction --> EraseOp **:
+BrowserMenuEraseAction --> EraseOp: run_in_background()
+EraseOp --> NotesHighlighter: highlight()
+EraseOp <-- NotesHighlighter
+EraseOp --> EraseOp: __on_success()
+EraseOp --> QMessageBox: show statistics
+BrowserMenuEraseAction <-- EraseOp: finish callback
+@enduml

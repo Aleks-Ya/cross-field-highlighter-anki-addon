@@ -18,7 +18,7 @@ fields:
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/editor-buttons.png)
 
-### "Highlight" dialog
+### Highlight dialog
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-highlight.png)
 
@@ -39,7 +39,7 @@ fields:
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/statistics-highlight.png)
 
-### "Erase" dialog (removes previously added highlighting)
+### Erase dialog (removes previously added highlighting)
 
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/dialog-erase.png)
 

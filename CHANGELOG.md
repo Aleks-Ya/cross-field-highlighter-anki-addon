@@ -82,3 +82,10 @@
 ## [v1.0.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.0.1) - 2024-12-29
 
 1. __[BUG]__ Fix Editor shortcuts
+
+## [v1.1.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.1.0) - 2025-01-02
+
+1. __[FEATURE]__ Add "Select all" and "Select none" buttons
+2. __[FEATURE]__ Disable Start button when no destination fields are selected
+3. __[BUG]__ Align UI elements
+4. __[BUG]__ Fix error when no notes are selected
