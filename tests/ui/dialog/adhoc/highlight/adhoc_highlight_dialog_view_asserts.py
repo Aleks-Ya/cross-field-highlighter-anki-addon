@@ -61,7 +61,7 @@ def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: 
     group_box: PyQtPath = path(view).group(0)
 
     note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
-    assert note_type.label().get().text() == "Note Type"
+    assert note_type.label().get().text() == "Note type:"
     note_type_combo_box: QComboBox = note_type.combobox().get()
     act_selected_note_type: NoteTypeDetails = note_type_combo_box.currentData()
     assert act_selected_note_type == selected_note_type, f"'{act_selected_note_type}' != '{selected_note_type}'"
@@ -92,7 +92,7 @@ def assert_space_delimited_language(view: AdhocHighlightDialogView, space_delimi
 def assert_source_combo_box(view: AdhocHighlightDialogView, selected_source_field: str, source_fields: list[str]):
     group_box: PyQtPath = path(view).group(0)
     field_path: PyQtPath = group_box.child(TitledComboBoxLayout)
-    assert field_path.label().get().text() == "Field"
+    assert field_path.label().get().text() == "Field:"
     field_combo_box: QComboBox = field_path.combobox().get()
     assert field_combo_box.currentText() == selected_source_field, \
         f"current_source_field: '{selected_source_field}' != '{field_combo_box.currentText()}'"
@@ -103,7 +103,7 @@ def assert_source_combo_box(view: AdhocHighlightDialogView, selected_source_fiel
 def assert_format_group_box(view: AdhocHighlightDialogView, selected_format: Optional[HighlightFormat],
                             formats: list[HighlightFormat]):
     combo_box: PyQtPath = path(view).group(1).child(TitledComboBoxLayout)
-    assert combo_box.label().get().text() == "Format"
+    assert combo_box.label().get().text() == "Format:"
     format_combo_box: QComboBox = combo_box.combobox().get()
     act_current_text: str = format_combo_box.currentText()
     exp_current_text: str = (selected_format.name if selected_format else "")

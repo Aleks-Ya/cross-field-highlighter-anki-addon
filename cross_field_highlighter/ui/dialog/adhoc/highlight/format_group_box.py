@@ -17,7 +17,7 @@ class FormatGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         super().__init__(title="Format", parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.__model.add_listener(self)
-        self.__combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Format")
+        self.__combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Format:")
         self.__combo_box.add_current_text_changed_callback(self.__on_current_text_changed)
         layout: QVBoxLayout = QVBoxLayout()
         layout.addLayout(self.__combo_box)

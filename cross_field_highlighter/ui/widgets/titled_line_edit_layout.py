@@ -16,6 +16,7 @@ class TitledLineEditLayout(QHBoxLayout):
         self.__line_edit: QLineEdit = QLineEdit(text)
         self.__line_edit.setPlaceholderText(placeholder)
         self.__line_edit.setClearButtonEnabled(clear_button_enabled)
+        # noinspection PyUnresolvedReferences
         self.__line_edit.textChanged.connect(self.__on_state_changed)
         self.addWidget(label)
         self.addWidget(self.__line_edit)

@@ -23,7 +23,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.__model.add_listener(self)
         self.__note_type_combo_box: NoteTypeComboBoxLayout = NoteTypeComboBoxLayout()
         self.__note_type_combo_box.set_note_type_changed_callback(self.__on_note_type_changed)
-        self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field")
+        self.__source_field_combo_box: TitledComboBoxLayout = TitledComboBoxLayout("Field:")
         self.__source_field_combo_box.add_current_text_changed_callback(self.__on_source_field_changed)
         self.__stop_words_layout: TitledLineEditLayout = TitledLineEditLayout(
             "Exclude words:", text="a an to", clear_button_enabled=True)
