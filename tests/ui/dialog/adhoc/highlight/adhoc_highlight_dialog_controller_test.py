@@ -485,7 +485,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
     # Mark destination field
     adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_back)
     assert callback.history == []
-    assert listener.counter == 2
+    assert listener.counter == 3
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.stop_words,
         'note_number': 1,
@@ -516,7 +516,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
     # Select marked destination field as source field (should be excluded from HighlightOpParams)
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
     assert callback.history == []
-    assert listener.counter == 3
+    assert listener.counter == 4
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.stop_words,
         'note_number': 1,
@@ -547,7 +547,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
     # Mark another destination field
     adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_extra)
     assert callback.history == []
-    assert listener.counter == 3
+    assert listener.counter == 5
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.stop_words,
         'note_number': 1,
@@ -583,7 +583,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
         basic_note_type_details.note_type_id, DefaultFields.basic_back, True,
         FieldNames([DefaultFields.basic_extra]), Text(DefaultConfig.stop_words), bold_format
     )]
-    assert listener.counter == 3
+    assert listener.counter == 5
     assert adhoc_highlight_dialog_model.as_dict() == {
         'default_stop_words': DefaultConfig.stop_words,
         'note_number': 1,

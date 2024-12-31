@@ -224,7 +224,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
-    assert listener.counter == 5
+    assert listener.counter == 6
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -253,7 +253,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
-    assert listener.counter == 5
+    assert listener.counter == 6
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
@@ -282,7 +282,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert listener.counter == 7
+    assert listener.counter == 8
     assert adhoc_highlight_dialog_model.as_dict() == {
         'accept_callback_None': False,
         'current_state': {'selected_destination_fields': [],
