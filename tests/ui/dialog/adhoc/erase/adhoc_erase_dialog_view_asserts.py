@@ -4,7 +4,8 @@ from PyQtPath.path_chain_pyqt6 import path
 from aqt import QCheckBox, QDialogButtonBox, QPushButton, QComboBox
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
-from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener
+from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModelListener, \
+    AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.operation.erase_op_params import EraseOpParams
@@ -23,7 +24,7 @@ class FakeModelListener(AdhocEraseDialogModelListener):
     def __init__(self):
         self.history: list[object] = []
 
-    def model_changed(self, source: object):
+    def erase_model_changed(self, source: object, _: AdhocEraseDialogModel):
         self.history.append(source)
 
 

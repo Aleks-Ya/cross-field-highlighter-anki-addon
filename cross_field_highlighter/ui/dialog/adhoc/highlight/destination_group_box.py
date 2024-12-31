@@ -24,7 +24,7 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.setLayout(layout)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def model_changed(self, source: object) -> None:
+    def highlight_model_changed(self, source: object, _: AdhocHighlightDialogModel) -> None:
         if source != self:
             log.debug("Model changed")
             self.__destination_fields_vbox.set_items(self.__model.get_current_state().get_selected_note_type().fields)

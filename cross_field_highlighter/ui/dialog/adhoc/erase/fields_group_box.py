@@ -28,7 +28,7 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
         self.setLayout(group_layout)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def model_changed(self, source: object) -> None:
+    def erase_model_changed(self, source: object, _: AdhocEraseDialogModel) -> None:
         if source != self:
             log.debug("Model changed")
             self.__note_type_combo_box.set_note_types(self.__model.get_note_types())

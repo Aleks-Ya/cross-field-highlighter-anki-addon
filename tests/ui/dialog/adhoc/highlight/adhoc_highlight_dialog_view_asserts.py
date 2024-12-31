@@ -7,7 +7,7 @@ from cross_field_highlighter.highlighter.formatter.highlight_format import Highl
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.ui.dialog.adhoc.fields_layout import FieldsLayout
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import \
-    AdhocHighlightDialogModelListener
+    AdhocHighlightDialogModelListener, AdhocHighlightDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from cross_field_highlighter.ui.widgets.note_type_combo_box_layout import NoteTypeComboBoxLayout
@@ -29,7 +29,7 @@ class FakeModelListener(AdhocHighlightDialogModelListener):
     def __init__(self):
         self.counter: int = 0
 
-    def model_changed(self, source: object):
+    def highlight_model_changed(self, source: object, _: AdhocHighlightDialogModel):
         self.counter += 1
 
 

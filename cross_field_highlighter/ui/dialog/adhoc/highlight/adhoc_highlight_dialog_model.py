@@ -1,6 +1,6 @@
 import logging
-from logging import Logger
 from abc import abstractmethod
+from logging import Logger
 from typing import Optional, Callable
 
 from .....highlighter.formatter.highlight_format import HighlightFormats
@@ -13,7 +13,7 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogModelListener:
     @abstractmethod
-    def model_changed(self, source: object):
+    def highlight_model_changed(self, source: object, model: 'AdhocHighlightDialogModel'):
         pass
 
 
@@ -99,7 +99,7 @@ class AdhocHighlightDialogModel:
 
     def fire_model_changed(self, source: object):
         for listener in self.__listeners:
-            listener.model_changed(source)
+            listener.highlight_model_changed(source, self)
 
     def as_dict(self) -> dict[str, any]:
         return {

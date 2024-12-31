@@ -12,7 +12,7 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocEraseDialogModelListener:
     @abstractmethod
-    def model_changed(self, source: object):
+    def erase_model_changed(self, source: object, model: 'AdhocEraseDialogModel'):
         pass
 
 
@@ -74,7 +74,7 @@ class AdhocEraseDialogModel:
     def fire_model_changed(self, source: object) -> None:
         log.debug(f"Fire model changed: {source}")
         for listener in self.__listeners:
-            listener.model_changed(source)
+            listener.erase_model_changed(source, self)
 
     def reset_states(self) -> None:
         log.debug("Reset states")

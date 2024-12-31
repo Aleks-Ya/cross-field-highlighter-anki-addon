@@ -24,7 +24,7 @@ class FormatGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         self.setLayout(layout)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def model_changed(self, source: object) -> None:
+    def highlight_model_changed(self, source: object, _: AdhocHighlightDialogModel) -> None:
         if source != self:
             log.debug("Model changed")
             highlight_formats: dict[str, HighlightFormat] = {highlight_format.name: highlight_format for
