@@ -44,15 +44,16 @@ class FakeHighlightControllerCallback:
 def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note_type: Optional[NoteTypeDetails],
                 note_types: list[NoteTypeDetails], selected_source_field: str, source_fields: list[str],
                 selected_format: Optional[HighlightFormat], formats: list[HighlightFormat], check_box_texts: list[str],
-                selected_desination_fields: list[str], disabled_fields: list[str], stop_words: str,
+                selected_destination_fields: list[str], disabled_fields: list[str], stop_words: str,
                 space_delimited_language: bool):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
-    assert_buttons(view)
+    exp_start_button_enabled: bool = len(list(set(selected_destination_fields) - set(disabled_fields))) > 0
+    assert_buttons(view, exp_start_button_enabled)
     assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words,
                             space_delimited_language)
     assert_format_group_box(view, selected_format, formats)
-    assert_destination_group_box(view, check_box_texts, selected_desination_fields, disabled_fields)
+    assert_destination_group_box(view, check_box_texts, selected_destination_fields, disabled_fields)
 
 
 def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: Optional[NoteTypeDetails],
@@ -121,9 +122,10 @@ def assert_destination_group_box(view: AdhocHighlightDialogView, check_box_texts
     assert_fields_layout(fields_layout, check_box_texts, selected_destination_fields, disabled_fields)
 
 
-def assert_buttons(view: AdhocHighlightDialogView):
+def assert_buttons(view: AdhocHighlightDialogView, start_button_enabled: bool):
     start_button: QPushButton = path(view).child(QDialogButtonBox).button(0).get()
     assert start_button.text() == "&Start"
+    assert start_button.isEnabled() == start_button_enabled, f"'{start_button.isEnabled()}' != '{start_button_enabled}'"
     cancel_button: QPushButton = path(view).child(QDialogButtonBox).button(1).get()
     act_cancel_button_text: str = cancel_button.text()
     exp_cancel_button_text: str = "&Cancel"

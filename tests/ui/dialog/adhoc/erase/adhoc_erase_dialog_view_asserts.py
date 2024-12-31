@@ -40,7 +40,8 @@ def assert_view(view: AdhocEraseDialogView, window_title: str, selected_note_typ
                 all_fields: list[str], selected_fields: list[str]):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
-    assert_buttons(view)
+    exp_start_button_enabled: bool = len(selected_fields) > 0
+    assert_buttons(view, exp_start_button_enabled)
     assert_destination_group_box(view, selected_note_type, all_fields, selected_fields)
 
 
@@ -61,9 +62,10 @@ def assert_destination_group_box(view: AdhocEraseDialogView, selected_note_type:
     assert act_selected_fields == selected_fields, f"selected_fields: '{act_selected_fields}' != '{selected_fields}'"
 
 
-def assert_buttons(view: AdhocEraseDialogView):
+def assert_buttons(view: AdhocEraseDialogView, start_button_enabled: bool):
     start_button: QPushButton = path(view).child(QDialogButtonBox).button(0).get()
     assert start_button.text() == "&Start"
+    assert start_button.isEnabled() == start_button_enabled, f"'{start_button.isEnabled()}' != '{start_button_enabled}'"
     cancel_button: QPushButton = path(view).child(QDialogButtonBox).button(1).get()
     act_cancel_button_text: str = cancel_button.text()
     exp_cancel_button_text: str = "&Cancel"

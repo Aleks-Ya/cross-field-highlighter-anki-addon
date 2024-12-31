@@ -21,6 +21,7 @@ class AdhocEraseDialogView(QDialog):
 
         fields_group_layout: FieldsGroupBox = FieldsGroupBox(adhoc_erase_dialog_model, settings)
         button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
+        self.__model.add_listener(button_box)
 
         layout: QGridLayout = QGridLayout(None)
         layout.addWidget(fields_group_layout, 0, 0)

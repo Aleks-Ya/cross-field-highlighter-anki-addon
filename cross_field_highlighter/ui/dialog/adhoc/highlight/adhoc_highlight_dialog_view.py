@@ -24,6 +24,7 @@ class AdhocHighlightDialogView(QDialog):
         format_group_box: FormatGroupBox = FormatGroupBox(model)
         destination_group_box: DestinationGroupBox = DestinationGroupBox(model, settings)
         button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
+        self.__model.add_listener(button_box)
 
         layout: QGridLayout = QGridLayout(self)
         layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)

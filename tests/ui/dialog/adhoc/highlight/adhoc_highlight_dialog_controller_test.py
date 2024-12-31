@@ -52,7 +52,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
 
     adhoc_highlight_dialog_controller.show_dialog(params, callback.call)
@@ -82,7 +82,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -112,7 +112,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
 
     # Update config from model
@@ -158,7 +158,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -207,7 +207,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -243,7 +243,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
 
     # Update config from model
@@ -294,7 +294,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
                 stop_words='to the', space_delimited_language=True)
 
     # Initialize controller using saved config
@@ -342,7 +342,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
                 stop_words='to the', space_delimited_language=True)
 
 
@@ -450,7 +450,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
 
     # Show dialog
@@ -481,7 +481,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words, space_delimited_language=True)
 
     # Mark destination field
@@ -512,7 +512,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words, space_delimited_language=True)
 
     # Select marked destination field as source field (should be excluded from HighlightOpParams)
@@ -543,7 +543,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_back, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_back],
+                selected_destination_fields=[DefaultFields.basic_back], disabled_fields=[DefaultFields.basic_back],
                 stop_words=DefaultConfig.stop_words, space_delimited_language=True)
 
     # Mark another destination field
@@ -575,7 +575,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_back, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back, DefaultFields.basic_extra],
+                selected_destination_fields=[DefaultFields.basic_back, DefaultFields.basic_extra],
                 disabled_fields=[DefaultFields.basic_back], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -619,7 +619,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                 selected_note_type=basic_note_type_details, note_types=all_note_type_details,
                 selected_source_field=DefaultFields.basic_back, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[DefaultFields.basic_back, DefaultFields.basic_extra],
+                selected_destination_fields=[DefaultFields.basic_back, DefaultFields.basic_extra],
                 disabled_fields=[DefaultFields.basic_back], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -650,7 +650,7 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
-                selected_desination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
                 space_delimited_language=False)
 
     # Show dialog for Basic note type
@@ -681,7 +681,7 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_note_type=basic_note_type_details, note_types=[basic_note_type_details],
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -721,7 +721,7 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_note_type=basic_note_type_details, note_types=[basic_note_type_details],
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.basic_front],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
 
@@ -767,6 +767,6 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_note_type=cloze_note_type_details, note_types=[cloze_note_type_details],
                 selected_source_field=DefaultFields.cloze_text, source_fields=DefaultFields.all_cloze,
                 selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_cloze,
-                selected_desination_fields=[], disabled_fields=[DefaultFields.cloze_text],
+                selected_destination_fields=[], disabled_fields=[DefaultFields.cloze_text],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
