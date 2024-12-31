@@ -61,9 +61,7 @@ class AdhocHighlightDialogController:
         source_field: FieldName = state.get_selected_source_field()
         stop_words: Text = Text(state.get_selected_stop_words())
         note_type: NoteTypeDetails = state.get_selected_note_type()
-        destination_fields: FieldNames = state.get_selected_destination_fields()
-        enabled_destination_fields: FieldNames = FieldNames([field_name for field_name in destination_fields
-                                                             if field_name != source_field])
+        enabled_destination_fields: FieldNames = state.get_selected_enabled_destination_fields()
         highlight_op_params: HighlightOpParams = HighlightOpParams(
             note_type.note_type_id, source_field, state.get_space_delimited_language(), enabled_destination_fields,
             stop_words, state.get_selected_format())

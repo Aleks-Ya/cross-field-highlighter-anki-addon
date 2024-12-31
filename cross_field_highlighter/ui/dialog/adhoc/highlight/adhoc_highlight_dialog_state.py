@@ -39,6 +39,10 @@ class AdhocHighlightDialogState:
     def get_selected_destination_fields(self) -> FieldNames:
         return self.__selected_destination_fields
 
+    def get_selected_enabled_destination_fields(self) -> FieldNames:
+        return FieldNames([field_name for field_name in self.get_selected_destination_fields()
+                           if field_name != self.get_selected_source_field()])
+
     def set_space_delimited_language(self, space_delimited_language: bool) -> None:
         self.__space_delimited_language = space_delimited_language
 
