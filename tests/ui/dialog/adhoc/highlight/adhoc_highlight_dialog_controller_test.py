@@ -770,3 +770,22 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 selected_destination_fields=[], disabled_fields=[DefaultFields.cloze_text],
                 stop_words=DefaultConfig.stop_words,
                 space_delimited_language=True)
+
+
+def test_no_notes_selected(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                           adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                           all_highlight_formats: HighlightFormats,
+                           bold_format: HighlightFormat, basic_note_type_details: NoteTypeDetails,
+                           user_folder_storage: UserFolderStorage):
+    callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
+                selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                space_delimited_language=False)
+
+    params: DialogParams = DialogParams([], 1)
+    adhoc_highlight_dialog_controller.show_dialog(params, callback.call)
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
+                selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words,
+                space_delimited_language=False)

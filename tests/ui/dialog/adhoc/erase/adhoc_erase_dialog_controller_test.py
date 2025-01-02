@@ -329,3 +329,11 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
         'states': [{'note_type': basic_note_type_details.name, 'fields': []}]}}
     assert_view(adhoc_erase_dialog_view, window_title="Erase 1 note", selected_note_type=cloze_note_type_details,
                 all_fields=DefaultFields.all_cloze, selected_fields=[])
+
+
+def test_no_notes_selected(adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                           adhoc_erase_dialog_view: AdhocEraseDialogView):
+    assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])
+    params: DialogParams = DialogParams([], 1)
+    adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
+    assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])

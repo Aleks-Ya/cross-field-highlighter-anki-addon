@@ -2,6 +2,8 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
+from aqt.utils import show_info
+
 from .adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
 from .....config.user_folder_storage import UserFolderStorage
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -29,6 +31,10 @@ class AdhocEraseDialogController:
 
     def show_dialog(self, params: DialogParams, start_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
+        if len(params.note_types) == 0:
+            log.debug("No notes are selected")
+            show_info("No notes are selected", title="Cross-Field Highlighter")
+            return
         self.__start_callback = start_callback
         self.__model.fill(params.note_types, params.note_number, self.__accept_callback, self.__reject_callback)
         self.__model.reset_states()

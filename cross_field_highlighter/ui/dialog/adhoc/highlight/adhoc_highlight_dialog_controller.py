@@ -2,6 +2,8 @@ import logging
 from logging import Logger
 from typing import Callable, Optional
 
+from aqt.utils import show_info
+
 from .adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .adhoc_highlight_dialog_state import AdhocHighlightDialogState
 from .....config.config import Config
@@ -37,6 +39,10 @@ class AdhocHighlightDialogController:
 
     def show_dialog(self, params: DialogParams, run_op_callback: Callable[[HighlightOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
+        if len(params.note_types) == 0:
+            log.debug("No notes are selected")
+            show_info("No notes are selected", title="Cross-Field Highlighter")
+            return
         self.__run_op_callback = run_op_callback
         self.__fill_model_from_storage()
         self.__model.fill(params.note_types, params.note_number, self.__formatter_facade.get_all_formats(),

@@ -7,7 +7,7 @@ import aqt
 import pytest
 from anki.collection import Collection
 from anki.models import NoteType, NotetypeId, FieldDict
-from aqt import ProfileManager, AnkiQt, QApplication, QWidget, QDesktopServices
+from aqt import ProfileManager, AnkiQt, QApplication, QWidget, QDesktopServices, QMainWindow
 from aqt.addons import AddonManager
 from aqt.editor import Editor
 from aqt.progress import ProgressManager
@@ -159,10 +159,17 @@ def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_
 
 
 @pytest.fixture
-def mw(profile_manager: ProfileManager, qapp: QApplication) -> AnkiQt:
-    mw_mock: MagicMock = MagicMock()
+def mw(col: Collection, profile_manager: ProfileManager, qapp: QApplication) -> AnkiQt:
+    mw_mock: AnkiQt = AnkiQt.__new__(AnkiQt)
+    mw_mock.__init__ = lambda self: QMainWindow.__init__(self)
+    mw_mock.__init__(mw_mock)
+    mw_mock.state = "startup"
     mw_mock.pm = profile_manager
     mw_mock.app = qapp
+    mw_mock.mediaServer = MagicMock()
+    mw_mock.col = col
+    mw_mock._background_op_count = 0
+    mw_mock.progress = ProgressManager(mw_mock)
     aqt.mw = mw_mock
     return mw_mock
 
@@ -176,7 +183,7 @@ def task_manager(mw: AnkiQt) -> TaskManager:
 
 @pytest.fixture
 def progress_manager(mw: AnkiQt) -> ProgressManager:
-    return ProgressManager(mw)
+    return mw.progress
 
 
 @pytest.fixture
