@@ -28,3 +28,30 @@ fields:
 3. Show in Browser:
     1. Show all highlighted notes
     2. Show notes modified by the latest run
+
+## Customize formatting
+
+CFH supports 4 formats: Bold, Italic, Underlined and Yellow background.  
+In HTML these formats are represented like:
+
+```html
+<b class="cross-field-highlighter">Bold</b>
+<i class="cross-field-highlighter">Italic</i>
+<u class="cross-field-highlighter">Underlined</u>
+<mark class="cross-field-highlighter">Yellow Background</mark>
+```
+
+User can customize these formats using CSS styles in card template.  
+Example of CSS style:
+
+```css
+.cross-field-highlighter {
+    color: DarkSlateGray;
+    background-color: LightGray;
+    font-size: 1.5em;
+    font-family: sans-serif;
+}
+```
+
+This style on screenshot:
+![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/custom-style.png)
