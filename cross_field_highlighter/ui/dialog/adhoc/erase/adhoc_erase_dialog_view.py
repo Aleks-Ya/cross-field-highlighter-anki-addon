@@ -3,10 +3,11 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout
 
+from ....number_formatter import NumberFormatter
 from .....config.settings import Settings
 from .....ui.dialog.adhoc.button_box import ButtonBox
-from .....ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+from .....ui.dialog.adhoc.erase.fields_group_box import FieldsGroupBox
 
 log: Logger = logging.getLogger(__name__)
 
@@ -42,7 +43,8 @@ class AdhocEraseDialogView(QDialog):
 
     def __get_window_title(self) -> str:
         noun: str = "note" if self.__model.get_note_number() == 1 else "notes"
-        return f'Erase {self.__model.get_note_number()} {noun}'
+        number: str = NumberFormatter.with_thousands_separator(self.__model.get_note_number())
+        return f'Erase {number} {noun}'
 
     def __accept(self) -> None:
         log.info("Starting")

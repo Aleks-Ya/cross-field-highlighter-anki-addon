@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QDialog, QGridLayout, Qt
 
+from ....number_formatter import NumberFormatter
 from .....config.settings import Settings
 from .....ui.dialog.adhoc.button_box import ButtonBox
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
@@ -48,7 +49,8 @@ class AdhocHighlightDialogView(QDialog):
 
     def __get_window_title(self) -> str:
         noun: str = "note" if self.__model.get_note_number() == 1 else "notes"
-        return f'Highlight {self.__model.get_note_number()} {noun}'
+        number: str = NumberFormatter.with_thousands_separator(self.__model.get_note_number())
+        return f'Highlight {number} {noun}'
 
     def __accept(self) -> None:
         log.info("Starting")
