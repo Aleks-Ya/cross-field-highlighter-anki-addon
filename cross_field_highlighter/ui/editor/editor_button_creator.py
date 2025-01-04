@@ -60,17 +60,17 @@ class EditorButtonCreator:
 
     def __on_highlight_button_click(self, editor: Editor) -> None:
         log.debug("On highlight click")
-        note: Note = editor.note
+        self.__editor = editor
+        note: Note = editor.card.note() if editor.card else editor.note
         if note:
-            self.__editor = editor
             dialog_params: DialogParams = self.__create_dialog_params(note)
             self.__highlight_controller.show_dialog(dialog_params, self.__on_highlight_op)
 
     def __on_erase_button_click(self, editor: Editor) -> None:
         log.debug("On erase click")
-        note: Note = editor.note
+        self.__editor = editor
+        note: Note = editor.card.note() if editor.card else editor.note
         if note:
-            self.__editor = editor
             dialog_params: DialogParams = self.__create_dialog_params(note)
             self.__erase_controller.show_dialog(dialog_params, self.__on_erase_op)
 
