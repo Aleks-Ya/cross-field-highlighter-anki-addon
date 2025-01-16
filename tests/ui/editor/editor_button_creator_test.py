@@ -1,3 +1,4 @@
+import anki
 from aqt.editor import Editor
 
 from cross_field_highlighter.ui.editor.editor_button_creator import EditorButtonCreator
@@ -5,11 +6,12 @@ from cross_field_highlighter.ui.editor.editor_button_creator import EditorButton
 
 def test_create_highlight_button(editor_button_creator: EditorButtonCreator, editor_edit_mode: Editor,
                                  editor_add_mode: Editor):
-    exp: str = """<button tabindex=-1
+    hotkey: str = "Command+Shift+H" if anki.utils.plat_desc().startswith("mac") else "Ctrl+Shift+H"
+    exp: str = f"""<button tabindex=-1
                         
                         class="linkb"
                         type="button"
-                        title="Open Highlight dialog for current note...\n(Cross-Field Highlighter)\nCtrl+Shift+H"
+                        title="Open Highlight dialog for current note...\n(Cross-Field Highlighter)\n{hotkey}"
                         onclick="pycmd('highlight_button_cmd');return false;"
                         onmousedown="window.event.preventDefault();"
                 >
