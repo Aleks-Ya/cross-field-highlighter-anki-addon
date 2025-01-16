@@ -313,7 +313,12 @@ class Data:
                  'beautiful[nice]',
                  'Hello, [beautiful] and nice [world]!',
                  'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!',
-                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!')
+                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!'),
+            Case("Special symbols: curly quotes (smart quites)",
+                 'rally',
+                 'It is a “rally.”',
+                 'It is a “<b class="cross-field-highlighter">rally</b>.”',
+                 'It is a “<b class="cross-field-highlighter">rally</b>.”')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:

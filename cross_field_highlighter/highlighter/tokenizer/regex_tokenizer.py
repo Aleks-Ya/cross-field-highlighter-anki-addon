@@ -1,5 +1,5 @@
-from re import Pattern, split, compile, escape, match, IGNORECASE
 import string
+from re import Pattern, split, compile, escape, match, IGNORECASE
 from typing import Optional
 
 from .tokenizer import TokenType
@@ -24,7 +24,8 @@ class RegExTokenizer(Tokenizer):
 
     @staticmethod
     def __create_punctuation_pattern() -> Pattern[str]:
-        punctuation_escaped: str = escape(string.punctuation)
+        curly_quotes: str = '“”'
+        punctuation_escaped: str = escape(string.punctuation + curly_quotes)
         punctuation_pattern: Pattern[str] = compile(f"([{punctuation_escaped}])")
         return punctuation_pattern
 

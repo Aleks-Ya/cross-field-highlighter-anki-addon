@@ -114,3 +114,14 @@ def test_tokenize_by_special_token(tokenize: Callable[[str, list[Token]], Words]
         Token(Word('s'), TokenType.WORD),
         Token(Word('.'), TokenType.PUNCTUATION)
     ])
+
+
+def test_tokenize_curly_quotes(tokenize: Callable[[str, list[Token]], Words]):
+    assert tokenize('Beautiful “world.”', []) == Tokens([
+        Token(Word('Beautiful'), TokenType.WORD),
+        Token(Word(' '), TokenType.SPACE),
+        Token(Word('“'), TokenType.PUNCTUATION),
+        Token(Word('world'), TokenType.WORD),
+        Token(Word('.'), TokenType.PUNCTUATION),
+        Token(Word('”'), TokenType.PUNCTUATION),
+    ])
