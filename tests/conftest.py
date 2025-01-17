@@ -7,6 +7,7 @@ import aqt
 import pytest
 from anki.collection import Collection
 from anki.models import NoteType, NotetypeId, FieldDict
+from aqt import DialogManager
 from aqt import ProfileManager, AnkiQt, QApplication, QWidget, QDesktopServices, QMainWindow
 from aqt.addons import AddonManager
 from aqt.editor import Editor
@@ -177,7 +178,7 @@ def mw(col: Collection, profile_manager: ProfileManager, qapp: QApplication) -> 
 @pytest.fixture
 def task_manager(mw: AnkiQt) -> TaskManager:
     task_manager: TaskManager = TaskManager(mw)
-    aqt.mw.taskman = TaskManager(mw)
+    mw.taskman = TaskManager(mw)
     return task_manager
 
 
@@ -451,3 +452,8 @@ def about_view(parent: QWidget, url_manager: UrlManager, desktop_services: QDesk
                visual_qtbot: VisualQtBot, mw: AnkiQt) -> AboutView:
     assert mw is not None  # initialize aqt.mw
     return AboutView(parent, url_manager, desktop_services, settings)
+
+
+@pytest.fixture
+def dialog_manager() -> DialogManager:
+    return aqt.dialogs

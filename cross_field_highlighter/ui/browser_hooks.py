@@ -45,6 +45,7 @@ class BrowserHooks:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def setup_hooks(self) -> None:
+        self.remove_hooks()
         gui_hooks.browser_will_show.append(self.__hook_browser_will_show)
         gui_hooks.browser_will_show_context_menu.append(self.__hook_browser_will_show_context_menu)
         log.info(f"{self.__class__.__name__} are set")

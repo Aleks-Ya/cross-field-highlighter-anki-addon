@@ -17,12 +17,19 @@ class EditorButtonHooks:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def setup_hooks(self) -> None:
-        gui_hooks.editor_did_init_buttons.append(self.__hook_editor_did_init_buttons)
-        log.info("Hooks were set")
+        hook = gui_hooks.editor_did_init_buttons
+        count_before: int = hook.count()
+        self.remove_hooks()
+        hook.append(self.__hook_editor_did_init_buttons)
+        count_after: int = hook.count()
+        log.info(f"Hooks were set: count_before={count_before}, count_after={count_after}")
 
     def remove_hooks(self) -> None:
-        gui_hooks.editor_did_init_buttons.remove(self.__hook_editor_did_init_buttons)
-        log.info("Hooks were removed")
+        hook = gui_hooks.editor_did_init_buttons
+        count_before: int = hook.count()
+        hook.remove(self.__hook_editor_did_init_buttons)
+        count_after: int = hook.count()
+        log.info(f"Hooks were removed: count_before={count_before}, count_after={count_after}")
 
     def __on_editor_did_init_buttons(self, buttons: list[str], editor: Editor) -> None:
         log.debug("On Editor did init buttons...")

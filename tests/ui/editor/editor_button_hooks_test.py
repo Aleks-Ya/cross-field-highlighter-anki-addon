@@ -16,6 +16,8 @@ def test_setup_hooks_enabled(editor_button_hooks: EditorButtonHooks):
     __assert_no_hooks()
     editor_button_hooks.setup_hooks()
     assert gui_hooks.editor_did_init_buttons.count() == 1
+    editor_button_hooks.setup_hooks()
+    assert gui_hooks.editor_did_init_buttons.count() == 1
     editor_button_hooks.remove_hooks()
     __assert_no_hooks()
 
