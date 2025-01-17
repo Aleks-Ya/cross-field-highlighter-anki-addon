@@ -28,10 +28,22 @@ class AdhocHighlightDialogView(QDialog):
         self.__model.add_listener(button_box)
 
         layout: QGridLayout = QGridLayout(self)
-        layout.addWidget(source_group_box, 0, 0, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(format_group_box, 0, 1, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(destination_group_box, 0, 2, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(button_box, 3, 0, 1, 3, Qt.AlignmentFlag.AlignRight)
+        row0: int = 0
+        row1: int = 1
+        column0: int = 0
+        column1: int = 1
+        column2: int = 2
+        layout.addWidget(source_group_box, row0, column0, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(format_group_box, row0, column1, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(destination_group_box, row0, column2, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(button_box, row1, column0, 1, 3, Qt.AlignmentFlag.AlignRight)
+
+        layout.setColumnStretch(column0, 1)
+        layout.setColumnStretch(column1, 1)
+        layout.setColumnStretch(column2, 3)
+
+        layout.setRowStretch(row0, 1)
+        layout.setRowStretch(row1, 0)
 
         self.setLayout(layout)
         self.resize(300, 200)

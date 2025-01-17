@@ -103,7 +103,7 @@ class Data:
         for i in range(field_number):
             new_field_name: str = f"Field {i + 1}"
             if len(new_field_name) < min_field_name_length:
-                new_field_name += " " + "x" * (min_field_name_length - len(new_field_name) - 1)
+                new_field_name += " " + "x" * (min_field_name_length - len(new_field_name) - 2) + "S"
             new_field_dict: FieldDict = self.col.models.new_field(new_field_name)
             self.col.models.add_field(note_type, new_field_dict)
 

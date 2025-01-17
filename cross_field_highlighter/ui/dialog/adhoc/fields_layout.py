@@ -50,6 +50,7 @@ class FieldsLayout(QVBoxLayout):
             # noinspection PyUnresolvedReferences
             check_box.stateChanged.connect(self.__on_state_changed)
             self.addWidget(check_box)
+            # noinspection PyUnresolvedReferences
             QWidget.setTabOrder(previous_in_focus, check_box)
             previous_in_focus = check_box
             self.__field_name_checkboxes[field_name] = check_box
