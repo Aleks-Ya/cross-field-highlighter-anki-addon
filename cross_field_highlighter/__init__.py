@@ -26,7 +26,7 @@ def __initialize(col: Collection):
     from .highlighter.tokenizer.regex_tokenizer import RegExTokenizer
     from .highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
     from .highlighter.tokenizer.tokenizer import Tokenizer
-    from .ui.browser_hooks import BrowserHooks
+    from cross_field_highlighter.ui.browser.browser_hooks import BrowserHooks
     from .log.logs import Logs
     from .ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
     from .ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel

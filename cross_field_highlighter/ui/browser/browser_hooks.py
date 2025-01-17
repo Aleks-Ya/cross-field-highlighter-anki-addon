@@ -6,16 +6,16 @@ from aqt import gui_hooks, QMenu, DialogManager, QDesktopServices
 from aqt.addons import AddonManager
 from aqt.browser import Browser
 
-from .menu.browser_menu_erase_action import BrowserMenuEraseAction
-from .menu.browser_menu_highlight_action import BrowserMenuHighlightAction
-from ..config.config import Config
-from ..config.settings import Settings
-from ..config.url_manager import UrlManager
-from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
-from ..ui.menu.browser_menu import BrowserMenu
-from ..ui.menu.dialog_params_factory import DialogParamsFactory
-from ..ui.operation.op_factory import OpFactory
+from ...config.config import Config
+from ...config.settings import Settings
+from ...config.url_manager import UrlManager
+from ...ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+from ...ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
+from ...ui.menu.browser_menu import BrowserMenu
+from ...ui.menu.browser_menu_erase_action import BrowserMenuEraseAction
+from ...ui.menu.browser_menu_highlight_action import BrowserMenuHighlightAction
+from ...ui.menu.dialog_params_factory import DialogParamsFactory
+from ...ui.operation.op_factory import OpFactory
 
 log: Logger = logging.getLogger(__name__)
 

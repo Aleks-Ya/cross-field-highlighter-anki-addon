@@ -6,7 +6,7 @@ from aqt.addons import AddonManager
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
-from cross_field_highlighter.ui.browser_hooks import BrowserHooks
+from cross_field_highlighter.ui.browser.browser_hooks import BrowserHooks
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import \
     AdhocHighlightDialogController
