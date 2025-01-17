@@ -4,9 +4,9 @@ from typing import Callable, Optional
 
 from anki.collection import Collection
 from anki.notes import NoteId
+from aqt import QWidget
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
-from aqt import QWidget
 
 from .erase_op import EraseOp
 from .erase_op_params import EraseOpParams
@@ -33,17 +33,19 @@ class OpFactory:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def create_highlight_op(self, note_ids: set[NoteId], callback: Callable[[], None],
-                            parent: Optional[QWidget], highlight_op_params: HighlightOpParams) -> HighlightOp:
+                            parent: Optional[QWidget], highlight_op_params: HighlightOpParams,
+                            show_statistics: bool) -> HighlightOp:
         log.debug("Creating HighlightOp")
         return HighlightOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                           note_ids, self.__op_statistics_formatter, callback, parent, highlight_op_params,
-                           self.__config)
+                           note_ids, self.__op_statistics_formatter, show_statistics, callback, parent,
+                           highlight_op_params, self.__config)
 
     def create_erase_op(self, note_ids: set[NoteId], callback: Callable[[], None], parent: Optional[QWidget],
-                        erase_op_params: EraseOpParams) -> EraseOp:
+                        erase_op_params: EraseOpParams, show_statistics: bool) -> EraseOp:
         log.debug(f"Creating EraseOp: note_ids={len(note_ids)}")
         return EraseOp(self.__col, self.__notes_highlighter, self.__task_manager, self.__progress_manager,
-                       note_ids, self.__op_statistics_formatter, callback, parent, erase_op_params, self.__config)
+                       note_ids, self.__op_statistics_formatter, show_statistics, callback, parent,
+                       erase_op_params, self.__config)
 
     def __del__(self):
         log.debug(f"{self.__class__.__name__} was deleted")

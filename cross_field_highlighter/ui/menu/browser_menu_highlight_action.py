@@ -30,17 +30,19 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
         qconnect(self.triggered, lambda: self.__on_click(browser))
         self.__op_factory: OpFactory = op_factory
         self.__controller: AdhocHighlightDialogController = adhoc_highlight_dialog_controller
+        self.__show_statistics: bool = False
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __on_click(self, browser: Browser) -> None:
         log.debug("On highlight click")
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
+        self.__show_statistics = browser.editor is None
         self.__controller.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, highlight_op_params: HighlightOpParams) -> None:
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: HighlightOp = self.__op_factory.create_highlight_op(note_ids, self._refresh_browser, self._browser,
-                                                                highlight_op_params)
+                                                                highlight_op_params, self.__show_statistics)
         op.run_in_background()
 
     def __del__(self):

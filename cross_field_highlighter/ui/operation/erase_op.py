@@ -21,10 +21,11 @@ log: Logger = logging.getLogger(__name__)
 class EraseOp(Op):
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
-                 op_statistics_formatter: OpStatisticsFormatter, finished_callback: Callable[[], None],
-                 parent: Optional[QWidget], erase_op_params: EraseOpParams, config: Config):
+                 op_statistics_formatter: OpStatisticsFormatter, show_statistics: bool,
+                 finished_callback: Callable[[], None], parent: Optional[QWidget], erase_op_params: EraseOpParams,
+                 config: Config):
         super().__init__(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                         op_statistics_formatter, finished_callback, parent, "Erase", "Erasing",
+                         op_statistics_formatter, show_statistics, finished_callback, parent, "Erase", "Erasing",
                          erase_op_params.note_type_id, config)
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__params: EraseOpParams = erase_op_params

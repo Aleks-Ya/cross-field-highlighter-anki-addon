@@ -30,17 +30,19 @@ class BrowserMenuEraseAction(BrowserMenuAction):
             self.setShortcut(QKeySequence(shortcut))
         self.__op_factory: OpFactory = op_factory
         self.__controller: AdhocEraseDialogController = adhoc_erase_dialog_controller
+        self.__show_statistics: bool = False
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def __on_click(self, browser: Browser) -> None:
         log.debug("On highlight click")
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
+        self.__show_statistics = browser.editor is None
         self.__controller.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, erase_op_params: EraseOpParams) -> None:
         note_ids: set[NoteId] = set(self._browser.selectedNotes())
         op: EraseOp = self.__op_factory.create_erase_op(note_ids, self._refresh_browser, self._browser,
-                                                        erase_op_params)
+                                                        erase_op_params, self.__show_statistics)
         op.run_in_background()
 
     def __del__(self):

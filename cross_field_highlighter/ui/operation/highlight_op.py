@@ -12,8 +12,8 @@ from .op import Op
 from ...config.config import Config
 from ...highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from ...highlighter.types import Notes
-from ...ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from ...ui.operation.highlight_op_params import HighlightOpParams
+from ...ui.operation.op_statistics_formatter import OpStatisticsFormatter
 
 log: Logger = logging.getLogger(__name__)
 
@@ -21,10 +21,11 @@ log: Logger = logging.getLogger(__name__)
 class HighlightOp(Op):
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
-                 op_statistics_formatter: OpStatisticsFormatter, finished_callback: Callable[[], None],
-                 parent: Optional[QWidget], highlight_op_params: HighlightOpParams, config: Config):
+                 op_statistics_formatter: OpStatisticsFormatter, show_statistics: bool,
+                 finished_callback: Callable[[], None], parent: Optional[QWidget],
+                 highlight_op_params: HighlightOpParams, config: Config):
         super().__init__(col, notes_highlighter, task_manager, progress_manager, note_ids, op_statistics_formatter,
-                         finished_callback, parent, "Highlight", "Highlighting",
+                         show_statistics, finished_callback, parent, "Highlight", "Highlighting",
                          highlight_op_params.note_type_id, config)
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__params: HighlightOpParams = highlight_op_params

@@ -1,9 +1,9 @@
 from unittest.mock import Mock
 
-from anki.models import NotetypeId
-from aqt import QWidget
 from anki.collection import Collection
+from anki.models import NotetypeId
 from anki.notes import NoteId, Note
+from aqt import QWidget
 from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from tenacity import retry, stop_after_attempt, wait_fixed
@@ -48,7 +48,7 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
     highlight_op_params: HighlightOpParams = HighlightOpParams(
         basic_note_type_id, source_field, space_delimited_language, destination_fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            op_statistics_formatter, lambda: None, parent, highlight_op_params,
+                                            op_statistics_formatter, True, lambda: None, parent, highlight_op_params,
                                             config)
     highlight_op.run_in_background()
     retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(
@@ -59,7 +59,7 @@ def test_highlight_and_erase(col: Collection, notes_highlighter: NotesHighlighte
     # Erase
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, destination_fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                op_statistics_formatter, lambda: None, parent, erase_op_params, config)
+                                op_statistics_formatter, True, lambda: None, parent, erase_op_params, config)
     erase_op.run_in_background()
     retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(lambda: td.assert_original_case_notes(case_notes))()
     td.assert_original_case_notes(case_notes)
@@ -93,7 +93,7 @@ def test_highlight_and_erase_different_note_types(
     highlight_op_params: HighlightOpParams = HighlightOpParams(
         basic_note_type_id, source_field, space_delimited_language, destination_fields, stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(col, notes_highlighter, task_manager, progress_manager, note_ids,
-                                            op_statistics_formatter, lambda: None, parent, highlight_op_params,
+                                            op_statistics_formatter, True, lambda: None, parent, highlight_op_params,
                                             config)
     highlight_op.run_in_background()
 
@@ -115,7 +115,7 @@ def test_highlight_and_erase_different_note_types(
     # Erase
     erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, destination_fields)
     erase_op: EraseOp = EraseOp(col, notes_highlighter, task_manager, progress_manager, set(note_ids),
-                                op_statistics_formatter, lambda: None, parent, erase_op_params, config)
+                                op_statistics_formatter, True, lambda: None, parent, erase_op_params, config)
     erase_op.run_in_background()
 
     def assert_function_erase():

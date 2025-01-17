@@ -24,9 +24,9 @@ log: Logger = logging.getLogger(__name__)
 class Op(QueryOp):
     def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                  progress_manager: ProgressManager, note_ids: set[NoteId],
-                 op_statistics_formatter: OpStatisticsFormatter, finished_callback: Callable[[], None],
-                 parent: Optional[QWidget], progress_dialog_title: str, operation_title: str, note_type_id: NotetypeId,
-                 config: Config):
+                 op_statistics_formatter: OpStatisticsFormatter, show_statistics: bool,
+                 finished_callback: Callable[[], None], parent: Optional[QWidget], progress_dialog_title: str,
+                 operation_title: str, note_type_id: NotetypeId, config: Config):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Initializing")
         self.failure(self.__on_failure)
@@ -37,6 +37,7 @@ class Op(QueryOp):
         self.__parent: QWidget = parent
         self.__note_ids: set[NoteId] = note_ids
         self.__op_statistics_formatter: OpStatisticsFormatter = op_statistics_formatter
+        self.__show_statistics: bool = show_statistics
         self.__finished_callback: Callable[[], None] = finished_callback
         self.__statistics: OpStatistics = OpStatistics()
         self.__note_type_id: NotetypeId = note_type_id
@@ -105,8 +106,11 @@ class Op(QueryOp):
 
     def __on_success(self, count: int) -> None:
         log.info(f"Operation finished: {count}")
-        show_info(title=self.__progress_dialog_title,
-                  text=self.__op_statistics_formatter.format(self.get_statistics()), parent=self.__parent)
+        if self.__show_statistics:
+            show_info(title=self.__progress_dialog_title,
+                      text=self.__op_statistics_formatter.format(self.get_statistics()), parent=self.__parent)
+        else:
+            log.debug("Statistics are not shown")
         self.__finished_callback()
 
     def __on_failure(self, e: Exception) -> None:
