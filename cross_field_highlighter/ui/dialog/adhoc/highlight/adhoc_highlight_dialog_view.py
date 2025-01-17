@@ -20,33 +20,8 @@ class AdhocHighlightDialogView(QDialog):
         super().__init__(parent=None)
         self.__model: AdhocHighlightDialogModel = model
         self.setVisible(False)
-
-        source_group_box: SourceGroupBox = SourceGroupBox(model)
-        format_group_box: FormatGroupBox = FormatGroupBox(model)
-        destination_group_box: DestinationGroupBox = DestinationGroupBox(model, settings)
-        button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
-        self.__model.add_listener(button_box)
-
-        layout: QGridLayout = QGridLayout(self)
-        row0: int = 0
-        row1: int = 1
-        column0: int = 0
-        column1: int = 1
-        column2: int = 2
-        layout.addWidget(source_group_box, row0, column0, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(format_group_box, row0, column1, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(destination_group_box, row0, column2, Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(button_box, row1, column0, 1, 3, Qt.AlignmentFlag.AlignRight)
-
-        layout.setColumnStretch(column0, 1)
-        layout.setColumnStretch(column1, 1)
-        layout.setColumnStretch(column2, 3)
-
-        layout.setRowStretch(row0, 1)
-        layout.setRowStretch(row1, 0)
-
+        layout: QGridLayout = self.__create_grid_layout(model, settings)
         self.setLayout(layout)
-        self.resize(300, 200)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_view(self) -> None:
@@ -58,6 +33,29 @@ class AdhocHighlightDialogView(QDialog):
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
+
+    def __create_grid_layout(self, model, settings):
+        source_group_box: SourceGroupBox = SourceGroupBox(model)
+        format_group_box: FormatGroupBox = FormatGroupBox(model)
+        destination_group_box: DestinationGroupBox = DestinationGroupBox(model, settings)
+        button_box: ButtonBox = ButtonBox(self.__accept, self.__reject, self.__restore_defaults)
+        model.add_listener(button_box)
+        row0: int = 0
+        row1: int = 1
+        column0: int = 0
+        column1: int = 1
+        column2: int = 2
+        layout: QGridLayout = QGridLayout(self)
+        layout.addWidget(source_group_box, row0, column0, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(format_group_box, row0, column1, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(destination_group_box, row0, column2, Qt.AlignmentFlag.AlignTop)
+        layout.addWidget(button_box, row1, column0, 1, 3, Qt.AlignmentFlag.AlignRight)
+        layout.setColumnStretch(column0, 1)
+        layout.setColumnStretch(column1, 1)
+        layout.setColumnStretch(column2, 3)
+        layout.setRowStretch(row0, 1)
+        layout.setRowStretch(row1, 0)
+        return layout
 
     def __get_window_title(self) -> str:
         noun: str = "note" if self.__model.get_note_number() == 1 else "notes"

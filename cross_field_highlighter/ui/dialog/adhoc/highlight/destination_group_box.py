@@ -23,7 +23,6 @@ class DestinationGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
         layout: QVBoxLayout = QVBoxLayout()
         layout.addLayout(self.__destination_fields_vbox)
         self.setLayout(layout)
-        self.setMinimumWidth(150)
         self.adjustSize()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
