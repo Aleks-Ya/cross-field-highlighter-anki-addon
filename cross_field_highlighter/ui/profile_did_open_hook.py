@@ -44,13 +44,13 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
         from ..ui.editor.editor_button_creator import EditorButtonCreator
-        from ..ui.editor.editor_button_hooks import EditorButtonHooks
         from ..ui.menu.dialog_params_factory import DialogParamsFactory
         from ..ui.operation.op_statistics_formatter import OpStatisticsFormatter
         from ..ui.operation.op_factory import OpFactory
         from ..config.url_manager import UrlManager
         from .browser.browser_will_show_context_menu_hook import BrowserWillShowContextMenuHook
         from .browser.browser_will_show_hook import BrowserWillShowHook
+        from .editor.editor_did_init_buttons_hook import EditorDidInitButtonsHook
 
         module_dir: Path = Path(__file__).parent.parent
         module_name: str = module_dir.stem
@@ -105,11 +105,10 @@ class ProfileDidOpenHook(Callable[[], None]):
         browser_will_show_context_menu_hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
             op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory,
             addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
-        gui_hooks.browser_will_show.append(browser_will_show_hook)
-        gui_hooks.browser_will_show_context_menu.append(browser_will_show_context_menu_hook)
-
         editor_button_creator: EditorButtonCreator = EditorButtonCreator(
             adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
             regex_field_highlighter, config, settings)
-        editor_button_hooks: EditorButtonHooks = EditorButtonHooks(editor_button_creator)
-        editor_button_hooks.setup_hooks()
+        editor_did_init_buttons_hook: EditorDidInitButtonsHook = EditorDidInitButtonsHook(editor_button_creator)
+        gui_hooks.browser_will_show.append(browser_will_show_hook)
+        gui_hooks.browser_will_show_context_menu.append(browser_will_show_context_menu_hook)
+        gui_hooks.editor_did_init_buttons.append(editor_did_init_buttons_hook)
