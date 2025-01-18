@@ -17,4 +17,4 @@ class Settings:
 
     def __str__(self) -> str:
         return (f"{self.__class__.__name__}(module_dir={self.module_dir}, module_name={self.module_name}, "
-                f"logs_folder={self.logs_folder})")
+                f"logs_folder={self.logs_folder}, user_folder={self.user_folder}, version={self.version})")
