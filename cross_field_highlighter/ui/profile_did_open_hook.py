@@ -13,6 +13,7 @@ class ProfileDidOpenHook(Callable[[], None]):
             return
         self.__initialized = True
         from pathlib import Path
+        from aqt import gui_hooks
         from aqt import QDesktopServices
         from aqt.addons import AddonManager
         from aqt.progress import ProgressManager
@@ -33,7 +34,6 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
         from ..highlighter.tokenizer.regex_tokenizer import RegExTokenizer
         from ..highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-        from ..ui.browser.browser_hooks import BrowserHooks
         from ..log.logs import Logs
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -49,6 +49,8 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..ui.operation.op_statistics_formatter import OpStatisticsFormatter
         from ..ui.operation.op_factory import OpFactory
         from ..config.url_manager import UrlManager
+        from .browser.browser_will_show_context_menu_hook import BrowserWillShowContextMenuHook
+        from .browser.browser_will_show_hook import BrowserWillShowHook
 
         module_dir: Path = Path(__file__).parent.parent
         module_name: str = module_dir.stem
@@ -97,10 +99,15 @@ class ProfileDidOpenHook(Callable[[], None]):
             self.__collection_holder, note_type_details_factory)
         url_manager: UrlManager = UrlManager()
         desktop_services: QDesktopServices = QDesktopServices()
-        browser_hooks: BrowserHooks = BrowserHooks(
+
+        browser_will_show_hook: BrowserWillShowHook = BrowserWillShowHook(
+            op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory, config)
+        browser_will_show_context_menu_hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
             op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory,
             addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
-        browser_hooks.setup_hooks()
+        gui_hooks.browser_will_show.append(browser_will_show_hook)
+        gui_hooks.browser_will_show_context_menu.append(browser_will_show_context_menu_hook)
+
         editor_button_creator: EditorButtonCreator = EditorButtonCreator(
             adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
             regex_field_highlighter, config, settings)
