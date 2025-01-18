@@ -36,7 +36,7 @@ class BrowserMenuHighlightAction(BrowserMenuAction):
     def __on_click(self, browser: Browser) -> None:
         log.debug("On highlight click")
         dialog_params: DialogParams = self._prepare_dialog_params(browser)
-        self.__show_statistics = browser.editor is None
+        self.__show_statistics = dialog_params.note_number > 1 or browser.editor is None
         self.__controller.show_dialog(dialog_params, self.__run_op)
 
     def __run_op(self, highlight_op_params: HighlightOpParams) -> None:
