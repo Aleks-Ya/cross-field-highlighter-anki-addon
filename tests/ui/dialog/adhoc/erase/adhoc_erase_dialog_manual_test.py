@@ -41,6 +41,18 @@ def test_show_erase_dialog_wide_note_type(adhoc_erase_dialog_controller: AdhocEr
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
+@pytest.mark.skip(reason="For manual running")
+def test_show_highlight_dialog_narrow_and_wide_fields(adhoc_erase_dialog_controller: AdhocEraseDialogController,
+                                                      adhoc_erase_dialog_view: AdhocEraseDialogView,
+                                                      dialog_params_factory: DialogParamsFactory,
+                                                      cloze_note_type_id: NotetypeId,
+                                                      basic_note_type: NoteType, cloze_note_type: NoteType,
+                                                      col: Collection, td: Data, visual_qtbot: VisualQtBot):
+    td.add_fields_to_note_type(basic_note_type, 5, 10)
+    td.add_fields_to_note_type(cloze_note_type, 20, 50)
+    __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
+
+
 def __show_dialog(controller: AdhocEraseDialogController, view: AdhocEraseDialogView,
                   dialog_params_factory: DialogParamsFactory, visual_qtbot: VisualQtBot, td: Data):
     note_1: Note = td.create_basic_note_1()
