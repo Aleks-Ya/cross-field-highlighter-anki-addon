@@ -1,5 +1,8 @@
 import logging
 from logging import Logger
+from typing import Optional
+
+from anki.models import NotetypeId, NoteType
 
 from ..number_formatter import NumberFormatter
 from ...common.collection_holder import CollectionHolder
@@ -14,9 +17,10 @@ class OpStatisticsFormatter:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def format(self, op_statistics: OpStatistics):
-        note_type_name: str = \
-            self.__collection_holder.col().models.get(op_statistics.get_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID))[
-                'name']
+        note_type_id: NotetypeId = NotetypeId(op_statistics.get_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID))
+        log.debug(f"Formatting statistics for Note Type ID: {note_type_id}")
+        note_type: Optional[NoteType] = self.__collection_holder.col().models.get(note_type_id)
+        note_type_name: str = note_type['name'] if note_type else "N/A"
         return "\n".join([
             f'Notes selected in Browser: {NumberFormatter.with_thousands_separator(op_statistics.get_value(OpStatisticsKey.NOTES_SELECTED_ALL))}',
             f'Notes of type "{note_type_name}": {NumberFormatter.with_thousands_separator(op_statistics.get_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE))}',
