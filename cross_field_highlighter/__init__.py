@@ -3,8 +3,23 @@ from pathlib import Path
 from anki.collection import Collection
 from aqt import gui_hooks, QDesktopServices
 
+from cross_field_highlighter.common.collection_holder import CollectionHolder
 
-def __initialize(col: Collection):
+collection_holder: CollectionHolder = CollectionHolder()
+
+
+def __on_collection_did_load(col: Collection):
+    collection_holder.set_collection(col)
+
+
+initialized: bool = False
+
+
+def __on_profile_did_open():
+    global initialized
+    if initialized:
+        return
+    initialized = True
     from aqt.addons import AddonManager
     from aqt.progress import ProgressManager
     from aqt.taskman import TaskManager
@@ -68,7 +83,7 @@ def __initialize(col: Collection):
     regex_field_highlighter: FieldHighlighter = RegexFieldHighlighter(text_highlighter)
     notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
     adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(col)
+    note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(collection_holder)
     user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
     adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(
         adhoc_highlight_dialog_model, settings)
@@ -82,10 +97,10 @@ def __initialize(col: Collection):
     adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
         adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory, adhoc_erase_dialog_model_serde,
         user_folder_storage)
-    op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(col)
+    op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(collection_holder)
     op_factory: OpFactory = OpFactory(
-        col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter, config)
-    dialog_params_factory: DialogParamsFactory = DialogParamsFactory(col, note_type_details_factory)
+        collection_holder, notes_highlighter, task_manager, progress_manager, op_statistics_formatter, config)
+    dialog_params_factory: DialogParamsFactory = DialogParamsFactory(collection_holder, note_type_details_factory)
     url_manager: UrlManager = UrlManager()
     desktop_services: QDesktopServices = QDesktopServices()
     browser_hooks: BrowserHooks = BrowserHooks(
@@ -99,4 +114,5 @@ def __initialize(col: Collection):
     editor_button_hooks.setup_hooks()
 
 
-gui_hooks.collection_did_load.append(__initialize)
+gui_hooks.collection_did_load.append(__on_collection_did_load)
+gui_hooks.profile_did_open.append(__on_profile_did_open)

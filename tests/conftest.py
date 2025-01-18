@@ -17,6 +17,7 @@ from aqt.theme import ThemeManager
 from mock.mock import MagicMock
 from pytestqt.qtbot import QtBot
 
+from cross_field_highlighter.common.collection_holder import CollectionHolder
 from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
@@ -83,6 +84,13 @@ def col(profile_manager: ProfileManager) -> Collection:
     col: Collection = Collection(collection_file)
     yield col
     col.close()
+
+
+@pytest.fixture
+def collection_holder(col: Collection) -> CollectionHolder:
+    collection_holder: CollectionHolder = CollectionHolder()
+    collection_holder.set_collection(col)
+    return collection_holder
 
 
 @pytest.fixture
@@ -240,8 +248,9 @@ def mark_format(formatter_facade: FormatterFacade) -> HighlightFormat:
 
 
 @pytest.fixture
-def dialog_params_factory(col: Collection, note_type_details_factory: NoteTypeDetailsFactory) -> DialogParamsFactory:
-    return DialogParamsFactory(col, note_type_details_factory)
+def dialog_params_factory(collection_holder: CollectionHolder,
+                          note_type_details_factory: NoteTypeDetailsFactory) -> DialogParamsFactory:
+    return DialogParamsFactory(collection_holder, note_type_details_factory)
 
 
 @pytest.fixture
@@ -380,8 +389,8 @@ def adhoc_erase_dialog_view_scaffold(adhoc_erase_dialog_view: AdhocEraseDialogVi
 
 
 @pytest.fixture
-def note_type_details_factory(col: Collection) -> NoteTypeDetailsFactory:
-    return NoteTypeDetailsFactory(col)
+def note_type_details_factory(collection_holder: CollectionHolder) -> NoteTypeDetailsFactory:
+    return NoteTypeDetailsFactory(collection_holder)
 
 
 @pytest.fixture
@@ -390,8 +399,8 @@ def stop_words_tokenizer() -> StopWordsTokenizer:
 
 
 @pytest.fixture
-def op_statistics_formatter(col: Collection) -> OpStatisticsFormatter:
-    return OpStatisticsFormatter(col)
+def op_statistics_formatter(collection_holder: CollectionHolder) -> OpStatisticsFormatter:
+    return OpStatisticsFormatter(collection_holder)
 
 
 @pytest.fixture
@@ -416,10 +425,11 @@ def editor_edit_mode(mw: AnkiQt) -> Editor:
 
 
 @pytest.fixture
-def op_factory(col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
+def op_factory(collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
                progress_manager: ProgressManager, op_statistics_formatter: OpStatisticsFormatter,
                config: Config) -> OpFactory:
-    return OpFactory(col, notes_highlighter, task_manager, progress_manager, op_statistics_formatter, config)
+    return OpFactory(collection_holder, notes_highlighter, task_manager, progress_manager, op_statistics_formatter,
+                     config)
 
 
 @pytest.fixture

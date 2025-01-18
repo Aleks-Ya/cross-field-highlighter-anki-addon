@@ -12,6 +12,7 @@ from aqt.progress import ProgressManager
 from aqt.taskman import TaskManager
 from aqt.utils import show_critical, show_info
 
+from ...common.collection_holder import CollectionHolder
 from ...config.config import Config
 from ...highlighter.notes.notes_highlighter import NotesHighlighter, NotesHighlighterResult
 from ...highlighter.types import Notes
@@ -22,15 +23,15 @@ log: Logger = logging.getLogger(__name__)
 
 
 class Op(QueryOp):
-    def __init__(self, col: Collection, notes_highlighter: NotesHighlighter, task_manager: TaskManager,
-                 progress_manager: ProgressManager, note_ids: set[NoteId],
+    def __init__(self, collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter,
+                 task_manager: TaskManager, progress_manager: ProgressManager, note_ids: set[NoteId],
                  op_statistics_formatter: OpStatisticsFormatter, show_statistics: bool,
                  finished_callback: Callable[[], None], parent: Optional[QWidget], progress_dialog_title: str,
                  operation_title: str, note_type_id: NotetypeId, config: Config):
         super().__init__(parent=parent, op=self.__background_op, success=self.__on_success)
         self.with_progress("Initializing")
         self.failure(self.__on_failure)
-        self.__col: Collection = col
+        self.__collection_holder: CollectionHolder = collection_holder
         self.__notes_highlighter: NotesHighlighter = notes_highlighter
         self.__task_manager: TaskManager = task_manager
         self.__progress_manager: ProgressManager = progress_manager
@@ -61,7 +62,7 @@ class Op(QueryOp):
         total_note_number: int = len(self.__note_ids)
         self.__remove_tag(note_ids_list)
         for note_ids_slice in note_ids_slices:
-            notes: Notes = Notes([self.__col.get_note(note_id) for note_id in note_ids_slice])
+            notes: Notes = Notes([self.__collection_holder.col().get_note(note_id) for note_id in note_ids_slice])
             notes_with_note_type: Notes = Notes(
                 [note for note in notes if note.mid == self.__note_type_id])
             self.__statistics.increment_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, len(notes_with_note_type))
@@ -70,7 +71,7 @@ class Op(QueryOp):
             self.__statistics.increment_value(OpStatisticsKey.NOTES_MODIFIED, result.modified_notes)
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_PROCESSED, result.total_fields)
             self.__statistics.increment_value(OpStatisticsKey.FIELDS_MODIFIED, result.modified_fields)
-            self.__col.update_notes(result.notes)
+            self.__collection_holder.col().update_notes(result.notes)
             updated_notes_counter += len(result.notes)
             log.debug(f"Updated notes: {updated_notes_counter} of {total_note_number}")
             self.__update_progress(updated_notes_counter, total_note_number)
@@ -84,12 +85,12 @@ class Op(QueryOp):
         latest_modified_notes_tag: str = self.__config.get_latest_modified_notes_tag()
         if self.__config.get_latest_modified_notes_enabled():
             log.debug(f"Removing tag from {len(note_ids_list)} notes")
-            note_ids: Sequence[NoteId] = self.__col.find_notes(f"tag:{latest_modified_notes_tag}")
-            self.__col.tags.bulk_remove(note_ids, latest_modified_notes_tag)
+            note_ids: Sequence[NoteId] = self.__collection_holder.col().find_notes(f"tag:{latest_modified_notes_tag}")
+            self.__collection_holder.col().tags.bulk_remove(note_ids, latest_modified_notes_tag)
             log.debug(f"Removing tag from {len(note_ids_list)} notes finished")
         else:
             log.debug("Deleting latest modified notes tag because it is disabled")
-            self.__col.tags.remove(latest_modified_notes_tag)
+            self.__collection_holder.col().tags.remove(latest_modified_notes_tag)
             log.debug("Deleting latest modified notes tag finished")
 
     @abstractmethod
