@@ -3,13 +3,16 @@ import logging
 from logging import Logger
 from pathlib import Path
 
+from aqt import ProfileManager
+
 from .settings import Settings
 
 log: Logger = logging.getLogger(__name__)
 
 
 class UserFolderStorage:
-    def __init__(self, settings: Settings):
+    def __init__(self, profile_manager: ProfileManager, settings: Settings):
+        self.__profile_manager: ProfileManager = profile_manager
         self.__settings: Settings = settings
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -35,7 +38,7 @@ class UserFolderStorage:
             return {}
 
     def __get_storage_file(self) -> Path:
-        return self.__settings.user_folder / "storage.json"
+        return self.__settings.user_folder / "storage" / f"{self.__profile_manager.name}.json"
 
     def __str__(self):
         return f"UserFolderStorage({self.__get_storage_file()})"

@@ -443,8 +443,8 @@ def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialo
 
 
 @pytest.fixture
-def user_folder_storage(settings: Settings) -> UserFolderStorage:
-    return UserFolderStorage(settings)
+def user_folder_storage(profile_manager: ProfileManager, settings: Settings) -> UserFolderStorage:
+    return UserFolderStorage(profile_manager, settings)
 
 
 @pytest.fixture

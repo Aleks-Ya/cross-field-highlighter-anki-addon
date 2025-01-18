@@ -17,6 +17,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         from aqt import QDesktopServices
         from aqt.addons import AddonManager
         from aqt.progress import ProgressManager
+        from aqt import ProfileManager
         from aqt.taskman import TaskManager
         from aqt import mw, DialogManager, dialogs
         from ..config.config import Config
@@ -62,6 +63,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         logs.set_level("DEBUG")
         task_manager: TaskManager = mw.taskman
         progress_manager: ProgressManager = mw.progress
+        profile_manager: ProfileManager = mw.pm
         settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name), version)
         config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
         config: Config = Config(config_loader)
@@ -78,7 +80,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
         adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
         note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(self.__collection_holder)
-        user_folder_storage: UserFolderStorage = UserFolderStorage(settings)
+        user_folder_storage: UserFolderStorage = UserFolderStorage(profile_manager, settings)
         adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(
             adhoc_highlight_dialog_model, settings)
         adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()

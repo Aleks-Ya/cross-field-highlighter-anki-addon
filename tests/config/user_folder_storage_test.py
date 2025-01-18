@@ -1,3 +1,5 @@
+from aqt import ProfileManager
+
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from tests.data import DefaultFields
@@ -13,15 +15,15 @@ def test_write_read(user_folder_storage: UserFolderStorage, basic_note_type_deta
     act_value_1: dict[str, any] = user_folder_storage.read(key)
     assert act_value_1 == exp_value_1
     assert user_folder_storage.read_all() == {
-        'state': {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
-                                              'field': DefaultFields.basic_front}}}
+        key: {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
+                                          'field': DefaultFields.basic_front}}}
     # Update existing key
     exp_value_2: dict[str, any] = {"status": "done", "nested": {"field": DefaultFields.basic_back}}
     user_folder_storage.write(key, exp_value_2)
     act_value_2: dict[str, any] = user_folder_storage.read(key)
     assert act_value_2 == exp_value_2
-    assert user_folder_storage.read_all() == {'state': {'nested': {'field': DefaultFields.basic_back},
-                                                        'status': 'done'}}
+    assert user_folder_storage.read_all() == {key: {'nested': {'field': DefaultFields.basic_back},
+                                                    'status': 'done'}}
 
 
 def test_write_read_several_keys(user_folder_storage: UserFolderStorage, basic_note_type_details: NoteTypeDetails):
@@ -38,9 +40,39 @@ def test_write_read_several_keys(user_folder_storage: UserFolderStorage, basic_n
     assert act_value_1 == exp_value_1
     assert act_value_2 == exp_value_2
     assert user_folder_storage.read_all() == {
-        'data': {'nested': {'field': DefaultFields.basic_back}, 'status': 'done'},
-        'state': {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
-                                              'field': DefaultFields.basic_front}}}
+        key_2: {'nested': {'field': DefaultFields.basic_back}, 'status': 'done'},
+        key_1: {'item': 'about', 'nested': {'note_type': basic_note_type_details.name,
+                                            'field': DefaultFields.basic_front}}}
+
+
+def test_write_read_different_profiles(user_folder_storage: UserFolderStorage,
+                                       basic_note_type_details: NoteTypeDetails, profile_manager: ProfileManager):
+    key: str = "state"
+    profile_name_1: str = "User 1"
+    profile_name_2: str = "User 2"
+    profile_manager.create(profile_name_1)
+    profile_manager.create(profile_name_2)
+    profile_manager.save()
+
+    # Write 1st profile
+    profile_manager.openProfile(profile_name_1)
+    exp_value_1: dict[str, any] = {"item": "About 1"}
+    user_folder_storage.write(key, exp_value_1)
+    assert user_folder_storage.read_all() == {key: exp_value_1}
+
+    # Write 2nd profile
+    profile_manager.openProfile(profile_name_2)
+    exp_value_2: dict[str, any] = {"item": "About 2"}
+    user_folder_storage.write(key, exp_value_2)
+    assert user_folder_storage.read_all() == {key: exp_value_2}
+
+    # Read 1st profile
+    profile_manager.openProfile(profile_name_1)
+    assert user_folder_storage.read_all() == {key: exp_value_1}
+
+    # Read 2st profile
+    profile_manager.openProfile(profile_name_2)
+    assert user_folder_storage.read_all() == {key: exp_value_2}
 
 
 def test_read_absent_key(user_folder_storage: UserFolderStorage):
