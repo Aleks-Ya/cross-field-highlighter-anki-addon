@@ -66,7 +66,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Build
 
-1. Build ZIP: `python setup.py dist` (includes unit-tests)
+1. Build ZIP: `./build_dist.sh` (includes unit-tests)
 2. Output: `./dist/note-size-X.X-X.zip`
 
 ## Execute GitHub Actions locally
@@ -94,7 +94,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     1. Major: `bump-my-version bump major -v`
     2. Minor: `bump-my-version bump minor -v`
     3. Patch: `bump-my-version bump patch -v`
-5. Build ZIP: `python setup.py dist`
+5. Build ZIP: `./build_dist.sh`
     1. Install and test on the earliest Anki version (Qt5)
     2. Install and test on the current Anki version (Qt6)
 6. Upload ZIP to the Addon page:
