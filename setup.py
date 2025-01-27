@@ -14,13 +14,7 @@ def _read_long_description():
         return f.read()
 
 
-def _read_version() -> str:
-    version_file: str = os.path.join(os.path.dirname(__file__), 'cross_field_highlighter', 'version.txt')
-    with open(version_file, 'r') as f:
-        return f.read().strip()
-
-
-_version = _read_version()
+_version = "1.2.0"
 _author = "Alexey Yablokov"
 
 
