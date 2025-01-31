@@ -18,6 +18,3 @@ commit_args = ""
 
 [[tool.bumpversion.files]]
 filename = "cross_field_highlighter/version.txt"
-
-[[tool.bumpversion.files]]
-filename = "setup.py"
