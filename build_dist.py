@@ -5,9 +5,6 @@ import subprocess
 from pathlib import Path
 from subprocess import CompletedProcess
 
-_version = "1.2.0"
-_author = "Alexey Yablokov"
-
 
 class DistributionBuilder:
 
@@ -54,7 +51,8 @@ class DistributionBuilder:
         self.__copy_file_to_build("LICENSE", dest_subdir)
         self.__copy_file_to_build("README.md", dest_subdir)
         self.__copy_file_to_build("CHANGELOG.md", dest_subdir)
-        output_zip: Path = Path(self.build_dir, f'cross-field-highlighter-{_version}')
+        version: str = self._read_version()
+        output_zip: Path = Path(self.build_dir, f'cross-field-highlighter-{version}')
         actual_output_zip: Path = Path(shutil.make_archive(str(output_zip), 'zip', dest_subdir))
         renamed_output_zip: Path = Path(actual_output_zip.parent, f"{actual_output_zip.stem}.ankiaddon")
         os.rename(actual_output_zip, renamed_output_zip)
@@ -69,17 +67,18 @@ class DistributionBuilder:
     def __generate_manifest(dest_subdir: Path) -> None:
         from git import TagReference, Repo, Commit
         repo: Repo = Repo(".", search_parent_directories=True)
-        version: str = f"v{_version}"
-        tag: TagReference = repo.tag(version)
+        version: str = DistributionBuilder._read_version()
+        version_tag: str = f"v{version}"
+        tag: TagReference = repo.tag(version_tag)
         commit: Commit = tag.commit if tag in repo.tags else repo.head.commit
         commit_epoch_sec: int = int(commit.committed_datetime.timestamp())
         draft: dict[str, any] = {
-            "name": f"Cross-Field Highlighter {version}",
+            "name": f"Cross-Field Highlighter {version_tag}",
             "package": "1312127886",
-            "author": _author,
+            "author": "Alexey Yablokov",
             "min_point_version": 240603,
-            "max_point_version": 241100,
-            "human_version": version,
+            "max_point_version": 250100,
+            "human_version": version_tag,
             "homepage": "https://ankiweb.net/shared/info/1312127886",
             "mod": commit_epoch_sec
         }
@@ -87,6 +86,12 @@ class DistributionBuilder:
         with open(path, 'w') as fp:
             # noinspection PyTypeChecker
             json.dump(draft, fp, indent=2)
+
+    @staticmethod
+    def _read_version() -> str:
+        version_file: str = os.path.join(os.path.dirname(__file__), 'cross_field_highlighter', 'version.txt')
+        with open(version_file, 'r') as f:
+            return f.read().strip()
 
 
 dist_builder: DistributionBuilder = DistributionBuilder()
