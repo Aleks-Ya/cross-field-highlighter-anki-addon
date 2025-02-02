@@ -13,8 +13,6 @@ class ProfileDidOpenHook(Callable[[], None]):
             return
         self.__initialized = True
         from pathlib import Path
-        from aqt import gui_hooks
-        from aqt import QDesktopServices
         from aqt.addons import AddonManager
         from aqt.progress import ProgressManager
         from aqt import ProfileManager
@@ -25,33 +23,16 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..config.settings import Settings
         from ..config.user_folder_storage import UserFolderStorage
         from ..highlighter.formatter.formatter_facade import FormatterFacade
-        from ..highlighter.note.field_highlighter import FieldHighlighter
         from ..highlighter.note.regex_field_highlighter import RegexFieldHighlighter
         from ..highlighter.note_type_details_factory import NoteTypeDetailsFactory
         from ..highlighter.notes.notes_highlighter import NotesHighlighter
-        from ..highlighter.text.regex_text_highlighter import RegexTextHighlighter
-        from ..highlighter.text.text_highlighter import TextHighlighter
-        from ..highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
-        from ..highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
         from ..highlighter.tokenizer.regex_tokenizer import RegExTokenizer
-        from ..highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
         from ..log.logs import Logs
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
-        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
-        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
-        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
-        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
-        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
-        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
-        from ..ui.editor.editor_button_creator import EditorButtonCreator
         from ..ui.menu.dialog_params_factory import DialogParamsFactory
         from ..ui.operation.op_statistics_formatter import OpStatisticsFormatter
         from ..ui.operation.op_factory import OpFactory
-        from ..config.url_manager import UrlManager
-        from .browser.browser_will_show_context_menu_hook import BrowserWillShowContextMenuHook
-        from .browser.browser_will_show_hook import BrowserWillShowHook
-        from .editor.editor_did_init_buttons_hook import EditorDidInitButtonsHook
 
         module_dir: Path = Path(__file__).parent.parent
         module_name: str = module_dir.stem
@@ -67,8 +48,39 @@ class ProfileDidOpenHook(Callable[[], None]):
         settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name), version)
         config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
         config: Config = Config(config_loader)
+
         tokenizer: RegExTokenizer = RegExTokenizer()
         formatter_facade: FormatterFacade = FormatterFacade()
+        regex_field_highlighter: RegexFieldHighlighter = self.__regex_field_highlighter(formatter_facade, tokenizer)
+        notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
+
+        note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(self.__collection_holder)
+        user_folder_storage: UserFolderStorage = UserFolderStorage(profile_manager, settings)
+        highlight_dialog_controller: AdhocHighlightDialogController = self.__highlight_dialog_controller(
+            config, formatter_facade, note_type_details_factory, settings, user_folder_storage)
+        erase_dialog_controller: AdhocEraseDialogController = self.__erase_dialog_controller(
+            note_type_details_factory, settings, user_folder_storage)
+        op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(self.__collection_holder)
+        op_factory: OpFactory = OpFactory(self.__collection_holder, notes_highlighter, task_manager, progress_manager,
+                                          op_statistics_formatter, config)
+        dialog_params_factory: DialogParamsFactory = DialogParamsFactory(
+            self.__collection_holder, note_type_details_factory)
+        self.__set_browser_will_show_hook(config, dialog_params_factory, erase_dialog_controller,
+                                          highlight_dialog_controller, op_factory)
+        self.__set_browser_will_show_context_menu_hook(addon_manager, config, dialog_manager, dialog_params_factory,
+                                                       erase_dialog_controller, highlight_dialog_controller, op_factory,
+                                                       settings)
+        self.__set_editor_did_init_buttons_hook(config, erase_dialog_controller, highlight_dialog_controller,
+                                                note_type_details_factory, regex_field_highlighter, settings)
+
+    @staticmethod
+    def __regex_field_highlighter(formatter_facade, tokenizer):
+        from ..highlighter.note.regex_field_highlighter import RegexFieldHighlighter
+        from ..highlighter.text.regex_text_highlighter import RegexTextHighlighter
+        from ..highlighter.text.text_highlighter import TextHighlighter
+        from ..highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
+        from ..highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
+        from ..highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
         stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
         start_with_token_highlighter: StartWithTokenHighlighter = StartWithTokenHighlighter(formatter_facade)
         find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter = FindAndReplaceTokenHighlighter(
@@ -76,41 +88,64 @@ class ProfileDidOpenHook(Callable[[], None]):
         text_highlighter: TextHighlighter = RegexTextHighlighter(
             start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade, tokenizer,
             stop_words_tokenizer)
-        regex_field_highlighter: FieldHighlighter = RegexFieldHighlighter(text_highlighter)
-        notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
-        adhoc_highlight_dialog_model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-        note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(self.__collection_holder)
-        user_folder_storage: UserFolderStorage = UserFolderStorage(profile_manager, settings)
-        adhoc_highlight_dialog_view: AdhocHighlightDialogView = AdhocHighlightDialogView(
-            adhoc_highlight_dialog_model, settings)
-        adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
-        adhoc_highlight_dialog_controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-            adhoc_highlight_dialog_model, adhoc_highlight_dialog_view, note_type_details_factory, formatter_facade,
-            adhoc_highlight_dialog_model_serde, config, user_folder_storage)
-        adhoc_erase_dialog_model: AdhocEraseDialogModel = AdhocEraseDialogModel()
-        adhoc_erase_dialog_view: AdhocEraseDialogView = AdhocEraseDialogView(adhoc_erase_dialog_model, settings)
-        adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
-        adhoc_erase_dialog_controller: AdhocEraseDialogController = AdhocEraseDialogController(
-            adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory,
-            adhoc_erase_dialog_model_serde,
-            user_folder_storage)
-        op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(self.__collection_holder)
-        op_factory: OpFactory = OpFactory(self.__collection_holder, notes_highlighter, task_manager, progress_manager,
-                                          op_statistics_formatter, config)
-        dialog_params_factory: DialogParamsFactory = DialogParamsFactory(
-            self.__collection_holder, note_type_details_factory)
-        url_manager: UrlManager = UrlManager()
-        desktop_services: QDesktopServices = QDesktopServices()
+        return RegexFieldHighlighter(text_highlighter)
 
-        browser_will_show_hook: BrowserWillShowHook = BrowserWillShowHook(
-            op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory, config)
-        browser_will_show_context_menu_hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
-            op_factory, adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, dialog_params_factory,
-            addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
+    @staticmethod
+    def __set_editor_did_init_buttons_hook(config, erase_dialog_controller, highlight_dialog_controller,
+                                           note_type_details_factory, regex_field_highlighter, settings) -> None:
+        from aqt import gui_hooks
+        from ..ui.editor.editor_button_creator import EditorButtonCreator
+        from .editor.editor_did_init_buttons_hook import EditorDidInitButtonsHook
         editor_button_creator: EditorButtonCreator = EditorButtonCreator(
-            adhoc_highlight_dialog_controller, adhoc_erase_dialog_controller, note_type_details_factory,
+            highlight_dialog_controller, erase_dialog_controller, note_type_details_factory,
             regex_field_highlighter, config, settings)
-        editor_did_init_buttons_hook: EditorDidInitButtonsHook = EditorDidInitButtonsHook(editor_button_creator)
-        gui_hooks.browser_will_show.append(browser_will_show_hook)
-        gui_hooks.browser_will_show_context_menu.append(browser_will_show_context_menu_hook)
-        gui_hooks.editor_did_init_buttons.append(editor_did_init_buttons_hook)
+        hook: EditorDidInitButtonsHook = EditorDidInitButtonsHook(editor_button_creator)
+        gui_hooks.editor_did_init_buttons.append(hook)
+
+    @staticmethod
+    def __set_browser_will_show_context_menu_hook(addon_manager, config, dialog_manager, dialog_params_factory,
+                                                  erase_dialog_controller, highlight_dialog_controller, op_factory,
+                                                  settings) -> None:
+        from aqt import gui_hooks
+        from aqt import QDesktopServices
+        from ..config.url_manager import UrlManager
+        from .browser.browser_will_show_context_menu_hook import BrowserWillShowContextMenuHook
+        desktop_services: QDesktopServices = QDesktopServices()
+        url_manager: UrlManager = UrlManager()
+        hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
+            op_factory, highlight_dialog_controller, erase_dialog_controller, dialog_params_factory,
+            addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
+        gui_hooks.browser_will_show_context_menu.append(hook)
+
+    @staticmethod
+    def __set_browser_will_show_hook(config, dialog_params_factory, erase_dialog_controller,
+                                     highlight_dialog_controller, op_factory) -> None:
+        from aqt import gui_hooks
+        from .browser.browser_will_show_hook import BrowserWillShowHook
+        hook: BrowserWillShowHook = BrowserWillShowHook(op_factory, highlight_dialog_controller,
+                                                        erase_dialog_controller, dialog_params_factory, config)
+        gui_hooks.browser_will_show.append(hook)
+
+    @staticmethod
+    def __highlight_dialog_controller(config, formatter_facade, note_type_details_factory, settings,
+                                      user_folder_storage):
+        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
+        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
+        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
+        from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view import AdhocHighlightDialogView
+        model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
+        view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, settings)
+        serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
+        return AdhocHighlightDialogController(model, view, note_type_details_factory, formatter_facade,
+                                              serde, config, user_folder_storage)
+
+    @staticmethod
+    def __erase_dialog_controller(note_type_details_factory, settings, user_folder_storage):
+        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
+        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
+        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
+        from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
+        model: AdhocEraseDialogModel = AdhocEraseDialogModel()
+        view: AdhocEraseDialogView = AdhocEraseDialogView(model, settings)
+        serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
+        return AdhocEraseDialogController(model, view, note_type_details_factory, serde, user_folder_storage)
