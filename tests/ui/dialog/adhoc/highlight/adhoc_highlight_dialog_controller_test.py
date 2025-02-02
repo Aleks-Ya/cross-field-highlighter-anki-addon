@@ -94,7 +94,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                          all_note_type_details: list[NoteTypeDetails], bold_format: HighlightFormat,
                          all_highlight_formats: HighlightFormats, user_folder_storage: UserFolderStorage):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
-    # Default config and model
+    # Assert default config and model
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -117,10 +117,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
 
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(all_note_type_details, 0), callback.call)
-    adhoc_highlight_dialog_model.switch_state(basic_note_type_details)
-    adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
-    adhoc_highlight_dialog_model.fire_model_changed(None)
-    adhoc_highlight_dialog_model.call_accept_callback()
+    adhoc_highlight_dialog_model.call_accept_callback()  # Click "Start" button
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -225,7 +222,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                            all_highlight_formats: HighlightFormats, bold_format: HighlightFormat,
                                            settings: Settings):
     callback: FakeHighlightControllerCallback = FakeHighlightControllerCallback()
-    # Default config and model
+    # Assert default config and model
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -256,7 +253,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     adhoc_highlight_dialog_model.get_current_state().select_destination_fields(FieldNames(
         [DefaultFields.basic_back]))
     adhoc_highlight_dialog_model.fire_model_changed(None)
-    adhoc_highlight_dialog_model.call_accept_callback()
+    adhoc_highlight_dialog_model.call_accept_callback()  # Click "Start" button
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},

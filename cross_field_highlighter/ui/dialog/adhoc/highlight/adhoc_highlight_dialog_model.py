@@ -67,7 +67,7 @@ class AdhocHighlightDialogModel:
     def set_default_stop_words(self, default_stop_words: Optional[str]) -> None:
         self.__default_stop_words = default_stop_words
 
-    def switch_state(self, note_type_details: NoteTypeDetails):
+    def switch_state(self, note_type_details: NoteTypeDetails) -> None:
         note_type_name: NoteTypeName = note_type_details.name
         if note_type_name not in self.__states:
             state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details)
@@ -94,10 +94,10 @@ class AdhocHighlightDialogModel:
         if self.__reject_callback:
             self.__reject_callback()
 
-    def add_listener(self, listener: AdhocHighlightDialogModelListener):
+    def add_listener(self, listener: AdhocHighlightDialogModelListener) -> None:
         self.__listeners.add(listener)
 
-    def fire_model_changed(self, source: object):
+    def fire_model_changed(self, source: object) -> None:
         for listener in self.__listeners:
             listener.highlight_model_changed(source, self)
 

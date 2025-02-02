@@ -42,14 +42,16 @@ class AdhocHighlightDialogModelSerDe:
         self.__read_states(json, model, note_type_dict)
         self.__read_current_state(json, model, note_type_dict)
 
-    def __read_current_state(self, json, model, note_type_dict):
+    def __read_current_state(self, json: dict[str, any], model: AdhocHighlightDialogModel,
+                             note_type_dict: [NoteTypeName, NoteTypeDetails]) -> None:
         if json and self.__current_state in json:
             current_state_name: NoteTypeName = json[self.__current_state]
             if current_state_name in note_type_dict:
                 current_note_type_details: NoteTypeDetails = note_type_dict[current_state_name]
                 model.switch_state(current_note_type_details)
 
-    def __read_states(self, json, model, note_type_dict):
+    def __read_states(self, json: dict[str, any], model: AdhocHighlightDialogModel,
+                      note_type_dict: [NoteTypeName, NoteTypeDetails]) -> None:
         highlight_formats: [HighlightFormatCode, HighlightFormat] = {highlight_format.code: highlight_format for
                                                                      highlight_format in model.get_formats()}
         if json and self.__states in json:
@@ -64,29 +66,29 @@ class AdhocHighlightDialogModelSerDe:
                     self.__read_stop_words(model, state_obj)
                     self.__read_destination_fields(model, state_obj)
 
-    def __read_source_field(self, model: AdhocHighlightDialogModel, state_obj: dict):
+    def __read_source_field(self, model: AdhocHighlightDialogModel, state_obj: dict) -> None:
         if self.__source_field in state_obj:
             saved_source_field: FieldName = FieldName(state_obj[self.__source_field])
             model.get_current_state().select_source_field(saved_source_field)
 
-    def __read_stop_words(self, model: AdhocHighlightDialogModel, state_obj: dict):
+    def __read_stop_words(self, model: AdhocHighlightDialogModel, state_obj: dict) -> None:
         if self.__stop_words in state_obj:
             saved_stop_words: Text = Text(state_obj[self.__stop_words])
             model.get_current_state().set_stop_words(saved_stop_words)
 
-    def __read_space_delimited_language(self, model: AdhocHighlightDialogModel, state_obj: dict):
+    def __read_space_delimited_language(self, model: AdhocHighlightDialogModel, state_obj: dict) -> None:
         if self.__space_delimited_language in state_obj:
             space_delimited_language: bool = state_obj[self.__space_delimited_language]
             model.get_current_state().set_space_delimited_language(space_delimited_language)
 
     def __read_format(self, model: AdhocHighlightDialogModel, state_obj: dict,
-                      highlight_formats: [HighlightFormatCode, HighlightFormat]):
+                      highlight_formats: [HighlightFormatCode, HighlightFormat]) -> None:
         if self.__format in state_obj:
             saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(state_obj[self.__format])
             saved_highlight_format: HighlightFormat = highlight_formats[saved_highlight_format_code]
             model.get_current_state().select_format(saved_highlight_format)
 
-    def __read_destination_fields(self, model: AdhocHighlightDialogModel, state_obj: dict):
+    def __read_destination_fields(self, model: AdhocHighlightDialogModel, state_obj: dict) -> None:
         if self.__destination_fields in state_obj:
             saved_destination_fields: FieldNames = FieldNames(state_obj[self.__destination_fields])
             model.get_current_state().select_destination_fields(saved_destination_fields)
