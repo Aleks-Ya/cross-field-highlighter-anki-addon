@@ -314,17 +314,17 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         'note_types': all_note_type_details,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'states': {basic_note_type_details.name: {'selected_destination_fields': [],
+        'states': {basic_note_type_details.name: {'selected_destination_fields': [DefaultFields.basic_back],
                                                   'selected_format': bold_format,
                                                   'selected_note_type': basic_note_type_details,
                                                   'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words,
+                                                  'selected_stop_words': 'to the',
                                                   'space_delimited_language': True}},
-        'current_state': {'selected_destination_fields': [],
+        'current_state': {'selected_destination_fields': [DefaultFields.basic_back],
                           'selected_format': bold_format,
                           'selected_note_type': basic_note_type_details,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': DefaultConfig.stop_words,
+                          'selected_stop_words': 'to the',
                           'space_delimited_language': True}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
