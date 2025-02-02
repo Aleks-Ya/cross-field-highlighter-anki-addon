@@ -82,6 +82,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     1. Major: `bump-my-version bump major -v`
     2. Minor: `bump-my-version bump minor -v`
     3. Patch: `bump-my-version bump patch -v`
+    4. Workaround for Python 3.8: `python3.10 -m pip install bump-my-version`, `python3.10 -m bumpversion bump minor -v`
 5. Build ZIP: `./build_dist.sh`
     1. Install and test on the earliest Anki version (Qt5)
     2. Install and test on the current Anki version (Qt6)

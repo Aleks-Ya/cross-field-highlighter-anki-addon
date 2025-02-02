@@ -1,5 +1,10 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.3.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.3.0) - 2025-02-02
+
+1. __[BUG]__ Reading state on startup
+2. __[MISC]__ Execute unit-tests for different Anki versions
+
 ## [v1.2.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.2.0) - 2025-01-18
 
 1. __[FEATURE]__ Add thousands separator to numbers
