@@ -13,4 +13,4 @@ done
 
 cp docs/README.md README.md
 
-tox -- tests/highlighter/render_cases_page_test.py
+tox -- tests tests/highlighter/render_cases_page_test.py

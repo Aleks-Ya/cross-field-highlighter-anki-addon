@@ -38,7 +38,7 @@ Run automated tests:
 1. Prerequisites: [Setup Python virtual environment](#setup-python-virtual-environment)
 2. Activate virtual environment: `pyenv cross-field-highlighter-anki-addon`
 3. Run unit tests: `tox`
-4. Run integration tests: `tox -e integration`
+4. Run integration tests: `tox -- tests -m integration`
 
 Make UI visible during tests:  
 File `conftest.py`, fixture `visual_qtbot`, set positive delay: `VisualQtBot(qtbot, 1000)`
