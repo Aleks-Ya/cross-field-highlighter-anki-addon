@@ -1,5 +1,12 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.4.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.4.0) - 2025-02-09
+
+1. __[FEATURE]__ Auto detect space-delimited languages
+2. __[MISC]__ Add hyperlink to each row in test-case table
+3. __[MISC]__ Execute unit-tests on Linux, macOS, and Windows
+4. __[MISC]__ Document manual test-cases
+
 ## [v1.3.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.3.0) - 2025-02-02
 
 1. __[BUG]__ Reading state on startup
