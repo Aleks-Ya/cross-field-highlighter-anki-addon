@@ -1,7 +1,7 @@
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Generator
 
 import aqt
 import pytest
@@ -81,7 +81,7 @@ def profile_manager(base_dir: Path, profile_name: str) -> ProfileManager:
 
 
 @pytest.fixture
-def col(profile_manager: ProfileManager) -> Collection:
+def col(profile_manager: ProfileManager) -> Generator[Collection, None, None]:
     collection_file: str = profile_manager.collectionPath()
     col: Collection = Collection(collection_file)
     yield col
