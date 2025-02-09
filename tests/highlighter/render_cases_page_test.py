@@ -19,7 +19,8 @@ def test_create_cases_markdown(td: Data):
     text: list[str] = ["#", "Title", "Collocation", "Original text", "Highlighted text"]
     cases: list[Case] = td.cases()
     for i, case in enumerate(cases):
-        number: str = str(i + 1)
+        case_number: int = i + 1
+        number: str = f"[{case_number}](#case-{case_number})"
         title: str = case.name
         collocation: str = f"`{case.collocation}`" if case.collocation is not None and case.collocation != "" else ""
         original: str = f"`{case.original_text}`"
