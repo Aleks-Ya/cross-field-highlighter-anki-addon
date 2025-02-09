@@ -4,17 +4,17 @@
 
 - [Introduction](#introduction)
 - [Screenshots](#screenshots)
-  - [Browser menu](#browser-menu)
-  - [Buttons in Editor](#buttons-in-editor)
-  - [Highlight dialog](#highlight-dialog)
-  - [Supported formats](#supported-formats)
-  - [Languages without spaces (Japanese, Chinese, Thai, etc.)](#languages-without-spaces-japanese-chinese-thai-etc)
-  - [Highlighting progress](#highlighting-progress)
-  - [Highlighting statistics](#highlighting-statistics)
-  - [Erase dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
-  - [Addon configuration](#addon-configuration)
-  - [About addon](#about-addon)
-  - [Test cases](#test-cases)
+    - [Browser menu](#browser-menu)
+    - [Buttons in Editor](#buttons-in-editor)
+    - [Highlight dialog](#highlight-dialog)
+    - [Supported formats](#supported-formats)
+    - [Languages without spaces (Japanese, Chinese, Thai, etc.)](#languages-without-spaces-japanese-chinese-thai-etc)
+    - [Highlighting progress](#highlighting-progress)
+    - [Highlighting statistics](#highlighting-statistics)
+    - [Erase dialog (removes previously added highlighting)](#erase-dialog-removes-previously-added-highlighting)
+    - [Addon configuration](#addon-configuration)
+    - [About addon](#about-addon)
+    - [Test cases](#test-cases)
 - [Links](#links)
 - [Quality metrics](#quality-metrics)
 
@@ -46,7 +46,6 @@ and highlights it in the destination fields:
 
 ### Languages without spaces (Japanese, Chinese, Thai, etc.)
 
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
 
 ### Highlighting progress

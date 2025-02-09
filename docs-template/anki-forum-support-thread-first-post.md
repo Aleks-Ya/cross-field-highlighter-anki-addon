@@ -73,7 +73,6 @@ Hello all, I'd introduce a new addon for language learners.
 [/details]
 
 [details="Languages without spaces (Japanese, Chinese, Thai, etc.)"]
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
 [/details]
 

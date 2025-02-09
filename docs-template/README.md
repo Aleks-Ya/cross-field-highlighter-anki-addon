@@ -28,7 +28,6 @@ and highlights it in the destination fields:
 
 ### Languages without spaces (Japanese, Chinese, Thai, etc.)
 
-![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/space-delimited-language.png)  
 ![](https://raw.githubusercontent.com/Aleks-Ya/cross-field-highlighter-anki-addon/master/docs/images/furigana.png)
 
 ### Highlighting progress
