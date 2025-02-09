@@ -66,7 +66,7 @@ def profile_name() -> str:
 
 @pytest.fixture
 def base_dir() -> Path:
-    return Path(tempfile.mkdtemp(prefix="anki-base-dir"))
+    return Path(tempfile.mkdtemp(prefix="anki-base-dir-"))
 
 
 @pytest.fixture
