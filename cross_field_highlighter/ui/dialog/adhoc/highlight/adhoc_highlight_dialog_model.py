@@ -44,7 +44,6 @@ class AdhocHighlightDialogModel:
             state.set_stop_words(Text(self.__default_stop_words))
             state.select_destination_fields(FieldNames([]))
             state.select_first_source_field()
-            state.set_space_delimited_language(True)
         self.switch_to_first_state()
 
     def get_note_types(self) -> list[NoteTypeDetails]:

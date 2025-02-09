@@ -34,22 +34,18 @@ class DefaultTags:
 
 
 class Case:
-    def __init__(self, name: str, collocation: str, original_text: str, highlighted_text_space_delimited: str,
-                 highlighted_text_non_space_delimited: str):
+    def __init__(self, name: str, collocation: str, original_text: str, highlighted_text: str):
         self.name: str = name
         self.collocation: Text = Text(collocation)
         self.original_text: Text = Text(original_text)
-        self.highlighted_text_space_delimited: Text = Text(highlighted_text_space_delimited)
-        self.highlighted_text_non_space_delimited: Text = Text(highlighted_text_non_space_delimited)
+        self.highlighted_text: Text = Text(highlighted_text)
 
 
 class CaseNote:
-    def __init__(self, note: Note, original_content: FieldContent, highlighted_content_space_delimited: FieldContent,
-                 highlighted_content_non_space_delimited: FieldContent):
+    def __init__(self, note: Note, original_content: FieldContent, highlighted_content: FieldContent):
         self.note: Note = note
         self.original_content: FieldContent = original_content
-        self.highlighted_content_space_delimited: FieldContent = highlighted_content_space_delimited
-        self.highlighted_content_non_space_delimited: FieldContent = highlighted_content_non_space_delimited
+        self.highlighted_content: FieldContent = highlighted_content
 
 
 class Data:
@@ -117,208 +113,187 @@ class Data:
             Case("General: single word repeats one time",
                  'beautiful',
                  'Hello, beautiful world!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world!'),
             Case("General: single word repeats several times",
                  'beautiful',
                  'Hello, beautiful world and beautiful day!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b> world and <b class="cross-field-highlighter">beautiful</b> day!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world and <b class="cross-field-highlighter">beautiful</b> day!'),
             Case("General: case insensitive",
                  'beautiful',
                  'Hello, Beautiful world!',
-                 'Hello, <b class="cross-field-highlighter">Beautiful</b> world!',
                  'Hello, <b class="cross-field-highlighter">Beautiful</b> world!'),
             Case("General: collocation",
                  'take forever',
                  'Downloading a movie takes forever.',
-                 'Downloading a movie <b class="cross-field-highlighter">takes</b> <b class="cross-field-highlighter">forever</b>.',
-                 'Downloading a movie <b class="cross-field-highlighter">take</b>s <b class="cross-field-highlighter">forever</b>.'),
+                 'Downloading a movie <b class="cross-field-highlighter">takes</b> <b class="cross-field-highlighter">forever</b>.'),
             Case("General: the beginning of a sentence",
                  'hello',
                  'Hello beautiful world!',
-                 '<b class="cross-field-highlighter">Hello</b> beautiful world!',
                  '<b class="cross-field-highlighter">Hello</b> beautiful world!'),
             Case("General: empty collocation",
                  '',
-                 'Hello, beautiful world!',
                  'Hello, beautiful world!',
                  'Hello, beautiful world!'),
             Case("General: entire collocation as token (+case insensitive)",
                  'to hurry up',
                  'Need to hurry up. He Hurries everyone up.',
-                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">Hurries</b> everyone <b class="cross-field-highlighter">up</b>.',
-                 'Need <b class="cross-field-highlighter">to hurry up</b>. He Hurries everyone <b class="cross-field-highlighter">up</b>.'),
+                 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">Hurries</b> everyone <b class="cross-field-highlighter">up</b>.'),
             Case("Word forms: s-suffix",
                  'intrusion',
                  'Resistant to intrusions.',
-                 'Resistant to <b class="cross-field-highlighter">intrusions</b>.',
-                 'Resistant to <b class="cross-field-highlighter">intrusion</b>s.'),
+                 'Resistant to <b class="cross-field-highlighter">intrusions</b>.'),
             Case("Word forms: ing base (append)",
                  'drown',
                  'Protection against drowning.',
-                 'Protection against <b class="cross-field-highlighter">drowning</b>.',
-                 'Protection against <b class="cross-field-highlighter">drown</b>ing.'),
+                 'Protection against <b class="cross-field-highlighter">drowning</b>.'),
             Case("Word forms: ing base (case insensitive)",
                  'abstain',
                  'Abstaining from chocolate',
-                 '<b class="cross-field-highlighter">Abstaining</b> from chocolate',
-                 '<b class="cross-field-highlighter">Abstain</b>ing from chocolate'),
+                 '<b class="cross-field-highlighter">Abstaining</b> from chocolate'),
             Case("Word forms: ing (dropping e)",
                  'overtake',
                  'A driver was overtaking a slower vehicle.',
-                 'A driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.',
-                 'A driver was overtaking a slower vehicle.'),
+                 'A driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.'),
             Case("Word forms: ing (ie-ending)",
                  'lie',
-                 'A cat was lying on the floor.',
                  'A cat was lying on the floor.',
                  'A cat was lying on the floor.'),
             Case("Word forms: forgotten",
                  'forget',
                  "I've forgotten your name.",
-                 '''I've <b class="cross-field-highlighter">forgotten</b> your name.''',
-                 '''I've forgotten your name.'''),
+                 '''I've <b class="cross-field-highlighter">forgotten</b> your name.'''),
             Case("Word forms: forgetting",
                  'forget',
                  "I am forgetting my keys again.",
-                 'I am <b class="cross-field-highlighter">forgetting</b> my keys again.',
-                 'I am <b class="cross-field-highlighter">forget</b>ting my keys again.'),
+                 'I am <b class="cross-field-highlighter">forgetting</b> my keys again.'),
             Case("Short words: be",
                  'be',
                  'To be is to have been while being beautiful.',
-                 'To <b class="cross-field-highlighter">be</b> is to have <b class="cross-field-highlighter">been</b> while <b class="cross-field-highlighter">being</b> beautiful.',
-                 'To <b class="cross-field-highlighter">be</b> is to have <b class="cross-field-highlighter">be</b>en while <b class="cross-field-highlighter">be</b>ing <b class="cross-field-highlighter">be</b>autiful.'),
+                 'To <b class="cross-field-highlighter">be</b> is to have <b class="cross-field-highlighter">been</b> while <b class="cross-field-highlighter">being</b> beautiful.'),
             Case("Short words: minimum length (should not highlight 'our')",
                  'phase out',
                  'Our meetings phased out last year.',
-                 'Our meetings <b class="cross-field-highlighter">phased</b> <b class="cross-field-highlighter">out</b> last year.',
-                 'Our meetings <b class="cross-field-highlighter">phase</b>d <b class="cross-field-highlighter">out</b> last year.'),
+                 'Our meetings <b class="cross-field-highlighter">phased</b> <b class="cross-field-highlighter">out</b> last year.'),
             Case("Short words: limit max length (should not highlight 'society')",
                  'so',
                  "Society changes so quickly.",
-                 'Society changes <b class="cross-field-highlighter">so</b> quickly.',
-                 '<b class="cross-field-highlighter">So</b>ciety changes <b class="cross-field-highlighter">so</b> quickly.'),
+                 'Society changes <b class="cross-field-highlighter">so</b> quickly.'),
             Case("Stop words: to",
                  'to overtake',
                  'Driver was overtaking a slower vehicle.',
-                 'Driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.',
-                 'Driver was overtaking a slower vehicle.'),
+                 'Driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.'),
             Case("Stop words: a",
                  'a driver',
                  'Driver was overtaking a slower vehicle.',
-                 '<b class="cross-field-highlighter">Driver</b> was overtaking a slower vehicle.',
                  '<b class="cross-field-highlighter">Driver</b> was overtaking a slower vehicle.'),
             Case("Stop words: an",
                  'an automobile',
                  'Automobile was overtaking a slower vehicle.',
-                 '<b class="cross-field-highlighter">Automobile</b> was overtaking a slower vehicle.',
                  '<b class="cross-field-highlighter">Automobile</b> was overtaking a slower vehicle.'),
             Case("Short words: should not highlight 'Measure'",
                  'mesh',
                  "Measure and mark the mesh size.",
-                 'Measure and mark the <b class="cross-field-highlighter">mesh</b> size.',
                  'Measure and mark the <b class="cross-field-highlighter">mesh</b> size.'),
             Case("HTML tags: li",
                  'lid',
                  '<li>I opened the lid of the jar to get some jam.</li>',
-                 '<li>I opened the <b class="cross-field-highlighter">lid</b> of the jar to get some jam.</li>',
                  '<li>I opened the <b class="cross-field-highlighter">lid</b> of the jar to get some jam.</li>'),
             Case("HTML tags: div",
                  'ivy',
                  '<li><div>There is ivy trailing all over the wall.</div></li>',
-                 '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>',
                  '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>'),
             Case("HTML tags: collocation touches tag",
                  'hello',
                  '<li>Hello, beautiful world!</li>',
-                 '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>',
                  '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>'),
             Case("HTML tags: tag contains spaces",
                  'hello',
                  '<p class="big">Hello, beautiful world!</p>',
-                 '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>',
                  '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'),
             Case("HTML tags: tag contains collocation",
                  'hello',
                  '<p class="hello">Hello, beautiful world!</p>',
-                 '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>',
                  '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'),
             Case("HTML tags: non-breakable space",
                  'beautiful',
                  'Hello,&nbsp;beautiful&nbsp;world!',
-                 'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!',
                  'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!'),
             Case("HTML tags: tag in collocation",
                  '<i>beautiful</i>',
                  'Hello, beautiful world!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> world!'),
             Case("HTML tags: tags in collocation",
                  '<i>beautiful</i> <b>world</b>',
                  'Hello, <i>beautiful</i> world!',
-                 'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!',
                  'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!'),
             Case("Cloze note: entire",
                  'study',
                  'I {{c1:study}} every day.',
-                 'I {{c1:<b class="cross-field-highlighter">study</b>}} every day.',
                  'I {{c1:<b class="cross-field-highlighter">study</b>}} every day.'),
             Case("Cloze note: sub-word",
                  'study',
                  'He {{c2:also studies hard}} every day.',
-                 'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.',
-                 'He {{c2:also studies hard}} every day.'),
+                 'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.'),
             Case("Furigana: ruby collocation, ruby text",
                  '<ruby>東京<rt>とうきょう</rt></ruby>',
                  '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>',
-                 '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>',
                  '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'),
             Case("Furigana: ruby collocation, brackets text",
                  '<ruby>東京<rt>とうきょう</rt></ruby>',
                  '<p>東京[とうきょう]は首都です。</p>',
-                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>',
                  '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>'),
             Case("Furigana: brackets collocation, ruby text",
                  '東京[とうきょう]',
                  '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>',
-                 '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>',
                  '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'),
             Case("Furigana: brackets collocation, brackets text",
                  '東京[とうきょう]',
                  '<p>東京[とうきょう]は首都です。</p>',
-                 '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>',
                  '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>'),
             Case("Special symbols: collocation touches dot",
                  'hip',
                  'Her child is at her hip.',
-                 'Her child is at her <b class="cross-field-highlighter">hip</b>.',
                  'Her child is at her <b class="cross-field-highlighter">hip</b>.'),
             Case("Special symbols: collocation contains forward slash",
                  'beautiful/nice',
                  'Hello, beautiful and nice world!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!'),
             Case("Special symbols: collocation contains back slash",
                  'beautiful\\nice',
                  'Hello, beautiful and nice world!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!'),
             Case("Special symbols: collocation contains angle brackets",
                  'beautiful>nice<perfect',
                  'Hello, beautiful, nice, and perfect world!',
-                 'Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!',
                  'Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!'),
             Case("Special symbols: collocation contains square brackets",
                  'beautiful[nice]',
                  'Hello, [beautiful] and nice [world]!',
-                 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!',
                  'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!'),
             Case("Special symbols: curly quotes (smart quites)",
                  'rally',
                  'It is a “rally.”',
-                 'It is a “<b class="cross-field-highlighter">rally</b>.”',
-                 'It is a “<b class="cross-field-highlighter">rally</b>.”')
+                 'It is a “<b class="cross-field-highlighter">rally</b>.”'),
+            Case("Thai language",
+                 'ดี',
+                 'วันนี้เป็นวันที่ดีมาก',
+                 'วันนี้เป็นวันที่<b class="cross-field-highlighter">ดี</b>มาก'),
+            Case("Korean language",
+                 '좋은',
+                 '오늘은 정말 좋은 날이에요',
+                 '오늘은 정말 <b class="cross-field-highlighter">좋은</b> 날이에요'),
+            Case("Chinese language",
+                 '天气',
+                 '今天天气非常好',
+                 '今天<b class="cross-field-highlighter">天气</b>非常好'),
+            Case("Arabic language",
+                 'جميل',
+                 'الطقس اليوم جميل',
+                 'الطقس اليوم <b class="cross-field-highlighter">جميل</b>'),
+            Case("Hebrew language",
+                 'נהדר',
+                 'היום יום נהדר',
+                 'היום יום <b class="cross-field-highlighter">נהדר</b>')
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
@@ -326,13 +301,10 @@ class Data:
         for case in self.cases():
             collocation_content: FieldContent = FieldContent(case.collocation)
             original_content: FieldContent = FieldContent(case.original_text)
-            highlighted_content_space_delimited: FieldContent = FieldContent(case.highlighted_text_space_delimited)
-            highlighted_content_non_space_delimited: FieldContent = FieldContent(
-                case.highlighted_text_non_space_delimited)
+            highlighted_content: FieldContent = FieldContent(case.highlighted_text)
             note: Note = self.create_basic_note_1(FieldContent(collocation_content),
                                                   FieldContent(original_content))
-            res.append(CaseNote(note, original_content, highlighted_content_space_delimited,
-                                highlighted_content_non_space_delimited))
+            res.append(CaseNote(note, original_content, highlighted_content))
         return res
 
     def read_config(self) -> Config:
@@ -343,14 +315,11 @@ class Data:
             act_note: Note = self.col.get_note(case_note.note.id)
             assert act_note[DefaultFields.basic_back] == case_note.original_content
 
-    def assert_highlighted_case_notes(self, case_notes: list[CaseNote], space_delimited_language: bool):
+    def assert_highlighted_case_notes(self, case_notes: list[CaseNote]):
         for case_note in case_notes:
             act_note: Note = self.col.get_note(case_note.note.id)
             act_content: str = act_note[DefaultFields.basic_back]
-            if space_delimited_language:
-                exp_content: FieldContent = case_note.highlighted_content_space_delimited
-            else:
-                exp_content: FieldContent = case_note.highlighted_content_non_space_delimited
+            exp_content: FieldContent = case_note.highlighted_content
             assert act_content == exp_content, f"Field content: '{act_content}' != '{exp_content}'"
             act_tags: list[str] = act_note.tags
             was_modified: bool = act_content != case_note.original_content

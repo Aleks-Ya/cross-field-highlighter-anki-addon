@@ -29,8 +29,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                                  'selected_format': bold_format,
                                                  'selected_note_type': cloze_note_type_details,
                                                  'selected_source_field': DefaultFields.cloze_text,
-                                                 'selected_stop_words': None,
-                                                 'space_delimited_language': True},
+                                                 'selected_stop_words': None},
                                'default_stop_words': None,
                                'note_number': 3,
                                'formats': all_highlight_formats,
@@ -41,8 +40,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                                'selected_format': bold_format,
                                                'selected_note_type': cloze_note_type_details,
                                                'selected_source_field': DefaultFields.cloze_text,
-                                               'selected_stop_words': None,
-                                               'space_delimited_language': True}}}
+                                               'selected_stop_words': None}}}
 
 
 def test_serialize_model(all_note_type_details: list[NoteTypeDetails], basic_note_type_details: NoteTypeDetails,
@@ -74,8 +72,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], basic_not
                                 'format': 'MARK',
                                 'note_type': cloze_note_type_details.name,
                                 'source_field': DefaultFields.cloze_back_extra,
-                                'stop_words': 'the',
-                                'space_delimited_language': True}]}
+                                'stop_words': 'the'}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model2, data)
     assert model1 != model2
     assert model2.as_dict() == {'accept_callback_None': False,
@@ -84,8 +81,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], basic_not
                                     'selected_format': mark_format,
                                     'selected_note_type': cloze_note_type_details,
                                     'selected_source_field': DefaultFields.cloze_back_extra,
-                                    'selected_stop_words': 'the',
-                                    'space_delimited_language': True},
+                                    'selected_stop_words': 'the'},
                                 'default_stop_words': None,
                                 'note_number': 3,
                                 'formats': all_highlight_formats,
@@ -97,12 +93,10 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], basic_not
                                         'selected_format': italic_format,
                                         'selected_note_type': basic_note_type_details,
                                         'selected_source_field': DefaultFields.basic_back,
-                                        'selected_stop_words': 'to',
-                                        'space_delimited_language': True},
+                                        'selected_stop_words': 'to'},
                                     cloze_note_type_details.name: {
                                         'selected_destination_fields': [DefaultFields.cloze_text],
                                         'selected_format': mark_format,
                                         'selected_note_type': cloze_note_type_details,
                                         'selected_source_field': DefaultFields.cloze_back_extra,
-                                        'selected_stop_words': 'the',
-                                        'space_delimited_language': True}}}
+                                        'selected_stop_words': 'the'}}}

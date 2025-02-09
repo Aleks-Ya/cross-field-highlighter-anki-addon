@@ -81,13 +81,16 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..highlighter.token.find_and_replace_token_highlighter import FindAndReplaceTokenHighlighter
         from ..highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
         from ..highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
+        from ..highlighter.language.language_detector import LanguageDetector
+        from ..highlighter.language.unicode_language_detector import UnicodeLanguageDetector
         stop_words_tokenizer: StopWordsTokenizer = StopWordsTokenizer()
         start_with_token_highlighter: StartWithTokenHighlighter = StartWithTokenHighlighter(formatter_facade)
         find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter = FindAndReplaceTokenHighlighter(
             formatter_facade)
+        language_detector: LanguageDetector = UnicodeLanguageDetector()
         text_highlighter: TextHighlighter = RegexTextHighlighter(
             start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade, tokenizer,
-            stop_words_tokenizer)
+            stop_words_tokenizer, language_detector)
         return RegexFieldHighlighter(text_highlighter)
 
     @staticmethod

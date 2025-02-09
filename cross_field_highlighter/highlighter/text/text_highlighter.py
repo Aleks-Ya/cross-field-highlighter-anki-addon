@@ -6,8 +6,7 @@ from ...highlighter.types import Text
 
 class TextHighlighter(ABC):
     @abstractmethod
-    def highlight(self, collocation: Text, text: Text, stop_words: Text, space_delimited_language: bool,
-                  highlight_format: HighlightFormat) -> Text:
+    def highlight(self, collocation: Text, text: Text, stop_words: Text, highlight_format: HighlightFormat) -> Text:
         ...
 
     @abstractmethod

@@ -11,7 +11,6 @@ log: Logger = logging.getLogger(__name__)
 
 class AdhocHighlightDialogModelSerDe:
     __source_field: str = "source_field"
-    __space_delimited_language: str = "space_delimited_language"
     __format: str = "format"
     __stop_words: str = "stop_words"
     __destination_fields: str = "destination_fields"
@@ -26,7 +25,6 @@ class AdhocHighlightDialogModelSerDe:
         states: list[dict[str, any]] = [{
             "note_type": state.get_selected_note_type().name,
             self.__source_field: state.get_selected_source_field(),
-            self.__space_delimited_language: state.get_space_delimited_language(),
             self.__format: state.get_selected_format().code.value,
             self.__stop_words: state.get_selected_stop_words(),
             self.__destination_fields: state.get_selected_destination_fields()
@@ -61,7 +59,6 @@ class AdhocHighlightDialogModelSerDe:
                     saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_name]
                     model.switch_state(saved_note_type_details)
                     self.__read_source_field(model, state_obj)
-                    self.__read_space_delimited_language(model, state_obj)
                     self.__read_format(model, state_obj, highlight_formats)
                     self.__read_stop_words(model, state_obj)
                     self.__read_destination_fields(model, state_obj)
@@ -75,11 +72,6 @@ class AdhocHighlightDialogModelSerDe:
         if self.__stop_words in state_obj:
             saved_stop_words: Text = Text(state_obj[self.__stop_words])
             model.get_current_state().set_stop_words(saved_stop_words)
-
-    def __read_space_delimited_language(self, model: AdhocHighlightDialogModel, state_obj: dict) -> None:
-        if self.__space_delimited_language in state_obj:
-            space_delimited_language: bool = state_obj[self.__space_delimited_language]
-            model.get_current_state().set_space_delimited_language(space_delimited_language)
 
     def __read_format(self, model: AdhocHighlightDialogModel, state_obj: dict,
                       highlight_formats: [HighlightFormatCode, HighlightFormat]) -> None:

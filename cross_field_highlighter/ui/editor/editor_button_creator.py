@@ -84,7 +84,7 @@ class EditorButtonCreator:
         for destination_field in highlight_op_params.destination_fields:
             result: FieldHighlightResult = self.__field_highlighter.highlight(
                 self.__editor.note, highlight_op_params.source_field, destination_field, highlight_op_params.stop_words,
-                highlight_op_params.space_delimited_language, highlight_op_params.highlight_format)
+                highlight_op_params.highlight_format)
             self.__editor.note[destination_field] = result.highlighted_text
             self.__editor.loadNoteKeepingFocus()
 

@@ -1,7 +1,7 @@
 from typing import Optional
 
 from PyQtPath.path_chain_pyqt6 import path, PyQtPath
-from aqt import QComboBox, QDialogButtonBox, QPushButton, QLineEdit, QCheckBox
+from aqt import QComboBox, QDialogButtonBox, QPushButton, QLineEdit
 
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
@@ -44,21 +44,19 @@ class FakeHighlightControllerCallback:
 def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note_type: Optional[NoteTypeDetails],
                 note_types: list[NoteTypeDetails], selected_source_field: str, source_fields: list[str],
                 selected_format: Optional[HighlightFormat], formats: list[HighlightFormat], check_box_texts: list[str],
-                selected_destination_fields: list[str], disabled_fields: list[str], stop_words: str,
-                space_delimited_language: bool):
+                selected_destination_fields: list[str], disabled_fields: list[str], stop_words: str):
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     exp_start_button_enabled: bool = len(list(set(selected_destination_fields) - set(disabled_fields))) > 0
     assert_buttons(view, exp_start_button_enabled)
-    assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words,
-                            space_delimited_language)
+    assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words)
     assert_format_group_box(view, selected_format, formats)
     assert_destination_group_box(view, check_box_texts, selected_destination_fields, disabled_fields)
 
 
 def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: Optional[NoteTypeDetails],
                             note_types: list[NoteTypeDetails], selected_source_field: str, source_fields: list[str],
-                            stop_words: str, space_delimited_language: bool):
+                            stop_words: str):
     group_box: PyQtPath = path(view).group(0)
 
     note_type: PyQtPath = group_box.child(NoteTypeComboBoxLayout)
@@ -71,23 +69,12 @@ def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: 
 
     assert_source_combo_box(view, selected_source_field, source_fields)
     assert_stop_words(view, stop_words)
-    assert_space_delimited_language(view, space_delimited_language)
 
 
 def assert_stop_words(view: AdhocHighlightDialogView, stop_words: str):
     group_box: PyQtPath = path(view).group(0)
     act_stop_words: str = group_box.child(TitledLineEditLayout).child(QLineEdit).get().text()
     assert act_stop_words == stop_words, f"'{act_stop_words}' != '{stop_words}'"
-
-
-def assert_space_delimited_language(view: AdhocHighlightDialogView, space_delimited_language: bool):
-    group_box: PyQtPath = path(view).group(0)
-    check_box: QCheckBox = group_box.checkbox().get()
-    assert check_box.text() == "Space-delimited language"
-    # noinspection PyUnresolvedReferences
-    assert check_box.toolTip() == "Checked for English, Spanish, French, etc.\nUnchecked for Japanese, Chinese, Thai, etc."
-    is_checked: bool = check_box.isChecked()
-    assert is_checked == space_delimited_language, f"'{is_checked}' != '{space_delimited_language}'"
 
 
 def assert_source_combo_box(view: AdhocHighlightDialogView, selected_source_field: str, source_fields: list[str]):

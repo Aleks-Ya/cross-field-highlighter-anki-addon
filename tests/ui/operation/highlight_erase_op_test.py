@@ -45,15 +45,13 @@ def test_highlight_and_erase(collection_holder: CollectionHolder, notes_highligh
     td.assert_original_case_notes(case_notes)
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
-    space_delimited_language: bool = True
-    highlight_op_params: HighlightOpParams = HighlightOpParams(
-        basic_note_type_id, source_field, space_delimited_language, destination_fields, stop_words, bold_format)
+    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, source_field, destination_fields,
+                                                               stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(collection_holder, notes_highlighter, task_manager, progress_manager,
                                             note_ids, op_statistics_formatter, True, lambda: None, parent,
                                             highlight_op_params, config)
     highlight_op.run_in_background()
-    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(
-        lambda: td.assert_highlighted_case_notes(case_notes, space_delimited_language))()
+    retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(lambda: td.assert_highlighted_case_notes(case_notes))()
     highlight_statistics: OpStatistics = highlight_op.get_statistics()
     assert highlight_statistics.as_dict() == exp_statistics
 
@@ -90,13 +88,11 @@ def test_highlight_and_erase_different_note_types(
     # Highlight
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
-    space_delimited_language: bool = True
-    highlight_op_params: HighlightOpParams = HighlightOpParams(
-        basic_note_type_id, source_field, space_delimited_language, destination_fields, stop_words, bold_format)
+    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, source_field, destination_fields,
+                                                               stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(collection_holder, notes_highlighter, task_manager, progress_manager,
-                                            note_ids,
-                                            op_statistics_formatter, True, lambda: None, parent, highlight_op_params,
-                                            config)
+                                            note_ids, op_statistics_formatter, True, lambda: None, parent,
+                                            highlight_op_params, config)
     highlight_op.run_in_background()
 
     def assert_function_highlight():

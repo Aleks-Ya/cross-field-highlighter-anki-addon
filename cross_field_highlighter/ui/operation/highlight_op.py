@@ -34,5 +34,4 @@ class HighlightOp(Op):
     def _process_slice(self, notes_with_note_type: Notes) -> NotesHighlighterResult:
         return self.__notes_highlighter.highlight(
             notes_with_note_type, self.__params.source_field, self.__params.destination_fields,
-            self.__params.stop_words, self.__params.space_delimited_language,
-            self.__params.highlight_format)
+            self.__params.stop_words, self.__params.highlight_format)

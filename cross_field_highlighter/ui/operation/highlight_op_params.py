@@ -11,11 +11,10 @@ log: Logger = logging.getLogger(__name__)
 
 
 class HighlightOpParams(OpParams):
-    def __init__(self, note_type_id: NotetypeId, source_field: FieldName, space_delimited_language: bool,
-                 destination_fields: FieldNames, stop_words: Text, highlight_format: HighlightFormat):
+    def __init__(self, note_type_id: NotetypeId, source_field: FieldName, destination_fields: FieldNames,
+                 stop_words: Text, highlight_format: HighlightFormat):
         super().__init__(note_type_id)
         self.source_field: FieldName = source_field
-        self.space_delimited_language: bool = space_delimited_language
         self.destination_fields: FieldNames = destination_fields
         self.stop_words: Text = stop_words
         self.highlight_format: HighlightFormat = highlight_format
@@ -24,7 +23,7 @@ class HighlightOpParams(OpParams):
     def __str__(self):
         fields: str = ", ".join([str(field) for field in self.destination_fields])
         return (f"HighlightOpParams(note_type_id={self.note_type_id}, "
-                f"source_field={self.source_field}, space_delimited_language={self.space_delimited_language}, "
+                f"source_field={self.source_field}, "
                 f"destination_fields={fields}, stop_words='{self.stop_words}', highlight_format={self.highlight_format})")
 
     def __eq__(self, other):
@@ -32,11 +31,10 @@ class HighlightOpParams(OpParams):
             return False
         return (self.note_type_id == other.note_type_id and
                 self.source_field == other.source_field and
-                self.space_delimited_language == other.space_delimited_language and
                 self.destination_fields == other.destination_fields and
                 self.stop_words == other.stop_words and
                 self.highlight_format == other.highlight_format)
 
     def __hash__(self):
-        return hash((self.note_type_id, self.source_field, self.space_delimited_language,
-                     tuple(self.destination_fields), tuple(self.stop_words), self.highlight_format))
+        return hash((self.note_type_id, self.source_field, tuple(self.destination_fields), tuple(self.stop_words),
+                     self.highlight_format))

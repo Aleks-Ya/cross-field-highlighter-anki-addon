@@ -26,6 +26,8 @@ from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
     HighlightFormats
+from cross_field_highlighter.highlighter.language.language_detector import LanguageDetector
+from cross_field_highlighter.highlighter.language.unicode_language_detector import UnicodeLanguageDetector
 from cross_field_highlighter.highlighter.note.regex_field_highlighter import RegexFieldHighlighter
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -107,9 +109,10 @@ def find_and_replace_token_highlighter(formatter_facade: FormatterFacade) -> Fin
 def regex_text_highlighter(start_with_token_highlighter: StartWithTokenHighlighter,
                            find_and_replace_token_highlighter: FindAndReplaceTokenHighlighter,
                            formatter_facade: FormatterFacade, regex_tokenizer: RegExTokenizer,
-                           stop_words_tokenizer: StopWordsTokenizer) -> RegexTextHighlighter:
+                           stop_words_tokenizer: StopWordsTokenizer,
+                           language_detector: LanguageDetector) -> RegexTextHighlighter:
     return RegexTextHighlighter(start_with_token_highlighter, find_and_replace_token_highlighter, formatter_facade,
-                                regex_tokenizer, stop_words_tokenizer)
+                                regex_tokenizer, stop_words_tokenizer, language_detector)
 
 
 @pytest.fixture
@@ -467,3 +470,8 @@ def about_view(parent: QWidget, url_manager: UrlManager, desktop_services: QDesk
 @pytest.fixture
 def dialog_manager() -> DialogManager:
     return aqt.dialogs
+
+
+@pytest.fixture
+def language_detector() -> LanguageDetector:
+    return UnicodeLanguageDetector()
