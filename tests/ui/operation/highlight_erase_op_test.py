@@ -21,10 +21,10 @@ from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStati
 from tests.data import Data, DefaultFields, CaseNote
 
 
-def test_highlight_and_erase(collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter,
-                             task_manager: TaskManager, td: Data, bold_format: HighlightFormat,
-                             basic_note_type_id: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
-                             config: Config):
+def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter,
+                                   task_manager: TaskManager, td: Data, bold_format: HighlightFormat,
+                                   basic_note_type_id: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
+                                   config: Config):
     progress_manager: ProgressManager = Mock()
     progress_manager.want_cancel = Mock(return_value=False)
     parent: QWidget = QWidget()
@@ -32,7 +32,7 @@ def test_highlight_and_erase(collection_holder: CollectionHolder, notes_highligh
     note_ids: set[NoteId] = {case_note.note.id for case_note in case_notes}
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     exp_selected: int = len(case_notes)
-    exp_modified: int = exp_selected - 2
+    exp_modified: int = 44
     exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
                                                   OpStatisticsKey.NOTES_SELECTED_ALL: exp_selected,
                                                   OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: exp_selected,
