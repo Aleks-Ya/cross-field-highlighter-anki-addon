@@ -1,5 +1,10 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.4.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.4.1) - 2025-02-13
+
+1. __[MISC]__ Tested for Anki 25.02
+2. __[MISC]__ Add test-case "Stop words: entire collocation comprises stop words"
+
 ## [v1.4.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.4.0) - 2025-02-09
 
 1. __[FEATURE]__ Auto detect space-delimited languages
