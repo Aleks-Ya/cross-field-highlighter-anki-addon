@@ -4,7 +4,7 @@ if [ "$(ls -A docs)" ]; then
    rm -r docs/*
 fi
 
-rsync -a --exclude='images-krita' --exclude='uml' --exclude='pencil' docs-template/ docs/
+rsync -a --exclude='images-krita' --exclude='uml' --exclude='pencil' --exclude='manual-test-cases' docs-template/ docs/
 
 files_with_toc=("README.md" "developer-manual.md" "addon-info-description.md")
 for file in "${files_with_toc[@]}"; do
