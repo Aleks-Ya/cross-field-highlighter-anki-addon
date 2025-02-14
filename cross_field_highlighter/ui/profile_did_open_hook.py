@@ -1,3 +1,5 @@
+import logging
+from logging import Logger
 from typing import Callable
 
 from ..common.collection_holder import CollectionHolder
@@ -103,7 +105,10 @@ class ProfileDidOpenHook(Callable[[], None]):
             highlight_dialog_controller, erase_dialog_controller, note_type_details_factory,
             regex_field_highlighter, config, settings)
         hook: EditorDidInitButtonsHook = EditorDidInitButtonsHook(editor_button_creator)
+        log: Logger = logging.getLogger(__name__)
+        log.debug(f"Count of editor_did_init_buttons before adding: {gui_hooks.editor_did_init_buttons.count()}")
         gui_hooks.editor_did_init_buttons.append(hook)
+        log.debug(f"Count of editor_did_init_buttons after adding: {gui_hooks.editor_did_init_buttons.count()}")
 
     @staticmethod
     def __set_browser_will_show_context_menu_hook(addon_manager, config, dialog_manager, dialog_params_factory,
@@ -118,7 +123,12 @@ class ProfileDidOpenHook(Callable[[], None]):
         hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
             op_factory, highlight_dialog_controller, erase_dialog_controller, dialog_params_factory,
             addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
+        log: Logger = logging.getLogger(__name__)
+        log.debug(
+            f"Count of browser_will_show_context_menu before adding: {gui_hooks.browser_will_show_context_menu.count()}")
         gui_hooks.browser_will_show_context_menu.append(hook)
+        log.debug(
+            f"Count of browser_will_show_context_menu after adding: {gui_hooks.browser_will_show_context_menu.count()}")
 
     @staticmethod
     def __set_browser_will_show_hook(config, dialog_params_factory, erase_dialog_controller,
@@ -127,7 +137,10 @@ class ProfileDidOpenHook(Callable[[], None]):
         from .browser.browser_will_show_hook import BrowserWillShowHook
         hook: BrowserWillShowHook = BrowserWillShowHook(op_factory, highlight_dialog_controller,
                                                         erase_dialog_controller, dialog_params_factory, config)
+        log: Logger = logging.getLogger(__name__)
+        log.debug(f"Count of browser_will_show before adding: {gui_hooks.browser_will_show.count()}")
         gui_hooks.browser_will_show.append(hook)
+        log.debug(f"Count of browser_will_show after adding: {gui_hooks.browser_will_show.count()}")
 
     @staticmethod
     def __highlight_dialog_controller(config, formatter_facade, note_type_details_factory, settings,

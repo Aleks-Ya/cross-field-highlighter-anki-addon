@@ -56,8 +56,12 @@ class AdhocHighlightDialogController:
         self.__user_folder_storage.write(self.__state_key, serialized_state)
 
     def __fill_model_from_storage(self) -> None:
+        log.debug("Fill model from storage")
+        log.debug(f"Model before deserialization: {self.__model.as_dict()}")
         data: dict[str, any] = self.__user_folder_storage.read(self.__state_key)
+        log.debug(f"Data from storage: {data}")
         self.__model_serde.deserialize_states(self.__model, data)
+        log.debug(f"Model after deserialization: {self.__model.as_dict()}")
         default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         if default_stop_words:
             self.__model.set_default_stop_words(default_stop_words)

@@ -32,11 +32,13 @@ class AdhocHighlightDialogModel:
 
     def fill(self, note_types: list[NoteTypeDetails], note_number: int, formats: HighlightFormats,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
+        log.debug(f"Model before filling: {self.as_dict()}")
         self.__note_types = note_types
         self.__note_number = note_number
         self.__formats = formats
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
+        log.debug(f"Model after filling: {self.as_dict()}")
 
     def reset_states(self) -> None:
         for state in self.__states.values():
