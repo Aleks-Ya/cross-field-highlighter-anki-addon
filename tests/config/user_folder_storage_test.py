@@ -2,6 +2,7 @@ from aqt import ProfileManager
 
 from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
+from cross_field_highlighter.highlighter.types import Profile
 from tests.data import DefaultFields
 
 
@@ -48,30 +49,30 @@ def test_write_read_several_keys(user_folder_storage: UserFolderStorage, basic_n
 def test_write_read_different_profiles(user_folder_storage: UserFolderStorage,
                                        basic_note_type_details: NoteTypeDetails, profile_manager: ProfileManager):
     key: str = "state"
-    profile_name_1: str = "User 1"
-    profile_name_2: str = "User 2"
-    profile_manager.create(profile_name_1)
-    profile_manager.create(profile_name_2)
+    profile_1: Profile = Profile("User 1")
+    profile_2: Profile = Profile("User 2")
+    profile_manager.create(profile_1)
+    profile_manager.create(profile_2)
     profile_manager.save()
 
     # Write 1st profile
-    profile_manager.openProfile(profile_name_1)
+    profile_manager.openProfile(profile_1)
     exp_value_1: dict[str, any] = {"item": "About 1"}
     user_folder_storage.write(key, exp_value_1)
     assert user_folder_storage.read_all() == {key: exp_value_1}
 
     # Write 2nd profile
-    profile_manager.openProfile(profile_name_2)
+    profile_manager.openProfile(profile_2)
     exp_value_2: dict[str, any] = {"item": "About 2"}
     user_folder_storage.write(key, exp_value_2)
     assert user_folder_storage.read_all() == {key: exp_value_2}
 
     # Read 1st profile
-    profile_manager.openProfile(profile_name_1)
+    profile_manager.openProfile(profile_1)
     assert user_folder_storage.read_all() == {key: exp_value_1}
 
     # Read 2st profile
-    profile_manager.openProfile(profile_name_2)
+    profile_manager.openProfile(profile_2)
     assert user_folder_storage.read_all() == {key: exp_value_2}
 
 

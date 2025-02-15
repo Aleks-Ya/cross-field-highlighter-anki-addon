@@ -37,7 +37,7 @@ from cross_field_highlighter.highlighter.token.find_and_replace_token_highlighte
 from cross_field_highlighter.highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName
+from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName, Profile
 from cross_field_highlighter.ui.about.about_view import AboutView
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -60,8 +60,8 @@ from tests.visual_qtbot import VisualQtBot
 
 
 @pytest.fixture
-def profile_name() -> str:
-    return "User1"
+def profile() -> Profile:
+    return Profile("User1")
 
 
 @pytest.fixture
@@ -70,12 +70,12 @@ def base_dir() -> Path:
 
 
 @pytest.fixture
-def profile_manager(base_dir: Path, profile_name: str) -> ProfileManager:
+def profile_manager(base_dir: Path, profile: Profile) -> ProfileManager:
     anki_base_dir: Path = ProfileManager.get_created_base_folder(str(base_dir))
     pm: ProfileManager = ProfileManager(base=anki_base_dir)
     pm.setupMeta()
-    pm.create(profile_name)
-    pm.openProfile(profile_name)
+    pm.create(profile)
+    pm.openProfile(profile)
     pm.save()
     return pm
 
