@@ -23,15 +23,15 @@ class AdhocHighlightDialogModelSerDe:
 
     def serialize_states(self, model: AdhocHighlightDialogModel) -> dict[str, any]:
         states: list[dict[str, any]] = [{
-            "note_type": state.get_selected_note_type().name,
+            self.__note_type: state.get_selected_note_type().name,
             self.__source_field: state.get_selected_source_field(),
             self.__format: state.get_selected_format().code.value,
             self.__stop_words: state.get_selected_stop_words(),
             self.__destination_fields: state.get_selected_destination_fields()
         } for state in model.get_states()]
         result: dict[str, any] = {
-            "current_state": model.get_current_state().get_selected_note_type().name,
-            "states": states}
+            self.__current_state: model.get_current_state().get_selected_note_type().name,
+            self.__states: states}
         return result
 
     def deserialize_states(self, model: AdhocHighlightDialogModel, json: dict[str, any]) -> None:
