@@ -26,7 +26,7 @@ class AdhocEraseDialogModelSerDe:
 
     def deserialize_states(self, model: AdhocEraseDialogModel, json: dict[str, any]) -> None:
         note_type_dict: [NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                           model.get_note_types()}
+                                                           model.get_selected_note_types()}
         if "states" in json:
             for state_obj in json["states"]:
                 saved_note_type_name: NoteTypeName = state_obj["note_type"]

@@ -37,7 +37,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
     def highlight_model_changed(self, source: object, _: AdhocHighlightDialogModel) -> None:
         if source != self:
             log.debug("Model changed")
-            self.__note_type_combo_box.set_note_types(self.__model.get_note_types())
+            self.__note_type_combo_box.set_note_types(self.__model.get_selected_note_types())
             self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
             self.__update_source_field_from_model()
             self.__stop_words_layout.set_text(self.__model.get_current_state().get_selected_stop_words())

@@ -25,7 +25,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails],
     assert model.as_dict() == {'accept_callback_None': False,
                                'current_state': {'selected_fields': [],
                                                  'selected_note_type': cloze_note_type_details},
-                               'note_types': all_note_type_details,
+                               'selected_note_types': all_note_type_details,
                                'note_number': 3,
                                'reject_callback_None': False,
                                'states': {cloze_note_type_details.name:
@@ -49,7 +49,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], cloze_not
     assert model2.as_dict() == {'accept_callback_None': True,
                                 'current_state': {'selected_fields': [DefaultFields.cloze_back_extra],
                                                   'selected_note_type': cloze_note_type_details},
-                                'note_types': all_note_type_details,
+                                'selected_note_types': all_note_type_details,
                                 'note_number': 3,
                                 'reject_callback_None': True,
                                 'states': {cloze_note_type_details.name:

@@ -10,8 +10,8 @@ log: Logger = logging.getLogger(__name__)
 
 
 class AdhocHighlightDialogState:
-    def __init__(self, note_type_details: NoteTypeDetails):
-        self.__selected_note_type: NoteTypeDetails = note_type_details
+    def __init__(self, selected_note_type_details: NoteTypeDetails):
+        self.__selected_note_type: NoteTypeDetails = selected_note_type_details
         self.__selected_source_field: Optional[FieldName] = None
         self.__selected_format: Optional[HighlightFormat] = None
         self.__selected_stop_words: Optional[Text] = None

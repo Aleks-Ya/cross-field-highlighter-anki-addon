@@ -19,7 +19,7 @@ class AdhocHighlightDialogModelListener:
 
 class AdhocHighlightDialogModel:
     def __init__(self):
-        self.__note_types: list[NoteTypeDetails] = []
+        self.__selected_note_types: list[NoteTypeDetails] = []
         self.__note_number: int = 0
         self.__formats: HighlightFormats = HighlightFormats([])
         self.__default_stop_words: Optional[str] = None
@@ -30,10 +30,10 @@ class AdhocHighlightDialogModel:
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def fill(self, note_types: list[NoteTypeDetails], note_number: int, formats: HighlightFormats,
+    def fill(self, selected_note_types: list[NoteTypeDetails], note_number: int, formats: HighlightFormats,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
         log.debug(f"Model before filling: {self.as_dict()}")
-        self.__note_types = note_types
+        self.__selected_note_types = selected_note_types
         self.__note_number = note_number
         self.__formats = formats
         self.__accept_callback = accept_callback
@@ -48,8 +48,8 @@ class AdhocHighlightDialogModel:
             state.select_first_source_field()
         self.switch_to_first_state()
 
-    def get_note_types(self) -> list[NoteTypeDetails]:
-        return self.__note_types
+    def get_selected_note_types(self) -> list[NoteTypeDetails]:
+        return self.__selected_note_types
 
     def get_note_number(self) -> int:
         return self.__note_number
@@ -58,7 +58,7 @@ class AdhocHighlightDialogModel:
         return self.__formats
 
     def get_current_state(self) -> AdhocHighlightDialogState:
-        if not self.__current_state or self.__current_state.get_selected_note_type() not in self.__note_types:
+        if not self.__current_state or self.__current_state.get_selected_note_type() not in self.__selected_note_types:
             self.switch_to_first_state()
         return self.__current_state
 
@@ -81,9 +81,9 @@ class AdhocHighlightDialogModel:
             self.__current_state.set_stop_words(Text(self.__default_stop_words))
 
     def switch_to_first_state(self) -> None:
-        if len(self.__note_types) < 1:
+        if len(self.__selected_note_types) < 1:
             raise ValueError("At least one note type should exist")
-        note_type_details: NoteTypeDetails = self.__note_types[0]
+        note_type_details: NoteTypeDetails = self.__selected_note_types[0]
         log.debug(f"Switch to first state: {note_type_details}")
         self.switch_state(note_type_details)
 
@@ -104,7 +104,7 @@ class AdhocHighlightDialogModel:
 
     def as_dict(self) -> dict[str, any]:
         return {
-            "note_types": self.__note_types,
+            "selected_note_types": self.__selected_note_types,
             "note_number": self.__note_number,
             "formats": self.__formats,
             "states": {k: v.as_dict() for k, v in self.__states.items()},

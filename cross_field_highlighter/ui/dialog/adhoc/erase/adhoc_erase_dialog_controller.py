@@ -31,12 +31,12 @@ class AdhocEraseDialogController:
 
     def show_dialog(self, params: DialogParams, start_callback: Callable[[EraseOpParams], None]) -> None:
         log.debug(f"Show dialog: {params}")
-        if len(params.note_types) == 0:
+        if len(params.selected_note_types) == 0:
             log.debug("No notes are selected")
             show_info("No notes are selected", title="Cross-Field Highlighter")
             return
         self.__start_callback = start_callback
-        self.__model.fill(params.note_types, params.note_number, self.__accept_callback, self.__reject_callback)
+        self.__model.fill(params.selected_note_types, params.note_number, self.__accept_callback, self.__reject_callback)
         self.__model.reset_states()
         self.__fill_model_from_config()
         self.__view.show_view()

@@ -27,8 +27,8 @@ class BrowserMenuAction(QAction):
             selected_note_ids: Sequence[NoteId] = browser.selectedNotes()
             dialog_params: DialogParams = self.__dialog_params_factory.create_from_note_ids(selected_note_ids)
         else:
-            card_ids: Sequence[CardId] = browser.selectedCards()
-            dialog_params: DialogParams = self.__dialog_params_factory.create_from_card_ids(card_ids)
+            selected_card_ids: Sequence[CardId] = browser.selectedCards()
+            dialog_params: DialogParams = self.__dialog_params_factory.create_from_card_ids(selected_card_ids)
         log.debug(f"Created DialogParams: {dialog_params}")
         return dialog_params
 

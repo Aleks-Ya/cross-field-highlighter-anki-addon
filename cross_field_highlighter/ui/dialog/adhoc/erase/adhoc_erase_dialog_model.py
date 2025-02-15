@@ -1,6 +1,6 @@
 import logging
-from logging import Logger
 from abc import abstractmethod
+from logging import Logger
 from typing import Callable, Optional
 
 from .....highlighter.note_type_details import NoteTypeDetails
@@ -18,7 +18,7 @@ class AdhocEraseDialogModelListener:
 
 class AdhocEraseDialogModel:
     def __init__(self):
-        self.__note_types: list[NoteTypeDetails] = []
+        self.__selected_note_types: list[NoteTypeDetails] = []
         self.__note_number: int = 0
         self.__current_state: Optional[AdhocEraseDialogState] = None
         self.__accept_callback: Optional[Callable[[], None]] = None
@@ -27,15 +27,15 @@ class AdhocEraseDialogModel:
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def fill(self, note_types: list[NoteTypeDetails], note_number: int, accept_callback: Optional[Callable[[], None]],
-             reject_callback: Optional[Callable[[], None]]) -> None:
-        self.__note_types = note_types
+    def fill(self, selected_note_types: list[NoteTypeDetails], note_number: int,
+             accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
+        self.__selected_note_types = selected_note_types
         self.__note_number = note_number
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
 
-    def get_note_types(self) -> list[NoteTypeDetails]:
-        return self.__note_types
+    def get_selected_note_types(self) -> list[NoteTypeDetails]:
+        return self.__selected_note_types
 
     def get_note_number(self) -> int:
         return self.__note_number
@@ -55,9 +55,9 @@ class AdhocEraseDialogModel:
         self.__current_state = self.__states[note_type_name]
 
     def switch_to_first_state(self) -> None:
-        if len(self.__note_types) < 1:
+        if len(self.__selected_note_types) < 1:
             raise ValueError("At least one note type should exist")
-        note_type_details: NoteTypeDetails = self.__note_types[0]
+        note_type_details: NoteTypeDetails = self.__selected_note_types[0]
         self.switch_state(note_type_details)
 
     def add_listener(self, listener: AdhocEraseDialogModelListener) -> None:
@@ -84,7 +84,7 @@ class AdhocEraseDialogModel:
 
     def as_dict(self) -> dict[str, any]:
         return {
-            "note_types": self.__note_types,
+            "selected_note_types": self.__selected_note_types,
             "note_number": self.__note_number,
             "accept_callback_None": not self.__accept_callback,
             "reject_callback_None": not self.__reject_callback,

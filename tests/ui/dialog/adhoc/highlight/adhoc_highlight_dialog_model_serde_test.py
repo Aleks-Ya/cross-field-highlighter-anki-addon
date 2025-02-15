@@ -33,7 +33,7 @@ def test_deserialize_empty_state(all_note_type_details: list[NoteTypeDetails], c
                                'default_stop_words': None,
                                'note_number': 3,
                                'formats': all_highlight_formats,
-                               'note_types': all_note_type_details,
+                               'selected_note_types': all_note_type_details,
                                'reject_callback_None': False,
                                'states': {cloze_note_type_details.name:
                                               {'selected_destination_fields': [],
@@ -85,7 +85,7 @@ def test_serialize_model(all_note_type_details: list[NoteTypeDetails], basic_not
                                 'default_stop_words': None,
                                 'note_number': 3,
                                 'formats': all_highlight_formats,
-                                'note_types': all_note_type_details,
+                                'selected_note_types': all_note_type_details,
                                 'reject_callback_None': False,
                                 'states': {
                                     basic_note_type_details.name: {
