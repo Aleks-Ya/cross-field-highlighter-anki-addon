@@ -36,10 +36,11 @@ class AdhocEraseDialogView(QDialog):
         log.debug("Show view")
         # noinspection PyUnresolvedReferences
         self.setWindowTitle(self.__get_window_title())
+        self.__model.get_current_state()  # select 1st if not chosen
+        self.__model.fire_model_changed(self)
         # noinspection PyUnresolvedReferences
         self.show()
         self.adjustSize()
-        self.__model.fire_model_changed(self)
 
     def __get_window_title(self) -> str:
         noun: str = "note" if self.__model.get_note_number() == 1 else "notes"

@@ -38,8 +38,8 @@ class AdhocEraseDialogController:
         self.__start_callback = start_callback
         self.__model.fill(self.__note_type_details_factory.get_all(), params.selected_note_types, params.note_number,
                           self.__accept_callback, self.__reject_callback)
-        self.__model.reset_states()
         self.__fill_model_from_config()
+        self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
 
     def __fill_model_from_config(self):

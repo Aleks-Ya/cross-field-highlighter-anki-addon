@@ -46,7 +46,7 @@ class AdhocEraseDialogModel:
         return self.__note_number
 
     def get_current_state(self) -> AdhocEraseDialogState:
-        if not self.__current_state:
+        if not self.__current_state or self.__current_state.get_selected_note_type() not in self.__selected_note_types:
             self.switch_to_first_state()
         return self.__current_state
 
