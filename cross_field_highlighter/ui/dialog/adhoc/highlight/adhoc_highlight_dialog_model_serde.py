@@ -36,7 +36,7 @@ class AdhocHighlightDialogModelSerDe:
 
     def deserialize_states(self, model: AdhocHighlightDialogModel, json: dict[str, any]) -> None:
         note_type_dict: [NoteTypeName, NoteTypeDetails] = {note_type.name: note_type for note_type in
-                                                           model.get_selected_note_types()}
+                                                           model.get_all_note_types()}
         self.__read_states(json, model, note_type_dict)
         self.__read_current_state(json, model, note_type_dict)
 
