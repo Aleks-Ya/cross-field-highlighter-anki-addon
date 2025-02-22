@@ -28,14 +28,16 @@ class UserFolderStorage:
         with open(storage_file, 'w') as f:
             # noinspection PyTypeChecker
             json.dump(current_data, f, indent=2)
+        log.debug(f"Write storage to file {storage_file}: {current_data}")
 
     def read_all(self) -> dict[str, any]:
         storage_file: Path = self.__get_storage_file()
+        result: dict[str, any] = {}
         if storage_file.exists():
             with open(storage_file, 'r') as f:
-                return json.load(f)
-        else:
-            return {}
+                result = json.load(f)
+        log.debug(f"Read storage from file {storage_file}: {result}")
+        return result
 
     def __get_storage_file(self) -> Path:
         return self.__settings.user_folder / "storage" / f"{self.__profile_manager.name}.json"
