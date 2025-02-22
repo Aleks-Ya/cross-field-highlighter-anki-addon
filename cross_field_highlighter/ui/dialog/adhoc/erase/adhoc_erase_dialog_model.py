@@ -3,8 +3,10 @@ from abc import abstractmethod
 from logging import Logger
 from typing import Callable, Optional
 
+from anki.models import NotetypeId
+
 from .....highlighter.note_type_details import NoteTypeDetails
-from .....highlighter.types import NoteTypeName, FieldNames
+from .....highlighter.types import FieldNames
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_state import AdhocEraseDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -24,7 +26,7 @@ class AdhocEraseDialogModel:
         self.__current_state: Optional[AdhocEraseDialogState] = None
         self.__accept_callback: Optional[Callable[[], None]] = None
         self.__reject_callback: Optional[Callable[[], None]] = None
-        self.__states: dict[NoteTypeName, AdhocEraseDialogState] = {}
+        self.__states: dict[NotetypeId, AdhocEraseDialogState] = {}
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -54,10 +56,10 @@ class AdhocEraseDialogModel:
         return list(self.__states.values())
 
     def switch_state(self, note_type_details: NoteTypeDetails):
-        note_type_name: NoteTypeName = note_type_details.name
-        if note_type_name not in self.__states:
-            self.__states[note_type_name] = AdhocEraseDialogState(note_type_details)
-        self.__current_state = self.__states[note_type_name]
+        note_type_id: NotetypeId = note_type_details.note_type_id
+        if note_type_id not in self.__states:
+            self.__states[note_type_id] = AdhocEraseDialogState(note_type_details)
+        self.__current_state = self.__states[note_type_id]
 
     def switch_to_first_state(self) -> None:
         if len(self.__selected_note_types) < 1:

@@ -30,7 +30,7 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails],
         'reject_callback_None': False,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_cloze.name:
+        'states': {note_type_details_cloze.note_type_id:
                        {'selected_fields': [],
                         'selected_note_type': note_type_details_cloze}}}
 
@@ -56,6 +56,6 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.cloze_back_extra],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_cloze.name:
+        'states': {note_type_details_cloze.note_type_id:
                        {'selected_fields': [DefaultFields.cloze_back_extra],
                         'selected_note_type': note_type_details_cloze}}}

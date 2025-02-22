@@ -57,8 +57,8 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
         'reject_callback_None': True,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_basic},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic}}}
     # Choose Note Type
     adhoc_erase_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down, Qt.Key.Key_Down, Qt.Key.Key_Down,
                                                       Qt.Key.Key_Down, )
@@ -73,10 +73,10 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
         'reject_callback_None': True,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic},
-                   note_type_details_cloze.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_cloze}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic},
+                   note_type_details_cloze.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_cloze}}}
     # Click Start button
     assert callback.counter == 0
     # adhoc_erase_dialog_view_scaffold.mark_destination_field()
@@ -92,10 +92,10 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.cloze_text],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic},
-                   note_type_details_cloze.name: {'selected_fields': [DefaultFields.cloze_text],
-                                                  'selected_note_type': note_type_details_cloze}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic},
+                   note_type_details_cloze.note_type_id: {'selected_fields': [DefaultFields.cloze_text],
+                                                          'selected_note_type': note_type_details_cloze}}}
     # Click Cancel button
     adhoc_erase_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
@@ -108,10 +108,10 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.cloze_text],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic},
-                   note_type_details_cloze.name: {'selected_fields': [DefaultFields.cloze_text],
-                                                  'selected_note_type': note_type_details_cloze}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic},
+                   note_type_details_cloze.note_type_id: {'selected_fields': [DefaultFields.cloze_text],
+                                                          'selected_note_type': note_type_details_cloze}}}
     # Click Reset Defaults button
     adhoc_erase_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
@@ -124,10 +124,10 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
         'reject_callback_None': True,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_basic},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic},
-                   note_type_details_cloze.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_cloze}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic},
+                   note_type_details_cloze.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_cloze}}}
 
 
 def test_remember_selected_fields_when_changing_note_type(
@@ -156,8 +156,8 @@ def test_remember_selected_fields_when_changing_note_type(
         'reject_callback_None': True,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_basic},
-        'states': {note_type_details_basic.name: {'selected_fields': [],
-                                                  'selected_note_type': note_type_details_basic}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_fields': [],
+                                                          'selected_note_type': note_type_details_basic}}}
 
     # Choose fields for basic
     adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.basic_front)
@@ -174,7 +174,7 @@ def test_remember_selected_fields_when_changing_note_type(
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
                           'selected_note_type': note_type_details_basic},
-        'states': {note_type_details_basic.name: {
+        'states': {note_type_details_basic.note_type_id: {
             'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
             'selected_note_type': note_type_details_basic}}}
 
@@ -191,11 +191,12 @@ def test_remember_selected_fields_when_changing_note_type(
         'reject_callback_None': True,
         'current_state': {'selected_fields': [],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_basic.name: {
-            'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
-            'selected_note_type': note_type_details_basic},
-            note_type_details_cloze.name: {'selected_fields': [],
-                                           'selected_note_type': note_type_details_cloze}}}
+        'states': {
+            note_type_details_basic.note_type_id: {
+                'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
+                'selected_note_type': note_type_details_basic},
+            note_type_details_cloze.note_type_id: {'selected_fields': [],
+                                                   'selected_note_type': note_type_details_cloze}}}
 
     # Choose field for cloze
     adhoc_erase_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
@@ -210,11 +211,12 @@ def test_remember_selected_fields_when_changing_note_type(
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.cloze_text],
                           'selected_note_type': note_type_details_cloze},
-        'states': {note_type_details_basic.name: {
-            'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
-            'selected_note_type': note_type_details_basic},
-            note_type_details_cloze.name: {'selected_fields': [DefaultFields.cloze_text],
-                                           'selected_note_type': note_type_details_cloze}}}
+        'states': {
+            note_type_details_basic.note_type_id: {
+                'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
+                'selected_note_type': note_type_details_basic},
+            note_type_details_cloze.note_type_id: {'selected_fields': [DefaultFields.cloze_text],
+                                                   'selected_note_type': note_type_details_cloze}}}
 
     # Choose Note Type: basic
     adhoc_erase_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
@@ -230,11 +232,12 @@ def test_remember_selected_fields_when_changing_note_type(
         'reject_callback_None': True,
         'current_state': {'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
                           'selected_note_type': note_type_details_basic},
-        'states': {note_type_details_basic.name: {
-            'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
-            'selected_note_type': note_type_details_basic},
-            note_type_details_cloze.name: {'selected_fields': [DefaultFields.cloze_text],
-                                           'selected_note_type': note_type_details_cloze}}}
+        'states': {
+            note_type_details_basic.note_type_id: {
+                'selected_fields': [DefaultFields.basic_front, DefaultFields.basic_back],
+                'selected_note_type': note_type_details_basic},
+            note_type_details_cloze.note_type_id: {'selected_fields': [DefaultFields.cloze_text],
+                                                   'selected_note_type': note_type_details_cloze}}}
 
 
 def test_repr(adhoc_erase_dialog_view: AdhocEraseDialogView):
