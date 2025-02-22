@@ -19,8 +19,8 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails],
                                  adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe):
     model: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model.fill(note_type_details_all, note_type_details_all, 3, lambda: None, lambda: None)
-    data: dict[str, any] = {'current_state': note_type_details_cloze.name,
-                            'states': [{'note_type': note_type_details_cloze.name}]}
+    data: dict[str, any] = {'current_state': note_type_details_cloze.note_type_id,
+                            'states': [{'note_type_id': note_type_details_cloze.note_type_id}]}
     adhoc_erase_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {
         'all_note_types': note_type_details_all,
@@ -42,8 +42,9 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     model1.switch_state(note_type_details_cloze)
     model1.get_current_state().select_fields(FieldNames([DefaultFields.cloze_back_extra]))
     data: dict[str, any] = adhoc_erase_dialog_model_serde.serialize_states(model1)
-    assert data == {'current_state': note_type_details_cloze.name,
-                    'states': [{'fields': [DefaultFields.cloze_back_extra], 'note_type': note_type_details_cloze.name}]}
+    assert data == {'current_state': note_type_details_cloze.note_type_id,
+                    'states': [{'note_type_id': note_type_details_cloze.note_type_id,
+                                'fields': [DefaultFields.cloze_back_extra]}]}
     model2: AdhocEraseDialogModel = AdhocEraseDialogModel()
     model2.fill(note_type_details_all, note_type_details_all, 3, None, None)
     adhoc_erase_dialog_model_serde.deserialize_states(model2, data)
