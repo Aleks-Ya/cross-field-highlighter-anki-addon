@@ -11,9 +11,6 @@ class ProfileDidOpenHook(Callable[[], None]):
         self.__initialized: bool = False
 
     def __call__(self) -> None:
-        if self.__initialized:
-            return
-        self.__initialized = True
         from pathlib import Path
         from aqt.addons import AddonManager
         from aqt.progress import ProgressManager
@@ -36,6 +33,12 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..ui.operation.op_statistics_formatter import OpStatisticsFormatter
         from ..ui.operation.op_factory import OpFactory
 
+        if self.__initialized:
+            log: Logger = logging.getLogger(__name__)
+            log.info(f"Switched to profile: '{mw.pm.name}'")
+            return
+        self.__initialized = True
+
         module_dir: Path = Path(__file__).parent.parent
         module_name: str = module_dir.stem
         version: str = (module_dir / 'version.txt').read_text()
@@ -47,6 +50,8 @@ class ProfileDidOpenHook(Callable[[], None]):
         task_manager: TaskManager = mw.taskman
         progress_manager: ProgressManager = mw.progress
         profile_manager: ProfileManager = mw.pm
+        log: Logger = logging.getLogger(__name__)
+        log.info(f"Initialized profile: '{profile_manager.name}'")
         settings: Settings = Settings(module_dir, module_name, addon_manager.logs_folder(module_name), version)
         config_loader: ConfigLoader = ConfigLoader(addon_manager, settings)
         config: Config = Config(config_loader)
