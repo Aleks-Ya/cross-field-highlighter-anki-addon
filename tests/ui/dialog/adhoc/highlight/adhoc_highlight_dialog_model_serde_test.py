@@ -21,8 +21,8 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails], n
                                  adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model.fill(note_type_details_all, note_type_details_all, 3, all_highlight_formats, lambda: None, lambda: None)
-    data: dict[str, any] = {'current_state': note_type_details_cloze.name,
-                            'states': [{'note_type': note_type_details_cloze.name}]}
+    data: dict[str, any] = {'current_state': note_type_details_cloze.note_type_id,
+                            'states': [{'note_type_id': note_type_details_cloze.note_type_id}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'all_note_types': note_type_details_all,
                                'selected_note_types': note_type_details_all,
@@ -68,10 +68,10 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
 
     # Read saved state to the new model
     data: dict[str, any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
-    assert data == {'current_state': note_type_details_cloze.name,
+    assert data == {'current_state': note_type_details_cloze.note_type_id,
                     'states': [{'destination_fields': [DefaultFields.cloze_text],
                                 'format': 'MARK',
-                                'note_type': note_type_details_cloze.name,
+                                'note_type_id': note_type_details_cloze.note_type_id,
                                 'source_field': DefaultFields.cloze_back_extra,
                                 'stop_words': 'the'}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model2, data)

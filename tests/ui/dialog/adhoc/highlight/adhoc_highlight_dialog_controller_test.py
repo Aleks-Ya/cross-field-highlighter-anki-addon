@@ -141,8 +141,8 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                           'selected_stop_words': DefaultConfig.stop_words, }}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
@@ -186,8 +186,8 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                                                           'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
@@ -270,8 +270,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                                           'selected_stop_words': 'to the'}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [DefaultFields.basic_back],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
@@ -316,8 +316,8 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                                           'selected_stop_words': 'to the'}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [DefaultFields.basic_back],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
@@ -563,8 +563,8 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
             'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_back,
@@ -660,8 +660,8 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                                                           'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
@@ -702,8 +702,8 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                                                           'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
-            {'current_state': note_type_details_basic.name,
-             'states': [{'note_type': note_type_details_basic.name,
+            {'current_state': note_type_details_basic.note_type_id,
+             'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
                          'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
