@@ -36,7 +36,7 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails], n
                                                  'selected_note_type': note_type_details_cloze,
                                                  'selected_source_field': DefaultFields.cloze_text,
                                                  'selected_stop_words': None},
-                               'states': {note_type_details_cloze.name:
+                               'states': {note_type_details_cloze.note_type_id:
                                               {'selected_destination_fields': [],
                                                'selected_format': bold_format,
                                                'selected_note_type': note_type_details_cloze,
@@ -90,13 +90,13 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
                                     'selected_source_field': DefaultFields.cloze_back_extra,
                                     'selected_stop_words': 'the'},
                                 'states': {
-                                    note_type_details_basic.name: {
+                                    note_type_details_basic.note_type_id: {
                                         'selected_destination_fields': [DefaultFields.basic_front],
                                         'selected_format': italic_format,
                                         'selected_note_type': note_type_details_basic,
                                         'selected_source_field': DefaultFields.basic_back,
                                         'selected_stop_words': 'to'},
-                                    note_type_details_cloze.name: {
+                                    note_type_details_cloze.note_type_id: {
                                         'selected_destination_fields': [DefaultFields.cloze_text],
                                         'selected_format': mark_format,
                                         'selected_note_type': note_type_details_cloze,

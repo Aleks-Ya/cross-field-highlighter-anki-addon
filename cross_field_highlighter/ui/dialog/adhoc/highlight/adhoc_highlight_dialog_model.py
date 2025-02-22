@@ -3,9 +3,11 @@ from abc import abstractmethod
 from logging import Logger
 from typing import Optional, Callable
 
+from anki.models import NotetypeId
+
 from .....highlighter.formatter.highlight_format import HighlightFormats
 from .....highlighter.note_type_details import NoteTypeDetails
-from .....highlighter.types import NoteTypeName, FieldNames, Text
+from .....highlighter.types import FieldNames, Text
 from .....ui.dialog.adhoc.highlight.adhoc_highlight_dialog_state import AdhocHighlightDialogState
 
 log: Logger = logging.getLogger(__name__)
@@ -27,7 +29,7 @@ class AdhocHighlightDialogModel:
         self.__accept_callback: Optional[Callable[[], None]] = None
         self.__reject_callback: Optional[Callable[[], None]] = None
         self.__current_state: Optional[AdhocHighlightDialogState] = None
-        self.__states: dict[NoteTypeName, AdhocHighlightDialogState] = {}
+        self.__states: dict[NotetypeId, AdhocHighlightDialogState] = {}
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -75,14 +77,14 @@ class AdhocHighlightDialogModel:
         self.__default_stop_words = default_stop_words
 
     def switch_state(self, note_type_details: NoteTypeDetails) -> None:
-        note_type_name: NoteTypeName = note_type_details.name
-        if note_type_name not in self.__states:
+        note_type_id: NotetypeId = note_type_details.note_type_id
+        if note_type_id not in self.__states:
             state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details)
             state.select_first_source_field()
             if len(self.__formats) > 0:
                 state.select_format(self.__formats[0])
-            self.__states[note_type_name] = state
-        self.__current_state = self.__states[note_type_name]
+            self.__states[note_type_id] = state
+        self.__current_state = self.__states[note_type_id]
         if not self.__current_state.get_selected_stop_words():
             self.__current_state.set_stop_words(Text(self.__default_stop_words))
 

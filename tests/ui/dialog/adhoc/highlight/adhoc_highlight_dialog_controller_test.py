@@ -66,11 +66,11 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
         'formats': all_highlight_formats,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}},
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': note_type_details_basic,
@@ -129,11 +129,11 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
         'formats': all_highlight_formats,
         'accept_callback_None': False,
         'reject_callback_None': False,
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}},
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}},
         'current_state': {'selected_destination_fields': [],
                           'selected_format': bold_format,
                           'selected_note_type': note_type_details_basic,
@@ -174,16 +174,16 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                           'selected_note_type': note_type_details_cloze,
                           'selected_source_field': DefaultFields.cloze_text,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words},
-                   note_type_details_cloze.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_cloze,
-                                                  'selected_source_field': DefaultFields.cloze_text,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words},
+                   note_type_details_cloze.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_cloze,
+                                                          'selected_source_field': DefaultFields.cloze_text,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.name,
@@ -263,11 +263,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': 'to the', },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [DefaultFields.basic_back],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': 'to the'}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': 'to the'}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.name,
@@ -309,11 +309,11 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': 'to the', },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [DefaultFields.basic_back],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': 'to the'}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': 'to the'}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.name,
@@ -432,11 +432,11 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 1 note",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
@@ -462,11 +462,11 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [DefaultFields.basic_back],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 1 note",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
@@ -492,11 +492,11 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_back,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [DefaultFields.basic_back],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_back,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [DefaultFields.basic_back],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_back,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 1 note",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
@@ -522,7 +522,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_back,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {
+        'states': {note_type_details_basic.note_type_id: {
             'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
             'selected_format': bold_format,
             'selected_note_type': note_type_details_basic,
@@ -555,7 +555,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_back,
                           'selected_stop_words': DefaultConfig.stop_words},
-        'states': {note_type_details_basic.name: {
+        'states': {note_type_details_basic.note_type_id: {
             'selected_destination_fields': [DefaultFields.basic_back, DefaultFields.basic_extra],
             'selected_format': bold_format,
             'selected_note_type': note_type_details_basic,
@@ -623,11 +623,11 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 1 note",
                 selected_note_type=note_type_details_basic, note_types=[note_type_details_basic],
@@ -653,11 +653,11 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.name,
@@ -690,16 +690,16 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                           'selected_note_type': note_type_details_cloze,
                           'selected_source_field': DefaultFields.cloze_text,
                           'selected_stop_words': DefaultConfig.stop_words, },
-        'states': {note_type_details_basic.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_basic,
-                                                  'selected_source_field': DefaultFields.basic_front,
-                                                  'selected_stop_words': DefaultConfig.stop_words},
-                   note_type_details_cloze.name: {'selected_destination_fields': [],
-                                                  'selected_format': bold_format,
-                                                  'selected_note_type': note_type_details_cloze,
-                                                  'selected_source_field': DefaultFields.cloze_text,
-                                                  'selected_stop_words': DefaultConfig.stop_words}}}
+        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_basic,
+                                                          'selected_source_field': DefaultFields.basic_front,
+                                                          'selected_stop_words': DefaultConfig.stop_words},
+                   note_type_details_cloze.note_type_id: {'selected_destination_fields': [],
+                                                          'selected_format': bold_format,
+                                                          'selected_note_type': note_type_details_cloze,
+                                                          'selected_source_field': DefaultFields.cloze_text,
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_folder_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.name,
