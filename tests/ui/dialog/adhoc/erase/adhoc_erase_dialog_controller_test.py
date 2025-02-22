@@ -28,7 +28,8 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
     assert callback.history == []
     assert listener.history == []
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': [],
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
+                                                  'selected_note_types': [],
                                                   'note_number': 0,
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -41,6 +42,7 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     assert callback.history == []
     assert len(listener.history) == 1
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'accept_callback_None': False,
@@ -66,7 +68,8 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': [],
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
+                                                  'selected_note_types': [],
                                                   'note_number': 0,
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -85,6 +88,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'accept_callback_None': False,
@@ -103,6 +107,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     adhoc_erase_dialog_model.switch_state(note_type_details_cloze)
     adhoc_erase_dialog_model.fire_model_changed(None)
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'accept_callback_None': False,
@@ -138,7 +143,8 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': [],
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
+                                                  'selected_note_types': [],
                                                   'note_number': 0,
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -156,12 +162,13 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [],
-                          'selected_note_type': note_type_details_basic},
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': note_type_details_basic},
         'states': {note_type_details_basic.name: {'selected_fields': [],
                                                   'selected_note_type': note_type_details_basic}}}
     assert user_folder_storage.read_all() == {}
@@ -179,12 +186,13 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [DefaultFields.cloze_back_extra],
-                          'selected_note_type': note_type_details_cloze},
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'reject_callback_None': False,
+        'current_state': {'selected_fields': [DefaultFields.cloze_back_extra],
+                          'selected_note_type': note_type_details_cloze},
         'states': {note_type_details_basic.name: {'selected_fields': [],
                                                   'selected_note_type': note_type_details_basic},
                    note_type_details_cloze.name: {'selected_fields': [DefaultFields.cloze_back_extra],
@@ -206,7 +214,8 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
-    assert model.as_dict() == {'selected_note_types': [],
+    assert model.as_dict() == {'all_note_types': [],
+                               'selected_note_types': [],
                                'note_number': 0,
                                'accept_callback_None': True,
                                'reject_callback_None': True,
@@ -222,6 +231,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     params: DialogParams = DialogParams(note_type_details_all, 0)
     controller.show_dialog(params, FakeEraseControllerCallback.call)
     assert model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
         'note_number': 0,
         'accept_callback_None': False,
@@ -256,7 +266,8 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
             "Highlight": {**DefaultConfig.highlight},
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': [],
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
+                                                  'selected_note_types': [],
                                                   'note_number': 0,
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -273,12 +284,13 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [],
-                          'selected_note_type': note_type_details_basic},
         'selected_note_types': [note_type_details_basic],
         'note_number': 1,
         'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': note_type_details_basic},
         'states': {note_type_details_basic.name: {'selected_fields': [],
                                                   'selected_note_type': note_type_details_basic}}}
     assert user_folder_storage.read_all() == {}
@@ -293,12 +305,13 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [],
-                          'selected_note_type': note_type_details_basic},
         'selected_note_types': [note_type_details_basic],
         'note_number': 1,
         'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': note_type_details_basic},
         'states': {note_type_details_basic.name: {'selected_fields': [],
                                                   'selected_note_type': note_type_details_basic}}}
     assert user_folder_storage.read_all() == {'erase_dialog_states': {
@@ -314,12 +327,13 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'accept_callback_None': False,
-        'current_state': {'selected_fields': [],
-                          'selected_note_type': note_type_details_cloze},
         'selected_note_types': [note_type_details_cloze],
         'note_number': 1,
         'reject_callback_None': False,
+        'current_state': {'selected_fields': [],
+                          'selected_note_type': note_type_details_cloze},
         'states': {note_type_details_basic.name: {'selected_fields': [],
                                                   'selected_note_type': note_type_details_basic},
                    note_type_details_cloze.name: {'selected_fields': [],

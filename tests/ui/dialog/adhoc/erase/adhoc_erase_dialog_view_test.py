@@ -24,7 +24,8 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[],
                 selected_fields=[])
     assert len(listener.history) == 0
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': [],
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
+                                                  'selected_note_types': [],
                                                   'note_number': 0,
                                                   'accept_callback_None': True,
                                                   'reject_callback_None': True,
@@ -32,11 +33,12 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                                                   'states': {}}
     # Fill model without firing
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
-    adhoc_erase_dialog_model.fill(selected_note_types, 3, callback.call, None)
+    adhoc_erase_dialog_model.fill(note_type_details_all, selected_note_types, 3, callback.call, None)
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[],
                 selected_fields=[])
     assert len(listener.history) == 0
-    assert adhoc_erase_dialog_model.as_dict() == {'selected_note_types': selected_note_types,
+    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': note_type_details_all,
+                                                  'selected_note_types': selected_note_types,
                                                   'note_number': 3,
                                                   'accept_callback_None': False,
                                                   'reject_callback_None': True,
@@ -48,6 +50,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                 all_fields=DefaultFields.all_basic, selected_fields=[])
     assert len(listener.history) == 1
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -63,6 +66,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
                 all_fields=DefaultFields.all_cloze, selected_fields=[])
     assert len(listener.history) == 2
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -81,6 +85,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     assert callback.counter == 1
     assert len(listener.history) == 3
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -96,6 +101,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     assert callback.counter == 1
     assert len(listener.history) == 3
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -111,6 +117,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     assert callback.counter == 1
     assert len(listener.history) == 4
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -136,12 +143,13 @@ def test_remember_selected_fields_when_changing_note_type(
     visual_qtbot.wait_exposed(adhoc_erase_dialog_view)
     # Initial state
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
-    adhoc_erase_dialog_model.fill(selected_note_types, 3, callback.call, None)
+    adhoc_erase_dialog_model.fill(note_type_details_all, selected_note_types, 3, callback.call, None)
     adhoc_erase_dialog_view.show_view()
     assert_view(adhoc_erase_dialog_view, window_title="Erase 3 notes", selected_note_type=note_type_details_basic,
                 all_fields=DefaultFields.all_basic, selected_fields=[])
     assert len(listener.history) == 1
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -159,6 +167,7 @@ def test_remember_selected_fields_when_changing_note_type(
                 selected_fields=[DefaultFields.basic_front, DefaultFields.basic_back])
     assert len(listener.history) == 3
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -175,6 +184,7 @@ def test_remember_selected_fields_when_changing_note_type(
                 all_fields=DefaultFields.all_cloze, selected_fields=[])
     assert len(listener.history) == 4
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -193,6 +203,7 @@ def test_remember_selected_fields_when_changing_note_type(
                 all_fields=DefaultFields.all_cloze, selected_fields=[DefaultFields.cloze_text])
     assert len(listener.history) == 5
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,
@@ -212,6 +223,7 @@ def test_remember_selected_fields_when_changing_note_type(
                 selected_fields=[DefaultFields.basic_front, DefaultFields.basic_back])
     assert len(listener.history) == 6
     assert adhoc_erase_dialog_model.as_dict() == {
+        'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
         'note_number': 3,
         'accept_callback_None': False,

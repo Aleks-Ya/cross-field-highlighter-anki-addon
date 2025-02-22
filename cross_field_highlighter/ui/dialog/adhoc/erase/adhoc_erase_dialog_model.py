@@ -18,6 +18,7 @@ class AdhocEraseDialogModelListener:
 
 class AdhocEraseDialogModel:
     def __init__(self):
+        self.__all_note_types: list[NoteTypeDetails] = []
         self.__selected_note_types: list[NoteTypeDetails] = []
         self.__note_number: int = 0
         self.__current_state: Optional[AdhocEraseDialogState] = None
@@ -27,12 +28,16 @@ class AdhocEraseDialogModel:
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def fill(self, selected_note_types: list[NoteTypeDetails], note_number: int,
+    def fill(self, all_note_types: list[NoteTypeDetails], selected_note_types: list[NoteTypeDetails], note_number: int,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
+        self.__all_note_types = all_note_types
         self.__selected_note_types = selected_note_types
         self.__note_number = note_number
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
+
+    def get_all_note_types(self) -> list[NoteTypeDetails]:
+        return self.__all_note_types
 
     def get_selected_note_types(self) -> list[NoteTypeDetails]:
         return self.__selected_note_types
@@ -84,6 +89,7 @@ class AdhocEraseDialogModel:
 
     def as_dict(self) -> dict[str, any]:
         return {
+            "all_note_types": self.__all_note_types,
             "selected_note_types": self.__selected_note_types,
             "note_number": self.__note_number,
             "accept_callback_None": not self.__accept_callback,
