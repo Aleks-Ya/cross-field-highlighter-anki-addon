@@ -10,11 +10,14 @@ from tests.data import Data
 def test_by_note_type_id(note_type_details_factory: NoteTypeDetailsFactory, note_type_id_basic: NotetypeId,
                          note_type_details_basic: NoteTypeDetails):
     assert note_type_details_factory.by_note_type_id(note_type_id_basic) == note_type_details_basic
+    assert note_type_details_factory.by_note_type_id(note_type_id_basic) == note_type_details_factory.by_note_type_id(note_type_id_basic)
 
 
 def test_by_note_type_name(note_type_details_factory: NoteTypeDetailsFactory, note_type_name_basic: NoteTypeName,
                            note_type_details_basic: NoteTypeDetails):
     assert note_type_details_factory.by_note_type_name(note_type_name_basic) == note_type_details_basic
+    assert note_type_details_factory.by_note_type_name(
+        note_type_name_basic) == note_type_details_factory.by_note_type_name(note_type_name_basic)
 
 
 def test_by_note_ids(note_type_details_factory: NoteTypeDetailsFactory, td: Data,
@@ -27,5 +30,5 @@ def test_by_note_ids(note_type_details_factory: NoteTypeDetailsFactory, td: Data
 
 
 def test_get_all(note_type_details_factory: NoteTypeDetailsFactory, note_type_details_all: list[NoteTypeDetails]):
-    act = note_type_details_factory.get_all()
-    assert act == note_type_details_all
+    assert note_type_details_factory.get_all() == note_type_details_all
+    assert note_type_details_factory.get_all() == note_type_details_factory.get_all()
