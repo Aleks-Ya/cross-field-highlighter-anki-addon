@@ -3,21 +3,14 @@ from anki.notes import Note, NoteId
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
 from cross_field_highlighter.highlighter.note_type_details_factory import NoteTypeDetailsFactory
-from cross_field_highlighter.highlighter.types import NoteTypeName
 from tests.data import Data
 
 
 def test_by_note_type_id(note_type_details_factory: NoteTypeDetailsFactory, note_type_id_basic: NotetypeId,
                          note_type_details_basic: NoteTypeDetails):
     assert note_type_details_factory.by_note_type_id(note_type_id_basic) == note_type_details_basic
-    assert note_type_details_factory.by_note_type_id(note_type_id_basic) == note_type_details_factory.by_note_type_id(note_type_id_basic)
-
-
-def test_by_note_type_name(note_type_details_factory: NoteTypeDetailsFactory, note_type_name_basic: NoteTypeName,
-                           note_type_details_basic: NoteTypeDetails):
-    assert note_type_details_factory.by_note_type_name(note_type_name_basic) == note_type_details_basic
-    assert note_type_details_factory.by_note_type_name(
-        note_type_name_basic) == note_type_details_factory.by_note_type_name(note_type_name_basic)
+    assert note_type_details_factory.by_note_type_id(note_type_id_basic) == note_type_details_factory.by_note_type_id(
+        note_type_id_basic)
 
 
 def test_by_note_ids(note_type_details_factory: NoteTypeDetailsFactory, td: Data,
