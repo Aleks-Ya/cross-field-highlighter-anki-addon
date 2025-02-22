@@ -257,6 +257,53 @@ def dialog_params_factory(collection_holder: CollectionHolder,
 
 
 @pytest.fixture
+def note_type_basic_reversed(col: Collection) -> NoteType:
+    return col.models.by_name('Basic (and reversed card)')
+
+
+@pytest.fixture
+def note_type_basic_optional_reversed(col: Collection) -> NoteType:
+    return col.models.by_name('Basic (optional reversed card)')
+
+
+@pytest.fixture
+def note_type_basic_type_in_answer(col: Collection) -> NoteType:
+    return col.models.by_name('Basic (type in the answer)')
+
+
+@pytest.fixture
+def note_type_image_occlusion(col: Collection) -> NoteType:
+    return col.models.by_name('Image Occlusion')
+
+
+@pytest.fixture
+def note_type_details_basic_reversed(col: Collection, note_type_basic_reversed: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_basic_reversed["id"], note_type_basic_reversed["name"],
+                           FieldNames(col.models.field_names(note_type_basic_reversed)))
+
+
+@pytest.fixture
+def note_type_details_basic_optional_reversed(col: Collection,
+                                              note_type_basic_optional_reversed: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_basic_optional_reversed["id"],
+                           note_type_basic_optional_reversed["name"],
+                           FieldNames(col.models.field_names(note_type_basic_optional_reversed)))
+
+
+@pytest.fixture
+def note_type_details_basic_type_in_answer(col: Collection,
+                                           note_type_basic_type_in_answer: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_basic_type_in_answer["id"], note_type_basic_type_in_answer["name"],
+                           FieldNames(col.models.field_names(note_type_basic_type_in_answer)))
+
+
+@pytest.fixture
+def note_type_details_image_occlusion(col: Collection, note_type_image_occlusion: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_image_occlusion["id"], note_type_image_occlusion["name"],
+                           FieldNames(col.models.field_names(note_type_image_occlusion)))
+
+
+@pytest.fixture
 def note_type_basic(col: Collection) -> NoteType:
     note_type: NoteType = col.models.by_name('Basic')
     field: FieldDict = col.models.new_field(DefaultFields.basic_extra)
@@ -299,8 +346,13 @@ def note_type_details_cloze(col: Collection, note_type_cloze: NoteType) -> NoteT
 
 @pytest.fixture
 def note_type_details_all(note_type_details_basic: NoteTypeDetails,
-                          note_type_details_cloze: NoteTypeDetails) -> list[NoteTypeDetails]:
-    return [note_type_details_basic, note_type_details_cloze]
+                          note_type_details_basic_reversed: NoteTypeDetails,
+                          note_type_details_basic_optional_reversed: NoteTypeDetails,
+                          note_type_details_basic_type_in_answer: NoteTypeDetails,
+                          note_type_details_cloze: NoteTypeDetails,
+                          note_type_details_image_occlusion: NoteTypeDetails) -> list[NoteTypeDetails]:
+    return [note_type_details_basic, note_type_details_basic_reversed, note_type_details_basic_optional_reversed,
+            note_type_details_basic_type_in_answer, note_type_details_cloze, note_type_details_image_occlusion]
 
 
 @pytest.fixture

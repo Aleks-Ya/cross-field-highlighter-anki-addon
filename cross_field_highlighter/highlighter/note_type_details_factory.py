@@ -42,6 +42,9 @@ class NoteTypeDetailsFactory:
         log.debug(f"Collected note types: {NoteTypeDetails.names(sorted_notes_type)}")
         return sorted_notes_type
 
+    def get_all(self) -> list[NoteTypeDetails]:
+        return [self.__details(note_type) for note_type in self.__collection_holder.col().models.all()]
+
     def __details(self, note_type: NoteType) -> NoteTypeDetails:
         return NoteTypeDetails(note_type["id"], note_type["name"],
                                self.__collection_holder.col().models.field_names(note_type))

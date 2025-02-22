@@ -18,9 +18,14 @@ def test_by_note_type_name(note_type_details_factory: NoteTypeDetailsFactory, no
 
 
 def test_by_note_ids(note_type_details_factory: NoteTypeDetailsFactory, td: Data,
-                     note_type_details_all: list[NoteTypeDetails]):
+                     note_type_details_basic: NoteTypeDetails, note_type_details_cloze: NoteTypeDetails):
     note_1: Note = td.create_basic_note_1()
     note_2: Note = td.create_basic_note_2()
     note_3: Note = td.create_cloze_note()
     note_ids: list[NoteId] = [note_1.id, note_2.id, note_3.id]
-    assert note_type_details_factory.by_note_ids(note_ids) == note_type_details_all
+    assert note_type_details_factory.by_note_ids(note_ids) == [note_type_details_basic, note_type_details_cloze]
+
+
+def test_get_all(note_type_details_factory: NoteTypeDetailsFactory, note_type_details_all: list[NoteTypeDetails]):
+    act = note_type_details_factory.get_all()
+    assert act == note_type_details_all
