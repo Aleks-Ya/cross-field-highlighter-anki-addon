@@ -44,14 +44,9 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
     def set_note_types(self, note_types: list[NoteTypeDetails]) -> None:
         log.debug(f"Set note types: {NoteTypeDetails.names(note_types)}")
         self.__combo_box.blockSignals(True)
-        current_item: NoteTypeDetails = self.__combo_box.currentData()
         self.__combo_box.clear()
         for note_type_details in note_types:
             self.__combo_box.addItem(note_type_details.name, note_type_details)
-        if current_item in note_types:
-            index: int = self.__combo_box.findData(current_item)
-            log.debug(f"Found current note type index: {NoteTypeDetails.name(current_item)}={index}")
-            self.__combo_box.setCurrentIndex(index)
         self.__combo_box.blockSignals(False)
 
     def __on_current_index_changed(self, _: int) -> None:
