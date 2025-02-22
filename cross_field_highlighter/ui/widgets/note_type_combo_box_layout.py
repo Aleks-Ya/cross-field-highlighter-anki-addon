@@ -27,8 +27,7 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
         self.__callback = callback
 
     def set_current_note_type(self, note_type_details: NoteTypeDetails) -> None:
-        note_type_details_name: str = NoteTypeDetails.name(note_type_details)
-        log.debug(f"Set current note type: {note_type_details_name}")
+        log.debug(f"Set current note type: {note_type_details}")
         self.__combo_box.blockSignals(True)
         current_item: NoteTypeDetails = self.__combo_box.currentData()
         if current_item != note_type_details:
@@ -42,8 +41,10 @@ class NoteTypeComboBoxLayout(QHBoxLayout):
                     break
             if index is None:
                 raise RuntimeError(f"Note type details '{note_type_details}' not found in combo box: {items}")
-            log.debug(f"Found current note type index: {note_type_details_name}={index}")
+            log.debug(f"Found current note type index: {note_type_details.note_type_id}={index}")
             self.__combo_box.setCurrentIndex(index)
+        else:
+            log.debug(f"Current note type is already set to: {note_type_details}")
         self.__combo_box.blockSignals(False)
 
     def set_note_types(self, note_types: list[NoteTypeDetails]) -> None:
