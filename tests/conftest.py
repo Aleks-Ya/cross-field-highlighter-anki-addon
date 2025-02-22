@@ -37,7 +37,7 @@ from cross_field_highlighter.highlighter.token.find_and_replace_token_highlighte
 from cross_field_highlighter.highlighter.token.start_with_token_highlighter import StartWithTokenHighlighter
 from cross_field_highlighter.highlighter.tokenizer.regex_tokenizer import RegExTokenizer
 from cross_field_highlighter.highlighter.tokenizer.stop_words_tokenizer import StopWordsTokenizer
-from cross_field_highlighter.highlighter.types import FieldNames, FieldName, NoteTypeName, Profile
+from cross_field_highlighter.highlighter.types import FieldNames, NoteTypeName, Profile
 from cross_field_highlighter.ui.about.about_view import AboutView
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
@@ -286,18 +286,15 @@ def note_type_id_cloze(note_type_cloze: NoteType) -> NotetypeId:
 
 
 @pytest.fixture
-def note_type_details_basic(note_type_id_basic: NotetypeId, note_type_name_basic: NoteTypeName) -> NoteTypeDetails:
-    return NoteTypeDetails(note_type_id_basic, note_type_name_basic,
-                           FieldNames([FieldName(DefaultFields.basic_front),
-                                       FieldName(DefaultFields.basic_back),
-                                       FieldName(DefaultFields.basic_extra)]))
+def note_type_details_basic(col: Collection, note_type_basic: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_basic["id"], note_type_basic["name"],
+                           FieldNames(col.models.field_names(note_type_basic)))
 
 
 @pytest.fixture
-def note_type_details_cloze(note_type_cloze: NoteType) -> NoteTypeDetails:
-    return NoteTypeDetails(
-        note_type_cloze["id"], note_type_cloze["name"],
-        FieldNames([FieldName(DefaultFields.cloze_text), FieldName(DefaultFields.cloze_back_extra)]))
+def note_type_details_cloze(col: Collection, note_type_cloze: NoteType) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_cloze["id"], note_type_cloze["name"],
+                           FieldNames(col.models.field_names(note_type_cloze)))
 
 
 @pytest.fixture
