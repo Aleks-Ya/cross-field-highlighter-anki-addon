@@ -8,16 +8,16 @@ from tests.data import DefaultFields
 
 
 @pytest.fixture
-def params(basic_note_type: NoteType, bold_format: HighlightFormat) -> EraseOpParams:
-    return EraseOpParams(basic_note_type["id"], FieldNames([DefaultFields.basic_back]))
+def params(note_type_basic: NoteType, bold_format: HighlightFormat) -> EraseOpParams:
+    return EraseOpParams(note_type_basic["id"], FieldNames([DefaultFields.basic_back]))
 
 
-def test_str(params: EraseOpParams, basic_note_type_id: NotetypeId):
-    exp: str = f"EraseOpParams(note_type_id={basic_note_type_id}, fields=Back)"
+def test_str(params: EraseOpParams, note_type_id_basic: NotetypeId):
+    exp: str = f"EraseOpParams(note_type_id={note_type_id_basic}, fields=Back)"
     assert str(params) == exp
     assert str([params]) == f"[{exp}]"
 
 
-def test_eq(params: EraseOpParams, basic_note_type: NoteType):
-    params2: EraseOpParams = EraseOpParams(basic_note_type["id"], FieldNames([DefaultFields.basic_back]))
+def test_eq(params: EraseOpParams, note_type_basic: NoteType):
+    params2: EraseOpParams = EraseOpParams(note_type_basic["id"], FieldNames([DefaultFields.basic_back]))
     assert params == params2

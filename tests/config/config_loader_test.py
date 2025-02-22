@@ -83,7 +83,7 @@ def test_read_config_by_addon_manager(addon_manager: AddonManager, config_loader
     assert config_saved == exp_config
 
 
-def test_write_config(config_loader: ConfigLoader, module_dir: Path, basic_note_type_name: NoteTypeName) -> None:
+def test_write_config(config_loader: ConfigLoader, module_dir: Path, note_type_name_basic: NoteTypeName) -> None:
     exp_config: ConfigData = ConfigData({
         "Dialog": {"Adhoc": {
             "Highlight": {"Default Stop Words": "the", "Editor Shortcut": "Alt+H"},

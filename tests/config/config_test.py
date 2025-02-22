@@ -14,7 +14,7 @@ class CountConfigListener(ConfigListener):
         self.counter += 1
 
 
-def test_setters(td: Data, basic_note_type_name: NoteTypeName):
+def test_setters(td: Data, note_type_name_basic: NoteTypeName):
     config: Config = td.read_config()
     original_config: ConfigData = ConfigData({
         "Dialog": {"Adhoc": {

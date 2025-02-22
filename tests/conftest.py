@@ -165,9 +165,9 @@ def module_dir(addons_dir: Path, module_name: str, project_dir: Path) -> Path:
 
 
 @pytest.fixture
-def td(col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType,
+def td(col: Collection, module_dir: Path, note_type_basic: NoteType, note_type_cloze: NoteType,
        config_loader: ConfigLoader) -> Data:
-    return Data(col, module_dir, basic_note_type, cloze_note_type, config_loader)
+    return Data(col, module_dir, note_type_basic, note_type_cloze, config_loader)
 
 
 @pytest.fixture
@@ -257,7 +257,7 @@ def dialog_params_factory(collection_holder: CollectionHolder,
 
 
 @pytest.fixture
-def basic_note_type(col: Collection) -> NoteType:
+def note_type_basic(col: Collection) -> NoteType:
     note_type: NoteType = col.models.by_name('Basic')
     field: FieldDict = col.models.new_field(DefaultFields.basic_extra)
     col.models.add_field(note_type, field)
@@ -266,44 +266,44 @@ def basic_note_type(col: Collection) -> NoteType:
 
 
 @pytest.fixture
-def basic_note_type_id(basic_note_type: NoteType) -> NotetypeId:
-    return basic_note_type["id"]
+def note_type_id_basic(note_type_basic: NoteType) -> NotetypeId:
+    return note_type_basic["id"]
 
 
 @pytest.fixture
-def basic_note_type_name(basic_note_type: NoteType) -> NoteTypeName:
-    return basic_note_type["name"]
+def note_type_name_basic(note_type_basic: NoteType) -> NoteTypeName:
+    return note_type_basic["name"]
 
 
 @pytest.fixture
-def cloze_note_type(col: Collection) -> NoteType:
+def note_type_cloze(col: Collection) -> NoteType:
     return col.models.by_name('Cloze')
 
 
 @pytest.fixture
-def cloze_note_type_id(cloze_note_type: NoteType) -> NotetypeId:
-    return cloze_note_type["id"]
+def note_type_id_cloze(note_type_cloze: NoteType) -> NotetypeId:
+    return note_type_cloze["id"]
 
 
 @pytest.fixture
-def basic_note_type_details(basic_note_type_id: NotetypeId, basic_note_type_name: NoteTypeName) -> NoteTypeDetails:
-    return NoteTypeDetails(basic_note_type_id, basic_note_type_name,
+def note_type_details_basic(note_type_id_basic: NotetypeId, note_type_name_basic: NoteTypeName) -> NoteTypeDetails:
+    return NoteTypeDetails(note_type_id_basic, note_type_name_basic,
                            FieldNames([FieldName(DefaultFields.basic_front),
                                        FieldName(DefaultFields.basic_back),
                                        FieldName(DefaultFields.basic_extra)]))
 
 
 @pytest.fixture
-def cloze_note_type_details(cloze_note_type: NoteType) -> NoteTypeDetails:
+def note_type_details_cloze(note_type_cloze: NoteType) -> NoteTypeDetails:
     return NoteTypeDetails(
-        cloze_note_type["id"], cloze_note_type["name"],
+        note_type_cloze["id"], note_type_cloze["name"],
         FieldNames([FieldName(DefaultFields.cloze_text), FieldName(DefaultFields.cloze_back_extra)]))
 
 
 @pytest.fixture
-def all_note_type_details(basic_note_type_details: NoteTypeDetails,
-                          cloze_note_type_details: NoteTypeDetails) -> list[NoteTypeDetails]:
-    return [basic_note_type_details, cloze_note_type_details]
+def note_type_details_all(note_type_details_basic: NoteTypeDetails,
+                          note_type_details_cloze: NoteTypeDetails) -> list[NoteTypeDetails]:
+    return [note_type_details_basic, note_type_details_cloze]
 
 
 @pytest.fixture

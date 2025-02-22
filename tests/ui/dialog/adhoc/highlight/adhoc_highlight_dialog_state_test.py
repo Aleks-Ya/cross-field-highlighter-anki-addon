@@ -7,19 +7,19 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_st
 from tests.data import DefaultFields
 
 
-def test_as_dict_empty(basic_note_type_details: NoteTypeDetails):
-    state: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+def test_as_dict_empty(note_type_details_basic: NoteTypeDetails):
+    state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     assert state.as_dict() == {
         'selected_destination_fields': [],
         'selected_format': None,
-        'selected_note_type': basic_note_type_details,
+        'selected_note_type': note_type_details_basic,
         'selected_source_field': None,
         'selected_stop_words': None
     }
 
 
-def test_as_dict_full(basic_note_type_details: NoteTypeDetails, bold_format: HighlightFormat):
-    state: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+def test_as_dict_full(note_type_details_basic: NoteTypeDetails, bold_format: HighlightFormat):
+    state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     state.select_source_field(DefaultFields.basic_front)
     state.select_format(bold_format)
     state.set_stop_words(Text("a an"))
@@ -27,32 +27,32 @@ def test_as_dict_full(basic_note_type_details: NoteTypeDetails, bold_format: Hig
     assert state.as_dict() == {
         'selected_destination_fields': DefaultFields.all_basic,
         'selected_format': bold_format,
-        'selected_note_type': basic_note_type_details,
+        'selected_note_type': note_type_details_basic,
         'selected_source_field': DefaultFields.basic_front,
         'selected_stop_words': Text("a an")
     }
 
 
-def test_eq_empty(basic_note_type_details: NoteTypeDetails):
-    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
-    state2: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+def test_eq_empty(note_type_details_basic: NoteTypeDetails):
+    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
+    state2: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     assert state1 == state2
 
 
-def test_eq_none(basic_note_type_details: NoteTypeDetails):
-    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+def test_eq_none(note_type_details_basic: NoteTypeDetails):
+    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     state2: Optional[AdhocHighlightDialogState] = None
     assert state1 != state2
 
 
-def test_eq_full(basic_note_type_details: NoteTypeDetails, bold_format: HighlightFormat):
-    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+def test_eq_full(note_type_details_basic: NoteTypeDetails, bold_format: HighlightFormat):
+    state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     state1.select_source_field(DefaultFields.basic_front)
     state1.select_format(bold_format)
     state1.set_stop_words(Text("a an"))
     state1.select_destination_fields(FieldNames(DefaultFields.all_basic))
 
-    state2: AdhocHighlightDialogState = AdhocHighlightDialogState(basic_note_type_details)
+    state2: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic)
     state2.select_source_field(DefaultFields.basic_front)
     state2.select_format(bold_format)
     state2.set_stop_words(Text("a an"))

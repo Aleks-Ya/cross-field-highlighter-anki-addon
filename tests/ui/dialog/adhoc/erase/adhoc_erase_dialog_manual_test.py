@@ -25,19 +25,19 @@ def test_show_erase_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogContro
 def test_show_erase_dialog_many_wide_fields(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                             adhoc_erase_dialog_view: AdhocEraseDialogView,
                                             dialog_params_factory: DialogParamsFactory,
-                                            basic_note_type: NoteType, td: Data, visual_qtbot: VisualQtBot):
-    td.add_fields_to_note_type(basic_note_type, 30, 50)
+                                            note_type_basic: NoteType, td: Data, visual_qtbot: VisualQtBot):
+    td.add_fields_to_note_type(note_type_basic, 30, 50)
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
 @pytest.mark.skip(reason="For manual running")
 def test_show_erase_dialog_wide_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                           adhoc_erase_dialog_view: AdhocEraseDialogView,
-                                          dialog_params_factory: DialogParamsFactory, cloze_note_type_id: NotetypeId,
+                                          dialog_params_factory: DialogParamsFactory, note_type_id_cloze: NotetypeId,
                                           col: Collection, td: Data, visual_qtbot: VisualQtBot):
-    cloze_note_type: NoteType = col.models.get(cloze_note_type_id)
-    cloze_note_type['name'] = "A really wide wide wide wide wide wide name"
-    col.models.save(cloze_note_type)
+    note_type_cloze: NoteType = col.models.get(note_type_id_cloze)
+    note_type_cloze['name'] = "A really wide wide wide wide wide wide name"
+    col.models.save(note_type_cloze)
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
@@ -45,11 +45,11 @@ def test_show_erase_dialog_wide_note_type(adhoc_erase_dialog_controller: AdhocEr
 def test_show_highlight_dialog_narrow_and_wide_fields(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                                       adhoc_erase_dialog_view: AdhocEraseDialogView,
                                                       dialog_params_factory: DialogParamsFactory,
-                                                      cloze_note_type_id: NotetypeId,
-                                                      basic_note_type: NoteType, cloze_note_type: NoteType,
+                                                      note_type_id_cloze: NotetypeId,
+                                                      note_type_basic: NoteType, note_type_cloze: NoteType,
                                                       col: Collection, td: Data, visual_qtbot: VisualQtBot):
-    td.add_fields_to_note_type(basic_note_type, 5, 10)
-    td.add_fields_to_note_type(cloze_note_type, 20, 50)
+    td.add_fields_to_note_type(note_type_basic, 5, 10)
+    td.add_fields_to_note_type(note_type_cloze, 20, 50)
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 

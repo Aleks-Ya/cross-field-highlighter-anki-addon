@@ -26,8 +26,8 @@ def test_show_highlight_dialog(adhoc_highlight_dialog_controller: AdhocHighlight
 def test_show_highlight_dialog_many_wide_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                                 adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                 dialog_params_factory: DialogParamsFactory,
-                                                basic_note_type: NoteType, td: Data, visual_qtbot: VisualQtBot):
-    td.add_fields_to_note_type(basic_note_type, 30, 50)
+                                                note_type_basic: NoteType, td: Data, visual_qtbot: VisualQtBot):
+    td.add_fields_to_note_type(note_type_basic, 30, 50)
     __show_dialog(adhoc_highlight_dialog_controller, adhoc_highlight_dialog_view, dialog_params_factory, visual_qtbot,
                   td)
 
@@ -36,10 +36,10 @@ def test_show_highlight_dialog_many_wide_fields(adhoc_highlight_dialog_controlle
 def test_show_highlight_dialog_narrow_and_wide_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                                       adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                       dialog_params_factory: DialogParamsFactory,
-                                                      basic_note_type: NoteType, cloze_note_type: NoteType,
+                                                      note_type_basic: NoteType, note_type_cloze: NoteType,
                                                       td: Data, visual_qtbot: VisualQtBot):
-    td.add_fields_to_note_type(basic_note_type, 5, 10)
-    td.add_fields_to_note_type(cloze_note_type, 20, 50)
+    td.add_fields_to_note_type(note_type_basic, 5, 10)
+    td.add_fields_to_note_type(note_type_cloze, 20, 50)
     __show_dialog(adhoc_highlight_dialog_controller, adhoc_highlight_dialog_view, dialog_params_factory, visual_qtbot,
                   td)
 

@@ -6,9 +6,9 @@ from cross_field_highlighter.ui.operation.op_statistics import OpStatistics, OpS
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 
 
-def test_format(op_statistics_formatter: OpStatisticsFormatter, basic_note_type_id: NotetypeId):
+def test_format(op_statistics_formatter: OpStatisticsFormatter, note_type_id_basic: NotetypeId):
     statistics: OpStatistics = OpStatistics()
-    statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, basic_note_type_id)
+    statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, note_type_id_basic)
     statistics.set_value(OpStatisticsKey.NOTES_SELECTED_ALL, 10)
     statistics.set_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, 8)
     statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, 7)
@@ -25,9 +25,9 @@ def test_format(op_statistics_formatter: OpStatisticsFormatter, basic_note_type_
                                         Fields modified: 6''')
 
 
-def test_thousand_delimiter(op_statistics_formatter: OpStatisticsFormatter, basic_note_type_id: NotetypeId):
+def test_thousand_delimiter(op_statistics_formatter: OpStatisticsFormatter, note_type_id_basic: NotetypeId):
     statistics: OpStatistics = OpStatistics()
-    statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, basic_note_type_id)
+    statistics.set_value(OpStatisticsKey.TARGET_NOTE_TYPE_ID, note_type_id_basic)
     statistics.set_value(OpStatisticsKey.NOTES_SELECTED_ALL, 10000)
     statistics.set_value(OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE, 8000)
     statistics.increment_value(OpStatisticsKey.NOTES_PROCESSED, 7000)

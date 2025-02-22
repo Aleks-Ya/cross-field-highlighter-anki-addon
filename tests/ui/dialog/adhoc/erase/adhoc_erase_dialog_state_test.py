@@ -7,38 +7,38 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_state impo
 from tests.data import DefaultFields
 
 
-def test_as_dict_empty(basic_note_type_details: NoteTypeDetails):
-    state: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+def test_as_dict_empty(note_type_details_basic: NoteTypeDetails):
+    state: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     assert state.as_dict() == {
-        'selected_note_type': basic_note_type_details,
+        'selected_note_type': note_type_details_basic,
         'selected_fields': []}
 
 
-def test_as_dict_full(basic_note_type_details: NoteTypeDetails):
-    state: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+def test_as_dict_full(note_type_details_basic: NoteTypeDetails):
+    state: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     state.select_fields(FieldNames(DefaultFields.all_basic))
     assert state.as_dict() == {
-        'selected_note_type': basic_note_type_details,
+        'selected_note_type': note_type_details_basic,
         'selected_fields': DefaultFields.all_basic}
 
 
-def test_eq_empty(basic_note_type_details: NoteTypeDetails):
-    state1: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
-    state2: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+def test_eq_empty(note_type_details_basic: NoteTypeDetails):
+    state1: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
+    state2: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     assert state1 == state2
 
 
-def test_eq_none(basic_note_type_details: NoteTypeDetails):
-    state1: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+def test_eq_none(note_type_details_basic: NoteTypeDetails):
+    state1: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     state2: Optional[AdhocEraseDialogState] = None
     assert state1 != state2
 
 
-def test_eq_full(basic_note_type_details: NoteTypeDetails, bold_format: HighlightFormat):
-    state1: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+def test_eq_full(note_type_details_basic: NoteTypeDetails, bold_format: HighlightFormat):
+    state1: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     state1.select_fields(FieldNames(DefaultFields.all_basic))
 
-    state2: AdhocEraseDialogState = AdhocEraseDialogState(basic_note_type_details)
+    state2: AdhocEraseDialogState = AdhocEraseDialogState(note_type_details_basic)
     state2.select_fields(FieldNames(DefaultFields.all_basic))
 
     assert state1 == state2

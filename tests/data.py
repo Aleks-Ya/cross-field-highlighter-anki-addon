@@ -50,11 +50,11 @@ class CaseNote:
 
 class Data:
 
-    def __init__(self, col: Collection, module_dir: Path, basic_note_type: NoteType, cloze_note_type: NoteType,
+    def __init__(self, col: Collection, module_dir: Path, note_type_basic: NoteType, note_type_cloze: NoteType,
                  config_loader: ConfigLoader):
         self.col: Collection = col
-        self.basic_note_type: NoteType = basic_note_type
-        self.cloze_note_type: NoteType = cloze_note_type
+        self.note_type_basic: NoteType = note_type_basic
+        self.note_type_cloze: NoteType = note_type_cloze
         self.config_loader: ConfigLoader = config_loader
         self.deck_id: DeckId = self.col.decks.get_current_id()
         self.config_json: Path = module_dir.joinpath("config.json")
@@ -64,7 +64,7 @@ class Data:
                             back_field_content: FieldContent = "Text content",
                             extra_field_content: FieldContent = "Extra content",
                             new_note: bool = False) -> Note:
-        note: Note = self.col.new_note(self.basic_note_type)
+        note: Note = self.col.new_note(self.note_type_basic)
         note[DefaultFields.basic_front] = front_field_content
         note[DefaultFields.basic_back] = back_field_content
         note[DefaultFields.basic_extra] = extra_field_content
@@ -87,7 +87,7 @@ class Data:
                           text_field_content: FieldContent = "Text content",
                           extra_field_content: FieldContent = "Extra content",
                           new_note: bool = False) -> Note:
-        note: Note = self.col.new_note(self.cloze_note_type)
+        note: Note = self.col.new_note(self.note_type_cloze)
         note[DefaultFields.cloze_text] = text_field_content
         note[DefaultFields.cloze_back_extra] = extra_field_content
         if not new_note:

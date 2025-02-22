@@ -23,7 +23,7 @@ from tests.data import Data, DefaultFields, CaseNote
 
 def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter,
                                    task_manager: TaskManager, td: Data, bold_format: HighlightFormat,
-                                   basic_note_type_id: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
+                                   note_type_id_basic: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
                                    config: Config):
     progress_manager: ProgressManager = Mock()
     progress_manager.want_cancel = Mock(return_value=False)
@@ -33,7 +33,7 @@ def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_hi
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     exp_selected: int = len(case_notes)
     exp_modified: int = 44
-    exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
+    exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: note_type_id_basic,
                                                   OpStatisticsKey.NOTES_SELECTED_ALL: exp_selected,
                                                   OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: exp_selected,
                                                   OpStatisticsKey.NOTES_PROCESSED: exp_selected,
@@ -45,7 +45,7 @@ def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_hi
     td.assert_original_case_notes(case_notes)
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
-    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, source_field, destination_fields,
+    highlight_op_params: HighlightOpParams = HighlightOpParams(note_type_id_basic, source_field, destination_fields,
                                                                stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(collection_holder, notes_highlighter, task_manager, progress_manager,
                                             note_ids, op_statistics_formatter, True, lambda: None, parent,
@@ -56,7 +56,7 @@ def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_hi
     assert highlight_statistics.as_dict() == exp_statistics
 
     # Erase
-    erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, destination_fields)
+    erase_op_params: EraseOpParams = EraseOpParams(note_type_id_basic, destination_fields)
     erase_op: EraseOp = EraseOp(collection_holder, notes_highlighter, task_manager, progress_manager, note_ids,
                                 op_statistics_formatter, True, lambda: None, parent, erase_op_params, config)
     erase_op.run_in_background()
@@ -68,7 +68,7 @@ def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_hi
 
 def test_highlight_and_erase_different_note_types(
         collection_holder: CollectionHolder, notes_highlighter: NotesHighlighter, task_manager: TaskManager, td: Data,
-        bold_format: HighlightFormat, basic_note_type_id: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
+        bold_format: HighlightFormat, note_type_id_basic: NotetypeId, op_statistics_formatter: OpStatisticsFormatter,
         config: Config):
     parent: QWidget = QWidget()
     progress_manager: ProgressManager = Mock()
@@ -77,7 +77,7 @@ def test_highlight_and_erase_different_note_types(
     note_3: Note = td.create_cloze_note()
     note_ids: set[NoteId] = {note_1.id, note_2.id, note_3.id}
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back, DefaultFields.basic_extra])
-    exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: basic_note_type_id,
+    exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: note_type_id_basic,
                                                   OpStatisticsKey.NOTES_SELECTED_ALL: 3,
                                                   OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: 2,
                                                   OpStatisticsKey.NOTES_PROCESSED: 2,
@@ -88,7 +88,7 @@ def test_highlight_and_erase_different_note_types(
     # Highlight
     stop_words: Text = td.stop_words()
     source_field: FieldName = DefaultFields.basic_front
-    highlight_op_params: HighlightOpParams = HighlightOpParams(basic_note_type_id, source_field, destination_fields,
+    highlight_op_params: HighlightOpParams = HighlightOpParams(note_type_id_basic, source_field, destination_fields,
                                                                stop_words, bold_format)
     highlight_op: HighlightOp = HighlightOp(collection_holder, notes_highlighter, task_manager, progress_manager,
                                             note_ids, op_statistics_formatter, True, lambda: None, parent,
@@ -111,7 +111,7 @@ def test_highlight_and_erase_different_note_types(
     retry(stop=stop_after_attempt(5), wait=wait_fixed(1))(assert_function_highlight)()
 
     # Erase
-    erase_op_params: EraseOpParams = EraseOpParams(basic_note_type_id, destination_fields)
+    erase_op_params: EraseOpParams = EraseOpParams(note_type_id_basic, destination_fields)
     erase_op: EraseOp = EraseOp(collection_holder, notes_highlighter, task_manager, progress_manager, set(note_ids),
                                 op_statistics_formatter, True, lambda: None, parent, erase_op_params, config)
     erase_op.run_in_background()
