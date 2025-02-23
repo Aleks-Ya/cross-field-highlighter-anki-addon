@@ -59,6 +59,9 @@ class AdhocHighlightDialogViewScaffold:
     def click_restore_defaults_button(self) -> None:
         self.__click_button(self.__get_restore_defaults_button())
 
+    def press_esc(self) -> None:
+        self.__visual_qtbot.key_click(self.__view, Qt.Key.Key_Escape)
+
     def __get_note_type_combo_box(self) -> QComboBox:
         return path(self.__view).group().child(NoteTypeComboBoxLayout).combobox().get()
 

@@ -22,6 +22,7 @@ class AdhocHighlightDialogView(QDialog):
         self.setVisible(False)
         layout: QGridLayout = self.__create_grid_layout(model, settings)
         self.setLayout(layout)
+        self.rejected.connect(self.__reject)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_view(self) -> None:
