@@ -10,7 +10,7 @@ from .settings import Settings
 log: Logger = logging.getLogger(__name__)
 
 
-class UserFolderStorage:
+class UserFilesStorage:
     def __init__(self, profile_manager: ProfileManager, settings: Settings):
         self.__profile_manager: ProfileManager = profile_manager
         self.__settings: Settings = settings
@@ -40,7 +40,7 @@ class UserFolderStorage:
         return result
 
     def __get_storage_file(self) -> Path:
-        return self.__settings.user_folder / "storage" / f"{self.__profile_manager.name}.json"
+        return self.__settings.user_files / "storage" / f"{self.__profile_manager.name}.json"
 
     def __str__(self):
-        return f"UserFolderStorage({self.__get_storage_file()})"
+        return f"UserFilesStorage({self.__get_storage_file()})"

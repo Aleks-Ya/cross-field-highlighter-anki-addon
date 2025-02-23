@@ -20,7 +20,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         from ..config.config import Config
         from ..config.config_loader import ConfigLoader
         from ..config.settings import Settings
-        from ..config.user_folder_storage import UserFolderStorage
+        from ..config.user_files_storage import UserFilesStorage
         from ..highlighter.formatter.formatter_facade import FormatterFacade
         from ..highlighter.note.regex_field_highlighter import RegexFieldHighlighter
         from ..highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -62,11 +62,11 @@ class ProfileDidOpenHook(Callable[[], None]):
         notes_highlighter: NotesHighlighter = NotesHighlighter(regex_field_highlighter, config)
 
         note_type_details_factory: NoteTypeDetailsFactory = NoteTypeDetailsFactory(self.__collection_holder)
-        user_folder_storage: UserFolderStorage = UserFolderStorage(profile_manager, settings)
+        user_files_storage: UserFilesStorage = UserFilesStorage(profile_manager, settings)
         highlight_dialog_controller: AdhocHighlightDialogController = self.__highlight_dialog_controller(
-            config, formatter_facade, note_type_details_factory, settings, user_folder_storage)
+            config, formatter_facade, note_type_details_factory, settings, user_files_storage)
         erase_dialog_controller: AdhocEraseDialogController = self.__erase_dialog_controller(
-            note_type_details_factory, settings, user_folder_storage)
+            note_type_details_factory, settings, user_files_storage)
         op_statistics_formatter: OpStatisticsFormatter = OpStatisticsFormatter(self.__collection_holder)
         op_factory: OpFactory = OpFactory(self.__collection_holder, notes_highlighter, task_manager, progress_manager,
                                           op_statistics_formatter, config)
@@ -149,7 +149,7 @@ class ProfileDidOpenHook(Callable[[], None]):
 
     @staticmethod
     def __highlight_dialog_controller(config, formatter_facade, note_type_details_factory, settings,
-                                      user_folder_storage):
+                                      user_files_storage):
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_controller import AdhocHighlightDialogController
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model import AdhocHighlightDialogModel
         from ..ui.dialog.adhoc.highlight.adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
@@ -158,10 +158,10 @@ class ProfileDidOpenHook(Callable[[], None]):
         view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, settings)
         serde: AdhocHighlightDialogModelSerDe = AdhocHighlightDialogModelSerDe()
         return AdhocHighlightDialogController(model, view, note_type_details_factory, formatter_facade,
-                                              serde, config, user_folder_storage)
+                                              serde, config, user_files_storage)
 
     @staticmethod
-    def __erase_dialog_controller(note_type_details_factory, settings, user_folder_storage):
+    def __erase_dialog_controller(note_type_details_factory, settings, user_files_storage):
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_controller import AdhocEraseDialogController
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
         from ..ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
@@ -169,4 +169,4 @@ class ProfileDidOpenHook(Callable[[], None]):
         model: AdhocEraseDialogModel = AdhocEraseDialogModel()
         view: AdhocEraseDialogView = AdhocEraseDialogView(model, settings)
         serde: AdhocEraseDialogModelSerDe = AdhocEraseDialogModelSerDe()
-        return AdhocEraseDialogController(model, view, note_type_details_factory, serde, user_folder_storage)
+        return AdhocEraseDialogController(model, view, note_type_details_factory, serde, user_files_storage)

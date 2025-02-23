@@ -7,7 +7,7 @@ from aqt.utils import show_info
 from .adhoc_highlight_dialog_model_serde import AdhocHighlightDialogModelSerDe
 from .adhoc_highlight_dialog_state import AdhocHighlightDialogState
 from .....config.config import Config
-from .....config.user_folder_storage import UserFolderStorage
+from .....config.user_files_storage import UserFilesStorage
 from .....highlighter.formatter.formatter_facade import FormatterFacade
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
@@ -25,14 +25,14 @@ class AdhocHighlightDialogController:
 
     def __init__(self, model: AdhocHighlightDialogModel, view: AdhocHighlightDialogView,
                  note_type_details_factory: NoteTypeDetailsFactory, formatter_facade: FormatterFacade,
-                 model_serde: AdhocHighlightDialogModelSerDe, config: Config, user_folder_storage: UserFolderStorage):
+                 model_serde: AdhocHighlightDialogModelSerDe, config: Config, user_files_storage: UserFilesStorage):
         self.__model: AdhocHighlightDialogModel = model
         self.__view: AdhocHighlightDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__formatter_facade: FormatterFacade = formatter_facade
         self.__model_serde: AdhocHighlightDialogModelSerDe = model_serde
         self.__config: Config = config
-        self.__user_folder_storage: UserFolderStorage = user_folder_storage
+        self.__user_files_storage: UserFilesStorage = user_files_storage
         self.__fill_model_from_storage()
         self.__run_op_callback: Optional[Callable[[HighlightOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
@@ -53,12 +53,12 @@ class AdhocHighlightDialogController:
     def __save_model_to_storage(self) -> None:
         log.debug("Save model to storage")
         serialized_state: dict[str, any] = self.__model_serde.serialize_states(self.__model)
-        self.__user_folder_storage.write(self.__state_key, serialized_state)
+        self.__user_files_storage.write(self.__state_key, serialized_state)
 
     def __fill_model_from_storage(self) -> None:
         log.debug("Fill model from storage")
         log.debug(f"Model before deserialization: {self.__model.as_dict()}")
-        data: dict[str, any] = self.__user_folder_storage.read(self.__state_key)
+        data: dict[str, any] = self.__user_files_storage.read(self.__state_key)
         log.debug(f"Data from storage: {data}")
         self.__model_serde.deserialize_states(self.__model, data)
         log.debug(f"Model after deserialization: {self.__model.as_dict()}")

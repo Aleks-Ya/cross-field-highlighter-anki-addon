@@ -22,7 +22,7 @@ from cross_field_highlighter.config.config import Config
 from cross_field_highlighter.config.config_loader import ConfigLoader
 from cross_field_highlighter.config.settings import Settings
 from cross_field_highlighter.config.url_manager import UrlManager
-from cross_field_highlighter.config.user_folder_storage import UserFolderStorage
+from cross_field_highlighter.config.user_files_storage import UserFilesStorage
 from cross_field_highlighter.highlighter.formatter.formatter_facade import FormatterFacade
 from cross_field_highlighter.highlighter.formatter.highlight_format import HighlightFormat, HighlightFormatCode, \
     HighlightFormats
@@ -392,10 +392,10 @@ def adhoc_highlight_dialog_controller(adhoc_highlight_dialog_model: AdhocHighlig
                                       adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
                                       note_type_details_factory: NoteTypeDetailsFactory,
                                       formatter_facade: FormatterFacade, config: Config,
-                                      user_folder_storage: UserFolderStorage) -> AdhocHighlightDialogController:
+                                      user_files_storage: UserFilesStorage) -> AdhocHighlightDialogController:
     return AdhocHighlightDialogController(adhoc_highlight_dialog_model, adhoc_highlight_dialog_view,
                                           note_type_details_factory, formatter_facade,
-                                          adhoc_highlight_dialog_model_serde, config, user_folder_storage)
+                                          adhoc_highlight_dialog_model_serde, config, user_files_storage)
 
 
 @pytest.fixture
@@ -429,9 +429,9 @@ def adhoc_erase_dialog_controller(adhoc_erase_dialog_model: AdhocEraseDialogMode
                                   adhoc_erase_dialog_view: AdhocEraseDialogView,
                                   adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
                                   note_type_details_factory: NoteTypeDetailsFactory,
-                                  user_folder_storage: UserFolderStorage) -> AdhocEraseDialogController:
+                                  user_files_storage: UserFilesStorage) -> AdhocEraseDialogController:
     return AdhocEraseDialogController(adhoc_erase_dialog_model, adhoc_erase_dialog_view, note_type_details_factory,
-                                      adhoc_erase_dialog_model_serde, user_folder_storage)
+                                      adhoc_erase_dialog_model_serde, user_files_storage)
 
 
 @pytest.fixture
@@ -495,8 +495,8 @@ def editor_button_creator(adhoc_highlight_dialog_controller: AdhocHighlightDialo
 
 
 @pytest.fixture
-def user_folder_storage(profile_manager: ProfileManager, settings: Settings) -> UserFolderStorage:
-    return UserFolderStorage(profile_manager, settings)
+def user_files_storage(profile_manager: ProfileManager, settings: Settings) -> UserFilesStorage:
+    return UserFilesStorage(profile_manager, settings)
 
 
 @pytest.fixture

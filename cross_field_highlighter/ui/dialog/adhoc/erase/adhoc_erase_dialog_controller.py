@@ -5,7 +5,7 @@ from typing import Callable, Optional
 from aqt.utils import show_info
 
 from .adhoc_erase_dialog_model_serde import AdhocEraseDialogModelSerDe
-from .....config.user_folder_storage import UserFolderStorage
+from .....config.user_files_storage import UserFilesStorage
 from .....highlighter.note_type_details_factory import NoteTypeDetailsFactory
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from .....ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
@@ -20,12 +20,12 @@ class AdhocEraseDialogController:
 
     def __init__(self, model: AdhocEraseDialogModel, view: AdhocEraseDialogView,
                  note_type_details_factory: NoteTypeDetailsFactory, model_serde: AdhocEraseDialogModelSerDe,
-                 user_folder_storage: UserFolderStorage):
+                 user_files_storage: UserFilesStorage):
         self.__model: AdhocEraseDialogModel = model
         self.__view: AdhocEraseDialogView = view
         self.__note_type_details_factory: NoteTypeDetailsFactory = note_type_details_factory
         self.__model_serde: AdhocEraseDialogModelSerDe = model_serde
-        self.__user_folder_storage: UserFolderStorage = user_folder_storage
+        self.__user_files_storage: UserFilesStorage = user_files_storage
         self.__start_callback: Optional[Callable[[EraseOpParams], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
@@ -43,13 +43,13 @@ class AdhocEraseDialogController:
         self.__view.show_view()
 
     def __fill_model_from_config(self):
-        data: dict[str, any] = self.__user_folder_storage.read(self.__state_key)
+        data: dict[str, any] = self.__user_files_storage.read(self.__state_key)
         self.__model_serde.deserialize_states(self.__model, data)
 
     def __save_model_to_config(self):
         log.debug("Save model to storage")
         serialized_state: dict[str, any] = self.__model_serde.serialize_states(self.__model)
-        self.__user_folder_storage.write(self.__state_key, serialized_state)
+        self.__user_files_storage.write(self.__state_key, serialized_state)
 
     def __accept_callback(self):
         log.debug("Accept callback")
