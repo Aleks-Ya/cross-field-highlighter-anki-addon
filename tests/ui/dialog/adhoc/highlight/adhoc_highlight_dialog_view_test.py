@@ -8,7 +8,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from tests.conftest import note_type_details_basic, note_type_details_cloze
 from tests.data import DefaultFields, DefaultConfig
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import assert_format_group_box, \
-    assert_source_combo_box, assert_view, FakeModelListener, FakeCallback
+    assert_source_combo_box, assert_view, HighlightFakeModelListener, FakeCallback
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
@@ -18,10 +18,9 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                    note_type_details_all: list[NoteTypeDetails], note_type_details_cloze: NoteTypeDetails,
                    note_type_details_basic: NoteTypeDetails,
                    all_highlight_formats: HighlightFormats, bold_format: HighlightFormat,
-                   adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold, visual_qtbot: VisualQtBot):
+                   adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold, visual_qtbot: VisualQtBot,
+                   highlight_model_listener: HighlightFakeModelListener):
     callback: FakeCallback = FakeCallback()
-    listener: FakeModelListener = FakeModelListener()
-    adhoc_highlight_dialog_model.add_listener(listener)
     exp_default_stop_words: str = "a an"
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
     adhoc_highlight_dialog_model.fill(note_type_details_all, selected_note_types, 3, all_highlight_formats,
@@ -29,7 +28,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
     adhoc_highlight_dialog_model.switch_state(note_type_details_basic)
     # Initial state
-    assert listener.counter == 0
+    assert highlight_model_listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
                 selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words)
@@ -53,7 +52,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                           'selected_stop_words': 'a an'}}}
     # Fill model without firing
     adhoc_highlight_dialog_model.set_default_stop_words(exp_default_stop_words)
-    assert listener.counter == 0
+    assert highlight_model_listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
                 selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words)
@@ -78,7 +77,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Fire model changes
     adhoc_highlight_dialog_view.show_view()
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
-    assert listener.counter == 1
+    assert highlight_model_listener.counter == 1
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
                 selected_note_type=note_type_details_basic,
                 note_types=selected_note_types,
@@ -107,7 +106,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                           'selected_stop_words': exp_default_stop_words}}}
     # Choose Note Type
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Down)
-    assert listener.counter == 2
+    assert highlight_model_listener.counter == 2
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
                 selected_note_type=note_type_details_cloze,
                 note_types=selected_note_types,
@@ -142,7 +141,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                           'selected_stop_words': exp_default_stop_words}}}
     # Choose Field
     adhoc_highlight_dialog_view_scaffold.select_source_field(Qt.Key.Key_Down)
-    assert listener.counter == 3
+    assert highlight_model_listener.counter == 3
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
                 selected_note_type=note_type_details_cloze,
                 note_types=selected_note_types,
@@ -176,7 +175,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                           'selected_source_field': DefaultFields.cloze_back_extra,
                                                           'selected_stop_words': exp_default_stop_words}}}
 
-    assert listener.counter == 3
+    assert highlight_model_listener.counter == 3
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 3 notes",
                 selected_note_type=note_type_details_cloze,
                 note_types=selected_note_types,
@@ -215,7 +214,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     adhoc_highlight_dialog_view_scaffold.mark_destination_field(DefaultFields.cloze_text)
     adhoc_highlight_dialog_view_scaffold.click_start_button()
     assert callback.counter == 1
-    assert listener.counter == 4
+    assert highlight_model_listener.counter == 4
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
@@ -242,7 +241,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert callback.counter == 1
-    assert listener.counter == 4
+    assert highlight_model_listener.counter == 4
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
@@ -269,7 +268,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     # Click Restore Defaults button
     adhoc_highlight_dialog_view_scaffold.click_restore_defaults_button()
     assert callback.counter == 1
-    assert listener.counter == 5
+    assert highlight_model_listener.counter == 5
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': selected_note_types,
@@ -323,8 +322,6 @@ def test_remember_selected_source_when_changing_note_type(
         note_type_details_all: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
         bold_format: HighlightFormat, adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
         note_type_details_basic: NoteTypeDetails, note_type_details_cloze: NoteTypeDetails, visual_qtbot: VisualQtBot):
-    listener: FakeModelListener = FakeModelListener()
-    adhoc_highlight_dialog_model.add_listener(listener)
     # Fill model
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
     adhoc_highlight_dialog_model.fill(note_type_details_all, selected_note_types, 3, all_highlight_formats, None, None)

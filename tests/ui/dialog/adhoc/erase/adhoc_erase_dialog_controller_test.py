@@ -11,7 +11,8 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view impor
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import note_type_details_cloze, note_type_details_basic
 from tests.data import Data, DefaultFields, DefaultConfig, DefaultTags
-from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import FakeModelListener, FakeEraseControllerCallback, \
+from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import EraseFakeModelListener, \
+    FakeEraseControllerCallback, \
     assert_view
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
 
@@ -20,14 +21,13 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                      adhoc_erase_dialog_view: AdhocEraseDialogView,
                      adhoc_erase_dialog_model: AdhocEraseDialogModel, td: Data,
                      note_type_details_basic: NoteTypeDetails,
-                     note_type_details_all: list[NoteTypeDetails], user_files_storage: UserFilesStorage):
-    listener: FakeModelListener = FakeModelListener()
-    adhoc_erase_dialog_model.add_listener(listener)
-
+                     note_type_details_all: list[NoteTypeDetails], user_files_storage: UserFilesStorage,
+                     erase_model_listener: EraseFakeModelListener,
+                     erase_controller_callback: FakeEraseControllerCallback):
+    # Default state
     params: DialogParams = DialogParams(note_type_details_all, 0)
-    callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
-    assert callback.history == []
-    assert listener.history == []
+    assert erase_controller_callback.history == []
+    assert erase_model_listener.history == []
     assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
                                                   'selected_note_types': [],
                                                   'note_number': 0,
@@ -38,9 +38,9 @@ def test_show_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])
 
-    adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
-    assert callback.history == []
-    assert len(listener.history) == 1
+    adhoc_erase_dialog_controller.show_dialog(params, erase_controller_callback.call)
+    assert erase_controller_callback.history == []
+    assert len(erase_model_listener.history) == 1
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -60,8 +60,8 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                        adhoc_erase_dialog_view: AdhocEraseDialogView,
                        adhoc_erase_dialog_model: AdhocEraseDialogModel, config_loader: ConfigLoader,
                        note_type_details_basic: NoteTypeDetails, note_type_details_cloze: NoteTypeDetails,
-                       note_type_details_all: list[NoteTypeDetails], user_files_storage: UserFilesStorage):
-    callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
+                       note_type_details_all: list[NoteTypeDetails], user_files_storage: UserFilesStorage,
+                       erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
@@ -80,7 +80,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                 all_fields=[], selected_fields=[])
 
     # Update config from model
-    adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0), erase_controller_callback.call)
     adhoc_erase_dialog_model.call_accept_callback()
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
@@ -135,8 +135,8 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                                             note_type_details_all: list[NoteTypeDetails],
                                             adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
                                             user_files_storage: UserFilesStorage,
-                                            settings: Settings):
-    callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
+                                            settings: Settings,
+                                            erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
@@ -155,7 +155,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                 all_fields=[], selected_fields=[])
 
     # Show dialog
-    adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 5), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 5), erase_controller_callback.call)
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -229,7 +229,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
 
     # Show dialog (will read state from storage)
     params: DialogParams = DialogParams(note_type_details_all, 6)
-    controller.show_dialog(params, FakeEraseControllerCallback.call)
+    controller.show_dialog(params, erase_controller_callback.call)
     assert model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -259,8 +259,8 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
                          note_type_details_all: list[NoteTypeDetails],
                          adhoc_erase_dialog_model_serde: AdhocEraseDialogModelSerDe,
                          user_files_storage: UserFilesStorage,
-                         adhoc_erase_dialog_view_scaffold: AdhocEraseDialogViewScaffold):
-    callback: FakeEraseControllerCallback = FakeEraseControllerCallback()
+                         adhoc_erase_dialog_view_scaffold: AdhocEraseDialogViewScaffold,
+                         erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
@@ -278,7 +278,8 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])
 
     # Show dialog with Basic note type
-    adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_basic], 1), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_basic], 1),
+                                              erase_controller_callback.call)
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -322,7 +323,8 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
                 all_fields=DefaultFields.all_basic, selected_fields=[])
 
     # Show Dialog with Cloze note type (it does not have a state yet)
-    adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_cloze], 1), callback.call)
+    adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_cloze], 1),
+                                              erase_controller_callback.call)
     assert config_loader.load_config() == {
         'Dialog': {'Adhoc': {
             "Highlight": {**DefaultConfig.highlight},
@@ -348,8 +350,9 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
 
 
 def test_no_notes_selected(adhoc_erase_dialog_controller: AdhocEraseDialogController,
-                           adhoc_erase_dialog_view: AdhocEraseDialogView):
+                           adhoc_erase_dialog_view: AdhocEraseDialogView,
+                           erase_controller_callback: FakeEraseControllerCallback):
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])
     params: DialogParams = DialogParams([], 1)
-    adhoc_erase_dialog_controller.show_dialog(params, FakeEraseControllerCallback.call)
+    adhoc_erase_dialog_controller.show_dialog(params, erase_controller_callback.call)
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[], selected_fields=[])

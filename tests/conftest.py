@@ -54,7 +54,11 @@ from cross_field_highlighter.ui.menu.dialog_params_factory import DialogParamsFa
 from cross_field_highlighter.ui.operation.op_factory import OpFactory
 from cross_field_highlighter.ui.operation.op_statistics_formatter import OpStatisticsFormatter
 from tests.data import Data, DefaultFields
+from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import EraseFakeModelListener, \
+    FakeEraseControllerCallback
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
+from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import HighlightFakeModelListener, \
+    FakeHighlightControllerCallback
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
 from tests.visual_qtbot import VisualQtBot
 
@@ -368,6 +372,30 @@ def config(config_loader: ConfigLoader) -> Config:
 @pytest.fixture
 def adhoc_highlight_dialog_model() -> AdhocHighlightDialogModel:
     return AdhocHighlightDialogModel()
+
+
+@pytest.fixture
+def highlight_model_listener(adhoc_highlight_dialog_model: AdhocHighlightDialogModel) -> HighlightFakeModelListener:
+    listener: HighlightFakeModelListener = HighlightFakeModelListener()
+    adhoc_highlight_dialog_model.add_listener(listener)
+    return listener
+
+
+@pytest.fixture
+def erase_model_listener(adhoc_erase_dialog_model: AdhocEraseDialogModel) -> EraseFakeModelListener:
+    listener: EraseFakeModelListener = EraseFakeModelListener()
+    adhoc_erase_dialog_model.add_listener(listener)
+    return listener
+
+
+@pytest.fixture
+def highlight_controller_callback() -> FakeHighlightControllerCallback:
+    return FakeHighlightControllerCallback()
+
+
+@pytest.fixture
+def erase_controller_callback() -> FakeEraseControllerCallback:
+    return FakeEraseControllerCallback()
 
 
 @pytest.fixture

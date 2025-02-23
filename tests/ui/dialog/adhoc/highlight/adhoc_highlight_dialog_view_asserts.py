@@ -25,7 +25,7 @@ class FakeCallback:
         self.counter += 1
 
 
-class FakeModelListener(AdhocHighlightDialogModelListener):
+class HighlightFakeModelListener(AdhocHighlightDialogModelListener):
     def __init__(self):
         self.counter: int = 0
 
@@ -48,10 +48,10 @@ def assert_view(view: AdhocHighlightDialogView, window_title: str, selected_note
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     exp_start_button_enabled: bool = len(list(set(selected_destination_fields) - set(disabled_fields))) > 0
-    assert_buttons(view, exp_start_button_enabled)
     assert_source_group_box(view, selected_note_type, note_types, selected_source_field, source_fields, stop_words)
     assert_format_group_box(view, selected_format, formats)
     assert_destination_group_box(view, check_box_texts, selected_destination_fields, disabled_fields)
+    assert_buttons(view, exp_start_button_enabled)
 
 
 def assert_source_group_box(view: AdhocHighlightDialogView, selected_note_type: Optional[NoteTypeDetails],

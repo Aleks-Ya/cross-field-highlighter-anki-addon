@@ -20,7 +20,7 @@ class FakeCallback:
         self.counter += 1
 
 
-class FakeModelListener(AdhocEraseDialogModelListener):
+class EraseFakeModelListener(AdhocEraseDialogModelListener):
     def __init__(self):
         self.history: list[object] = []
 
@@ -41,8 +41,8 @@ def assert_view(view: AdhocEraseDialogView, window_title: str, selected_note_typ
     # noinspection PyUnresolvedReferences
     assert view.windowTitle() == window_title, f"'{view.windowTitle()}' != '{window_title}'"
     exp_start_button_enabled: bool = len(selected_fields) > 0
-    assert_buttons(view, exp_start_button_enabled)
     assert_destination_group_box(view, selected_note_type, all_fields, selected_fields)
+    assert_buttons(view, exp_start_button_enabled)
 
 
 def assert_destination_group_box(view: AdhocEraseDialogView, selected_note_type: NoteTypeDetails,
