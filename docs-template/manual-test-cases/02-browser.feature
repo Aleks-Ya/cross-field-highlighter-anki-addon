@@ -6,7 +6,7 @@ Feature: Highlight Notes in Browser
   The Browser is opened in Notes mode.
 
   @smoke @browser
-  Scenario: Highlight and erase several notes selected in Browser
+  Scenario: Highlight and erase several notes selected Note mode
 
     When I select all notes
     And I click context menu "Cross-Field Highlighter" -> "Highlight..."
@@ -14,6 +14,14 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then Collocations in "Back" field are highlighted in all notes
     And "Statistics" window was shown
+      """
+      Notes selected in Browser: 12
+      Notes of type "Cloze": 12
+      Notes processed: 12
+      Notes modified: 12
+      Fields processed: 12
+      Fields modified: 12
+      """
 
     When I select all notes
     And I click context menu "Cross-Field Highlighter" -> "Erase..."
@@ -21,14 +29,23 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then Collocations in "Back" field are NOT highlighted in all notes
     And "Statistics" window was shown
+      """
+      Notes selected in Browser: 12
+      Notes of type "Cloze": 12
+      Notes processed: 12
+      Notes modified: 12
+      Fields processed: 24
+      Fields modified: 12
+      """
 
-    When I press "Ctrl-Shift-H"
+    When I select all notes
+    And I press "Ctrl-Shift-H"
     Then The "Highlight" dialog is opened and it has all fields selected
     When I click "Cancel" button
     Then The "Highlight" dialog has closed
 
   @smoke @browser @editor
-  Scenario: Highlight and erase a note in the browser
+  Scenario: Highlight and erase a single note in Notes mode
 
     When I select one note in Browser
     And I click "Highlight" button
@@ -39,21 +56,23 @@ Feature: Highlight Notes in Browser
     Then Collocation in "Back" field was highlighted
     But "Statistics" windows was not shown
 
+    When I click "Erase" button
+    Then Collocation in "Back" field was NOT highlighted
+    But "Statistics" windows was not shown
+
     When I press "Ctrl-Shift-H"
     Then The "Highlight" dialog is shown
     When I press "Alt-S"
     Then Collocation in "Back" field stays highlighted
     But "Statistics" windows was not shown
 
-    When I click "Erase" button
-    Then Collocation in "Back" field was NOT highlighted
-    But "Statistics" windows was not shown
-
   @smoke @browser
   Scenario: Highlight and erase several notes in Cards mode
 
-    When I switch Browser to Cards mode
-    And I select all 13 cards
+    Given I opened Browser
+    And I switched Browser to Cards mode
+
+    When I select all cards
     And I click context menu "Cross-Field Highlighter" -> "Highlight..."
     And I entered
       | Note Type     | "Cloze"             |
@@ -73,7 +92,7 @@ Feature: Highlight Notes in Browser
       Fields modified: 1
       """
 
-    When I select all 13 cards
+    When I select all cards
     And I click context menu "Cross-Field Highlighter" -> "Erase..."
     When I choose
       | Note Type | "Cloze"              |

@@ -1,5 +1,12 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.6.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.6.0) - 2025-03-02
+
+1. __[FEATURE]__ Preserve dialog states during addon updating
+2. __[FEATURE]__ Handle Em Dash (long hyphen) as a punctuation mark
+3. __[BUG]__ Remember dialog state when close it using Esc shortcut
+4. __[MISC]__ Write logs in Unicode
+
 ## [v1.5.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.5.0) - 2025-02-22
 
 1. __[BUG]__ Fix dialog state saving when switching profile
