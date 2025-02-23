@@ -7,12 +7,12 @@ Feature: Switch Profile
   Profile "CFH Manual Test 2" exists.
   The Main window is opened for Profile "CFH Manual Test 1".
 
-  @smoke @add @editor
+  @smoke @add
   Scenario: "Highlight" dialog state is saved for each profile separately
 
     When I open "Add" window
     And I open "Highlight" dialog
-    And I choose
+    And I set state:
       | Note Type     | "Basic"             |
       | Field         | "Back"              |
       | Exclude words | "the"               |
@@ -25,14 +25,14 @@ Feature: Switch Profile
     And I open "CFH Manual Test 2" profile
     And I open "Add" window
     And I open "Highlight" dialog
-    Then "Highlight" dialog has default settings
+    Then "Highlight" dialog has default state:
       | Note Type     | "Basic"   |
       | Field         | "Front"   |
       | Exclude words | "a an to" |
       | Format        | "Bold"    |
       | Fields        | -         |
 
-    When I choose
+    When I set state:
       | Note Type     | "Basic"  |
       | Field         | "Front"  |
       | Exclude words | "an"     |
@@ -44,19 +44,19 @@ Feature: Switch Profile
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 1" profile
     And I open "Highlight" dialog
-    Then "Highlight" dialog has
+    Then "Highlight" dialog has state:
       | Note Type     | "Basic"             |
       | Field         | "Back"              |
       | Exclude words | "the"               |
       | Format        | "Yellow Background" |
       | Fields        | "Front"             |
 
-  @smoke @add @editor
+  @smoke @add
   Scenario: "Erase" dialog state is saved for each profile separately
 
     When I open "Add" window
     And I open "Erase" dialog
-    And I choose
+    And I set state:
       | Note Type | "Basic" |
       | Fields    | "Back"  |
     And I click "Cancel" button
@@ -66,11 +66,11 @@ Feature: Switch Profile
     And I open "CFH Manual Test 2" profile
     And I open "Add" window
     And I open "Erase" dialog
-    Then "Erase" dialog has default settings
+    Then "Erase" dialog has default state:
       | Note Type | "Basic" |
       | Fields    | -       |
 
-    When I choose
+    When I set state:
       | Note Type | "Basic" |
       | Fields    | "Front" |
     And I click "Cancel" button
@@ -79,6 +79,6 @@ Feature: Switch Profile
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 1" profile
     And I open "Erase" dialog
-    Then "Erase" dialog has
+    Then "Erase" dialog has state:
       | Note Type | "Basic" |
       | Fields    | "Back"  |

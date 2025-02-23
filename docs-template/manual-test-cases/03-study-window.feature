@@ -16,12 +16,14 @@ Feature: Study Editor
     Then The collocation in "Back" field is highlighted
     But "Statistics" windows was not shown
 
+    When I click "Erase" button
+    And I click "Select All" button
+    And I click "Start" button
+    Then Collocation in "Back" field was NOT highlighted
+    But "Statistics" windows was not shown
+
     When I press "Ctrl-Shift-H"
     Then The "Highlight" dialog is shown
     When I press "Alt-S"
-    Then Collocation in "Back" field stays highlighted
-    But "Statistics" windows was not shown
-
-    When I click "Erase" button
-    Then Collocation in "Back" field was NOT highlighted
+    Then Collocation in "Back" field are highlighted
     But "Statistics" windows was not shown
