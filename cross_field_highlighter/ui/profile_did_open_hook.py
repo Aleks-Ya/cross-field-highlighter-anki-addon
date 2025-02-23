@@ -116,7 +116,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         log.debug(f"Count of editor_did_init_buttons after adding: {gui_hooks.editor_did_init_buttons.count()}")
 
     @staticmethod
-    def __set_browser_will_show_context_menu_hook(addon_manager, config, dialog_manager, dialog_params_factory,
+    def __set_browser_will_show_context_menu_hook(addon_manager, configuration, dialog_manager, dialog_params_factory,
                                                   erase_dialog_controller, highlight_dialog_controller, op_factory,
                                                   settings) -> None:
         from aqt import gui_hooks
@@ -127,7 +127,7 @@ class ProfileDidOpenHook(Callable[[], None]):
         url_manager: UrlManager = UrlManager()
         hook: BrowserWillShowContextMenuHook = BrowserWillShowContextMenuHook(
             op_factory, highlight_dialog_controller, erase_dialog_controller, dialog_params_factory,
-            addon_manager, dialog_manager, url_manager, desktop_services, config, settings)
+            addon_manager, dialog_manager, url_manager, desktop_services, configuration, settings)
         log: Logger = logging.getLogger(__name__)
         log.debug(
             f"Count of browser_will_show_context_menu before adding: {gui_hooks.browser_will_show_context_menu.count()}")
