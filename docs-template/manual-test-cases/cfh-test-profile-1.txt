@@ -1,17 +1,15 @@
 #separator:tab
 #html:true
-#guid column:1
-#notetype column:2
-#deck column:3
-#tags column:6
-oF%~$*s&;2	Basic	Default	beautiful	"Hello, <b class=""cross-field-highlighter"">beautiful</b> world!"	cross-field-highlighter::modified-by-latest-run
-I]4P-wFSoF	Basic	Default	take forever	Downloading a movie takes forever.	
-A*}H`O8]Uc	Basic	Default	to hurry up	Need to hurry up. He Hurries everyone up.	
-zw.%<KPp!n	Basic	Default	<i>beautiful</i> <b>world</b>	Hello, <i>beautiful</i> world!	
-u4v@e]KbMr	Basic	Default	<ruby>東京<rt>とうきょう</rt></ruby>	<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>	
-wfSx7cvMtI	Basic	Default	東京[とうきょう]	<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>	
-PoC:F7;yX@	Basic	Default	ดี	วันนี้เป็นวันที่ดีมาก	
-Pk[-|%NIvz	Basic	Default	좋은	오늘은 정말 좋은 날이에요	
-PcdK/F=0J{	Basic	Default	天气	今天天气非常好	
-uw>@`F1MO@	Basic	Default	جميل	الطقس اليوم جميل	
-vHE_i/gy.]	Basic	Default	נהדר	היום יום נהדר	
+#tags column:3
+beautiful	Hello, beautiful world!	
+take forever	"Downloading a movie <mark class=""cross-field-highlighter"">takes</mark> <mark class=""cross-field-highlighter"">forever</mark>."	
+to hurry up	Need to hurry up. He Hurries everyone up.	
+<i>beautiful</i> <b>world</b>	Hello, <i>beautiful</i> world!	
+<ruby>東京<rt>とうきょう</rt></ruby>	<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>	
+東京[とうきょう]	<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>	
+ดี	วันนี้เป็นวันที่ดีมาก	
+좋은	오늘은 정말 좋은 날이에요	
+天气	今天天气非常好	
+جميل	الطقس اليوم جميل	
+נהדר	היום יום נהדר	
+{{c1::市}} means {{c2::city}}&nbsp;	"<ul><li>東京は大きな<mark class=""cross-field-highlighter"">市</mark>です。</li><li>Tokyo is a large <mark class=""cross-field-highlighter"">city</mark>.<br></li></ul>"	cross-field-highlighter::modified-by-latest-run
