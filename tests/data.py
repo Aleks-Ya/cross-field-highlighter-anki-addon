@@ -38,6 +38,25 @@ class DefaultConfig:
         "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
 
 
+class DefaultModel:
+    default_highlight: dict = {'all_note_types': [],
+                               'selected_note_types': [],
+                               'default_stop_words': DefaultConfig.stop_words,
+                               'note_number': 0,
+                               'formats': [],
+                               'accept_callback_None': True,
+                               'reject_callback_None': True,
+                               'current_state': None,
+                               'states': {}}
+    default_erase: dict = {'all_note_types': [],
+                           'selected_note_types': [],
+                           'note_number': 0,
+                           'accept_callback_None': True,
+                           'reject_callback_None': True,
+                           'current_state': None,
+                           'states': {}}
+
+
 class Case:
     def __init__(self, name: str, collocation: str, original_text: str, highlighted_text: str):
         self.name: str = name

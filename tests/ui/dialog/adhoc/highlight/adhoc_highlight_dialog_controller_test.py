@@ -19,7 +19,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import note_type_details_cloze, bold_format, all_highlight_formats, note_type_details_basic
-from tests.data import Data, DefaultFields, DefaultConfig
+from tests.data import Data, DefaultFields, DefaultConfig, DefaultModel
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import HighlightFakeModelListener, \
     FakeHighlightControllerCallback, assert_view
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
@@ -38,16 +38,7 @@ def test_show_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogCont
     params: DialogParams = DialogParams(note_type_details_all, 1)
     assert highlight_controller_callback.history == []
     assert highlight_model_listener.counter == 0
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'current_state': None,
-        'states': {}}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
@@ -92,16 +83,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                          highlight_controller_callback: FakeHighlightControllerCallback):
     # Assert default config and model
     assert config_loader.load_config() == DefaultConfig.loader
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'states': {},
-        'current_state': None}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
@@ -202,16 +184,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                            highlight_controller_callback: FakeHighlightControllerCallback):
     # Assert default config and model
     assert config_loader.load_config() == DefaultConfig.loader
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'current_state': None,
-        'states': {}}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
@@ -322,16 +295,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
                                   highlight_controller_callback: FakeHighlightControllerCallback):
     # Default state
     assert config_loader.load_config() == DefaultConfig.loader
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'current_state': None,
-        'states': {}}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
@@ -610,16 +574,7 @@ def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_con
     params: DialogParams = DialogParams(note_type_details_all, 1)
     assert highlight_controller_callback.history == []
     assert highlight_model_listener.counter == 0
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'current_state': None,
-        'states': {}}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
@@ -799,16 +754,7 @@ def test_empty_note_type(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     td.create_basic_note_1()
     assert highlight_controller_callback.history == []
     assert highlight_model_listener.counter == 0
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': [],
-        'selected_note_types': [],
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': [],
-        'accept_callback_None': True,
-        'reject_callback_None': True,
-        'current_state': None,
-        'states': {}}
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
     assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],

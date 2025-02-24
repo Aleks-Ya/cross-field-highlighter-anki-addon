@@ -4,7 +4,7 @@ from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetail
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model import AdhocEraseDialogModel
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from tests.conftest import note_type_details_basic
-from tests.data import DefaultFields
+from tests.data import DefaultFields, DefaultModel
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import EraseFakeModelListener, FakeCallback, \
     assert_view
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
@@ -24,13 +24,7 @@ def test_show_view(adhoc_erase_dialog_view: AdhocEraseDialogView, adhoc_erase_di
     assert_view(adhoc_erase_dialog_view, window_title="", selected_note_type=None, all_fields=[],
                 selected_fields=[])
     assert len(erase_model_listener.history) == 0
-    assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
-                                                  'selected_note_types': [],
-                                                  'note_number': 0,
-                                                  'accept_callback_None': True,
-                                                  'reject_callback_None': True,
-                                                  'current_state': None,
-                                                  'states': {}}
+    assert adhoc_erase_dialog_model.as_dict() == DefaultModel.default_erase
     # Fill model without firing
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
     adhoc_erase_dialog_model.fill(note_type_details_all, selected_note_types, 3, callback.call, None)
