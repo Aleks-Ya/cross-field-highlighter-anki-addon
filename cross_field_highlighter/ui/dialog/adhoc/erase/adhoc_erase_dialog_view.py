@@ -30,6 +30,7 @@ class AdhocEraseDialogView(QDialog):
 
         self.setLayout(layout)
         self.resize(300, 200)
+        self.rejected.connect(self.__reject)
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def show_view(self) -> None:
@@ -55,7 +56,7 @@ class AdhocEraseDialogView(QDialog):
 
     def __reject(self) -> None:
         log.info("Cancelled")
-        self.reject()
+        self.hide()
         self.__model.call_reject_callback()
 
     def __restore_defaults(self) -> None:
