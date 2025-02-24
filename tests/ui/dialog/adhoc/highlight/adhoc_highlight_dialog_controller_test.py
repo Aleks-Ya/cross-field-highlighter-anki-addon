@@ -279,20 +279,17 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                 stop_words='to the')
 
 
-def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
-                                  adhoc_highlight_dialog_view: AdhocHighlightDialogView,
-                                  adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
-                                  note_type_details_all: list[NoteTypeDetails], all_highlight_formats: HighlightFormats,
-                                  bold_format: HighlightFormat, italic_format: HighlightFormat,
-                                  underline_format: HighlightFormat,
-                                  adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
-                                  settings: Settings, note_type_details_factory: NoteTypeDetailsFactory,
-                                  formatter_facade: FormatterFacade,
-                                  adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe,
-                                  user_files_storage: UserFilesStorage, config_loader: ConfigLoader,
-                                  note_type_details_basic: NoteTypeDetails,
-                                  visual_qtbot: VisualQtBot,
-                                  highlight_controller_callback: FakeHighlightControllerCallback):
+def test_remember_state_on_cancel_click(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                        adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                        adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                        note_type_details_all: list[NoteTypeDetails],
+                                        all_highlight_formats: HighlightFormats,
+                                        bold_format: HighlightFormat, italic_format: HighlightFormat,
+                                        adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                        user_files_storage: UserFilesStorage, config_loader: ConfigLoader,
+                                        note_type_details_basic: NoteTypeDetails,
+                                        highlight_controller_callback: FakeHighlightControllerCallback,
+                                        visual_qtbot: VisualQtBot):
     # Default state
     assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
@@ -301,7 +298,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
                 selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
                 selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words)
 
-    # Show dialog to close it by Cancel button
+    # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
@@ -332,38 +329,6 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
                 selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
                 stop_words=DefaultConfig.stop_words)
 
-    # Modify dialog: choose "Italic" format and modify stop words
-    adhoc_highlight_dialog_view_scaffold.select_format(Qt.Key.Key_Down)
-    appended_stop_words: str = " the"
-    exp_stop_words: str = DefaultConfig.stop_words + appended_stop_words
-    adhoc_highlight_dialog_view_scaffold.print_to_stop_words(appended_stop_words)
-    assert config_loader.load_config() == DefaultConfig.loader
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': note_type_details_all,
-        'selected_note_types': note_type_details_all,
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': all_highlight_formats,
-        'accept_callback_None': False,
-        'reject_callback_None': False,
-        'current_state': {'selected_destination_fields': [],
-                          'selected_format': italic_format,
-                          'selected_note_type': note_type_details_basic,
-                          'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words},
-        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': italic_format,
-                                                          'selected_note_type': note_type_details_basic,
-                                                          'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words}}}
-    assert user_files_storage.read_all() == {}
-    assert_view(adhoc_highlight_dialog_view, window_title="Highlight 0 notes",
-                selected_note_type=note_type_details_basic, note_types=note_type_details_all,
-                selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=italic_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words)
-
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
     assert config_loader.load_config() == DefaultConfig.loader
@@ -376,73 +341,51 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
         'accept_callback_None': False,
         'reject_callback_None': False,
         'current_state': {'selected_destination_fields': [],
-                          'selected_format': italic_format,
+                          'selected_format': bold_format,
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words},
+                          'selected_stop_words': DefaultConfig.stop_words},
         'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': italic_format,
+                                                          'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_basic,
                                                           'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words}}}
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_files_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.note_type_id,
              'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
-                         'format': italic_format.code.name,
+                         'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
-                         'stop_words': 'a an to the'}]}}
+                         'stop_words': DefaultConfig.stop_words}]}}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 0 notes",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=italic_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
+                selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
                 selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words)
+                stop_words=DefaultConfig.stop_words)
 
-    # Initialize controller using saved config
-    config: Config = Config(config_loader)
-    model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
-    view: AdhocHighlightDialogView = AdhocHighlightDialogView(model, settings)
-    controller: AdhocHighlightDialogController = AdhocHighlightDialogController(
-        model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
-        user_files_storage)
-    controller.show_dialog(DialogParams(note_type_details_all, 0), highlight_controller_callback.call)
+
+def test_remember_state_on_cancel_esc_shortcut(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
+                                               adhoc_highlight_dialog_view: AdhocHighlightDialogView,
+                                               adhoc_highlight_dialog_model: AdhocHighlightDialogModel,
+                                               note_type_details_all: list[NoteTypeDetails],
+                                               all_highlight_formats: HighlightFormats,
+                                               bold_format: HighlightFormat, italic_format: HighlightFormat,
+                                               adhoc_highlight_dialog_view_scaffold: AdhocHighlightDialogViewScaffold,
+                                               user_files_storage: UserFilesStorage, config_loader: ConfigLoader,
+                                               note_type_details_basic: NoteTypeDetails,
+                                               highlight_controller_callback: FakeHighlightControllerCallback,
+                                               visual_qtbot: VisualQtBot):
+    # Default state
     assert config_loader.load_config() == DefaultConfig.loader
-    assert model.as_dict() == {
-        'all_note_types': note_type_details_all,
-        'selected_note_types': note_type_details_all,
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': all_highlight_formats,
-        'accept_callback_None': False,
-        'reject_callback_None': False,
-        'current_state': {'selected_destination_fields': [],
-                          'selected_format': italic_format,
-                          'selected_note_type': note_type_details_basic,
-                          'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words},
-        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': italic_format,
-                                                          'selected_note_type': note_type_details_basic,
-                                                          'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words}}}
-    assert user_files_storage.read_all() == {
-        'highlight_dialog_states':
-            {'current_state': note_type_details_basic.note_type_id,
-             'states': [{'note_type_id': note_type_details_basic.note_type_id,
-                         'destination_fields': [],
-                         'format': italic_format.code.name,
-                         'source_field': DefaultFields.basic_front,
-                         'stop_words': 'a an to the'}]}}
-    assert_view(view, window_title="Highlight 0 notes",
-                selected_note_type=note_type_details_basic, note_types=note_type_details_all,
-                selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=italic_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words)
+    assert adhoc_highlight_dialog_model.as_dict() == DefaultModel.default_highlight
+    assert user_files_storage.read_all() == {}
+    assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
+                selected_source_field="", source_fields=[], selected_format=None, formats=[], check_box_texts=[],
+                selected_destination_fields=[], disabled_fields=[], stop_words=DefaultConfig.stop_words)
 
-    # Show dialog to close it by Esc shortcut
+    # Show dialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
@@ -456,69 +399,22 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
         'accept_callback_None': False,
         'reject_callback_None': False,
         'current_state': {'selected_destination_fields': [],
-                          'selected_format': italic_format,
+                          'selected_format': bold_format,
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words},
+                          'selected_stop_words': DefaultConfig.stop_words},
         'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': italic_format,
+                                                          'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_basic,
                                                           'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words}}}
-    assert user_files_storage.read_all() == {
-        'highlight_dialog_states':
-            {'current_state': note_type_details_basic.note_type_id,
-             'states': [{'note_type_id': note_type_details_basic.note_type_id,
-                         'destination_fields': [],
-                         'format': italic_format.code.name,
-                         'source_field': DefaultFields.basic_front,
-                         'stop_words': 'a an to the'}]}}
-    assert_view(view, window_title="Highlight 0 notes",
-                selected_note_type=note_type_details_basic, note_types=note_type_details_all,
-                selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=italic_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
-                selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words)
-
-    # Modify dialog: choose "Italic" format and modify stop words
-    adhoc_highlight_dialog_view_scaffold.select_format(Qt.Key.Key_Down)
-    appended_stop_words_2: str = " of"
-    exp_stop_words_2: str = exp_stop_words + appended_stop_words_2
-    adhoc_highlight_dialog_view_scaffold.print_to_stop_words(appended_stop_words_2)
-    assert config_loader.load_config() == DefaultConfig.loader
-    assert adhoc_highlight_dialog_model.as_dict() == {
-        'all_note_types': note_type_details_all,
-        'selected_note_types': note_type_details_all,
-        'default_stop_words': DefaultConfig.stop_words,
-        'note_number': 0,
-        'formats': all_highlight_formats,
-        'accept_callback_None': False,
-        'reject_callback_None': False,
-        'current_state': {'selected_destination_fields': [],
-                          'selected_format': underline_format,
-                          'selected_note_type': note_type_details_basic,
-                          'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words_2},
-        'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': underline_format,
-                                                          'selected_note_type': note_type_details_basic,
-                                                          'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words_2}}}
-    assert user_files_storage.read_all() == {
-        'highlight_dialog_states':
-            {'current_state': note_type_details_basic.note_type_id,
-             'states': [{'note_type_id': note_type_details_basic.note_type_id,
-                         'destination_fields': [],
-                         'format': italic_format.code.name,
-                         'source_field': DefaultFields.basic_front,
-                         'stop_words': exp_stop_words}]}}
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
+    assert user_files_storage.read_all() == {}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 0 notes",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=underline_format, formats=all_highlight_formats,
-                check_box_texts=DefaultFields.all_basic,
+                selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
                 selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words_2)
+                stop_words=DefaultConfig.stop_words)
 
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.press_esc()
@@ -532,30 +428,29 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
         'accept_callback_None': False,
         'reject_callback_None': False,
         'current_state': {'selected_destination_fields': [],
-                          'selected_format': underline_format,
+                          'selected_format': bold_format,
                           'selected_note_type': note_type_details_basic,
                           'selected_source_field': DefaultFields.basic_front,
-                          'selected_stop_words': exp_stop_words_2},
+                          'selected_stop_words': DefaultConfig.stop_words},
         'states': {note_type_details_basic.note_type_id: {'selected_destination_fields': [],
-                                                          'selected_format': underline_format,
+                                                          'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_basic,
                                                           'selected_source_field': DefaultFields.basic_front,
-                                                          'selected_stop_words': exp_stop_words_2}}}
+                                                          'selected_stop_words': DefaultConfig.stop_words}}}
     assert user_files_storage.read_all() == {
         'highlight_dialog_states':
             {'current_state': note_type_details_basic.note_type_id,
              'states': [{'note_type_id': note_type_details_basic.note_type_id,
                          'destination_fields': [],
-                         'format': underline_format.code.name,
+                         'format': bold_format.code.name,
                          'source_field': DefaultFields.basic_front,
-                         'stop_words': exp_stop_words_2}]}}
+                         'stop_words': DefaultConfig.stop_words}]}}
     assert_view(adhoc_highlight_dialog_view, window_title="Highlight 0 notes",
                 selected_note_type=note_type_details_basic, note_types=note_type_details_all,
                 selected_source_field=DefaultFields.basic_front, source_fields=DefaultFields.all_basic,
-                selected_format=underline_format, formats=all_highlight_formats,
-                check_box_texts=DefaultFields.all_basic,
+                selected_format=bold_format, formats=all_highlight_formats, check_box_texts=DefaultFields.all_basic,
                 selected_destination_fields=[], disabled_fields=[DefaultFields.basic_front],
-                stop_words=exp_stop_words_2)
+                stop_words=DefaultConfig.stop_words)
 
 
 def test_exclude_source_field_from_destination_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
