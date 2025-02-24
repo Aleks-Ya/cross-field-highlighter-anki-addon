@@ -19,7 +19,7 @@ from cross_field_highlighter.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_vi
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from cross_field_highlighter.ui.operation.highlight_op_params import HighlightOpParams
 from tests.conftest import note_type_details_cloze, bold_format, all_highlight_formats, note_type_details_basic
-from tests.data import Data, DefaultFields, DefaultConfig, DefaultTags
+from tests.data import Data, DefaultFields, DefaultConfig
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_asserts import HighlightFakeModelListener, \
     FakeHighlightControllerCallback, assert_view
 from tests.ui.dialog.adhoc.highlight.adhoc_highlight_dialog_view_scaffold import AdhocHighlightDialogViewScaffold
@@ -91,11 +91,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                          all_highlight_formats: HighlightFormats, user_files_storage: UserFilesStorage,
                          highlight_controller_callback: FakeHighlightControllerCallback):
     # Assert default config and model
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': [],
         'selected_note_types': [],
@@ -115,11 +111,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
     adhoc_highlight_dialog_model.call_accept_callback()  # Click "Start" button
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -155,11 +147,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
 
     # Update again
     adhoc_highlight_dialog_model.switch_state(note_type_details_cloze)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -213,11 +201,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
                                            settings: Settings,
                                            highlight_controller_callback: FakeHighlightControllerCallback):
     # Assert default config and model
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': [],
         'selected_note_types': [],
@@ -245,11 +229,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         [DefaultFields.basic_back]))
     adhoc_highlight_dialog_model.fire_model_changed(None)
     adhoc_highlight_dialog_model.call_accept_callback()  # Click "Start" button
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -291,11 +271,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
         user_files_storage)
     controller.show_dialog(DialogParams(note_type_details_all, 0), highlight_controller_callback.call)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -345,11 +321,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
                                   visual_qtbot: VisualQtBot,
                                   highlight_controller_callback: FakeHighlightControllerCallback):
     # Default state
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': [],
         'selected_note_types': [],
@@ -369,11 +341,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -405,11 +373,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
     appended_stop_words: str = " the"
     exp_stop_words: str = DefaultConfig.stop_words + appended_stop_words
     adhoc_highlight_dialog_view_scaffold.print_to_stop_words(appended_stop_words)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -438,11 +402,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
 
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.click_cancel_button()
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -484,11 +444,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
         model, view, note_type_details_factory, formatter_facade, adhoc_highlight_dialog_model_serde, config,
         user_files_storage)
     controller.show_dialog(DialogParams(note_type_details_all, 0), highlight_controller_callback.call)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -526,11 +482,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
     visual_qtbot.wait_exposed(adhoc_highlight_dialog_view)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -569,11 +521,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
     appended_stop_words_2: str = " of"
     exp_stop_words_2: str = exp_stop_words + appended_stop_words_2
     adhoc_highlight_dialog_view_scaffold.print_to_stop_words(appended_stop_words_2)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -610,11 +558,7 @@ def test_remember_state_on_cancel(adhoc_highlight_dialog_controller: AdhocHighli
 
     # Click Cancel button
     adhoc_highlight_dialog_view_scaffold.press_esc()
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,

@@ -21,16 +21,21 @@ class DefaultFields:
     all_cloze: list[FieldName] = [cloze_text, cloze_back_extra]
 
 
+class DefaultTags:
+    latest_modified: str = "cross-field-highlighter::modified-by-latest-run"
+
+
 class DefaultConfig:
     stop_words: str = "a an to"
     highlight_shortcut: str = "Ctrl+Shift+H"
     erase_shortcut: str = ""
     highlight: dict[str, str] = {"Default Stop Words": stop_words, "Editor Shortcut": highlight_shortcut}
     erase: dict[str, str] = {"Editor Shortcut": erase_shortcut}
-
-
-class DefaultTags:
-    latest_modified: str = "cross-field-highlighter::modified-by-latest-run"
+    loader: dict = {
+        'Dialog': {'Adhoc': {
+            "Highlight": {**highlight},
+            "Erase": {**erase}}},
+        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
 
 
 class Case:

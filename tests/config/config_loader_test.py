@@ -18,11 +18,7 @@ def test_empty_addon_dir(config_loader: ConfigLoader, module_dir: Path) -> None:
 
 def test_default_values(config_loader: ConfigLoader, module_dir: Path):
     config_data: ConfigData = config_loader.load_config()
-    assert config_data == {
-        "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_data == DefaultConfig.loader
 
 
 def test_read_modified_config_all(config_loader: ConfigLoader, module_dir: Path):
@@ -60,11 +56,7 @@ def test_delete_unused_properties(module_dir: Path, config_loader: ConfigLoader)
         'Unused Top': {'Property 1': 'Value 1'}}  # Will be deleted
     ), module_dir)
     config_data: ConfigData = config_loader.load_config()
-    assert config_data == {
-        "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_data == DefaultConfig.loader
 
 
 def test_read_config_by_addon_manager(addon_manager: AddonManager, config_loader: ConfigLoader, module_name: str,

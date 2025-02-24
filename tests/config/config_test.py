@@ -16,11 +16,7 @@ class CountConfigListener(ConfigListener):
 
 def test_setters(td: Data, note_type_name_basic: NoteTypeName):
     config: Config = td.read_config()
-    original_config: ConfigData = ConfigData({
-        "Dialog": {"Adhoc": {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}})
+    original_config: ConfigData = ConfigData(DefaultConfig.loader)
     assert config.get_config_data() == original_config
     assert config.get_dialog_adhoc_highlight_default_stop_words() == DefaultConfig.stop_words
     assert config.get_dialog_adhoc_highlight_editor_shortcut() == DefaultConfig.highlight_shortcut

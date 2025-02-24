@@ -10,10 +10,9 @@ from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_model_serd
 from cross_field_highlighter.ui.dialog.adhoc.erase.adhoc_erase_dialog_view import AdhocEraseDialogView
 from cross_field_highlighter.ui.dialog.dialog_params import DialogParams
 from tests.conftest import note_type_details_cloze, note_type_details_basic
-from tests.data import Data, DefaultFields, DefaultConfig, DefaultTags
+from tests.data import Data, DefaultFields, DefaultConfig
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_asserts import EraseFakeModelListener, \
-    FakeEraseControllerCallback, \
-    assert_view
+    FakeEraseControllerCallback, assert_view
 from tests.ui.dialog.adhoc.erase.adhoc_erase_dialog_view_scaffold import AdhocEraseDialogViewScaffold
 
 
@@ -63,11 +62,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
                        note_type_details_all: list[NoteTypeDetails], user_files_storage: UserFilesStorage,
                        erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
                                                   'selected_note_types': [],
                                                   'note_number': 0,
@@ -82,11 +77,7 @@ def test_update_config(adhoc_erase_dialog_controller: AdhocEraseDialogController
     # Update config from model
     adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0), erase_controller_callback.call)
     adhoc_erase_dialog_model.call_accept_callback()
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'selected_note_types': note_type_details_all,
@@ -138,11 +129,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
                                             settings: Settings,
                                             erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
                                                   'selected_note_types': [],
                                                   'note_number': 0,
@@ -156,11 +143,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
 
     # Show dialog
     adhoc_erase_dialog_controller.show_dialog(DialogParams(note_type_details_all, 5), erase_controller_callback.call)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'accept_callback_None': False,
@@ -180,11 +163,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     adhoc_erase_dialog_model.get_current_state().select_fields(FieldNames([DefaultFields.cloze_back_extra]))
     adhoc_erase_dialog_model.fire_model_changed(None)
     adhoc_erase_dialog_model.call_accept_callback()
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'accept_callback_None': False,
@@ -209,11 +188,7 @@ def test_fill_model_from_storage_on_startup(adhoc_erase_dialog_controller: Adhoc
     view: AdhocEraseDialogView = AdhocEraseDialogView(model, settings)
     controller: AdhocEraseDialogController = AdhocEraseDialogController(
         model, view, note_type_details_factory, adhoc_erase_dialog_model_serde, user_files_storage)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert model.as_dict() == {'all_note_types': [],
                                'selected_note_types': [],
                                'note_number': 0,
@@ -262,11 +237,7 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
                          adhoc_erase_dialog_view_scaffold: AdhocEraseDialogViewScaffold,
                          erase_controller_callback: FakeEraseControllerCallback):
     # Default config and model
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {'all_note_types': [],
                                                   'selected_note_types': [],
                                                   'note_number': 0,
@@ -280,11 +251,7 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
     # Show dialog with Basic note type
     adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_basic], 1),
                                               erase_controller_callback.call)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'accept_callback_None': False,
@@ -301,11 +268,7 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
 
     # Close Dialog (click Cancel)
     adhoc_erase_dialog_view_scaffold.click_cancel_button()
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'accept_callback_None': False,
@@ -325,11 +288,7 @@ def test_empty_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogControll
     # Show Dialog with Cloze note type (it does not have a state yet)
     adhoc_erase_dialog_controller.show_dialog(DialogParams([note_type_details_cloze], 1),
                                               erase_controller_callback.call)
-    assert config_loader.load_config() == {
-        'Dialog': {'Adhoc': {
-            "Highlight": {**DefaultConfig.highlight},
-            "Erase": {**DefaultConfig.erase}}},
-        "Latest Modified Notes": {"Enabled": True, "Tag": DefaultTags.latest_modified}}
+    assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_erase_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
         'accept_callback_None': False,
