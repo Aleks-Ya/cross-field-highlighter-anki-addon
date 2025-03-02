@@ -24,9 +24,9 @@ class AdhocEraseDialogModel:
         self.__selected_note_types: list[NoteTypeDetails] = []
         self.__note_number: int = 0
         self.__current_state: Optional[AdhocEraseDialogState] = None
+        self.__states: dict[NotetypeId, AdhocEraseDialogState] = {}
         self.__accept_callback: Optional[Callable[[], None]] = None
         self.__reject_callback: Optional[Callable[[], None]] = None
-        self.__states: dict[NotetypeId, AdhocEraseDialogState] = {}
         self.__listeners: set[AdhocEraseDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 

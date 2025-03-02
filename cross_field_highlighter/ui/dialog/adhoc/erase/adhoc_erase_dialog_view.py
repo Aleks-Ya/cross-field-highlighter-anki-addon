@@ -30,6 +30,7 @@ class AdhocEraseDialogView(QDialog):
 
         self.setLayout(layout)
         self.resize(300, 200)
+        # noinspection PyUnresolvedReferences
         self.rejected.connect(self.__reject)
         log.debug(f"{self.__class__.__name__} was instantiated")
 

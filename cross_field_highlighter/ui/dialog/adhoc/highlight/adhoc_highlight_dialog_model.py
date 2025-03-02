@@ -26,10 +26,10 @@ class AdhocHighlightDialogModel:
         self.__note_number: int = 0
         self.__formats: HighlightFormats = HighlightFormats([])
         self.__default_stop_words: Optional[str] = None
-        self.__accept_callback: Optional[Callable[[], None]] = None
-        self.__reject_callback: Optional[Callable[[], None]] = None
         self.__current_state: Optional[AdhocHighlightDialogState] = None
         self.__states: dict[NotetypeId, AdhocHighlightDialogState] = {}
+        self.__accept_callback: Optional[Callable[[], None]] = None
+        self.__reject_callback: Optional[Callable[[], None]] = None
         self.__listeners: set[AdhocHighlightDialogModelListener] = set()
         log.debug(f"{self.__class__.__name__} was instantiated")
 
