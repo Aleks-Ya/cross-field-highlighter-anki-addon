@@ -34,13 +34,14 @@ class AdhocHighlightDialogModel:
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def fill(self, all_note_types: list[NoteTypeDetails], selected_note_types: list[NoteTypeDetails], note_number: int,
-             formats: HighlightFormats, accept_callback: Optional[Callable[[], None]],
-             reject_callback: Optional[Callable[[], None]]) -> None:
-        log.debug(f"Model before filling: {self.as_dict()}")
+             formats: HighlightFormats, default_stop_words: Optional[Text],
+             accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
+        self.__clear()
         self.__all_note_types = all_note_types
         self.__selected_note_types = selected_note_types
         self.__note_number = note_number
         self.__formats = formats
+        self.__default_stop_words = default_stop_words
         self.__accept_callback = accept_callback
         self.__reject_callback = reject_callback
         log.debug(f"Model after filling: {self.as_dict()}")
@@ -72,9 +73,6 @@ class AdhocHighlightDialogModel:
 
     def get_states(self) -> list[AdhocHighlightDialogState]:
         return list(self.__states.values())
-
-    def set_default_stop_words(self, default_stop_words: Optional[str]) -> None:
-        self.__default_stop_words = default_stop_words
 
     def switch_state(self, note_type_details: NoteTypeDetails) -> None:
         note_type_id: NotetypeId = note_type_details.note_type_id
@@ -120,6 +118,17 @@ class AdhocHighlightDialogModel:
             "accept_callback_None": not self.__accept_callback,
             "reject_callback_None": not self.__reject_callback
         }
+
+    def __clear(self) -> None:
+        self.__all_note_types = []
+        self.__selected_note_types = []
+        self.__note_number = 0
+        self.__formats = HighlightFormats([])
+        self.__default_stop_words = None
+        self.__current_state = None
+        self.__states = {}
+        self.__accept_callback = None
+        self.__reject_callback = None
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.as_dict()})"

@@ -44,8 +44,10 @@ class AdhocHighlightDialogController:
             show_info("No notes are selected", title="Cross-Field Highlighter")
             return
         self.__run_op_callback = run_op_callback
+        default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
         self.__model.fill(self.__note_type_details_factory.get_all(), params.selected_note_types, params.note_number,
-                          self.__formatter_facade.get_all_formats(), self.__accept_callback, self.__reject_callback)
+                          self.__formatter_facade.get_all_formats(), default_stop_words, self.__accept_callback,
+                          self.__reject_callback)
         self.__fill_model_from_storage()
         self.__model.get_current_state()  # choose 1st if not selected
         self.__view.show_view()
@@ -62,9 +64,6 @@ class AdhocHighlightDialogController:
         log.debug(f"Data from storage: {data}")
         self.__model_serde.deserialize_states(self.__model, data)
         log.debug(f"Model after deserialization: {self.__model.as_dict()}")
-        default_stop_words: Optional[str] = self.__config.get_dialog_adhoc_highlight_default_stop_words()
-        if default_stop_words:
-            self.__model.set_default_stop_words(default_stop_words)
 
     def __prepare_op_params(self) -> HighlightOpParams:
         state: AdhocHighlightDialogState = self.__model.get_current_state()

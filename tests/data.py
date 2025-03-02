@@ -41,7 +41,7 @@ class DefaultConfig:
 class DefaultModel:
     default_highlight: dict = {'all_note_types': [],
                                'selected_note_types': [],
-                               'default_stop_words': DefaultConfig.stop_words,
+                               'default_stop_words': None,
                                'note_number': 0,
                                'formats': [],
                                'accept_callback_None': True,
