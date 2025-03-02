@@ -13,9 +13,9 @@ def test_highlight_erase_cases(notes_highlighter: NotesHighlighter, td: Data, co
     stop_words: Text = td.stop_words()
     field_names: FieldNames = FieldNames([DefaultFields.basic_back])
     exp_total_notes: int = len(case_notes)
-    exp_modified_notes: int = 44
-    exp_total_fields: int = 47
-    exp_modified_fields: int = 44
+    exp_modified_notes: int = 45
+    exp_total_fields: int = 48
+    exp_modified_fields: int = 45
 
     # Highlight 1st time
     notes_highlight_result_1: NotesHighlighterResult = notes_highlighter.highlight(

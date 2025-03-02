@@ -56,8 +56,9 @@ Auto-tests perform for each test case:
 |[40](#case-40)|Special symbols: collocation contains angle brackets|`beautiful>nice<perfect`|`Hello, beautiful, nice, and perfect world!`|`Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!`|
 |[41](#case-41)|Special symbols: collocation contains square brackets|`beautiful[nice]`|`Hello, [beautiful] and nice [world]!`|`Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!`|
 |[42](#case-42)|Special symbols: curly quotes (smart quites)|`rally`|`It is a “rally.”`|`It is a “<b class="cross-field-highlighter">rally</b>.”`|
-|[43](#case-43)|Thai language|`ดี`|`วันนี้เป็นวันที่ดีมาก`|`วันนี้เป็นวันที่<b class="cross-field-highlighter">ดี</b>มาก`|
-|[44](#case-44)|Korean language|`좋은`|`오늘은 정말 좋은 날이에요`|`오늘은 정말 <b class="cross-field-highlighter">좋은</b> 날이에요`|
-|[45](#case-45)|Chinese language|`天气`|`今天天气非常好`|`今天<b class="cross-field-highlighter">天气</b>非常好`|
-|[46](#case-46)|Arabic language|`جميل`|`الطقس اليوم جميل`|`الطقس اليوم <b class="cross-field-highlighter">جميل</b>`|
-|[47](#case-47)|Hebrew language|`נהדר`|`היום יום נהדר`|`היום יום <b class="cross-field-highlighter">נהדר</b>`|
+|[43](#case-43)|Special symbols: hyphen, em dash|`rally`|`rally-rally—rally`|`<b class="cross-field-highlighter">rally</b>-<b class="cross-field-highlighter">rally</b>—<b class="cross-field-highlighter">rally</b>`|
+|[44](#case-44)|Thai language|`ดี`|`วันนี้เป็นวันที่ดีมาก`|`วันนี้เป็นวันที่<b class="cross-field-highlighter">ดี</b>มาก`|
+|[45](#case-45)|Korean language|`좋은`|`오늘은 정말 좋은 날이에요`|`오늘은 정말 <b class="cross-field-highlighter">좋은</b> 날이에요`|
+|[46](#case-46)|Chinese language|`天气`|`今天天气非常好`|`今天<b class="cross-field-highlighter">天气</b>非常好`|
+|[47](#case-47)|Arabic language|`جميل`|`الطقس اليوم جميل`|`الطقس اليوم <b class="cross-field-highlighter">جميل</b>`|
+|[48](#case-48)|Hebrew language|`נהדר`|`היום יום נהדר`|`היום יום <b class="cross-field-highlighter">נהדר</b>`|

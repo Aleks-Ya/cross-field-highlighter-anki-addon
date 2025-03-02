@@ -32,7 +32,7 @@ def test_highlight_and_erase_cases(collection_holder: CollectionHolder, notes_hi
     note_ids: set[NoteId] = {case_note.note.id for case_note in case_notes}
     destination_fields: FieldNames = FieldNames([DefaultFields.basic_back])
     exp_selected: int = len(case_notes)
-    exp_modified: int = 44
+    exp_modified: int = 45
     exp_statistics: dict[OpStatisticsKey, int] = {OpStatisticsKey.TARGET_NOTE_TYPE_ID: note_type_id_basic,
                                                   OpStatisticsKey.NOTES_SELECTED_ALL: exp_selected,
                                                   OpStatisticsKey.NOTES_SELECTED_TARGET_TYPE: exp_selected,

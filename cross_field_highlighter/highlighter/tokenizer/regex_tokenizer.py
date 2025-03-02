@@ -25,7 +25,8 @@ class RegExTokenizer(Tokenizer):
     @staticmethod
     def __create_punctuation_pattern() -> Pattern[str]:
         curly_quotes: str = '“”'
-        punctuation_escaped: str = escape(string.punctuation + curly_quotes)
+        em_dash: str = "—"
+        punctuation_escaped: str = escape(string.punctuation + curly_quotes + em_dash)
         punctuation_pattern: Pattern[str] = compile(f"([{punctuation_escaped}])")
         return punctuation_pattern
 
