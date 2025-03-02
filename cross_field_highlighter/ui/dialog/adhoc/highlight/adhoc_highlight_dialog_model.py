@@ -25,7 +25,7 @@ class AdhocHighlightDialogModel:
         self.__selected_note_types: list[NoteTypeDetails] = []
         self.__note_number: int = 0
         self.__formats: HighlightFormats = HighlightFormats([])
-        self.__default_stop_words: Optional[str] = None
+        self.__default_stop_words: Optional[Text] = None
         self.__current_state: Optional[AdhocHighlightDialogState] = None
         self.__states: dict[NotetypeId, AdhocHighlightDialogState] = {}
         self.__accept_callback: Optional[Callable[[], None]] = None
@@ -48,7 +48,7 @@ class AdhocHighlightDialogModel:
     def reset_states(self) -> None:
         for state in self.__states.values():
             state.select_format(self.__formats[0])
-            state.set_stop_words(Text(self.__default_stop_words))
+            state.set_stop_words(self.__default_stop_words)
             state.select_destination_fields(FieldNames([]))
             state.select_first_source_field()
         self.switch_to_first_state()
@@ -79,14 +79,12 @@ class AdhocHighlightDialogModel:
     def switch_state(self, note_type_details: NoteTypeDetails) -> None:
         note_type_id: NotetypeId = note_type_details.note_type_id
         if note_type_id not in self.__states:
-            state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details)
+            state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details, self.__default_stop_words)
             state.select_first_source_field()
             if len(self.__formats) > 0:
                 state.select_format(self.__formats[0])
             self.__states[note_type_id] = state
         self.__current_state = self.__states[note_type_id]
-        if not self.__current_state.get_selected_stop_words():
-            self.__current_state.set_stop_words(Text(self.__default_stop_words))
 
     def switch_to_first_state(self) -> None:
         if len(self.__selected_note_types) < 1:
