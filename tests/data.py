@@ -26,10 +26,10 @@ class DefaultTags:
 
 
 class DefaultConfig:
-    stop_words: str = "a an to"
+    default_stop_words: str = "a an to"
     highlight_shortcut: str = "Ctrl+Shift+H"
     erase_shortcut: str = ""
-    highlight: dict[str, str] = {"Default Stop Words": stop_words, "Editor Shortcut": highlight_shortcut}
+    highlight: dict[str, str] = {"Default Stop Words": default_stop_words, "Editor Shortcut": highlight_shortcut}
     erase: dict[str, str] = {"Editor Shortcut": erase_shortcut}
     loader: dict = {
         'Dialog': {'Adhoc': {

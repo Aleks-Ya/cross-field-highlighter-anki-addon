@@ -8,19 +8,19 @@ from tests.data import DefaultFields, DefaultConfig
 
 
 def test_as_dict_empty(note_type_details_basic: NoteTypeDetails):
-    default_stop_words: Optional[str] = DefaultConfig.stop_words
+    default_stop_words: Optional[str] = DefaultConfig.default_stop_words
     state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     assert state.as_dict() == {
         'selected_destination_fields': [],
         'selected_format': None,
         'selected_note_type': note_type_details_basic,
         'selected_source_field': None,
-        'selected_stop_words': DefaultConfig.stop_words
+        'selected_stop_words': DefaultConfig.default_stop_words
     }
 
 
 def test_as_dict_full(note_type_details_basic: NoteTypeDetails, bold_format: HighlightFormat):
-    default_stop_words: Optional[str] = DefaultConfig.stop_words
+    default_stop_words: Optional[str] = DefaultConfig.default_stop_words
     state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     state.select_source_field(DefaultFields.basic_front)
     state.select_format(bold_format)
@@ -36,21 +36,21 @@ def test_as_dict_full(note_type_details_basic: NoteTypeDetails, bold_format: Hig
 
 
 def test_eq_empty(note_type_details_basic: NoteTypeDetails):
-    default_stop_words: Optional[str] = DefaultConfig.stop_words
+    default_stop_words: Optional[str] = DefaultConfig.default_stop_words
     state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     state2: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     assert state1 == state2
 
 
 def test_eq_none(note_type_details_basic: NoteTypeDetails):
-    default_stop_words: Optional[str] = DefaultConfig.stop_words
+    default_stop_words: Optional[str] = DefaultConfig.default_stop_words
     state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     state2: Optional[AdhocHighlightDialogState] = None
     assert state1 != state2
 
 
 def test_eq_full(note_type_details_basic: NoteTypeDetails, bold_format: HighlightFormat):
-    default_stop_words: Optional[str] = DefaultConfig.stop_words
+    default_stop_words: Optional[str] = DefaultConfig.default_stop_words
     state1: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details_basic, default_stop_words)
     state1.select_source_field(DefaultFields.basic_front)
     state1.select_format(bold_format)

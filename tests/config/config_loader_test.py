@@ -43,7 +43,7 @@ def test_read_modified_config_partial(module_dir: Path, config_loader: ConfigLoa
     config_data: ConfigData = config_loader.load_config()
     assert config_data == {
         'Dialog': {'Adhoc': {
-            'Highlight': {'Default Stop Words': DefaultConfig.stop_words, "Editor Shortcut": updated_editor_shortcut},
+            'Highlight': {'Default Stop Words': DefaultConfig.default_stop_words, "Editor Shortcut": updated_editor_shortcut},
             "Erase": {**DefaultConfig.erase}}},
         "Latest Modified Notes": {"Enabled": updated_latest_modified_notes_enabled, "Tag": DefaultTags.latest_modified}}
 
