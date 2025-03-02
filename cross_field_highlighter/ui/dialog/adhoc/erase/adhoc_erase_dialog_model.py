@@ -32,6 +32,7 @@ class AdhocEraseDialogModel:
 
     def fill(self, all_note_types: list[NoteTypeDetails], selected_note_types: list[NoteTypeDetails], note_number: int,
              accept_callback: Optional[Callable[[], None]], reject_callback: Optional[Callable[[], None]]) -> None:
+        self.__clear()
         self.__all_note_types = all_note_types
         self.__selected_note_types = selected_note_types
         self.__note_number = note_number
@@ -99,6 +100,16 @@ class AdhocEraseDialogModel:
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.__current_state.as_dict() if self.__current_state else None
         }
+
+    def __clear(self) -> None:
+        self.__all_note_types = []
+        self.__selected_note_types = []
+        self.__note_number = 0
+        self.__current_state = None
+        self.__states = {}
+        self.__accept_callback = None
+        self.__reject_callback = None
+        log.debug(f"{self.__class__.__name__} was cleaned")
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.as_dict()})"
