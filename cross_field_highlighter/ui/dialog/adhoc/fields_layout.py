@@ -28,18 +28,6 @@ class FieldsLayout(QVBoxLayout):
         self.__on_field_selected_callback: Optional[Callable[[FieldNames], None]] = None
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def __create_select_buttons_layout(self, select_all_button: QPushButton,
-                                       select_none_button: QPushButton) -> QHBoxLayout:
-        label: QLabel = QLabel("Fields:")
-        layout: QHBoxLayout = QHBoxLayout()
-        layout.setSpacing(0)
-        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        layout.addWidget(label)
-        layout.addStretch()
-        layout.addWidget(select_all_button)
-        layout.addWidget(select_none_button)
-        return layout
-
     def set_items(self, field_names: FieldNames) -> None:
         previous_in_focus: QWidget = self.__select_none_button
         for check_box in self.__field_name_checkboxes.values():
@@ -73,6 +61,18 @@ class FieldsLayout(QVBoxLayout):
 
     def set_on_field_selected_callback(self, callback: Callable[[FieldNames], None]) -> None:
         self.__on_field_selected_callback = callback
+
+    @staticmethod
+    def __create_select_buttons_layout(select_all_button: QPushButton, select_none_button: QPushButton) -> QHBoxLayout:
+        label: QLabel = QLabel("Fields:")
+        layout: QHBoxLayout = QHBoxLayout()
+        layout.setSpacing(0)
+        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(label)
+        layout.addStretch()
+        layout.addWidget(select_all_button)
+        layout.addWidget(select_none_button)
+        return layout
 
     def __create_select_button(self, icon_name: str, on_click: Callable[[], None], tooltip: str,
                                shortcut: str) -> QPushButton:
