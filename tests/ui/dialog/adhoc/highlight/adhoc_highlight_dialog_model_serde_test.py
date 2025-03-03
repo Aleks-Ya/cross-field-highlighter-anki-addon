@@ -22,15 +22,24 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails], n
     model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model.fill(note_type_details_all, note_type_details_all, 3, all_highlight_formats,
                Text(DefaultConfig.default_stop_words), lambda: None, lambda: None)
+    assert model.as_dict() == {'all_note_types': note_type_details_all,
+                               'selected_note_types': note_type_details_all,
+                               'default_stop_words': Text(DefaultConfig.default_stop_words),
+                               'note_number': 3,
+                               'formats': all_highlight_formats,
+                               'accept_callback_None': False,
+                               'reject_callback_None': False,
+                               'current_state': None,
+                               'states': {}}
     data: dict[str, any] = {'current_state': note_type_details_cloze.note_type_id,
                             'states': [{'note_type_id': note_type_details_cloze.note_type_id}]}
     adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {'all_note_types': note_type_details_all,
                                'selected_note_types': note_type_details_all,
-                               'accept_callback_None': False,
                                'default_stop_words': Text(DefaultConfig.default_stop_words),
                                'note_number': 3,
                                'formats': all_highlight_formats,
+                               'accept_callback_None': False,
                                'reject_callback_None': False,
                                'current_state': {'selected_destination_fields': [],
                                                  'selected_format': bold_format,
@@ -58,6 +67,24 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     model1.get_current_state().select_format(mark_format)
     model1.get_current_state().select_destination_fields(FieldNames([DefaultFields.cloze_text]))
     model1.get_current_state().set_stop_words(Text("the"))
+    assert model1.as_dict() == {'all_note_types': note_type_details_all,
+                                'selected_note_types': note_type_details_all,
+                                'default_stop_words': Text(DefaultConfig.default_stop_words),
+                                'note_number': 3,
+                                'formats': all_highlight_formats,
+                                'accept_callback_None': False,
+                                'reject_callback_None': False,
+                                'current_state': {'selected_destination_fields': [DefaultFields.cloze_text],
+                                                  'selected_format': mark_format,
+                                                  'selected_note_type': note_type_details_cloze,
+                                                  'selected_source_field': DefaultFields.cloze_back_extra,
+                                                  'selected_stop_words': Text("the")},
+                                'states': {note_type_details_cloze.note_type_id:
+                                               {'selected_destination_fields': [DefaultFields.cloze_text],
+                                                'selected_format': mark_format,
+                                                'selected_note_type': note_type_details_cloze,
+                                                'selected_source_field': DefaultFields.cloze_back_extra,
+                                                'selected_stop_words': Text("the")}}}
 
     # Create new model differ with all parameters
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
@@ -68,6 +95,24 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     model2.get_current_state().select_format(italic_format)
     model2.get_current_state().select_destination_fields(FieldNames([DefaultFields.basic_front]))
     model2.get_current_state().set_stop_words(Text("to"))
+    assert model2.as_dict() == {'all_note_types': note_type_details_all,
+                                'selected_note_types': note_type_details_all,
+                                'default_stop_words': Text(DefaultConfig.default_stop_words),
+                                'note_number': 3,
+                                'formats': all_highlight_formats,
+                                'accept_callback_None': False,
+                                'reject_callback_None': False,
+                                'current_state': {'selected_destination_fields': [DefaultFields.basic_front],
+                                                  'selected_format': italic_format,
+                                                  'selected_note_type': note_type_details_basic,
+                                                  'selected_source_field': DefaultFields.basic_back,
+                                                  'selected_stop_words': Text("to")},
+                                'states': {note_type_details_basic.note_type_id:
+                                               {'selected_destination_fields': [DefaultFields.basic_front],
+                                                'selected_format': italic_format,
+                                                'selected_note_type': note_type_details_basic,
+                                                'selected_source_field': DefaultFields.basic_back,
+                                                'selected_stop_words': Text("to")}}}
 
     # Read saved state to the new model
     data: dict[str, any] = adhoc_highlight_dialog_model_serde.serialize_states(model1)
@@ -81,10 +126,10 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     assert model1 != model2
     assert model2.as_dict() == {'all_note_types': note_type_details_all,
                                 'selected_note_types': note_type_details_all,
-                                'accept_callback_None': False,
                                 'default_stop_words': Text(DefaultConfig.default_stop_words),
                                 'note_number': 3,
                                 'formats': all_highlight_formats,
+                                'accept_callback_None': False,
                                 'reject_callback_None': False,
                                 'current_state': {
                                     'selected_destination_fields': [DefaultFields.cloze_text],
