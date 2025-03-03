@@ -29,6 +29,7 @@ class FieldsLayout(QVBoxLayout):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
     def set_items(self, field_names: FieldNames) -> None:
+        log.debug(f"Set items: {field_names}")
         previous_in_focus: QWidget = self.__select_none_button
         for check_box in self.__field_name_checkboxes.values():
             self.removeWidget(check_box)
@@ -45,6 +46,7 @@ class FieldsLayout(QVBoxLayout):
         self.__enable_select_buttons()
 
     def set_selected_fields(self, field_names: FieldNames) -> None:
+        log.debug(f"Set selected fields: {field_names}")
         for field_name, check_box in self.__field_name_checkboxes.items():
             check_box.blockSignals(True)
             check_box.setChecked(field_name in field_names)
@@ -52,7 +54,7 @@ class FieldsLayout(QVBoxLayout):
         self.__enable_select_buttons()
 
     def set_disabled_fields(self, field_names: FieldNames) -> None:
-        log.debug(f"Disable fields: {field_names}")
+        log.debug(f"Set disable fields: {field_names}")
         for field_name, check_box in self.__field_name_checkboxes.items():
             check_box.blockSignals(True)
             disabled: bool = field_name in field_names

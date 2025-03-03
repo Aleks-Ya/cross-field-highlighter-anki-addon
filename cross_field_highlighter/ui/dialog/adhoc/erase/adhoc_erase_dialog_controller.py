@@ -43,8 +43,11 @@ class AdhocEraseDialogController:
         self.__view.show_view()
 
     def __fill_model_from_config(self):
+        log.debug(f"Model before deserialization: {self.__model.as_dict()}")
         data: dict[str, any] = self.__user_files_storage.read(self.__state_key)
+        log.debug(f"Data from storage: {data}")
         self.__model_serde.deserialize_states(self.__model, data)
+        log.debug(f"Model after deserialization: {self.__model.as_dict()}")
 
     def __save_model_to_config(self):
         log.debug("Save model to storage")
