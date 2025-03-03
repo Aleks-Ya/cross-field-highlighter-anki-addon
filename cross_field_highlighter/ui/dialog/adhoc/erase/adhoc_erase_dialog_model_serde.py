@@ -4,7 +4,6 @@ from logging import Logger
 from anki.models import NotetypeId
 
 from .adhoc_erase_dialog_model import AdhocEraseDialogModel
-from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import FieldNames
 
 log: Logger = logging.getLogger(__name__)
@@ -30,22 +29,19 @@ class AdhocEraseDialogModelSerDe:
         return result
 
     def deserialize_states(self, model: AdhocEraseDialogModel, json: dict[str, any]) -> None:
-        note_type_dict: [NotetypeId, NotetypeId] = {note_type_details.note_type_id: note_type_details
-                                                    for note_type_details in model.get_all_note_types()}
+        note_type_ids: list[NotetypeId] = [note_type_details.note_type_id for note_type_details in
+                                           model.get_all_note_types()]
         if self.__states in json:
             for state_obj in json[self.__states]:
-                saved_note_type_id: NotetypeId = state_obj[self.__note_type_id]
-                if saved_note_type_id in note_type_dict:
-                    saved_note_type_details: NoteTypeDetails = note_type_dict[saved_note_type_id]
-                    model.switch_state(saved_note_type_details)
-                    if self.__fields in state_obj:
-                        saved_fields: FieldNames = FieldNames(state_obj[self.__fields])
-                        model.get_current_state().select_fields(saved_fields)
+                note_type_id: NotetypeId = state_obj[self.__note_type_id]
+                if note_type_id in note_type_ids:
+                    selected_fields: FieldNames = FieldNames(
+                        state_obj[self.__fields]) if self.__fields in state_obj else []
+                    model.get_state(note_type_id).select_fields(selected_fields)
         if self.__current_state in json:
             current_note_type_id: NotetypeId = json[self.__current_state]
-            if current_note_type_id in note_type_dict:
-                current_note_type_details: NoteTypeDetails = note_type_dict[current_note_type_id]
-                model.switch_state(current_note_type_details)
+            if current_note_type_id in note_type_ids:
+                model.switch_state(current_note_type_id)
 
     def __del__(self) -> None:
         log.debug(f"{self.__class__.__name__} was deleted")

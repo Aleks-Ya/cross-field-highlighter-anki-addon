@@ -56,17 +56,20 @@ class AdhocEraseDialogModel:
     def get_states(self) -> list[AdhocEraseDialogState]:
         return list(self.__states.values())
 
-    def switch_state(self, note_type_details: NoteTypeDetails):
-        note_type_id: NotetypeId = note_type_details.note_type_id
+    def get_state(self, note_type_id: NotetypeId) -> AdhocEraseDialogState:
         if note_type_id not in self.__states:
+            note_type_details: NoteTypeDetails = self.__get_note_type_details(note_type_id)
             self.__states[note_type_id] = AdhocEraseDialogState(note_type_details)
-        self.__current_state = self.__states[note_type_id]
+        return self.__states[note_type_id]
+
+    def switch_state(self, note_type_id: NotetypeId):
+        self.__current_state = self.get_state(note_type_id)
 
     def switch_to_first_state(self) -> None:
         if len(self.__selected_note_types) < 1:
             raise ValueError("At least one note type should exist")
         note_type_details: NoteTypeDetails = self.__selected_note_types[0]
-        self.switch_state(note_type_details)
+        self.switch_state(note_type_details.note_type_id)
 
     def add_listener(self, listener: AdhocEraseDialogModelListener) -> None:
         self.__listeners.add(listener)
@@ -100,6 +103,11 @@ class AdhocEraseDialogModel:
             "states": {k: v.as_dict() for k, v in self.__states.items()},
             "current_state": self.__current_state.as_dict() if self.__current_state else None
         }
+
+    def __get_note_type_details(self, note_type_id: NotetypeId) -> NoteTypeDetails:
+        note_type_dict: [NotetypeId, NoteTypeDetails] = {note_type_details.note_type_id: note_type_details
+                                                         for note_type_details in self.__all_note_types}
+        return note_type_dict[note_type_id]
 
     def __clear(self) -> None:
         self.__all_note_types = []
