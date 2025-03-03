@@ -3,6 +3,7 @@ from logging import Logger
 
 from aqt.qt import QVBoxLayout, QGroupBox
 
+from .adhoc_erase_dialog_state import AdhocEraseDialogState
 from .....config.settings import Settings
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import FieldNames
@@ -31,11 +32,12 @@ class FieldsGroupBox(QGroupBox, AdhocEraseDialogModelListener):
 
     def erase_model_changed(self, source: object, _: AdhocEraseDialogModel) -> None:
         if source != self:
-            log.debug("Model changed")
+            current_state: AdhocEraseDialogState = self.__model.get_current_state()
+            log.debug(f"Model changed: {current_state.as_dict()}")
             self.__note_type_combo_box.set_note_types(self.__model.get_selected_note_types())
-            self.__note_type_combo_box.set_current_note_type(self.__model.get_current_state().get_selected_note_type())
-            self.__fields_vbox.set_items(self.__model.get_current_state().get_selected_note_type().fields)
-            self.__fields_vbox.set_selected_fields(self.__model.get_current_state().get_selected_fields())
+            self.__note_type_combo_box.set_current_note_type(current_state.get_selected_note_type())
+            self.__fields_vbox.set_items(current_state.get_selected_note_type().fields)
+            self.__fields_vbox.set_selected_fields(current_state.get_selected_fields())
 
     def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
         log.debug("On combobox changed")

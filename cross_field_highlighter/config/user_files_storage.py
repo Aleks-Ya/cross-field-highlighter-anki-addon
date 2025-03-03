@@ -36,7 +36,7 @@ class UserFilesStorage:
         if storage_file.exists():
             with open(storage_file, 'r') as f:
                 result = json.load(f)
-        log.debug(f"Read storage from file {storage_file}: {result}")
+        log.debug(f"Read storage from file '{storage_file}': {result}")
         return result
 
     def __get_storage_file(self) -> Path:
