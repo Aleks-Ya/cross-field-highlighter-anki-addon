@@ -12,43 +12,43 @@ Feature: Highlight Notes in Browser
     And I click context menu "Cross-Field Highlighter" -> "Highlight..."
     And I clicked "Select All" button
     And I clicked "Start" button
-    Then Collocations in "Back" field are highlighted in all notes
-    And "Statistics" window was shown
+    Then "Statistics" window was shown:
       """
       Notes selected in Browser: 12
-      Notes of type "Cloze": 12
-      Notes processed: 12
-      Notes modified: 12
-      Fields processed: 12
-      Fields modified: 12
+      Notes of type "Cloze": 11
+      Notes processed: 11
+      Notes modified: 11
+      Fields processed: 11
+      Fields modified: 11
       """
+    And Collocations in "Back" field are highlighted in all notes
 
     When I select all notes
     And I click context menu "Cross-Field Highlighter" -> "Erase..."
     And I clicked "Select All" button
     And I clicked "Start" button
-    Then Collocations in "Back" field are NOT highlighted in all notes
-    And "Statistics" window was shown
+    Then "Statistics" window was shown:
       """
       Notes selected in Browser: 12
-      Notes of type "Cloze": 12
-      Notes processed: 12
-      Notes modified: 12
-      Fields processed: 24
-      Fields modified: 12
+      Notes of type "Cloze": 11
+      Notes processed: 11
+      Notes modified: 11
+      Fields processed: 22
+      Fields modified: 11
       """
+    And Collocations in "Back" field are NOT highlighted in all notes
 
     When I select all notes
     And I press "Ctrl-Shift-H"
     Then The "Highlight" dialog is opened and it has all fields selected
-    When I click "Cancel" button
+    When I press "Alt-C"
     Then The "Highlight" dialog has closed
 
   @smoke @browser @editor
   Scenario: Highlight and erase a single note in Notes mode
+    Given One note is selected in Browser
 
-    When I select one note in Browser
-    And I click "Highlight" button
+    When I click "Highlight" button
     Then The "Highlight" dialog is shown
     And All fields are selected
 
@@ -57,6 +57,10 @@ Feature: Highlight Notes in Browser
     But "Statistics" windows was not shown
 
     When I click "Erase" button
+    Then The "Erase" dialog is shown
+    And All fields are selected
+
+    When I click "Start" button
     Then Collocation in "Back" field was NOT highlighted
     But "Statistics" windows was not shown
 
@@ -69,20 +73,18 @@ Feature: Highlight Notes in Browser
   @smoke @browser
   Scenario: Highlight and erase several notes in Cards mode
 
-    Given I opened Browser
-    And I switched Browser to Cards mode
+    Given Browser is opened in Cards mode
 
     When I select all cards
     And I click context menu "Cross-Field Highlighter" -> "Highlight..."
-    And I entered
+    And I set state:
       | Note Type     | "Cloze"             |
       | Field         | "Text"              |
       | Exclude words | "a an to"           |
       | Format        | "Yellow Background" |
       | Fields        | "Back Extra"        |
     And I clicked "Start" button
-    Then Collocations in "Back" field are highlighted in all 2 Cloze cards
-    And "Statistics" window was shown
+    Then "Statistics" window was shown:
       """
       Notes selected in Browser: 12
       Notes of type "Cloze": 1
@@ -91,15 +93,15 @@ Feature: Highlight Notes in Browser
       Fields processed: 1
       Fields modified: 1
       """
+    And Collocations in "Back" field are highlighted in all 2 Cloze cards
 
     When I select all cards
     And I click context menu "Cross-Field Highlighter" -> "Erase..."
-    When I choose
+    When I set state:
       | Note Type | "Cloze"              |
       | Fields    | "Text", "Back Extra" |
     And I clicked "Start" button
-    Then Collocations in "Back" field are NOT highlighted in all 2 Cloze cards
-    And "Statistics" window was shown
+    Then "Statistics" window was shown:
       """
       Notes selected in Browser: 12
       Notes of type "Cloze": 1
@@ -108,3 +110,4 @@ Feature: Highlight Notes in Browser
       Fields processed: 2
       Fields modified: 1
       """
+    And Collocations in "Back" field are NOT highlighted in all 2 Cloze cards

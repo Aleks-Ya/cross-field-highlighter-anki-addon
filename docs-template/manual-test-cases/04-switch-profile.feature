@@ -2,6 +2,7 @@ Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved for each Profile individually.
 
   Background:
+  Profiles "CFH Manual Test 1" and "CFH Manual Test 2" were removed from Storage.
   Profile "CFH Manual Test 1" was opened.
   Test notes were imported to profile "CFH Manual Test 1".
   Profile "CFH Manual Test 2" exists.
@@ -11,6 +12,7 @@ Feature: Switch Profile
   Scenario: "Highlight" dialog state is saved for each profile separately
 
     When I open "Add" window
+    And I choose "Basic" note type
     And I open "Highlight" dialog
     And I set state:
       | Note Type     | "Basic"             |
@@ -24,6 +26,7 @@ Feature: Switch Profile
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 2" profile
     And I open "Add" window
+    And I choose "Basic" note type
     And I open "Highlight" dialog
     Then "Highlight" dialog has default state:
       | Note Type     | "Basic"   |
@@ -43,6 +46,8 @@ Feature: Switch Profile
 
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 1" profile
+    And I open "Add" window
+    And I choose "Basic" note type
     And I open "Highlight" dialog
     Then "Highlight" dialog has state:
       | Note Type     | "Basic"             |
@@ -55,6 +60,7 @@ Feature: Switch Profile
   Scenario: "Erase" dialog state is saved for each profile separately
 
     When I open "Add" window
+    And I choose "Basic" note type
     And I open "Erase" dialog
     And I set state:
       | Note Type | "Basic" |
@@ -65,6 +71,7 @@ Feature: Switch Profile
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 2" profile
     And I open "Add" window
+    And I choose "Basic" note type
     And I open "Erase" dialog
     Then "Erase" dialog has default state:
       | Note Type | "Basic" |
@@ -78,6 +85,8 @@ Feature: Switch Profile
 
     When I click menu "File" - "Switch Profile"
     And I open "CFH Manual Test 1" profile
+    And I open "Add" window
+    And I choose "Basic" note type
     And I open "Erase" dialog
     Then "Erase" dialog has state:
       | Note Type | "Basic" |

@@ -1,5 +1,5 @@
 Feature: Switch Profile
-  "Highlight" and "Erase" windows preferences should be saved for each Profile individually.
+  "Highlight" and "Erase" windows preferences should be saved when Note Type is changed in "Add" window.
 
   Background:
   Profile "CFH Manual Test 1" was opened.
@@ -8,7 +8,8 @@ Feature: Switch Profile
   @smoke @add
   Scenario: "Highlight" dialog state is saved when Note Type is switched
 
-    Given "Add" window is opened
+    Given Profile "CFH Manual Test 1" was removed from Storage
+    And "Add" window is opened
     And "Basic" note type is chosen
 
     When I open "Highlight" dialog
@@ -67,6 +68,9 @@ Feature: Switch Profile
       | Format        | "Underline"  |
       | Fields        | "Text"       |
 
+    When I click "Cancel" button
+    Then "Highlight" dialog closes
+
   @smoke @add
   Scenario: "Erase" dialog state is saved when Note Type is switched
 
@@ -110,3 +114,6 @@ Feature: Switch Profile
     Then "Erase" dialog has state:
       | Note Type | "Cloze"      |
       | Fields    | "Back Extra" |
+
+    When I click "Cancel" button
+    Then "Erase" dialog closes

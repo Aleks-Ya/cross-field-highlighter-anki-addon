@@ -1,6 +1,6 @@
 Feature: Highlight in Add Note window
 
-  @smoke @add @editor
+  @smoke @add
   Scenario: Highlight and erase operations in Add Note window
 
     Given I opened the Add window
