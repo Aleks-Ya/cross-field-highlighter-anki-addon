@@ -74,22 +74,25 @@ class AdhocHighlightDialogModel:
     def get_states(self) -> list[AdhocHighlightDialogState]:
         return list(self.__states.values())
 
-    def switch_state(self, note_type_details: NoteTypeDetails) -> None:
-        note_type_id: NotetypeId = note_type_details.note_type_id
+    def get_state(self, note_type_id: NotetypeId) -> AdhocHighlightDialogState:
         if note_type_id not in self.__states:
+            note_type_details: NoteTypeDetails = self.__get_note_type_details(note_type_id)
             state: AdhocHighlightDialogState = AdhocHighlightDialogState(note_type_details, self.__default_stop_words)
             state.select_first_source_field()
             if len(self.__formats) > 0:
                 state.select_format(self.__formats[0])
             self.__states[note_type_id] = state
-        self.__current_state = self.__states[note_type_id]
+        return self.__states[note_type_id]
+
+    def switch_state(self, note_type_id: NotetypeId):
+        self.__current_state = self.get_state(note_type_id)
 
     def switch_to_first_state(self) -> None:
         if len(self.__selected_note_types) < 1:
             raise ValueError("At least one note type should exist")
         note_type_details: NoteTypeDetails = self.__selected_note_types[0]
         log.debug(f"Switch to first state: {note_type_details}")
-        self.switch_state(note_type_details)
+        self.switch_state(note_type_details.note_type_id)
 
     def call_accept_callback(self) -> None:
         if self.__accept_callback:
@@ -118,6 +121,11 @@ class AdhocHighlightDialogModel:
             "accept_callback_None": not self.__accept_callback,
             "reject_callback_None": not self.__reject_callback
         }
+
+    def __get_note_type_details(self, note_type_id: NotetypeId) -> NoteTypeDetails:
+        note_type_dict: [NotetypeId, NoteTypeDetails] = {note_type_details.note_type_id: note_type_details
+                                                         for note_type_details in self.__all_note_types}
+        return note_type_dict[note_type_id]
 
     def __clear(self) -> None:
         self.__all_note_types = []

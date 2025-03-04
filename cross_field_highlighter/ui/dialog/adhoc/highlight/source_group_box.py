@@ -49,7 +49,7 @@ class SourceGroupBox(QGroupBox, AdhocHighlightDialogModelListener):
 
     def __on_note_type_changed(self, selected_note_type: NoteTypeDetails):
         log.debug("On note type selected")
-        self.__model.switch_state(selected_note_type)
+        self.__model.switch_state(selected_note_type.note_type_id)
         self.__update_source_field_from_model()
         self.__model.fire_model_changed(self)
 

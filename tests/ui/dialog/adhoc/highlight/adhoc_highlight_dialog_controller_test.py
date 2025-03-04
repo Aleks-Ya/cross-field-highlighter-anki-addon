@@ -128,7 +128,7 @@ def test_save_to_storage(adhoc_highlight_dialog_controller: AdhocHighlightDialog
                 stop_words=DefaultConfig.default_stop_words)
 
     # Update again
-    adhoc_highlight_dialog_model.switch_state(note_type_details_cloze)
+    adhoc_highlight_dialog_model.switch_state(note_type_details_cloze.note_type_id)
     assert config_loader.load_config() == DefaultConfig.loader
     assert adhoc_highlight_dialog_model.as_dict() == {
         'all_note_types': note_type_details_all,
@@ -193,7 +193,7 @@ def test_fill_model_from_config_on_startup(adhoc_highlight_dialog_controller: Ad
     # Update config from model
     adhoc_highlight_dialog_controller.show_dialog(DialogParams(note_type_details_all, 0),
                                                   highlight_controller_callback.call)
-    adhoc_highlight_dialog_model.switch_state(note_type_details_basic)
+    adhoc_highlight_dialog_model.switch_state(note_type_details_basic.note_type_id)
     adhoc_highlight_dialog_model.get_current_state().select_source_field(DefaultFields.basic_front)
     adhoc_highlight_dialog_model.get_current_state().select_format(formatter_facade.get_format_by_code(
         HighlightFormatCode.BOLD))

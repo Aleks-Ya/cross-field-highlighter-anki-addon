@@ -26,7 +26,7 @@ def test_show_view(adhoc_highlight_dialog_view: AdhocHighlightDialogView,
     selected_note_types: list[NoteTypeDetails] = [note_type_details_basic, note_type_details_cloze]
     adhoc_highlight_dialog_model.fill(note_type_details_all, selected_note_types, 3, all_highlight_formats,
                                       exp_default_stop_words, callback.call, None)
-    adhoc_highlight_dialog_model.switch_state(note_type_details_basic)
+    adhoc_highlight_dialog_model.switch_state(note_type_details_basic.note_type_id)
     # Initial state
     assert highlight_model_listener.counter == 0
     assert_view(adhoc_highlight_dialog_view, window_title="", selected_note_type=None, note_types=[],
@@ -355,12 +355,14 @@ def test_remember_selected_source_when_changing_note_type(
                                                           'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_basic,
                                                           'selected_source_field': DefaultFields.basic_back,
-                                                          'selected_stop_words': Text(DefaultConfig.default_stop_words)},
+                                                          'selected_stop_words': Text(
+                                                              DefaultConfig.default_stop_words)},
                    note_type_details_cloze.note_type_id: {'selected_destination_fields': [],
                                                           'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_cloze,
                                                           'selected_source_field': DefaultFields.cloze_back_extra,
-                                                          'selected_stop_words': Text(DefaultConfig.default_stop_words)}}}
+                                                          'selected_stop_words': Text(
+                                                              DefaultConfig.default_stop_words)}}}
     # Choose "Basic" note type again
     adhoc_highlight_dialog_view_scaffold.select_note_type(Qt.Key.Key_Up)
     assert_source_combo_box(adhoc_highlight_dialog_view, DefaultFields.basic_back, DefaultFields.all_basic)
@@ -381,12 +383,14 @@ def test_remember_selected_source_when_changing_note_type(
                                                           'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_basic,
                                                           'selected_source_field': DefaultFields.basic_back,
-                                                          'selected_stop_words': Text(DefaultConfig.default_stop_words)},
+                                                          'selected_stop_words': Text(
+                                                              DefaultConfig.default_stop_words)},
                    note_type_details_cloze.note_type_id: {'selected_destination_fields': [],
                                                           'selected_format': bold_format,
                                                           'selected_note_type': note_type_details_cloze,
                                                           'selected_source_field': DefaultFields.cloze_back_extra,
-                                                          'selected_stop_words': Text(DefaultConfig.default_stop_words)}}}
+                                                          'selected_stop_words': Text(
+                                                              DefaultConfig.default_stop_words)}}}
 
 
 def test_repr(adhoc_highlight_dialog_view: AdhocHighlightDialogView):

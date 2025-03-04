@@ -54,6 +54,68 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails], n
                                                'selected_stop_words': Text(DefaultConfig.default_stop_words)}}}
 
 
+# Bug: selected fields are empty after deserialization
+def test_deserialize_model_selected_fields_are_empty(
+        note_type_details_all: list[NoteTypeDetails], note_type_details_basic: NoteTypeDetails,
+        note_type_details_cloze: NoteTypeDetails, bold_format: HighlightFormat, all_highlight_formats: HighlightFormats,
+        adhoc_highlight_dialog_model_serde: AdhocHighlightDialogModelSerDe):
+    model: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
+    model.fill(note_type_details_all, [note_type_details_basic], 3, all_highlight_formats,
+               Text(DefaultConfig.default_stop_words), lambda: None, lambda: None)
+    assert model.as_dict() == {'all_note_types': note_type_details_all,
+                               'selected_note_types': [note_type_details_basic],
+                               'default_stop_words': Text(DefaultConfig.default_stop_words),
+                               'note_number': 3,
+                               'formats': all_highlight_formats,
+                               'accept_callback_None': False,
+                               'reject_callback_None': False,
+                               'current_state': None,
+                               'states': {}}
+    data: dict[str, any] = {'current_state': note_type_details_basic.note_type_id,
+                            'states': [
+                                {
+                                    'note_type_id': note_type_details_basic.note_type_id,
+                                    "source_field": DefaultFields.basic_back,
+                                    "format": bold_format.code,
+                                    "stop_words": DefaultConfig.default_stop_words,
+                                    "destination_fields": [DefaultFields.basic_front]
+                                },
+                                {
+                                    'note_type_id': note_type_details_cloze.note_type_id,
+                                    "source_field": DefaultFields.cloze_text,
+                                    "format": bold_format.code,
+                                    "stop_words": DefaultConfig.default_stop_words,
+                                    "destination_fields": []
+                                }
+                            ]}
+    adhoc_highlight_dialog_model_serde.deserialize_states(model, data)
+    assert model.as_dict() == {'all_note_types': note_type_details_all,
+                               'selected_note_types': [note_type_details_basic],
+                               'default_stop_words': Text(DefaultConfig.default_stop_words),
+                               'note_number': 3,
+                               'formats': all_highlight_formats,
+                               'accept_callback_None': False,
+                               'reject_callback_None': False,
+                               'current_state': {'selected_destination_fields': [DefaultFields.basic_front],
+                                                 'selected_format': bold_format,
+                                                 'selected_note_type': note_type_details_basic,
+                                                 'selected_source_field': DefaultFields.basic_back,
+                                                 'selected_stop_words': Text(DefaultConfig.default_stop_words)},
+                               'states': {
+                                   note_type_details_basic.note_type_id:
+                                       {'selected_destination_fields': [DefaultFields.basic_front],
+                                        'selected_format': bold_format,
+                                        'selected_note_type': note_type_details_basic,
+                                        'selected_source_field': DefaultFields.basic_back,
+                                        'selected_stop_words': Text(DefaultConfig.default_stop_words)},
+                                   note_type_details_cloze.note_type_id:
+                                       {'selected_destination_fields': [],
+                                        'selected_format': bold_format,
+                                        'selected_note_type': note_type_details_cloze,
+                                        'selected_source_field': DefaultFields.cloze_text,
+                                        'selected_stop_words': Text(DefaultConfig.default_stop_words)}}}
+
+
 def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type_details_basic: NoteTypeDetails,
                          note_type_details_cloze: NoteTypeDetails, all_highlight_formats: HighlightFormats,
                          italic_format: HighlightFormat, mark_format: HighlightFormat,
@@ -62,7 +124,7 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     model1: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model1.fill(note_type_details_all, note_type_details_all, 3, all_highlight_formats,
                 Text(DefaultConfig.default_stop_words), lambda: None, lambda: None)
-    model1.switch_state(note_type_details_cloze)
+    model1.switch_state(note_type_details_cloze.note_type_id)
     model1.get_current_state().select_source_field(DefaultFields.cloze_back_extra)
     model1.get_current_state().select_format(mark_format)
     model1.get_current_state().select_destination_fields(FieldNames([DefaultFields.cloze_text]))
@@ -90,7 +152,7 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
     model2: AdhocHighlightDialogModel = AdhocHighlightDialogModel()
     model2.fill(note_type_details_all, note_type_details_all, 3, all_highlight_formats,
                 Text(DefaultConfig.default_stop_words), lambda: None, lambda: None)
-    model2.switch_state(note_type_details_basic)
+    model2.switch_state(note_type_details_basic.note_type_id)
     model2.get_current_state().select_source_field(DefaultFields.basic_back)
     model2.get_current_state().select_format(italic_format)
     model2.get_current_state().select_destination_fields(FieldNames([DefaultFields.basic_front]))
