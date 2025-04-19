@@ -3,8 +3,8 @@ Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved when Note Type is changed in "Add" window.
 
   Background:
+  Test "manual_test.py" was executed.
   Profile "CFH Manual Test 1" was opened.
-  Test notes were imported to profile "CFH Manual Test 1".
 
   @smoke @add
   Scenario: "Highlight" dialog state is saved when Note Type is switched

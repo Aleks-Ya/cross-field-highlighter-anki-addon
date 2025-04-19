@@ -2,8 +2,8 @@
 Feature: Study Editor
 
   Background:
+  Test "manual_test.py" was executed.
   Profile "CFH Manual Test 1" was opened.
-  Test notes were imported.
   The Main window is open.
 
   @smoke @editor @study

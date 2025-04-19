@@ -4,9 +4,8 @@ Feature: Switch Profile
 
   Background:
   Profiles "CFH Manual Test 1" and "CFH Manual Test 2" were removed from Storage.
+  Test "manual_test.py" was executed.
   Profile "CFH Manual Test 1" was opened.
-  Test notes were imported to profile "CFH Manual Test 1".
-  Profile "CFH Manual Test 2" exists.
   The Main window is opened for Profile "CFH Manual Test 1".
 
   @smoke @add

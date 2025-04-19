@@ -2,8 +2,8 @@
 Feature: Highlight Notes in Browser
 
   Background:
+  Test "manual_test.py" was executed.
   Profile "CFH Manual Test 1" was opened.
-  Test notes were imported from `cfh-test-profile-1.txt`.
   The Browser is opened in Notes mode.
 
   @smoke @browser
