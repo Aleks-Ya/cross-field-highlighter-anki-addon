@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Study Editor
 
   Background:

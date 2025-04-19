@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved when Note Type is changed in "Add" window.
 

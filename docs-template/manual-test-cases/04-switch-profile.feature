@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved for each Profile individually.
 

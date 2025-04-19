@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Performance of highlight and erase operations
 
   @smoke @performance @browser

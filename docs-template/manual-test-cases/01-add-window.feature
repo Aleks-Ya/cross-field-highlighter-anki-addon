@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Highlight in Add Note window
 
   @smoke @add

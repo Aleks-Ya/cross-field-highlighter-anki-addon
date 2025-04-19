@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Switch Profile
   "Highlight" and "Erase" windows states should be preserved during addon updates.
 

@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Highlight Notes in Browser
 
   Background:
