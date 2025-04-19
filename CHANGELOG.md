@@ -1,5 +1,9 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.6.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.6.1) - 2025-04-19
+
+1. __[FEATURE]__ Upgrade for Anki 25.2.1
+
 ## [v1.6.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.6.0) - 2025-03-04
 
 1. __[FEATURE]__ Preserve dialog states during addon updating
