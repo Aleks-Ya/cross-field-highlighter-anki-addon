@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Callable
+from typing import Callable, Any
 
 from aqt.qt import QHBoxLayout, QLabel, Qt, QComboBox
 
@@ -36,7 +36,7 @@ class TitledComboBoxLayout(QHBoxLayout):
         self.__combo_box.addItems(items)
         self.__combo_box.blockSignals(False)
 
-    def set_data_items(self, items: dict[str, any]) -> None:
+    def set_data_items(self, items: dict[str, Any]) -> None:
         self.__combo_box.blockSignals(True)
         current_item: object = self.get_current_data()
         self.__combo_box.clear()
@@ -50,7 +50,7 @@ class TitledComboBoxLayout(QHBoxLayout):
     def get_current_text(self) -> str:
         return self.__combo_box.currentText()
 
-    def get_current_data(self) -> any:
+    def get_current_data(self) -> Any:
         return self.__combo_box.currentData()
 
     def on_current_text_changed(self, callback: Callable[[str], None]) -> None:

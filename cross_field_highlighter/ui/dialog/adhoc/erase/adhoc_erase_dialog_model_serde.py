@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Any
 
 from anki.models import NotetypeId
 
@@ -18,17 +19,17 @@ class AdhocEraseDialogModelSerDe:
     def __init__(self):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def serialize_states(self, model: AdhocEraseDialogModel) -> dict[str, any]:
-        states: list[dict[str, any]] = [{
+    def serialize_states(self, model: AdhocEraseDialogModel) -> dict[str, Any]:
+        states: list[dict[str, Any]] = [{
             self.__note_type_id: state.get_selected_note_type().note_type_id,
             self.__fields: state.get_selected_fields()
         } for state in model.get_states()]
-        result: dict[str, any] = {
+        result: dict[str, Any] = {
             self.__current_state: model.get_current_state().get_selected_note_type().note_type_id,
             self.__states: states}
         return result
 
-    def deserialize_states(self, model: AdhocEraseDialogModel, json: dict[str, any]) -> None:
+    def deserialize_states(self, model: AdhocEraseDialogModel, json: dict[str, Any]) -> None:
         note_type_ids: list[NotetypeId] = [note_type_details.note_type_id for note_type_details in
                                            model.get_all_note_types()]
         if self.__states in json:

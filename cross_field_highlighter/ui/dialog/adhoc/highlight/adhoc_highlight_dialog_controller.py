@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 from aqt.utils import show_info
 
@@ -54,13 +54,13 @@ class AdhocHighlightDialogController:
 
     def __save_model_to_storage(self) -> None:
         log.debug("Save model to storage")
-        serialized_state: dict[str, any] = self.__model_serde.serialize_states(self.__model)
+        serialized_state: dict[str, Any] = self.__model_serde.serialize_states(self.__model)
         self.__user_files_storage.write(self.__state_key, serialized_state)
 
     def __fill_model_from_storage(self) -> None:
         log.debug("Fill model from storage")
         log.debug(f"Model before deserialization: {self.__model.as_dict()}")
-        data: dict[str, any] = self.__user_files_storage.read(self.__state_key)
+        data: dict[str, Any] = self.__user_files_storage.read(self.__state_key)
         log.debug(f"Data from storage: {data}")
         self.__model_serde.deserialize_states(self.__model, data)
         log.debug(f"Model after deserialization: {self.__model.as_dict()}")

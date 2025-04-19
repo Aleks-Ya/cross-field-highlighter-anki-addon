@@ -1,7 +1,7 @@
 import logging
 from abc import abstractmethod
 from logging import Logger
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 from anki.models import NotetypeId
 
@@ -93,7 +93,7 @@ class AdhocEraseDialogModel:
             state.select_fields(FieldNames([]))
         self.switch_to_first_state()
 
-    def as_dict(self) -> dict[str, any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "all_note_types": self.__all_note_types,
             "selected_note_types": self.__selected_note_types,

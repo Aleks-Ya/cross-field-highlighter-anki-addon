@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Any
 
 from anki.models import NotetypeId
 
@@ -23,33 +24,33 @@ class AdhocHighlightDialogModelSerDe:
     def __init__(self):
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def serialize_states(self, model: AdhocHighlightDialogModel) -> dict[str, any]:
-        states: list[dict[str, any]] = [{
+    def serialize_states(self, model: AdhocHighlightDialogModel) -> dict[str, Any]:
+        states: list[dict[str, Any]] = [{
             self.__note_type_id: state.get_selected_note_type().note_type_id,
             self.__source_field: state.get_selected_source_field(),
             self.__format: state.get_selected_format().code.value,
             self.__stop_words: state.get_selected_stop_words(),
             self.__destination_fields: state.get_selected_destination_fields()
         } for state in model.get_states()]
-        result: dict[str, any] = {
+        result: dict[str, Any] = {
             self.__current_state: model.get_current_state().get_selected_note_type().note_type_id,
             self.__states: states}
         return result
 
-    def deserialize_states(self, model: AdhocHighlightDialogModel, json: dict[str, any]) -> None:
+    def deserialize_states(self, model: AdhocHighlightDialogModel, json: dict[str, Any]) -> None:
         note_type_ids: list[NotetypeId] = [note_type_details.note_type_id for note_type_details in
                                            model.get_all_note_types()]
         self.__read_states(json, model, note_type_ids)
         self.__read_current_state(json, model, note_type_ids)
 
-    def __read_current_state(self, json: dict[str, any], model: AdhocHighlightDialogModel,
+    def __read_current_state(self, json: dict[str, Any], model: AdhocHighlightDialogModel,
                              note_type_ids: list[NotetypeId]) -> None:
         if json and self.__current_state in json:
             current_note_type_id: NotetypeId = json[self.__current_state]
             if current_note_type_id in note_type_ids:
                 model.switch_state(current_note_type_id)
 
-    def __read_states(self, json: dict[str, any], model: AdhocHighlightDialogModel,
+    def __read_states(self, json: dict[str, Any], model: AdhocHighlightDialogModel,
                       note_type_ids: list[NotetypeId]) -> None:
         highlight_formats: [HighlightFormatCode, HighlightFormat] = {highlight_format.code: highlight_format for
                                                                      highlight_format in model.get_formats()}

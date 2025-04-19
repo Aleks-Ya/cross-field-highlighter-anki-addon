@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Any
 
 from .....highlighter.note_type_details import NoteTypeDetails
 from .....highlighter.types import FieldNames
@@ -25,7 +26,7 @@ class AdhocEraseDialogState:
              if self.__selected_note_type and field_name in self.__selected_note_type.fields])
         self.__selected_fields = existing_field_names
 
-    def as_dict(self) -> dict[str, any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "selected_note_type": self.__selected_note_type,
             "selected_fields": self.__selected_fields

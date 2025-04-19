@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional
+from typing import Optional, Any
 
 from .....highlighter.formatter.highlight_format import HighlightFormat
 from .....highlighter.note_type_details import NoteTypeDetails
@@ -58,7 +58,7 @@ class AdhocHighlightDialogState:
             raise ValueError("Note type must have at least one field")
         self.__selected_source_field = self.__selected_note_type.fields[0]
 
-    def as_dict(self) -> dict[str, any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "selected_note_type": self.__selected_note_type,
             "selected_source_field": self.__selected_source_field,

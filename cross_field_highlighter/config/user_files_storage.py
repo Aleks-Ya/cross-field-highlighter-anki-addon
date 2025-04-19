@@ -2,6 +2,7 @@ import json
 import logging
 from logging import Logger
 from pathlib import Path
+from typing import Any
 
 from aqt import ProfileManager
 
@@ -16,23 +17,23 @@ class UserFilesStorage:
         self.__settings: Settings = settings
         log.debug(f"{self.__class__.__name__} was instantiated")
 
-    def read(self, key: str) -> dict[str, any]:
+    def read(self, key: str) -> dict[str, Any]:
         return self.read_all().get(key, {})
 
-    def write(self, key: str, value: dict[str, any]) -> None:
+    def write(self, key: str, value: dict[str, Any]) -> None:
         storage_file: Path = self.__get_storage_file()
         if not storage_file.parent.exists():
             storage_file.parent.mkdir(parents=True)
-        current_data: dict[str, any] = self.read_all()
+        current_data: dict[str, Any] = self.read_all()
         current_data[key] = value
         with open(storage_file, 'w') as f:
             # noinspection PyTypeChecker
             json.dump(current_data, f, indent=2)
         log.debug(f"Write storage to file {storage_file}: {current_data}")
 
-    def read_all(self) -> dict[str, any]:
+    def read_all(self) -> dict[str, Any]:
         storage_file: Path = self.__get_storage_file()
-        result: dict[str, any] = {}
+        result: dict[str, Any] = {}
         if storage_file.exists():
             with open(storage_file, 'r') as f:
                 result = json.load(f)

@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional, NewType
+from typing import Optional, NewType, Any
 
 from aqt.addons import AddonManager
 
@@ -8,7 +8,7 @@ from ..config.settings import Settings
 
 log: Logger = logging.getLogger(__name__)
 
-ConfigData = NewType("ConfigData", dict[str, any])
+ConfigData = NewType("ConfigData", dict[str, Any])
 
 
 class ConfigLoader:

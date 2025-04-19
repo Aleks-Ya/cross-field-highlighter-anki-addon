@@ -1,7 +1,7 @@
 import logging
 from abc import abstractmethod
 from logging import Logger
-from typing import Optional, Callable
+from typing import Optional, Callable, Any
 
 from anki.models import NotetypeId
 
@@ -109,7 +109,7 @@ class AdhocHighlightDialogModel:
         for listener in self.__listeners:
             listener.highlight_model_changed(source, self)
 
-    def as_dict(self) -> dict[str, any]:
+    def as_dict(self) -> dict[str, Any]:
         return {
             "all_note_types": self.__all_note_types,
             "selected_note_types": self.__selected_note_types,

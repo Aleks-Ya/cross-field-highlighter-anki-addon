@@ -1,3 +1,5 @@
+from typing import Any
+
 from pytest import raises
 
 from cross_field_highlighter.highlighter.note_type_details import NoteTypeDetails
@@ -27,7 +29,7 @@ def test_deserialize_empty_state(note_type_details_all: list[NoteTypeDetails],
         'reject_callback_None': False,
         'current_state': None,
         'states': {}}
-    data: dict[str, any] = {'current_state': note_type_details_cloze.note_type_id,
+    data: dict[str, Any] = {'current_state': note_type_details_cloze.note_type_id,
                             'states': [{'note_type_id': note_type_details_cloze.note_type_id}]}
     adhoc_erase_dialog_model_serde.deserialize_states(model, data)
     assert model.as_dict() == {
@@ -56,7 +58,7 @@ def test_deserialize_model(note_type_details_all: list[NoteTypeDetails],
         'reject_callback_None': False,
         'current_state': None,
         'states': {}}
-    data: dict[str, any] = {'current_state': note_type_details_basic.note_type_id,
+    data: dict[str, Any] = {'current_state': note_type_details_basic.note_type_id,
                             'states': [
                                 {
                                     'note_type_id': note_type_details_basic.note_type_id,
@@ -97,7 +99,7 @@ def test_deserialize_model_selected_fields_are_empty(
         'reject_callback_None': False,
         'current_state': None,
         'states': {}}
-    data: dict[str, any] = {'current_state': note_type_details_basic.note_type_id,
+    data: dict[str, Any] = {'current_state': note_type_details_basic.note_type_id,
                             'states': [
                                 {
                                     'note_type_id': note_type_details_basic.note_type_id,
@@ -141,7 +143,7 @@ def test_serialize_model(note_type_details_all: list[NoteTypeDetails], note_type
         'states': {note_type_details_cloze.note_type_id:
                        {'selected_fields': [DefaultFields.cloze_back_extra],
                         'selected_note_type': note_type_details_cloze}}}
-    data: dict[str, any] = adhoc_erase_dialog_model_serde.serialize_states(model1)
+    data: dict[str, Any] = adhoc_erase_dialog_model_serde.serialize_states(model1)
     assert data == {'current_state': note_type_details_cloze.note_type_id,
                     'states': [{'note_type_id': note_type_details_cloze.note_type_id,
                                 'fields': [DefaultFields.cloze_back_extra]}]}

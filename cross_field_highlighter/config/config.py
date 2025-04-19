@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional
+from typing import Optional, Any
 
 from .config_listener import ConfigListener
 from .config_loader import ConfigLoader, ConfigData
@@ -80,7 +80,7 @@ class Config:
         shortcut: Optional[str] = self.__get(*keys)
         return shortcut.replace("-", "+") if shortcut is not None and shortcut.strip() != "" else None
 
-    def __set(self, value: any, *keys: str) -> None:
+    def __set(self, value: Any, *keys: str) -> None:
         log.debug(f"Set config value: {value} for keys: {keys}")
         config_data: ConfigData = self.__config_loader.load_config()
         sub_dict: ConfigData = config_data
@@ -94,7 +94,7 @@ class Config:
                 sub_dict = sub_dict[key]
         self.__config_loader.write_config(config_data)
 
-    def __get(self, *keys: str) -> Optional[any]:
+    def __get(self, *keys: str) -> Optional[Any]:
         log.debug(f"Get config value for keys: {keys}")
         sub_dict: ConfigData = self.__config_loader.load_config()
         for index, key in enumerate(keys):

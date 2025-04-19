@@ -1,6 +1,6 @@
 import logging
 from logging import Logger
-from typing import Optional
+from typing import Optional, Any
 
 from aqt import qconnect, QAction, DialogManager
 from aqt.addons import AddonManager, AddonsDialog, ConfigEditor
@@ -26,7 +26,7 @@ class BrowserMenuOpenConfigAction(QAction):
     def __on_click(self):
         log.debug("On open configuration dialog")
         addons_dialog: AddonsDialog = self.__dialog_manager.open("AddonsDialog", self.__addon_manager)
-        conf: Optional[dict[str, any]] = self.__addon_manager.getConfig(self.__settings.module_name)
+        conf: Optional[dict[str, Any]] = self.__addon_manager.getConfig(self.__settings.module_name)
         ConfigEditor(addons_dialog, self.__settings.module_name, conf)
 
     def __del__(self):
