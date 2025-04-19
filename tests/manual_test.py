@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from anki.collection import Collection
+from anki.collection import Collection, AddNoteRequest
 from anki.decks import DeckId
 from anki.models import NoteType
 from anki.notes import Note
@@ -15,16 +15,34 @@ class TestProfilesForManualTesting:
 
     def test_generate_cfh_1(self, td: Data):
         col: Collection = self.__recreate_profile("CFH Manual Test 1")
+        deck_id: DeckId = col.decks.get_current_id()
         for case in td.cases():
-            self.__add_basic_note(col, case.collocation, case.original_text)
-        self.__add_cloze_note(col, "study", "I {{c1:study}} every day.", )
+            col.add_note(self.__add_basic_note(col, case.collocation, case.original_text), deck_id)
+        col.add_note(self.__add_cloze_note(col, "study", "I {{c1:study}} every day."), deck_id)
         col.close()
 
     def test_generate_cfh_2(self, td: Data):
         col: Collection = self.__recreate_profile("CFH Manual Test 2")
-        self.__add_basic_note(col, "nice", "What a nice day!")
-        self.__add_basic_note(col, "素晴らしい", "素晴らしい一日でした！")
-        self.__add_cloze_note(col, "blow", "Wind {{c1:blows}} from the North.", )
+        deck_id: DeckId = col.decks.get_current_id()
+        col.add_note(self.__add_basic_note(col, "nice", "What a nice day!"), deck_id)
+        col.add_note(self.__add_basic_note(col, "素晴らしい", "素晴らしい一日でした！"), deck_id)
+        col.add_note(self.__add_cloze_note(col, "blow", "Wind {{c1:blows}} from the North."), deck_id)
+        col.close()
+
+    @pytest.mark.skip(reason="For manual running")
+    def test_generate_cfh_3_big(self, td: Data):
+        col: Collection = self.__recreate_profile("CFH Manual Test 3 Big")
+        deck_id: DeckId = col.decks.get_current_id()
+        note_count: int = 50000
+        requests: list[AddNoteRequest] = []
+        for i in range(note_count):
+            requests.append(AddNoteRequest(
+                self.__add_basic_note(col, f"Front field {i}", f"Back field {i}"),
+                deck_id))
+            requests.append(AddNoteRequest(
+                self.__add_cloze_note(col, f"Text field {i}", f"Back Extra field {i}"),
+                deck_id))
+        col.add_notes(requests)
         col.close()
 
     @staticmethod
@@ -42,19 +60,17 @@ class TestProfilesForManualTesting:
         return Collection(pm.collectionPath())
 
     @staticmethod
-    def __add_basic_note(col: Collection, front: str, back: str) -> None:
-        deck_id: DeckId = col.decks.get_current_id()
+    def __add_basic_note(col: Collection, front: str, back: str) -> Note:
         note_type: NoteType = col.models.by_name('Basic')
         note: Note = col.new_note(note_type)
         note["Front"] = front
         note["Back"] = back
-        col.add_note(note, deck_id)
+        return note
 
     @staticmethod
-    def __add_cloze_note(col: Collection, text: str, back_extra: str) -> None:
-        deck_id: DeckId = col.decks.get_current_id()
+    def __add_cloze_note(col: Collection, text: str, back_extra: str) -> Note:
         note_type: NoteType = col.models.by_name('Cloze')
         note: Note = col.new_note(note_type)
         note["Text"] = text
         note["Back Extra"] = back_extra
-        col.add_note(note, deck_id)
+        return note

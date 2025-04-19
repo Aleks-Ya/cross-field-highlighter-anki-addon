@@ -1,10 +1,15 @@
 #noinspection CucumberUndefinedStep
 Feature: Highlight in Add Note window
 
+  Background:
+  Test "manual_test.py" was executed.
+  Profile "CFH Manual Test 1" was opened.
+
   @smoke @add
   Scenario: Highlight and erase operations in Add Note window
 
     Given I opened the Add window
+    And I chose "Basic" Note Type
     And I entered
       | Front | cat  |
       | Back  | cats |

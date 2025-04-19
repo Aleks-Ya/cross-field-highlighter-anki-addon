@@ -23,8 +23,7 @@ Feature: Switch Profile
     And I click "Cancel" button
     Then "Highlight" dialog closes
 
-    When I click menu "File" - "Switch Profile"
-    And I open "CFH Manual Test 2" profile
+    When I open "CFH Manual Test 2" profile
     And I open "Add" window
     And I choose "Basic" note type
     And I open "Highlight" dialog
@@ -44,8 +43,7 @@ Feature: Switch Profile
     And I click "Cancel" button
     Then "Highlight" dialog closes
 
-    When I click menu "File" - "Switch Profile"
-    And I open "CFH Manual Test 1" profile
+    When I open "CFH Manual Test 1" profile
     And I open "Add" window
     And I choose "Basic" note type
     And I open "Highlight" dialog
@@ -68,8 +66,7 @@ Feature: Switch Profile
     And I click "Cancel" button
     Then "Erase" dialog closes
 
-    When I click menu "File" - "Switch Profile"
-    And I open "CFH Manual Test 2" profile
+    When I open "CFH Manual Test 2" profile
     And I open "Add" window
     And I choose "Basic" note type
     And I open "Erase" dialog
@@ -83,8 +80,7 @@ Feature: Switch Profile
     And I click "Cancel" button
     Then "Erase" dialog closes
 
-    When I click menu "File" - "Switch Profile"
-    And I open "CFH Manual Test 1" profile
+    When I open "CFH Manual Test 1" profile
     And I open "Add" window
     And I choose "Basic" note type
     And I open "Erase" dialog
