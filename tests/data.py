@@ -3,7 +3,7 @@ from pathlib import Path
 from anki.collection import Collection
 from anki.decks import DeckId
 from anki.models import NoteType, FieldDict
-from anki.notes import Note, NoteId
+from anki.notes import Note
 from aqt import gui_hooks
 
 from cross_field_highlighter.config.config import Config
@@ -329,7 +329,7 @@ class Data:
         ]
 
     def create_case_notes(self) -> list[CaseNote]:
-        res: list[(NoteId, FieldContent, FieldContent)] = []
+        res: list[CaseNote] = []
         for case in self.cases():
             collocation_content: FieldContent = FieldContent(case.collocation)
             original_content: FieldContent = FieldContent(case.original_text)

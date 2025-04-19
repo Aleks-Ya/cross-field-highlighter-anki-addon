@@ -105,4 +105,5 @@ class Config:
                 if key in sub_dict:
                     sub_dict = sub_dict[key]
                 else:
-                    return None
+                    break
+        return None

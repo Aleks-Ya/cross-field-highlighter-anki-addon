@@ -123,8 +123,8 @@ class AdhocHighlightDialogModel:
         }
 
     def __get_note_type_details(self, note_type_id: NotetypeId) -> NoteTypeDetails:
-        note_type_dict: [NotetypeId, NoteTypeDetails] = {note_type_details.note_type_id: note_type_details
-                                                         for note_type_details in self.__all_note_types}
+        note_type_dict: dict[NotetypeId, NoteTypeDetails] = {note_type_details.note_type_id: note_type_details
+                                                             for note_type_details in self.__all_note_types}
         return note_type_dict[note_type_id]
 
     def __clear(self) -> None:

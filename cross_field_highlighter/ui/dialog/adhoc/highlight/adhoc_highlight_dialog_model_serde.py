@@ -52,8 +52,8 @@ class AdhocHighlightDialogModelSerDe:
 
     def __read_states(self, json: dict[str, Any], model: AdhocHighlightDialogModel,
                       note_type_ids: list[NotetypeId]) -> None:
-        highlight_formats: [HighlightFormatCode, HighlightFormat] = {highlight_format.code: highlight_format for
-                                                                     highlight_format in model.get_formats()}
+        highlight_formats: dict[HighlightFormatCode, HighlightFormat] = {highlight_format.code: highlight_format for
+                                                                         highlight_format in model.get_formats()}
         if json and self.__states in json:
             for state_obj in json[self.__states]:
                 if self.__note_type_id in state_obj:
@@ -76,7 +76,7 @@ class AdhocHighlightDialogModelSerDe:
             state.set_stop_words(saved_stop_words)
 
     def __read_format(self, state: AdhocHighlightDialogState, state_obj: dict,
-                      highlight_formats: [HighlightFormatCode, HighlightFormat]) -> None:
+                      highlight_formats: dict[HighlightFormatCode, HighlightFormat]) -> None:
         if self.__format in state_obj:
             saved_highlight_format_code: HighlightFormatCode = HighlightFormatCode(state_obj[self.__format])
             saved_highlight_format: HighlightFormat = highlight_formats[saved_highlight_format_code]
