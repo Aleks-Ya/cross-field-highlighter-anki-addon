@@ -13,7 +13,7 @@ from tests.data import Data
 from tests.visual_qtbot import VisualQtBot
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_erase_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                            adhoc_erase_dialog_view: AdhocEraseDialogView,
                            dialog_params_factory: DialogParamsFactory,
@@ -21,7 +21,7 @@ def test_show_erase_dialog(adhoc_erase_dialog_controller: AdhocEraseDialogContro
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_erase_dialog_many_wide_fields(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                             adhoc_erase_dialog_view: AdhocEraseDialogView,
                                             dialog_params_factory: DialogParamsFactory,
@@ -30,7 +30,7 @@ def test_show_erase_dialog_many_wide_fields(adhoc_erase_dialog_controller: Adhoc
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_erase_dialog_wide_note_type(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                           adhoc_erase_dialog_view: AdhocEraseDialogView,
                                           dialog_params_factory: DialogParamsFactory, note_type_id_cloze: NotetypeId,
@@ -41,7 +41,7 @@ def test_show_erase_dialog_wide_note_type(adhoc_erase_dialog_controller: AdhocEr
     __show_dialog(adhoc_erase_dialog_controller, adhoc_erase_dialog_view, dialog_params_factory, visual_qtbot, td)
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_highlight_dialog_narrow_and_wide_fields(adhoc_erase_dialog_controller: AdhocEraseDialogController,
                                                       adhoc_erase_dialog_view: AdhocEraseDialogView,
                                                       dialog_params_factory: DialogParamsFactory,

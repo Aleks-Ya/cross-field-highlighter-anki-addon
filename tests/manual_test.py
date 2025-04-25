@@ -10,7 +10,7 @@ from aqt import ProfileManager
 from tests.data import Data
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 class TestProfilesForManualTesting:
 
     def test_generate_cfh_1(self, td: Data):
@@ -29,7 +29,7 @@ class TestProfilesForManualTesting:
         col.add_note(self.__add_cloze_note(col, "blow", "Wind {{c1:blows}} from the North."), deck_id)
         col.close()
 
-    @pytest.mark.skip(reason="For manual running")
+    @pytest.mark.skip("For manual running")
     def test_generate_cfh_3_big(self, td: Data):
         col: Collection = self.__recreate_profile("CFH Manual Test 3 Big")
         deck_id: DeckId = col.decks.get_current_id()

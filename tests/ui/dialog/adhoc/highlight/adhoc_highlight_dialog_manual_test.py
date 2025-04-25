@@ -13,7 +13,7 @@ from tests.data import Data
 from tests.visual_qtbot import VisualQtBot
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_highlight_dialog(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                dialog_params_factory: DialogParamsFactory,
@@ -22,7 +22,7 @@ def test_show_highlight_dialog(adhoc_highlight_dialog_controller: AdhocHighlight
                   td)
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_highlight_dialog_many_wide_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                                 adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                 dialog_params_factory: DialogParamsFactory,
@@ -32,7 +32,7 @@ def test_show_highlight_dialog_many_wide_fields(adhoc_highlight_dialog_controlle
                   td)
 
 
-@pytest.mark.skip(reason="For manual running")
+@pytest.mark.skip("For manual running")
 def test_show_highlight_dialog_narrow_and_wide_fields(adhoc_highlight_dialog_controller: AdhocHighlightDialogController,
                                                       adhoc_highlight_dialog_view: AdhocHighlightDialogView,
                                                       dialog_params_factory: DialogParamsFactory,
