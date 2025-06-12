@@ -1,8 +1,8 @@
 
 Test cases for Cross-Field Highlighter (CFH)
 ============================================
-  
-CFH has highlighting and erasing algorithms which are verified by auto-tests.  
+
+CFH has highlighting and erasing algorithms which are verified by auto-tests.
 Test cases listed in the table below are used to verify these algorithms.
 
 Auto-tests perform for each test case:
@@ -10,7 +10,7 @@ Auto-tests perform for each test case:
 2. Verify that the highlighted text is the same as in "Expected text"
 3. Erase the highlighted text
 4. Verify that the erased text is the same as "Original text"
-  
+
 
 |#|Title|Collocation|Original text|Highlighted text|
 | :---: | :---: | :---: | :---: | :---: |
