@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import shutil
@@ -15,9 +16,10 @@ class DistributionBuilder:
         if self.build_dir.exists():
             shutil.rmtree(self.build_dir)
 
-    def build(self) -> None:
-        self.__run_unit_tests()
-        self.__run_integration_tests()
+    def build(self, skip_tests: bool = False) -> None:
+        if not skip_tests:
+            self.__run_unit_tests()
+            self.__run_integration_tests()
         self.__package_zip()
 
     @staticmethod
@@ -95,5 +97,9 @@ class DistributionBuilder:
             return f.read().strip()
 
 
+parser: argparse.ArgumentParser = argparse.ArgumentParser()
+parser.add_argument('--skip-tests', action='store_true', help='Skip running unit and integration tests')
+args: argparse.Namespace = parser.parse_args()
+
 dist_builder: DistributionBuilder = DistributionBuilder()
-dist_builder.build()
+dist_builder.build(skip_tests=args.skip_tests)

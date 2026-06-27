@@ -55,7 +55,7 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
 
 ## Build
 
-1. Build ZIP: `./build_dist.sh` (includes unit-tests)
+1. Build ZIP: `./build_dist.sh` (runs unit-tests) or `./build_dist.sh --skip-tests` (skips unit-tests)
 2. Output: `./dist/note-size-X.X-X.zip`
 
 ## Execute GitHub Actions locally
