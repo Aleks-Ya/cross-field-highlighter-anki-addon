@@ -34,6 +34,8 @@ Run automated tests:
 Make UI visible during tests:  
 File `conftest.py`, fixture `visual_qtbot`, set positive delay: `VisualQtBot(qtbot, 1000)`
 
+Manual test cases: `tests/manual` folder
+
 ## SonarQube
 
 Report at [SonarCloud](https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon)
