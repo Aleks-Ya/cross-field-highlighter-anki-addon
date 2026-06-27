@@ -1,5 +1,10 @@
 # Changelog for "Cross-Field Highlighter" Anki addon
 
+## [v1.7.0](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.7.0) - 2026-06-28
+
+1. __[FEATURE]__ Upgrade for Anki 26.05
+2. __[MISC]__ Remove Qt5 support
+
 ## [v1.6.1](https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/releases/tag/v1.6.1) - 2025-04-19
 
 1. __[FEATURE]__ Upgrade for Anki 25.2.1
