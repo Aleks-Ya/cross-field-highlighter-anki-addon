@@ -69,19 +69,22 @@ def profile() -> Profile:
 
 
 @pytest.fixture
-def base_dir() -> Path:
-    return Path(tempfile.mkdtemp(prefix="anki-base-dir-"))
+def base_dir() -> Generator[Path, None, None]:
+    path: Path = Path(tempfile.mkdtemp(prefix="anki-base-dir-"))
+    yield path
+    shutil.rmtree(path, ignore_errors=True)
 
 
 @pytest.fixture
-def profile_manager(base_dir: Path, profile: Profile) -> ProfileManager:
+def profile_manager(base_dir: Path, profile: Profile) -> Generator[ProfileManager, None, None]:
     anki_base_dir: Path = ProfileManager.get_created_base_folder(str(base_dir))
     pm: ProfileManager = ProfileManager(base=anki_base_dir)
     pm.setupMeta()
     pm.create(profile)
     pm.openProfile(profile)
     pm.save()
-    return pm
+    yield pm
+    pm.db.close()
 
 
 @pytest.fixture
