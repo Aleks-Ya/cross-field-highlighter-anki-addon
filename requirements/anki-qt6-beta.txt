@@ -8,7 +8,7 @@ aqt==25.8b5
 
 # https://github.com/ankitects/anki/blob/25.08b5/qt/pyproject.toml
 pyqt6==6.9.1
-pyqt6-qt6==6.9.1
+pyqt6-qt6==6.11.1
 pyqt6-webengine==6.8.0
 pyqt6-webengine-qt6==6.8.2
 pyqt6_sip==13.10.2
