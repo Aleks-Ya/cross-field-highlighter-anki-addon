@@ -12,9 +12,10 @@
     1. Install PIPX: `pip install pipx`
     2. Install Tox: `pipx install tox`
 2. Install PyEnv: `brew install pyenv pyenv-virtualenv`
-3. Create virtual environment:
-    1. `pyenv install 3.9.18`
-    2. `pyenv virtualenv 3.9.18 cross-field-highlighter-anki-addon`
+3. Create a virtual environment:
+    1. Find the Python version: https://github.com/ankitects/anki/blob/release/26.05/.python-version
+    2. `pyenv install 3.13.13`
+    3. `pyenv virtualenv 3.13.13 cross-field-highlighter-anki-addon`
 4. Install Anki packages
     1. Activate virtual environment: `pyenv activate cross-field-highlighter-anki-addon`
     2. Install packages: `pip install -U pip -r requirements/anki-qt6-current.txt -r requirements/dev.txt -r requirements/tests.txt`
