@@ -80,9 +80,8 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     2. Check GitHub actions: https://github.com/Aleks-Ya/cross-field-highlighter-anki-addon/actions
     3. Check SonarQube warnings: https://sonarcloud.io/project/overview?id=Aleks-Ya_cross-field-highlighter-anki-addon
 4. Increment version:
-    1. Major: `bump-my-version bump major -v`
-    2. Minor: `bump-my-version bump minor -v`
-    3. Patch: `bump-my-version bump patch -v`
+    1. Start next snapshot: Major: `bump-my-version bump major -v --no-tag`, Minor: `bump-my-version bump minor -v --no-tag`, Patch: `bump-my-version bump patch -v --no-tag`
+    2. Release (remove SNAPSHOT and tag): `bump-my-version bump snapshot -v`
 5. Build ZIP: `./build_dist.sh`
     1. Install and test on the earliest Anki version (Qt5)
     2. Install and test on the current Anki version (Qt6)
