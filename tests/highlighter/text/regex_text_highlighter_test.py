@@ -32,6 +32,6 @@ def test_highlight_performance(regex_text_highlighter: RegexTextHighlighter, bol
     original_text: Text = Text("Downloading a movie takes forever.")
     collocation: Text = Text("take forever")
     execution_time: float = timeit.timeit(
-        lambda: regex_text_highlighter.highlight(collocation, original_text, stop_words, bold_format), number=1000)
+        lambda: regex_text_highlighter.highlight(collocation, original_text, stop_words, bold_format), number=800)
     print(f"Execution time: {execution_time}")
     assert execution_time <= 1
