@@ -13,4 +13,4 @@ done
 
 cp docs/README.md README.md
 
-tox -e anki-qt6-current -- tests tests/highlighter/render_cases_page_test.py
+python tests/highlighter/render_cases_page.py

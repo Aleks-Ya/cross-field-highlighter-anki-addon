@@ -2,3 +2,5 @@ tox
 bump-my-version
 GitPython
 md_toc
+mdutils
+PyYAML

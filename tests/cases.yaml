@@ -1,0 +1,239 @@
+- name: 'General: single word repeats one time'
+  collocation: 'beautiful'
+  original_text: 'Hello, beautiful world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b> world!'
+
+- name: 'General: single word repeats several times'
+  collocation: 'beautiful'
+  original_text: 'Hello, beautiful world and beautiful day!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b> world and <b class="cross-field-highlighter">beautiful</b> day!'
+
+- name: 'General: case insensitive'
+  collocation: 'beautiful'
+  original_text: 'Hello, Beautiful world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">Beautiful</b> world!'
+
+- name: 'General: collocation'
+  collocation: 'take forever'
+  original_text: 'Downloading a movie takes forever.'
+  highlighted_text: 'Downloading a movie <b class="cross-field-highlighter">takes</b> <b class="cross-field-highlighter">forever</b>.'
+
+- name: 'General: the beginning of a sentence'
+  collocation: 'hello'
+  original_text: 'Hello beautiful world!'
+  highlighted_text: '<b class="cross-field-highlighter">Hello</b> beautiful world!'
+
+- name: 'General: empty collocation'
+  collocation: ''
+  original_text: 'Hello, beautiful world!'
+  highlighted_text: 'Hello, beautiful world!'
+
+- name: 'General: entire collocation as token (+case insensitive)'
+  collocation: 'to hurry up'
+  original_text: 'Need to hurry up. He Hurries everyone up.'
+  highlighted_text: 'Need to <b class="cross-field-highlighter">hurry</b> <b class="cross-field-highlighter">up</b>. He <b class="cross-field-highlighter">Hurries</b> everyone <b class="cross-field-highlighter">up</b>.'
+
+- name: 'Word forms: s-suffix'
+  collocation: 'intrusion'
+  original_text: 'Resistant to intrusions.'
+  highlighted_text: 'Resistant to <b class="cross-field-highlighter">intrusions</b>.'
+
+- name: 'Word forms: ing base (append)'
+  collocation: 'drown'
+  original_text: 'Protection against drowning.'
+  highlighted_text: 'Protection against <b class="cross-field-highlighter">drowning</b>.'
+
+- name: 'Word forms: ing base (case insensitive)'
+  collocation: 'abstain'
+  original_text: 'Abstaining from chocolate'
+  highlighted_text: '<b class="cross-field-highlighter">Abstaining</b> from chocolate'
+
+- name: 'Word forms: ing (dropping e)'
+  collocation: 'overtake'
+  original_text: 'A driver was overtaking a slower vehicle.'
+  highlighted_text: 'A driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.'
+
+- name: 'Word forms: ing (ie-ending)'
+  collocation: 'lie'
+  original_text: 'A cat was lying on the floor.'
+  highlighted_text: 'A cat was lying on the floor.'
+
+- name: 'Word forms: forgotten'
+  collocation: 'forget'
+  original_text: "I've forgotten your name."
+  highlighted_text: "I've <b class=\"cross-field-highlighter\">forgotten</b> your name."
+
+- name: 'Word forms: forgetting'
+  collocation: 'forget'
+  original_text: 'I am forgetting my keys again.'
+  highlighted_text: 'I am <b class="cross-field-highlighter">forgetting</b> my keys again.'
+
+- name: 'Short words: be'
+  collocation: 'be'
+  original_text: 'To be is to have been while being beautiful.'
+  highlighted_text: 'To <b class="cross-field-highlighter">be</b> is to have <b class="cross-field-highlighter">been</b> while <b class="cross-field-highlighter">being</b> beautiful.'
+
+- name: "Short words: minimum length (should not highlight 'our')"
+  collocation: 'phase out'
+  original_text: 'Our meetings phased out last year.'
+  highlighted_text: 'Our meetings <b class="cross-field-highlighter">phased</b> <b class="cross-field-highlighter">out</b> last year.'
+
+- name: "Short words: limit max length (should not highlight 'society')"
+  collocation: 'so'
+  original_text: 'Society changes so quickly.'
+  highlighted_text: 'Society changes <b class="cross-field-highlighter">so</b> quickly.'
+
+- name: 'Stop words: to'
+  collocation: 'to overtake'
+  original_text: 'Driver was overtaking a slower vehicle.'
+  highlighted_text: 'Driver was <b class="cross-field-highlighter">overtaking</b> a slower vehicle.'
+
+- name: 'Stop words: a'
+  collocation: 'a driver'
+  original_text: 'Driver was overtaking a slower vehicle.'
+  highlighted_text: '<b class="cross-field-highlighter">Driver</b> was overtaking a slower vehicle.'
+
+- name: 'Stop words: an'
+  collocation: 'an automobile'
+  original_text: 'Automobile was overtaking a slower vehicle.'
+  highlighted_text: '<b class="cross-field-highlighter">Automobile</b> was overtaking a slower vehicle.'
+
+- name: 'Stop words: entire collocation comprises stop words'
+  collocation: 'an a to'
+  original_text: 'An automobile is going to overtake a slower vehicle.'
+  highlighted_text: 'An automobile is going to overtake a slower vehicle.'
+
+- name: "Short words: should not highlight 'Measure'"
+  collocation: 'mesh'
+  original_text: 'Measure and mark the mesh size.'
+  highlighted_text: 'Measure and mark the <b class="cross-field-highlighter">mesh</b> size.'
+
+- name: 'HTML tags: li'
+  collocation: 'lid'
+  original_text: '<li>I opened the lid of the jar to get some jam.</li>'
+  highlighted_text: '<li>I opened the <b class="cross-field-highlighter">lid</b> of the jar to get some jam.</li>'
+
+- name: 'HTML tags: div'
+  collocation: 'ivy'
+  original_text: '<li><div>There is ivy trailing all over the wall.</div></li>'
+  highlighted_text: '<li><div>There is <b class="cross-field-highlighter">ivy</b> trailing all over the wall.</div></li>'
+
+- name: 'HTML tags: collocation touches tag'
+  collocation: 'hello'
+  original_text: '<li>Hello, beautiful world!</li>'
+  highlighted_text: '<li><b class="cross-field-highlighter">Hello</b>, beautiful world!</li>'
+
+- name: 'HTML tags: tag contains spaces'
+  collocation: 'hello'
+  original_text: '<p class="big">Hello, beautiful world!</p>'
+  highlighted_text: '<p class="big"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'
+
+- name: 'HTML tags: tag contains collocation'
+  collocation: 'hello'
+  original_text: '<p class="hello">Hello, beautiful world!</p>'
+  highlighted_text: '<p class="hello"><b class="cross-field-highlighter">Hello</b>, beautiful world!</p>'
+
+- name: 'HTML tags: non-breakable space'
+  collocation: 'beautiful'
+  original_text: 'Hello,&nbsp;beautiful&nbsp;world!'
+  highlighted_text: 'Hello,&nbsp;<b class="cross-field-highlighter">beautiful</b>&nbsp;world!'
+
+- name: 'HTML tags: tag in collocation'
+  collocation: '<i>beautiful</i>'
+  original_text: 'Hello, beautiful world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b> world!'
+
+- name: 'HTML tags: tags in collocation'
+  collocation: '<i>beautiful</i> <b>world</b>'
+  original_text: 'Hello, <i>beautiful</i> world!'
+  highlighted_text: 'Hello, <i><b class="cross-field-highlighter">beautiful</b></i> <b class="cross-field-highlighter">world</b>!'
+
+- name: 'Cloze note: entire'
+  collocation: 'study'
+  original_text: 'I {{c1:study}} every day.'
+  highlighted_text: 'I {{c1:<b class="cross-field-highlighter">study</b>}} every day.'
+
+- name: 'Cloze note: sub-word'
+  collocation: 'study'
+  original_text: 'He {{c2:also studies hard}} every day.'
+  highlighted_text: 'He {{c2:also <b class="cross-field-highlighter">studies</b> hard}} every day.'
+
+- name: 'Furigana: ruby collocation, ruby text'
+  collocation: '<ruby>東京<rt>とうきょう</rt></ruby>'
+  original_text: '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>'
+  highlighted_text: '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'
+
+- name: 'Furigana: ruby collocation, brackets text'
+  collocation: '<ruby>東京<rt>とうきょう</rt></ruby>'
+  original_text: '<p>東京[とうきょう]は首都です。</p>'
+  highlighted_text: '<p><b class="cross-field-highlighter">東京</b>[<b class="cross-field-highlighter">とうきょう</b>]は首都です。</p>'
+
+- name: 'Furigana: brackets collocation, ruby text'
+  collocation: '東京[とうきょう]'
+  original_text: '<p><ruby>東京<rt>とうきょう</rt></ruby>は首都です。</p>'
+  highlighted_text: '<p><ruby><b class="cross-field-highlighter">東京</b><rt><b class="cross-field-highlighter">とうきょう</b></rt></ruby>は首都です。</p>'
+
+- name: 'Furigana: brackets collocation, brackets text'
+  collocation: '東京[とうきょう]'
+  original_text: '<p>東京[とうきょう]は首都です。</p>'
+  highlighted_text: '<p><b class="cross-field-highlighter">東京[とうきょう]</b>は首都です。</p>'
+
+- name: 'Special symbols: collocation touches dot'
+  collocation: 'hip'
+  original_text: 'Her child is at her hip.'
+  highlighted_text: 'Her child is at her <b class="cross-field-highlighter">hip</b>.'
+
+- name: 'Special symbols: collocation contains forward slash'
+  collocation: 'beautiful/nice'
+  original_text: 'Hello, beautiful and nice world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!'
+
+- name: 'Special symbols: collocation contains back slash'
+  collocation: 'beautiful\nice'
+  original_text: 'Hello, beautiful and nice world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b> and <b class="cross-field-highlighter">nice</b> world!'
+
+- name: 'Special symbols: collocation contains angle brackets'
+  collocation: 'beautiful>nice<perfect'
+  original_text: 'Hello, beautiful, nice, and perfect world!'
+  highlighted_text: 'Hello, <b class="cross-field-highlighter">beautiful</b>, <b class="cross-field-highlighter">nice</b>, and <b class="cross-field-highlighter">perfect</b> world!'
+
+- name: 'Special symbols: collocation contains square brackets'
+  collocation: 'beautiful[nice]'
+  original_text: 'Hello, [beautiful] and nice [world]!'
+  highlighted_text: 'Hello, [<b class="cross-field-highlighter">beautiful</b>] and <b class="cross-field-highlighter">nice</b> [world]!'
+
+- name: 'Special symbols: curly quotes (smart quites)'
+  collocation: 'rally'
+  original_text: 'It is a “rally.”'
+  highlighted_text: 'It is a “<b class="cross-field-highlighter">rally</b>.”'
+
+- name: 'Special symbols: hyphen, em dash'
+  collocation: 'rally'
+  original_text: 'rally-rally—rally'
+  highlighted_text: '<b class="cross-field-highlighter">rally</b>-<b class="cross-field-highlighter">rally</b>—<b class="cross-field-highlighter">rally</b>'
+
+- name: 'Thai language'
+  collocation: 'ดี'
+  original_text: 'วันนี้เป็นวันที่ดีมาก'
+  highlighted_text: 'วันนี้เป็นวันที่<b class="cross-field-highlighter">ดี</b>มาก'
+
+- name: 'Korean language'
+  collocation: '좋은'
+  original_text: '오늘은 정말 좋은 날이에요'
+  highlighted_text: '오늘은 정말 <b class="cross-field-highlighter">좋은</b> 날이에요'
+
+- name: 'Chinese language'
+  collocation: '天气'
+  original_text: '今天天气非常好'
+  highlighted_text: '今天<b class="cross-field-highlighter">天气</b>非常好'
+
+- name: 'Arabic language'
+  collocation: 'جميل'
+  original_text: 'الطقس اليوم جميل'
+  highlighted_text: 'الطقس اليوم <b class="cross-field-highlighter">جميل</b>'
+
+- name: 'Hebrew language'
+  collocation: 'נהדר'
+  original_text: 'היום יום נהדר'
+  highlighted_text: 'היום יום <b class="cross-field-highlighter">נהדר</b>'
