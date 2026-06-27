@@ -15,4 +15,4 @@ pyqt6_sip==13.10.2
 
 # https://github.com/ankitects/anki/blob/25.08b5/qt/pyproject.toml
 beautifulsoup4==4.13.4
-requests[socks]==2.32.4
+requests[socks]==2.34.2
