@@ -2,7 +2,7 @@
 Feature: Highlight Notes in Browser
 
   Background:
-  Test "manual_test.py" was executed.
+  Script "manual_tests_data.py" was executed.
   Profile "CFH Manual Test 1" was opened.
   The Browser is opened in Notes mode.
 

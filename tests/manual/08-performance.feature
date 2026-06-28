@@ -2,7 +2,7 @@
 Feature: Performance of highlight and erase operations
 
   Background:
-  Profile "CFH Manual Test 3 Big" was created by "manual_test.py".
+  Profile "CFH Manual Test 3 Big" was created by "manual_tests_data.py".
   Profile "CFH Manual Test 3 Big" was opened.
 
   @smoke @performance @browser

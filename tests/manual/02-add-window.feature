@@ -2,7 +2,7 @@
 Feature: Highlight in Add Note window
 
   Background:
-  Test "manual_test.py" was executed.
+  Script "manual_tests_data.py" was executed.
   Profile "CFH Manual Test 1" was opened.
 
   @smoke @add

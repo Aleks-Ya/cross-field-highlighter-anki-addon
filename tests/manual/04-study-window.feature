@@ -2,7 +2,7 @@
 Feature: Study Editor
 
   Background:
-  Test "manual_test.py" was executed.
+  Script "manual_tests_data.py" was executed.
   Profile "CFH Manual Test 1" was opened.
   The Main window is open.
 
