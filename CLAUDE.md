@@ -7,19 +7,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Running Tests
 ```bash
 # Run all tests (current Anki version)
-tox -e anki-qt6-current
+tox -e anki-current
 
 # Run all test environments
 tox
 
 # Run a specific test file
-tox -e anki-qt6-current -- tests/highlighter/text/test_regex_text_highlighter.py
+tox -e anki-current -- tests/highlighter/text/test_regex_text_highlighter.py
 
 # Run a single test by name
-tox -e anki-qt6-current -- tests/highlighter/text/test_regex_text_highlighter.py::TestClass::test_method
+tox -e anki-current -- tests/highlighter/text/test_regex_text_highlighter.py::TestClass::test_method
 
 # Run integration tests only
-tox -e anki-qt6-current -- tests -m integration
+tox -e anki-current -- tests -m integration
 ```
 
 ### Build & Distribution
@@ -35,9 +35,9 @@ bump-my-version bump patch -v   # or minor / major
 ```
 
 ### Test Environments
-- `anki-qt6-current` — latest stable Anki (defined in `requirements/anki-qt6-current.txt`)
-- `anki-qt6-earliest` — oldest supported Anki
-- `anki-qt6-beta` — beta Anki
+- `anki-current` — latest stable Anki (defined in `requirements/anki-current.txt`)
+- `anki-earliest` — oldest supported Anki
+- `anki-beta` — beta Anki
 
 Tests run headless via `QT_QPA_PLATFORM=offscreen`.
 

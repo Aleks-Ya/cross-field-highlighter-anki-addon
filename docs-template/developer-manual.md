@@ -18,7 +18,7 @@
     3. `pyenv virtualenv 3.13.13 cross-field-highlighter-anki-addon`
 4. Install Anki packages
     1. Activate virtual environment: `pyenv activate cross-field-highlighter-anki-addon`
-    2. Install packages: `pip install -U pip -r requirements/anki-qt6-current.txt -r requirements/dev.txt -r requirements/tests.txt`
+    2. Install packages: `pip install -U pip -r requirements/anki-current.txt -r requirements/dev.txt -r requirements/tests.txt`
 
 ## Tests
 
@@ -29,7 +29,7 @@ Run automated tests:
 3. Run tests:
     1. Unit tests (without integration tests): `tox`
     2. Integration tests: `tox -- tests -m integration`
-    3. Unit tests for given environment: `tox -e anki-qt6-earliest`
+    3. Unit tests for given environment: `tox -e anki-earliest`
 
 Make UI visible during tests:  
 File `conftest.py`, fixture `visual_qtbot`, set positive delay: `VisualQtBot(qtbot, 1000)`
@@ -85,8 +85,8 @@ Run: `./deploy_locally.sh ~/.local/share/Anki2/addons21/cross_field_highlighter`
     1. Start next snapshot: Major: `bump-my-version bump major -v --no-tag`, Minor: `bump-my-version bump minor -v --no-tag`, Patch: `bump-my-version bump patch -v --no-tag`
     2. Release (remove SNAPSHOT and tag): `bump-my-version bump snapshot -v`
 5. Build ZIP: `./build_dist.sh`
-    1. Install and test on the earliest Anki version (Qt5)
-    2. Install and test on the current Anki version (Qt6)
+    1. Install and test on the earliest Anki version
+    2. Install and test on the current Anki version
 6. Upload ZIP to the Addon page:
     1. Page: https://ankiweb.net/shared/info/1312127886
     2. Title: `🎨 Cross-Field Highlighter - spotlight word in text`
