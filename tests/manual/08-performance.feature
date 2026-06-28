@@ -2,15 +2,15 @@
 Feature: Performance of highlight and erase operations
 
   Background:
-  Profile "CFH Manual Test 3 Big" was created by "manual_tests_data.py".
+  I opened "Profiles" dialog.
+  I executed "manual_tests_data.py".
   Profile "CFH Manual Test 3 Big" was opened.
 
   @smoke @performance @browser
   Scenario: Highlight many notes
-    Given the browser is open
-
-    When I select all notes
-    And I click the Highlight button
+    When I open Browser
+    And I select all notes
+    And I click context menu "Cross-Field Highlighter" -> "Highlight..."
     And I set state:
       | Note Type     | "Basic"             |
       | Field         | "Front"             |

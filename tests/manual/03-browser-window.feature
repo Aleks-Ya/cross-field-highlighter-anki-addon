@@ -2,8 +2,9 @@
 Feature: Highlight Notes in Browser
 
   Background:
-  Script "manual_tests_data.py" was executed.
-  Profile "CFH Manual Test 1" was opened.
+  I opened "Profiles" dialog.
+  I executed "manual_tests_data.py".
+  I opened "CFH Manual Test 1" profile.
   The Browser is opened in Notes mode.
 
   @smoke @browser
@@ -15,12 +16,12 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then "Statistics" window was shown:
       """
-      Notes selected in Browser: 12
-      Notes of type "Cloze": 11
-      Notes processed: 11
-      Notes modified: 11
-      Fields processed: 11
-      Fields modified: 11
+      Notes selected in Browser: 49
+      Notes of type "Cloze": 48
+      Notes processed: 48
+      Notes modified: 45
+      Fields processed: 48
+      Fields modified: 45
       """
     And Collocations in "Back" field are highlighted in all notes
 
@@ -30,12 +31,12 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then "Statistics" window was shown:
       """
-      Notes selected in Browser: 12
-      Notes of type "Cloze": 11
-      Notes processed: 11
-      Notes modified: 11
-      Fields processed: 22
-      Fields modified: 11
+      Notes selected in Browser: 49
+      Notes of type "Cloze": 48
+      Notes processed: 48
+      Notes modified: 45
+      Fields processed: 96
+      Fields modified: 45
       """
     And Collocations in "Back" field are NOT highlighted in all notes
 
@@ -55,7 +56,7 @@ Feature: Highlight Notes in Browser
 
     When I click "Start" button
     Then Collocation in "Back" field was highlighted
-    But "Statistics" windows was not shown
+    But "Statistics" windows was NOT shown
 
     When I click "Erase" button
     Then The "Erase" dialog is shown
@@ -63,17 +64,16 @@ Feature: Highlight Notes in Browser
 
     When I click "Start" button
     Then Collocation in "Back" field was NOT highlighted
-    But "Statistics" windows was not shown
+    But "Statistics" windows was NOT shown
 
     When I press "Ctrl-Shift-H"
     Then The "Highlight" dialog is shown
     When I press "Alt-S"
-    Then Collocation in "Back" field stays highlighted
-    But "Statistics" windows was not shown
+    Then Collocation in "Back" field is highlighted
+    But "Statistics" windows was NOT shown
 
   @smoke @browser
   Scenario: Highlight and erase several notes in Cards mode
-
     Given Browser is opened in Cards mode
 
     When I select all cards
@@ -87,14 +87,14 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then "Statistics" window was shown:
       """
-      Notes selected in Browser: 12
+      Notes selected in Browser: 49
       Notes of type "Cloze": 1
       Notes processed: 1
       Notes modified: 1
       Fields processed: 1
       Fields modified: 1
       """
-    And Collocations in "Back" field are highlighted in all 2 Cloze cards
+    And Collocation in "Back Extra" field is highlighted in the Cloze card
 
     When I select all cards
     And I click context menu "Cross-Field Highlighter" -> "Erase..."
@@ -104,11 +104,11 @@ Feature: Highlight Notes in Browser
     And I clicked "Start" button
     Then "Statistics" window was shown:
       """
-      Notes selected in Browser: 12
+      Notes selected in Browser: 49
       Notes of type "Cloze": 1
       Notes processed: 1
       Notes modified: 1
       Fields processed: 2
       Fields modified: 1
       """
-    And Collocations in "Back" field are NOT highlighted in all 2 Cloze cards
+    And Collocation in "Back Extra" field is NOT highlighted in the Cloze card

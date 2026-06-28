@@ -3,9 +3,9 @@ Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved for each Profile individually.
 
   Background:
-  Profiles "CFH Manual Test 1" and "CFH Manual Test 2" were removed from Storage.
-  Script "manual_tests_data.py" was executed.
-  Profile "CFH Manual Test 1" was opened.
+  I opened "Profiles" dialog.
+  I executed "manual_tests_data.py".
+  I opened "CFH Manual Test 1" profile.
   The Main window is opened for Profile "CFH Manual Test 1".
 
   @smoke @add
@@ -56,6 +56,7 @@ Feature: Switch Profile
 
   @smoke @add
   Scenario: "Erase" dialog state is saved for each profile separately
+    Given I opened "CFH Manual Test 1" profile
 
     When I open "Add" window
     And I choose "Basic" note type

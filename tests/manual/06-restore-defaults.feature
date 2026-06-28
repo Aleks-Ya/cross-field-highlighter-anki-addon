@@ -2,42 +2,49 @@
 Feature: Highlight in Add Note window
 
   Background:
+  I opened "Profiles" dialog.
   I executed "manual_tests_data.py".
-  Profile "CFH Manual Test 1" was opened.
+  I opened "CFH Manual Test 1" profile.
 
   @smoke @add
-  Scenario: Use "Restore Defaults" button
-    Given I opened Browser
+  Scenario: Use "Restore Defaults" button in "Highlight" dialog
+    When I opened Browser
     And I selected all notes
     And I opened "Highlight" dialog
+    Then "Highlight" dialog has default state:
+      | Note Type     | "Basic"   |
+      | Field         | "Front"   |
+      | Exclude words | "a an to" |
+      | Format        | "Bold"    |
+      | Fields        | -         |
 
-    And I selected "Basic" Note Type
-    And I selected "Front" field
-    And I typed "the" in "Exclude words" field
-    And I selected "Italic" format
-    And I marked "Back" field
+    When I set state:
+      | Note Type     | "Cloze"      |
+      | Field         | "Back Extra" |
+      | Exclude words | "the"        |
+      | Format        | "Italic"     |
+      | Fields        | "Text"       |
+    And I click "Restore Defaults" button
+    Then "Highlight" dialog returns to default state:
+      | Note Type     | "Basic"   |
+      | Field         | "Front"   |
+      | Exclude words | "a an to" |
+      | Format        | "Bold"    |
+      | Fields        | -         |
 
-    And I selected "Basic" Note Type
-    And I selected "Front" field
-    And I typed "the" in "Exclude words" field
-    And I selected "Italic" format
-    And I marked "Back" field
+  @smoke @add
+  Scenario: Use "Restore Defaults" button in "Erase" dialog
+    When I opened Browser
+    And I selected all notes
+    And I opened "Erase" dialog
+    Then "Erase" dialog has default state:
+      | Note Type | "Basic" |
+      | Fields    | -       |
 
-    And I click "Start" button
-    Then The word "cats" is highlighted
-
-    When I click "Erase" button
-    And I click "Select All" button
-    And I click "Start" button
-    Then The word "cats" is not highlighted
-
-    When I press "Ctrl-Shift-H"
-    Then The "Highlight" dialog is opened
-    And All fields are marked
-
-    When I press "Alt-S"
-    Then The word "cats" is highlighted
-
-    When I click "Close" button
-    And I click "Discard" button
-    Then The Add window has closed
+    When I set state:
+      | Note Type | "Cloze"      |
+      | Fields    | "Back Extra" |
+    And I click "Restore Defaults" button
+    Then "Erase" dialog returns to default state:
+      | Note Type | "Basic" |
+      | Fields    | -       |

@@ -3,15 +3,15 @@ Feature: Switch Profile
   "Highlight" and "Erase" windows preferences should be saved when Note Type is changed in "Add" window.
 
   Background:
-  Script "manual_tests_data.py" was executed.
-  Profile "CFH Manual Test 1" was opened.
+  I opened "Profiles" dialog.
+  I executed "manual_tests_data.py".
+  I opened "CFH Manual Test 1" profile.
 
   @smoke @add
   Scenario: "Highlight" dialog state is saved when Note Type is switched
 
-    Given Profile "CFH Manual Test 1" was removed from Storage
-    And "Add" window is opened
-    And "Basic" note type is chosen
+    Given I opened "Add" window
+    And I chose "Basic" note type
 
     When I open "Highlight" dialog
     Then "Highlight" dialog has default state:
@@ -75,8 +75,8 @@ Feature: Switch Profile
   @smoke @add
   Scenario: "Erase" dialog state is saved when Note Type is switched
 
-    Given "Add" window is opened
-    And "Basic" note type is chosen
+    When I open "Add" window
+    And I chose "Basic" note type
 
     When I open "Erase" dialog
     Then "Erase" dialog has default state:
